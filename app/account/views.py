@@ -55,18 +55,26 @@ def register():
             first_name=form.first_name.data,
             last_name=form.last_name.data,
             email=form.email.data,
-            password=form.password.data)
+            password=form.password.data,
+            confirmed = True)
         db.session.add(user)
         db.session.commit()
         token = user.generate_confirmation_token()
         confirm_link = url_for('account.confirm', token=token, _external=True)
-        get_queue().enqueue(
-            send_email,
-            recipient=user.email,
-            subject='Confirm Your Account',
-            template='account/email/confirm',
-            user=user,
-            confirm_link=confirm_link)
+        # get_queue().enqueue(
+        #     send_email,
+        #     recipient=user.email,
+        #     subject='Confirm Your Account',
+        #     template='account/email/confirm',
+        #     user=user,
+        #     confirm_link=confirm_link)
+
+        # send_email(recipient=user.email,
+        #     subject='Confirm Your Account',
+        #     template='account/email/confirm',
+        #     user=user,
+        #     confirm_link=confirm_link)
+
         flash('A confirmation link has been sent to {}.'.format(user.email),
               'warning')
         return redirect(url_for('main.index'))
