@@ -1,4 +1,7 @@
 from manage import manager
 
+app=manager.app
 
-manager.app.run()
+if __name__ == '__main__':
+
+    manager.app.run()
