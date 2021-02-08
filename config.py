@@ -75,8 +75,14 @@ class Config:
 class DevelopmentConfig(Config):
     DEBUG = True
     ASSETS_DEBUG = True
-    SQLALCHEMY_DATABASE_URI = os.environ.get('DEV_DATABASE_URL',
-        'sqlite:///' + os.path.join(basedir, 'data-dev.sqlite'))
+    SQLALCHEMY_USERS_DATABASE_URI = os.environ.get('USERS_DATABASE_URL',
+        'sqlite:///' + os.path.join(basedir, 'users-dev.sqlite'))
+    SQLALCHEMY_CLIENTS_DATABASE_URI = os.environ.get('CLIENTS_DATABASE_URL',
+        'sqlite:///' + os.path.join(basedir, 'clients-dev.sqlite'))
+    SQLALCHEMY_BINDS = {
+        'db_users': SQLALCHEMY_USERS_DATABASE_URI,
+        'db_clients': SQLALCHEMY_CLIENTS_DATABASE_URI
+    }
 
     @classmethod
     def init_app(cls, app):

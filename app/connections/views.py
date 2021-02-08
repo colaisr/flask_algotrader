@@ -6,10 +6,25 @@ from flask import (
     request,
     url_for,
 )
-from app import db
-from app.models import User
+from datetime import datetime
+from app import db, csrf
+from app.models import User,Connection
+
 connections = Blueprint('connections', __name__)
 
-@connections.route('/logconnection', methods=['GET', 'POST'])
+
+@csrf.exempt
+@connections.route('/logconnection', methods=['POST'])
 def logconnection():
-    i=2
+    request_data = request.get_json()
+    logged_user = request_data["user"]
+    users = User.query.all()
+    if any(x.email == logged_user for x in users):
+        c=Connection()
+        c.email=logged_user
+        now = datetime.now()
+        c.reported_connection=now
+        c.log_connection()
+        return "Application launch for " + logged_user + " is logged."
+    else:
+        return "The user configured is not found on Server the connection is not logged"

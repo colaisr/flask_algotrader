@@ -85,6 +85,13 @@ def setup_general():
                 confirmed=True,
                 email=Config.ADMIN_EMAIL)
             db.session.add(user)
+            user2 = User(
+                first_name='Cola',
+                last_name='Kamornik',
+                password="1234",
+                confirmed=True,
+                email="cola.isr@gmail.com")
+            db.session.add(user2)
             db.session.commit()
             print('Added administrator {}'.format(user.full_name()))
 
