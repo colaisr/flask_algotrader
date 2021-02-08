@@ -7,7 +7,7 @@ main = Blueprint('main', __name__)
 
 @main.route('/')
 def index():
-    last_connections = Connection.query.all()
+    last_connections = Connection.query.order_by(Connection.reported_connection.desc()).limit(10).all()
     return render_template('main/index.html', connections=last_connections)
 
 
