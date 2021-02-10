@@ -19,7 +19,7 @@ from app.admin.forms import (
 )
 from app.decorators import admin_required
 from app.email import send_email
-from app.models import EditableHTML, Role, User
+from app.models import EditableHTML, Role, User, TickerData
 
 admin = Blueprint('admin', __name__)
 
@@ -94,6 +94,14 @@ def registered_users():
     roles = Role.query.all()
     return render_template(
         'admin/registered_users.html', users=users, roles=roles)
+
+@admin.route('/marketdata')
+@login_required
+@admin_required
+def market_data():
+    """View all registered users."""
+    marketdata = TickerData.query.all()
+    return render_template('admin/market_data.html', marketdata=marketdata)
 
 
 @admin.route('/user/<int:user_id>')
