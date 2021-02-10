@@ -74,6 +74,9 @@ def create_app(config):
     from .account import account as account_blueprint
     app.register_blueprint(account_blueprint, url_prefix='/account')
 
+    from .userview import userview as userview_blueprint
+    app.register_blueprint(userview_blueprint, url_prefix='/userview')
+
     from .admin import admin as admin_blueprint
     app.register_blueprint(admin_blueprint, url_prefix='/admin')
 
