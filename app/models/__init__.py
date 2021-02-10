@@ -6,3 +6,5 @@ module (as opposed to just their python files)
 from .user import *  # noqa
 from .miscellaneous import *  # noqa
 from .clients import *
+from .market_data import *
+from .positions import *

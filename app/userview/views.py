@@ -33,19 +33,19 @@ userview = Blueprint('userview', __name__)
 
 
 
-@userview.route('/userview/traderstationstate', methods=['GET', 'POST'])
+@userview.route('traderstationstate', methods=['GET', 'POST'])
 @login_required
 def traderstationstate():
     """Display a user's account information."""
     return render_template('userview/traderstationstate.html', user=current_user, form=None)
 
-@userview.route('/userview/closedpositions', methods=['GET', 'POST'])
+@userview.route('closedpositions', methods=['GET', 'POST'])
 @login_required
 def closedpositions():
     """Display a user's account information."""
     return render_template('userview/closedpositions.html', user=current_user, form=None)
 
-@userview.route('/userview/portfoliostatistics', methods=['GET', 'POST'])
+@userview.route('portfoliostatistics', methods=['GET', 'POST'])
 @login_required
 def portfoliostatistics():
     """Display a user's account information."""

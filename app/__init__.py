@@ -83,4 +83,7 @@ def create_app(config):
     from .connections import connections as connections_blueprint
     app.register_blueprint(connections_blueprint, url_prefix='/connections')
 
+    from .market_data import marketdata as marketdata_blueprint
+    app.register_blueprint(marketdata_blueprint, url_prefix='/marketdata')
+
     return app

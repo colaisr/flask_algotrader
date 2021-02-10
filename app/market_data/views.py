@@ -1,3 +1,5 @@
+import json
+
 from flask import (
     Blueprint,
     flash,
@@ -8,35 +10,39 @@ from flask import (
 )
 from datetime import datetime
 from app import db, csrf
-from app.models import User, Connection, Report
+from app.models import User, Connection, Report, TickerData
 
-connections = Blueprint('connections', __name__)
+marketdata = Blueprint('marketdata', __name__)
 
 
 @csrf.exempt
-@connections.route('/logconnection', methods=['POST'])
-def logconnection():
+@marketdata.route('/updatemarketdata', methods=['POST'])
+def updatemarketdata():
     request_data = request.get_json()
+    received_data=request_data["tickers"]
     logged_user = request_data["user"]
-    users = User.query.all()
-    if any(x.email == logged_user for x in users):
-        c = Connection()
-        c.email = logged_user
-        now = datetime.now()
-        c.reported_connection = now
-        c.log_connection()
-        return "Application launch for " + logged_user + " is logged."
-    else:
-        return "The user configured is not found on Server the connection is not logged"
+    parsed_data = json.loads(received_data)
+    for k,v in parsed_data.items():
+        s=v['Stock']
+        d=v['averagePriceDropP']
+        sp=v['averagePriceSpreadP']
+        r=v['tipranksRank']
+        t=TickerData(ticker=s,yahoo_avdropP=d,yahoo_avspreadP=sp,tipranks=r,updated=datetime.now())
+        if int(t.tipranks)!=0:
+            t.update_ticker_data()
+
+    return "Market data updated at server"
 
 @csrf.exempt
-@connections.route('/postreport', methods=['POST'])
+@marketdata.route('/postreport', methods=['POST'])
 def logreport():
     request_data = request.get_json()
     logged_user = request_data["user"]
     users = User.query.all()
     if any(x.email == logged_user for x in users):
-        report = Report()
+        report = Report.query.filter_by(email=logged_user).first()
+        if report is None:
+            report = Report()
         report.email = logged_user
         now = datetime.now()
         report.report_time = now
@@ -47,9 +53,9 @@ def logreport():
         report.net_liquidation = request_data["net_liquidation"]
         report.remaining_sma_with_safety = request_data["remaining_sma_with_safety"]
         report.dailyPnl = request_data["dailyPnl"]
-        report.update_report()
+        report.log_report()
 
 
-        return "Report snapshot for " + logged_user + " stored at server."
+        return "Report for " + logged_user + " stored at server."
     else:
         return "The user configured is not found on Server the report is not logged"

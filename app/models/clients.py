@@ -27,6 +27,18 @@ class Report(db.Model):
     open_orders_json = db.Column('open_orders_json', db.String)
     dailyPnl=db.Column('dailyPnl', db.Float)
 
-    def log_report(self):
-        db.session.add(self)
+    def update_report(self):
+        report = Report.query.filter_by(email=self.email).first()
+        if report is None:
+            db.session.add(self)
+        else:
+            report.report_time=self.report_time
+            report.net_liquidation = self.net_liquidation
+            report.remaining_sma_with_safety = self.remaining_sma_with_safety
+            report.remaining_trades = self.remaining_trades
+            report.all_positions_value = self.all_positions_value
+            report.open_positions_json = self.open_positions_json
+            report.open_orders_json = self.open_orders_json
+            report.dailyPnl = self.dailyPnl
+
         db.session.commit()
