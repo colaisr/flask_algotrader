@@ -27,7 +27,8 @@ def updatemarketdata():
         d=v['averagePriceDropP']
         sp=v['averagePriceSpreadP']
         r=v['tipranksRank']
-        t=TickerData(ticker=s,yahoo_avdropP=d,yahoo_avspreadP=sp,tipranks=r,updated=datetime.now())
+        u=datetime.fromisoformat(v['LastUpdate'])
+        t=TickerData(ticker=s,yahoo_avdropP=d,yahoo_avspreadP=sp,tipranks=r,updated=u)
         if int(t.tipranks)!=0:
             t.update_ticker_data()
 
