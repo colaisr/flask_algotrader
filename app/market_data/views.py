@@ -33,6 +33,22 @@ def updatemarketdata():
             t.update_ticker_data()
 
     return "Market data updated at server"
+@csrf.exempt
+@marketdata.route('/retrievemarketdata', methods=['GET'])
+def retrievemarketdata():
+    request_data = request.get_json()
+    # received_data=request_data["tickers"]
+    # logged_user = request_data["user"]
+    # parsed_data = json.loads(received_data)
+    # requested_tickers={}
+    # for t in parsed_data:
+    #     td=TickerData.filter_by(ticker=t).first()
+    #     if td is None:
+    #         td=TickerData(ticker=t,yahoo_avdropP=0,yahoo_avspreadP=0,tipranks=0,updated=(datetime.now())
+    #     requested_tickers[t]=
+
+
+    return "Market data updated at server"
 
 @csrf.exempt
 @marketdata.route('/postreport', methods=['POST'])

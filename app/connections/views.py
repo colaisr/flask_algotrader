@@ -1,3 +1,5 @@
+import json
+
 from flask import (
     Blueprint,
     flash,
@@ -8,7 +10,7 @@ from flask import (
 )
 from datetime import datetime
 from app import db, csrf
-from app.models import User, Connection, Report
+from app.models import User, Connection, Report, Position
 
 connections = Blueprint('connections', __name__)
 
@@ -48,8 +50,41 @@ def logreport():
         report.remaining_sma_with_safety = request_data["remaining_sma_with_safety"]
         report.dailyPnl = request_data["dailyPnl"]
         report.update_report()
-
-
         return "Report snapshot for " + logged_user + " stored at server."
     else:
         return "The user configured is not found on Server the report is not logged"
+
+
+@csrf.exempt
+@connections.route('/postexecution', methods=['POST'])
+def postexecution():
+    request_data = request.get_json()
+    logged_user = request_data["user"]
+    symbol = request_data["symbol"]
+    shares = request_data["shares"]
+    price = request_data["price"]
+    side = request_data["side"]
+    reported_time=json.loads(request_data['time'])
+    time = datetime.fromisoformat(reported_time)
+
+    users = User.query.all()
+    if any(x.email == logged_user for x in users):
+        position = Position()
+        if side=='BOT':
+            position.ticker=symbol
+            position.email=logged_user
+            position.stocks=shares
+            position.last_exec_side=side
+            position.open_price=price
+            position.opened=time
+        else:
+            position.ticker=symbol
+            position.email=logged_user
+            position.stocks=shares
+            position.last_exec_side=side
+            position.close_price=price
+            position.closed=time
+        position.update_position()
+        return "Execution for " + logged_user + " stored at server."
+    else:
+        return "The user configured is not found on Server the execution is not logged"
