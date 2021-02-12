@@ -1,19 +1,34 @@
 import json
 
+import jsonpickle
 from flask import (
     Blueprint,
     flash,
     redirect,
     render_template,
     request,
-    url_for,
+    url_for, jsonify,
 )
-from datetime import datetime
+from datetime import datetime, date, timedelta
 from app import db, csrf
 from app.models import User, Connection, Report, TickerData
 
 marketdata = Blueprint('marketdata', __name__)
 
+def json_serial(obj):
+    """JSON serializer for objects not serializable by default json code"""
+
+    if isinstance(obj, (datetime, date)):
+        return obj.isoformat()
+    raise TypeError("Type %s not serializable" % type(obj))
+
+# def mark_serial(obj):
+#     """JSON serializer for objects not serializable by default json code"""
+#
+#     if isinstance(obj, (TickerData)):
+#
+#         return json.dumps(obj)
+#     raise TypeError("Type %s not serializable" % type(obj))
 
 @csrf.exempt
 @marketdata.route('/updatemarketdata', methods=['POST'])
@@ -37,18 +52,27 @@ def updatemarketdata():
 @marketdata.route('/retrievemarketdata', methods=['GET'])
 def retrievemarketdata():
     request_data = request.get_json()
-    # received_data=request_data["tickers"]
-    # logged_user = request_data["user"]
-    # parsed_data = json.loads(received_data)
-    # requested_tickers={}
-    # for t in parsed_data:
-    #     td=TickerData.filter_by(ticker=t).first()
-    #     if td is None:
-    #         td=TickerData(ticker=t,yahoo_avdropP=0,yahoo_avspreadP=0,tipranks=0,updated=(datetime.now())
-    #     requested_tickers[t]=
+    received_data=request_data["tickers"]
+    logged_user = request_data["user"]
+    parsed_data = json.loads(received_data)
+    requested_tickers={}
+    for t in parsed_data:
+        td=TickerData.query.filter_by(ticker=t).first()
+
+        if td is None:#not data-fake
+            td=TickerData(ticker=t,yahoo_avdropP=0,yahoo_avspreadP=0,tipranks=0,updated=(datetime.today() - timedelta(days=1)))
+
+        tdj=json.dumps(td.toDictionary())
 
 
-    return "Market data updated at server"
+
+        requested_tickers[td.ticker]=tdj
+    parsed_response=json.dumps(requested_tickers)
+
+
+
+
+    return requested_tickers
 
 @csrf.exempt
 @marketdata.route('/postreport', methods=['POST'])

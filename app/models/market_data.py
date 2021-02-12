@@ -1,5 +1,14 @@
+from datetime import datetime,date
+import json
+
 from .. import db
 
+def json_serial(obj):
+    """JSON serializer for objects not serializable by default json code"""
+
+    if isinstance(obj, (datetime, date)):
+        return obj.isoformat()
+    raise TypeError("Type %s not serializable" % type(obj))
 
 class TickerData(db.Model):
     __tablename__ = 'Tickersdata'
@@ -21,3 +30,17 @@ class TickerData(db.Model):
             td.tipranks=self.tipranks
             td.updated = self.updated
         db.session.commit()
+
+    def toJson(self):
+        return json.dumps(self, default=lambda o: o.__dict__)
+
+    def toDictionary(self):
+        d={}
+        d['ticker']=self.ticker
+        d['yahoo_avdropP'] = self.yahoo_avdropP
+        d['yahoo_avspreadP'] = self.yahoo_avspreadP
+        d['tipranks'] = self.tipranks
+        # d['updated'] = json.dumps(self.updated, default=json_serial)
+        d['updated'] = datetime.isoformat(self.updated)
+
+        return d
