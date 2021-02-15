@@ -20,34 +20,59 @@
     </div>
 {% endmacro %}
 
-{% macro user_info(user) %}
-    <table class="ui compact definition table">
-        <tr><td>Full name</td><td>{{ '%s %s' % (user.first_name, user.last_name) }}</td></tr>
-        <tr><td>Email address</td><td>{{ user.email }}</td></tr>
-        <tr><td>Account type</td><td>{{ user.role.name }}</td></tr>
-    </table>
-{% endmacro %}
 
 {% block content %}
     <div class="ui stackable centered grid container">
-        <div class="twelve wide column">
+        <div class="sixteen wide tablet twelve wide computer centered column">
+
             <h2 class="ui header">
-                Closed positions
-                <div class="sub header">Manage your account settings and change your login information.</div>
+                Closed Positions
+                <div class="sub header">
+                    All the positions reported to server.
+                </div>
             </h2>
-        </div>
-        <div class="stretched divided very relaxed row">
-            <div class="four wide column">
-                {{ navigation(endpoints) }}
+
+            <div class="ui menu">
+                <div class="ui left search item">
+                    <div class="ui transparent icon input">
+                        <input id="search-users" type="text" placeholder="Search users…">
+                        <i class="search icon"></i>
+                    </div>
+                </div>
             </div>
-            <div class="eight wide column">
-                {% if form %}
-                    {{ f.render_form(form, extra_classes='fluid') }}
-                {% else %}
-                    {{ user_info(user) }}
-                {% endif %}
+
+            {# Use overflow-x: scroll so that mobile views don't freak out
+             # when the table is too wide #}
+            <div style="overflow-x: scroll;">
+                <table class="ui searchable sortable unstackable selectable celled table">
+                    <thead>
+                        <tr>
+                            <th>Ticker</th>
+                            <th>Time opened</th>
+                            <th>Price opened</th>
+                            <th>Price closed</th>
+                            <th class="sorted descending">Time closed</th>
+                            <th>Amount</th>
+                            <th>Profit</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for p in positions | sort(attribute='closed') %}
+                        <tr onclick="alert('implement going to candidate')">
+                            <td>{{ p.ticker }}</td>
+                            <td>{{ p.opened }}</td>
+                            <td>{{ p.open_price }}</td>
+                            <td>{{ p.closed }}</td>
+                            <td>{{ p.close_price }}</td>
+                            <td>{{ p.stocks }}</td>
+                            <td>{{ p.profit }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
             </div>
         </div>
+
     </div>
     {{ check.password_check('new_password', 0) }}
 {% endblock %}

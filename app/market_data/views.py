@@ -22,13 +22,7 @@ def json_serial(obj):
         return obj.isoformat()
     raise TypeError("Type %s not serializable" % type(obj))
 
-# def mark_serial(obj):
-#     """JSON serializer for objects not serializable by default json code"""
-#
-#     if isinstance(obj, (TickerData)):
-#
-#         return json.dumps(obj)
-#     raise TypeError("Type %s not serializable" % type(obj))
+
 
 @csrf.exempt
 @marketdata.route('/updatemarketdata', methods=['POST'])

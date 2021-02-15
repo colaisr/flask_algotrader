@@ -25,7 +25,7 @@ from app.account.forms import (
     ResetPasswordForm,
 )
 from app.email import send_email
-from app.models import User
+from app.models import User, Position
 
 userview = Blueprint('userview', __name__)
 
@@ -43,7 +43,8 @@ def traderstationstate():
 @login_required
 def closedpositions():
     """Display a user's account information."""
-    return render_template('userview/closedpositions.html', user=current_user, form=None)
+    closed_positions = Position.query.all()
+    return render_template('userview/closedpositions.html', user=current_user,positions=closed_positions, form=None)
 
 @userview.route('portfoliostatistics', methods=['GET', 'POST'])
 @login_required

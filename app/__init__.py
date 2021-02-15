@@ -87,3 +87,5 @@ def create_app(config):
     app.register_blueprint(marketdata_blueprint, url_prefix='/marketdata')
 
     return app
+
+
