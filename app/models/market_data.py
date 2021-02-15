@@ -19,7 +19,7 @@ class TickerData(db.Model):
     yahoo_avspreadP = db.Column('yahoo_avspreadP', db.Float)
     tipranks = db.Column('tipranks', db.Integer)
     updated = db.Column('updated', db.DateTime)
-    # updated_by_user = db.Column('updated_by_user', db.String)
+    updated_by_user = db.Column('updated_by_user', db.String)
 
     def update_ticker_data(self):
         td = TickerData.query.filter_by(ticker=self.ticker).first()
