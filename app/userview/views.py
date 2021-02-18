@@ -51,3 +51,9 @@ def closedpositions():
 def portfoliostatistics():
     """Display a user's account information."""
     return render_template('userview/portfoliostatistics.html', user=current_user, form=None)
+
+@userview.route('usercandidates', methods=['GET', 'POST'])
+@login_required
+def usercandidates():
+    """Display a user's account information."""
+    return render_template('userview/usercandidates.html', user=current_user, form=None)
