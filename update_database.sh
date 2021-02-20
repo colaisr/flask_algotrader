@@ -1,9 +1,9 @@
 #! /usr/bin/env sh
 
-python manage.py db migrate -m "one"
-python manage.py db upgrade head
+python3 manage.py db migrate -m "added report fields"
+python3 manage.py db upgrade
 
 
 #should be done on the first time only
-#python manage.py db init --multidb
-# python3 python manage.py db stamp head
+python3 manage.py db init --multidb
+python3 manage.py db stamp head

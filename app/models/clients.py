@@ -26,6 +26,9 @@ class Report(db.Model):
     open_positions_json = db.Column('open_positions_json', db.String)
     open_orders_json = db.Column('open_orders_json', db.String)
     dailyPnl=db.Column('dailyPnl', db.Float)
+    last_worker_execution = db.Column('last_worker_execution', db.DateTime)
+    market_time = db.Column('market_time', db.DateTime)
+    market_state = db.Column('market_state', db.String)
 
     def update_report(self):
         report = Report.query.filter_by(email=self.email).first()
@@ -40,5 +43,8 @@ class Report(db.Model):
             report.open_positions_json = self.open_positions_json
             report.open_orders_json = self.open_orders_json
             report.dailyPnl = self.dailyPnl
+            report.last_worker_execution = self.last_worker_execution
+            report.market_time = self.market_time
+            report.market_state = self.market_state
 
         db.session.commit()

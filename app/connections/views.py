@@ -49,6 +49,10 @@ def logreport():
         report.net_liquidation = request_data["net_liquidation"]
         report.remaining_sma_with_safety = request_data["remaining_sma_with_safety"]
         report.dailyPnl = request_data["dailyPnl"]
+        report.last_worker_execution =datetime.fromisoformat(request_data["last_worker_run"])
+        report.market_time =datetime.fromisoformat(request_data["market_time"])
+        report.market_state = request_data["market_state"]
+
         report.update_report()
         return "Report snapshot for " + logged_user + " stored at server."
     else:
@@ -66,6 +70,9 @@ def postexecution():
     side = request_data["side"]
     reported_time=json.loads(request_data['time'])
     time = datetime.fromisoformat(reported_time)
+    last_worker_run = request_data["last_worker_run"]
+    market_time = request_data["market_time"]
+    market_state = request_data["market_state"]
 
     users = User.query.all()
     if any(x.email == logged_user for x in users):

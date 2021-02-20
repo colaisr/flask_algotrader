@@ -5,6 +5,7 @@ from flask_assets import Environment
 from flask_compress import Compress
 from flask_login import LoginManager
 from flask_mail import Mail
+from flask_migrate import Migrate
 from flask_rq import RQ
 from flask_sqlalchemy import SQLAlchemy
 from flask_wtf import CSRFProtect
@@ -18,6 +19,7 @@ mail = Mail()
 db = SQLAlchemy()
 csrf = CSRFProtect()
 compress = Compress()
+migrate = Migrate()
 
 # Set up Flask-Login
 login_manager = LoginManager()
@@ -37,6 +39,7 @@ def create_app(config):
     # not using sqlalchemy event system, hence disabling it
 
     Config[config_name].init_app(app)
+    # migrate.init_app(app, db)
 
     # Set up extensions
     mail.init_app(app)

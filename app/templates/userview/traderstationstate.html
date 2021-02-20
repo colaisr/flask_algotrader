@@ -16,20 +16,20 @@
             </div>
             <div class="page-title-actions">
                 <div>
-                    <div class="mb-2 mr-2 badge badge-secondary">Last update : $$$</div>
+                    <div class="mb-2 mr-2 badge badge-secondary">Last update : {{ report.reported_text }}</div>
                 </div>
 
                 <div>
-                    <div class="mb-2 mr-2 badge badge-pill badge-secondary">Last worker : $$$</div>
+                    <div class="mb-2 mr-2 badge badge-pill badge-secondary">Last worker : $$$tbd$$$</div>
                 </div>
             </div>
             <div class="page-title-actions">
                 <div>
-                    <div class="mb-2 mr-2 badge badge-info">EST : 20:00:00</div>
+                    <div class="mb-2 mr-2 badge badge-info">EST : $$$tbd$$$</div>
                 </div>
 
                 <div>
-                    <div class="mb-2 mr-2 badge badge-info">US market : Open</div>
+                    <div class="mb-2 mr-2 badge badge-info">US market : $$$tbd$$$</div>
                 </div>
             </div>
         </div>
@@ -40,10 +40,10 @@
                 <div class="widget-content-wrapper text-white">
                     <div class="widget-content-left">
                         <div class="widget-heading">SMA</div>
-                        <div class="widget-subheading">Available for trading with safety cushion</div>
+                        <div class="widget-subheading">Available for trading </div>
                     </div>
                     <div class="widget-content-right">
-                        <div class="widget-numbers text-white"><span>1896</span></div>
+                        <div class="widget-numbers text-white"><span>{{ report.remaining_sma_with_safety }}</span></div>
                     </div>
                 </div>
             </div>
@@ -56,7 +56,7 @@
                         <div class="widget-subheading">Daily PnL for all positions</div>
                     </div>
                     <div class="widget-content-right">
-                        <div class="widget-numbers text-white"><span>46%</span></div>
+                        <div class="widget-numbers text-white"><span>$ {{ report.dailyPnl }}</span></div>
                     </div>
                 </div>
             </div>
@@ -69,7 +69,7 @@
                         <div class="widget-subheading">NET liquidation value</div>
                     </div>
                     <div class="widget-content-right">
-                        <div class="widget-numbers text-white"><span>$ 568</span></div>
+                        <div class="widget-numbers text-white"><span>$ {{ report.net_liquidation }}</span></div>
                     </div>
                 </div>
             </div>

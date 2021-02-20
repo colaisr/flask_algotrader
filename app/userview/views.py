@@ -1,3 +1,5 @@
+import json
+
 from flask import (
     Blueprint,
     flash,
@@ -25,7 +27,7 @@ from app.account.forms import (
     ResetPasswordForm,
 )
 from app.email import send_email
-from app.models import User, Position
+from app.models import User, Position, Report
 
 userview = Blueprint('userview', __name__)
 
@@ -36,8 +38,13 @@ userview = Blueprint('userview', __name__)
 @userview.route('traderstationstate', methods=['GET', 'POST'])
 @login_required
 def traderstationstate():
-    """Display a user's account information."""
-    return render_template('userview/traderstationstate.html', user=current_user, form=None)
+
+    report = Report.query.filter_by(email=current_user.email).first()
+    report.reported_text=report.report_time.strftime("%Y-%m-%d %H:%M:%S")
+    report.dailyPnl=round(report.dailyPnl,2)
+
+    open_positions = json.loads(report.open_positions_json)
+    return render_template('userview/traderstationstate.html', user=current_user,report=report, form=None)
 
 @userview.route('closedpositions', methods=['GET', 'POST'])
 @login_required
