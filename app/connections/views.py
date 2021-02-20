@@ -70,9 +70,6 @@ def postexecution():
     side = request_data["side"]
     reported_time=json.loads(request_data['time'])
     time = datetime.fromisoformat(reported_time)
-    last_worker_run = request_data["last_worker_run"]
-    market_time = request_data["market_time"]
-    market_state = request_data["market_state"]
 
     users = User.query.all()
     if any(x.email == logged_user for x in users):

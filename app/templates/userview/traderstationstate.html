@@ -20,16 +20,16 @@
                 </div>
 
                 <div>
-                    <div class="mb-2 mr-2 badge badge-pill badge-secondary">Last worker : $$$tbd$$$</div>
+                    <div class="mb-2 mr-2 badge badge-pill badge-secondary">Last worker : {{ report.last_worker_execution_text }}</div>
                 </div>
             </div>
             <div class="page-title-actions">
                 <div>
-                    <div class="mb-2 mr-2 badge badge-info">EST : $$$tbd$$$</div>
+                    <div class="mb-2 mr-2 badge badge-info">EST : {{ report.market_time_text }}</div>
                 </div>
 
                 <div>
-                    <div class="mb-2 mr-2 badge badge-info">US market : $$$tbd$$$</div>
+                    <div class="mb-2 mr-2 badge badge-info">US market : {{ report.market_state }}</div>
                 </div>
             </div>
         </div>
@@ -43,7 +43,7 @@
                         <div class="widget-subheading">Available for trading </div>
                     </div>
                     <div class="widget-content-right">
-                        <div class="widget-numbers text-white"><span>{{ report.remaining_sma_with_safety }}</span></div>
+                        <div class="widget-numbers text-white"><span>$ {{ report.remaining_sma_with_safety }}</span></div>
                     </div>
                 </div>
             </div>

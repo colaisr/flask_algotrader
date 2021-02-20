@@ -41,6 +41,8 @@ def traderstationstate():
 
     report = Report.query.filter_by(email=current_user.email).first()
     report.reported_text=report.report_time.strftime("%Y-%m-%d %H:%M:%S")
+    report.last_worker_execution_text=report.last_worker_execution.strftime("%Y-%m-%d %H:%M:%S")
+    report.market_time_text = report.market_time.strftime("%Y-%m-%d %H:%M:%S")
     report.dailyPnl=round(report.dailyPnl,2)
 
     open_positions = json.loads(report.open_positions_json)
