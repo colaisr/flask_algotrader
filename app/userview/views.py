@@ -46,6 +46,7 @@ def traderstationstate():
     report.dailyPnl=round(report.dailyPnl,2)
 
     open_positions = json.loads(report.open_positions_json)
+    open_orders = json.loads(report.open_orders_json)
     for k,v in open_positions.items():
         profit=v['UnrealizedPnL']/v['Value']*100
         v['profit_in_percents']=profit
@@ -58,7 +59,7 @@ def traderstationstate():
             v['profit_class'] = 'text-danger'
             v['profit_progress_colour'] = 'bg-danger'
             v['profit_progress_percent'] = abs(profit / 10 * 100)
-    return render_template('userview/traderstationstate.html',open_positions=open_positions, user=current_user,report=report, form=None)
+    return render_template('userview/traderstationstate.html',open_positions=open_positions,open_orders=open_orders, user=current_user,report=report, form=None)
 
 @userview.route('closedpositions', methods=['GET', 'POST'])
 @login_required
