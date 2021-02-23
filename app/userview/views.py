@@ -27,7 +27,7 @@ from app.account.forms import (
     ResetPasswordForm,
 )
 from app.email import send_email
-from app.models import User, Position, Report
+from app.models import User, Position, Report, Candidate
 
 userview = Blueprint('userview', __name__)
 
@@ -83,4 +83,11 @@ def portfoliostatistics():
 @login_required
 def usercandidates():
     """Display a user's account information."""
-    return render_template('userview/usercandidates.html', user=current_user, form=None)
+    # c=Candidate()
+    # c.ticker='gama'
+    # c.description='boom boom'
+    # c.email='cola.isr@gmail.com'
+    # c.update_position()
+    candidates=Candidate.query.all()
+    return render_template('userview/usercandidates.html',candidates=candidates, user=current_user, form=None)
+

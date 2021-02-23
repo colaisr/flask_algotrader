@@ -8,3 +8,4 @@ from .miscellaneous import *  # noqa
 from .clients import *
 from .market_data import *
 from .positions import *
+from .candidates import *

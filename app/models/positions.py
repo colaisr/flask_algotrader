@@ -1,6 +1,7 @@
 
 
 from .. import db
+
 class Position(db.Model):
     __tablename__ = 'Positions'
     __bind_key__ = 'db_clients'
