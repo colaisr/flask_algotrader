@@ -48,7 +48,10 @@ def traderstationstate():
     open_positions = json.loads(report.open_positions_json)
     open_orders = json.loads(report.open_orders_json)
     for k,v in open_positions.items():
-        profit=v['UnrealizedPnL']/v['Value']*100
+        if v['Value'] !=0:
+            profit=v['UnrealizedPnL']/v['Value']*100
+        else:
+            profit=0
         v['profit_in_percents']=profit
 
         if profit>0:
