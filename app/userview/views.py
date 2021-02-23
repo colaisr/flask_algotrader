@@ -48,20 +48,23 @@ def traderstationstate():
     open_positions = json.loads(report.open_positions_json)
     open_orders = json.loads(report.open_orders_json)
     for k,v in open_positions.items():
-        if v['Value'] !=0:
-            profit=v['UnrealizedPnL']/v['Value']*100
+        if v['Value'] ==0:
+            del open_positions[k]   # to avoid sold positions
         else:
-            profit=0
-        v['profit_in_percents']=profit
+            if v['Value'] !=0:
+                profit=v['UnrealizedPnL']/v['Value']*100
+            else:
+                profit=0
+            v['profit_in_percents']=profit
 
-        if profit>0:
-            v['profit_class'] = 'text-success'
-            v['profit_progress_colour'] = 'bg-success'
-            v['profit_progress_percent'] = profit / 6 * 100
-        else:
-            v['profit_class'] = 'text-danger'
-            v['profit_progress_colour'] = 'bg-danger'
-            v['profit_progress_percent'] = abs(profit / 10 * 100)
+            if profit>0:
+                v['profit_class'] = 'text-success'
+                v['profit_progress_colour'] = 'bg-success'
+                v['profit_progress_percent'] = profit / 6 * 100
+            else:
+                v['profit_class'] = 'text-danger'
+                v['profit_progress_colour'] = 'bg-danger'
+                v['profit_progress_percent'] = abs(profit / 10 * 100)
     return render_template('userview/traderstationstate.html',open_positions=open_positions,open_orders=open_orders, user=current_user,report=report, form=None)
 
 @userview.route('closedpositions', methods=['GET', 'POST'])
