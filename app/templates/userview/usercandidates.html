@@ -18,7 +18,8 @@
         </div>
     </div>
     <div class="column">
-        <button type="button" class="btn mr-2 mb-2 btn-primary" data-toggle="modal" data-target="#add_candidate_modal">Add
+        <button type="button" class="btn mr-2 mb-2 btn-primary" data-toggle="modal" data-target="#add_candidate_modal">
+            Add
             Candidate
         </button>
 
@@ -80,8 +81,19 @@
                     $('td.user.role').not(':contains(' + value + ')').closest('tr').addClass('hidden').hide();
                 }
             });
+            $( "#btn_add_candidate" ).click(function() {
+            $.ajax({
+                      type : 'POST',
+                      url : "{{url_for('userview.addcandidate')}}",
+                      contentType: "application/json; charset=utf-8",
+                      dataType:'json',
+                      data : JSON.stringify({"ticker":$('#txt_ticker').val(),"description":$('#txt_description').val()})
+                    });
+                 });
         });
 
+
 </script>
+
 
 {% endblock %}

@@ -41,7 +41,7 @@ def logreport():
         report = Report()
         report.email = logged_user
         now = datetime.now()
-        report.report_time = now
+        report.report_time =datetime.fromisoformat(request_data["report_time"])
         report.remaining_trades = request_data["remaining_trades"]
         report.open_positions_json = request_data["open_positions"]
         report.open_orders_json = request_data["open_orders"]

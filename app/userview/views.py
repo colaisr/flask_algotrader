@@ -16,7 +16,7 @@ from flask_login import (
 )
 from flask_rq import get_queue
 
-from app import db
+from app import db, csrf
 from app.account.forms import (
     ChangeEmailForm,
     ChangePasswordForm,
@@ -91,3 +91,15 @@ def usercandidates():
     candidates=Candidate.query.all()
     return render_template('userview/usercandidates.html',candidates=candidates, user=current_user, form=None)
 
+@userview.route('addcandidate/', methods=['POST'])
+@csrf.exempt
+def addcandidate():
+    ticker=request.json['ticker']
+    description = request.json['description']
+    c=Candidate()
+    c.ticker=ticker
+    c.description=description
+    c.email=current_user.email
+    c.update_position()
+    candidates=Candidate.query.all()
+    return render_template('userview/usercandidates.html',candidates=candidates, user=current_user, form=None)
