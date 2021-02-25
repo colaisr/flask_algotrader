@@ -8,9 +8,13 @@ class Candidate(db.Model):
     ticker = db.Column('ticker', db.String)
     description = db.Column('description', db.String)
 
-    def update_position(self):
+    def update_candidate(self):
         candidate = Candidate.query.filter((Candidate.email==self.email) & (Candidate.ticker==self.ticker)).first()
 
         if candidate is None:
             db.session.add(self)
+        db.session.commit()
+
+    def delete_candidate(self):
+        db.session.delete(self)
         db.session.commit()

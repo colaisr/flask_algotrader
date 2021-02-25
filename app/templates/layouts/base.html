@@ -583,10 +583,10 @@
 <div class="modal fade" id="add_candidate_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
      aria-hidden="true">
     <div class="modal-dialog" role="document">
-        <form action="{{url_for('userview.addcandidate')}}" method="post">
+        <form action="{{url_for('userview.updatecandidate')}}" method="post">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Candidate stock</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -595,18 +595,17 @@
                <div >
                                                 <div class="form-group">
                                                     <label class="form-label" for="title">Ticker</label>
-                                                    <input id="txt_ticker" name="txt_ticker" type="text" class="form-control" placeholder="Enter a ticker ...">
+                                                    <input required id="txt_ticker" name="txt_ticker" type="text" class="form-control" placeholder="Enter a ticker ...">
                                                 </div>
                                                 <div class="form-group">
                                                     <label class="form-label" for="message">Description</label>
-                                                    <textarea class="form-control" name="txt_description" id="txt_description" rows="3" placeholder="Enter a description ..."></textarea>
+                                                    <textarea required class="form-control" name="txt_description" id="txt_description" rows="3" placeholder="Enter a description ..."></textarea>
                                                 </div>
                                             </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <input type="submit" value="Submit">
-<!--                <input type="button" id="btn_add_candidate" class="btn btn-primary">Add Candidate</input>-->
+                <input type="submit" class="btn btn-primary" value="Submit">
             </div>
         </div>
             </form>

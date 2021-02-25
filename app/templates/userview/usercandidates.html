@@ -41,6 +41,7 @@
                     <th>ID</th>
                     <th>User</th>
                     <th class="sorted descending">Ticker</th>
+                    <th></th>
                     <th>Description</th>
                 </tr>
                 </thead>
@@ -49,7 +50,13 @@
                 <tr onclick="alert('implement going to candidate')">
                     <td>{{ m.id }}</td>
                     <td>{{ m.email }}</td>
-                    <td>{{ m.ticker }}</td>
+                    <td>{{ m.ticker }} </td>
+                    <td><form action="{{url_for('userview.removecandidate')}}" method="post">
+                        <input type="hidden" name="ticker_to_remove" value="{{ m.ticker }}">
+                        <input type="submit" value="rem">
+                    </form>
+                        <i class="metismenu-icon pe-7s-trash" ></i>
+                    </td>
                     <td>{{ m.description }}</td>
 
                 </tr>
@@ -82,20 +89,6 @@
                     $('td.user.role').not(':contains(' + value + ')').closest('tr').addClass('hidden').hide();
                 }
             });
-
-<!--            $( "#btn_add_candidate" ).click(function()-->
-<!--            {-->
-<!--                $.ajax({-->
-<!--                      type : 'POST',-->
-<!--                      url : "{{url_for('userview.addcandidate')}}",-->
-<!--                      contentType: "application/json; charset=utf-8",-->
-<!--                      dataType:'json',-->
-<!--                      data : JSON.stringify({"ticker":$('#txt_ticker').val(),"description":$('#txt_description').val()-->
-<!--                      })-->
-
-<!--               });-->
-<!--               window.location.href = "{{url_for('userview.usercandidates')}}";-->
-<!--            });-->
  })
 </script>
 {% endblock %}

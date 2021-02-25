@@ -40,30 +40,35 @@ userview = Blueprint('userview', __name__)
 def traderstationstate():
 
     report = Report.query.filter_by(email=current_user.email).first()
-    report.reported_text=report.report_time.strftime("%Y-%m-%d %H:%M:%S")
-    report.last_worker_execution_text=report.last_worker_execution.strftime("%Y-%m-%d %H:%M:%S")
-    report.market_time_text = report.market_time.strftime("%Y-%m-%d %H:%M:%S")
-    report.dailyPnl=round(report.dailyPnl,2)
-    report.remaining_sma_with_safety = round(report.remaining_sma_with_safety, 2)
+    if report is None:
+        report=Report()
+        open_positions={}
+        open_orders={}
+    else:
+        report.reported_text=report.report_time.strftime("%Y-%m-%d %H:%M:%S")
+        report.last_worker_execution_text=report.last_worker_execution.strftime("%Y-%m-%d %H:%M:%S")
+        report.market_time_text = report.market_time.strftime("%Y-%m-%d %H:%M:%S")
+        report.dailyPnl=round(report.dailyPnl,2)
+        report.remaining_sma_with_safety = round(report.remaining_sma_with_safety, 2)
 
-    open_positions = json.loads(report.open_positions_json)
-    open_orders = json.loads(report.open_orders_json)
-    for k,v in open_positions.items():
+        open_positions = json.loads(report.open_positions_json)
+        open_orders = json.loads(report.open_orders_json)
+        for k,v in open_positions.items():
 
-        if v['Value'] !=0:
-            profit=v['UnrealizedPnL']/v['Value']*100
-        else:
-            profit=0
-        v['profit_in_percents']=profit
+            if v['Value'] !=0:
+                profit=v['UnrealizedPnL']/v['Value']*100
+            else:
+                profit=0
+            v['profit_in_percents']=profit
 
-        if profit>0:
-            v['profit_class'] = 'text-success'
-            v['profit_progress_colour'] = 'bg-success'
-            v['profit_progress_percent'] = profit / 6 * 100
-        else:
-            v['profit_class'] = 'text-danger'
-            v['profit_progress_colour'] = 'bg-danger'
-            v['profit_progress_percent'] = abs(profit / 10 * 100)
+            if profit>0:
+                v['profit_class'] = 'text-success'
+                v['profit_progress_colour'] = 'bg-success'
+                v['profit_progress_percent'] = profit / 6 * 100
+            else:
+                v['profit_class'] = 'text-danger'
+                v['profit_progress_colour'] = 'bg-danger'
+                v['profit_progress_percent'] = abs(profit / 10 * 100)
     return render_template('userview/traderstationstate.html',open_positions=open_positions,open_orders=open_orders, user=current_user,report=report, form=None)
 
 @userview.route('closedpositions', methods=['GET', 'POST'])
@@ -88,30 +93,24 @@ def usercandidates():
     # c.description='boom boom'
     # c.email='cola.isr@gmail.com'
     # c.update_position()
-    candidates=Candidate.query.all()
+    candidates=Candidate.query.filter_by(email=current_user.email).all()
     return render_template('userview/usercandidates.html',candidates=candidates, user=current_user, form=None)
 
-@userview.route('addcandidate/', methods=['POST'])
+@userview.route('updatecandidate/', methods=['POST'])
 @csrf.exempt
-def addcandidate():
+def updatecandidate():
 
     c=Candidate()
     c.ticker=request.form['txt_ticker']
     c.description=request.form['txt_description']
     c.email=current_user.email
-    c.update_position()
-    candidates=Candidate.query.all()
-    return render_template('userview/usercandidates.html',candidates=candidates, user=current_user, form=None)
+    c.update_candidate()
+    return redirect(url_for('userview.usercandidates'))
 
-# @userview.route('addcandidate/', methods=['POST'])
-# @csrf.exempt
-# def addcandidate():
-#     ticker=request.json['ticker']
-#     description = request.json['description']
-#     c=Candidate()
-#     c.ticker=ticker
-#     c.description=description
-#     c.email=current_user.email
-#     c.update_position()
-#     candidates=Candidate.query.all()
-#     return render_template('userview/usercandidates.html',candidates=candidates, user=current_user, form=None)
+@userview.route('removecandidate/', methods=['POST'])
+@csrf.exempt
+def removecandidate():
+    ticker=request.form['ticker_to_remove']
+    candidate = Candidate.query.filter_by(email=current_user.email,ticker=ticker).first()
+    candidate.delete_candidate()
+    return redirect(url_for('userview.usercandidates'))
