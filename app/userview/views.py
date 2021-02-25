@@ -75,8 +75,8 @@ def traderstationstate():
 @login_required
 def closedpositions():
     """Display a user's account information."""
-    closed_positions = Position.query.all()
-    return render_template('userview/closedpositions.html', user=current_user,positions=closed_positions, form=None)
+    closed_positions = Position.query.filter_by(email=current_user.email,last_exec_side='SLD').all()
+    return render_template('userview/closedpositions.html',positions=closed_positions, form=None)
 
 @userview.route('portfoliostatistics', methods=['GET', 'POST'])
 @login_required
