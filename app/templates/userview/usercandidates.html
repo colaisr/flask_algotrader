@@ -47,15 +47,16 @@
                 </thead>
                 <tbody>
                 {% for m in candidates | sort(attribute='ticker') %}
-                <tr onclick="alert('implement going to candidate')">
+                <tr >
                     <td>{{ m.id }}</td>
                     <td>{{ m.email }}</td>
-                    <td>{{ m.ticker }} </td>
-                    <td><form action="{{url_for('userview.removecandidate')}}" method="post">
-                        <input type="hidden" name="ticker_to_remove" value="{{ m.ticker }}">
-                        <input type="submit" value="rem">
-                    </form>
-                        <i class="metismenu-icon pe-7s-trash" ></i>
+                    <td >{{ m.ticker }}</td>
+                    <td>
+                        <form action="{{url_for('userview.removecandidate')}}" method="post">
+                            <input type="hidden" name="ticker_to_remove" value="{{ m.ticker }}">
+                            <button type="submit" ><i class="metismenu-icon pe-7s-trash"></i></button>
+                        </form>
+
                     </td>
                     <td>{{ m.description }}</td>
 
@@ -68,7 +69,7 @@
     </div>
 </div>
 
-<script type="text/javascript" >
+<script type="text/javascript">
      $(document).ready(function () {
             $('#search-users').keyup(function () {
                 var searchText = $(this).val();
@@ -83,12 +84,8 @@
                 }
             });
 
-            $('#select-role').dropdown({
-                onChange: function (value, text, $selectedItem) {
-                    $('td.user.role:contains(' + value + ')').closest('tr').removeClass('hidden').show();
-                    $('td.user.role').not(':contains(' + value + ')').closest('tr').addClass('hidden').hide();
-                }
-            });
  })
+
+
 </script>
 {% endblock %}
