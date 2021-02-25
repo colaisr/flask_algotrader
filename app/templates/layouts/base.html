@@ -583,6 +583,7 @@
 <div class="modal fade" id="add_candidate_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
      aria-hidden="true">
     <div class="modal-dialog" role="document">
+        <form action="{{url_for('userview.addcandidate')}}" method="post">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
@@ -594,19 +595,21 @@
                <div >
                                                 <div class="form-group">
                                                     <label class="form-label" for="title">Ticker</label>
-                                                    <input id="txt_ticker" type="text" class="form-control" placeholder="Enter a ticker ...">
+                                                    <input id="txt_ticker" name="txt_ticker" type="text" class="form-control" placeholder="Enter a ticker ...">
                                                 </div>
                                                 <div class="form-group">
                                                     <label class="form-label" for="message">Description</label>
-                                                    <textarea class="form-control" id="txt_description" rows="3" placeholder="Enter a description ..."></textarea>
+                                                    <textarea class="form-control" name="txt_description" id="txt_description" rows="3" placeholder="Enter a description ..."></textarea>
                                                 </div>
                                             </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" id="btn_add_candidate" class="btn btn-primary">Add Candidate</button>
+                <input type="submit" value="Submit">
+<!--                <input type="button" id="btn_add_candidate" class="btn btn-primary">Add Candidate</input>-->
             </div>
         </div>
+            </form>
     </div>
 </div>
 </body>

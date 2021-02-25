@@ -94,12 +94,24 @@ def usercandidates():
 @userview.route('addcandidate/', methods=['POST'])
 @csrf.exempt
 def addcandidate():
-    ticker=request.json['ticker']
-    description = request.json['description']
+
     c=Candidate()
-    c.ticker=ticker
-    c.description=description
+    c.ticker=request.form['txt_ticker']
+    c.description=request.form['txt_description']
     c.email=current_user.email
     c.update_position()
     candidates=Candidate.query.all()
     return render_template('userview/usercandidates.html',candidates=candidates, user=current_user, form=None)
+
+# @userview.route('addcandidate/', methods=['POST'])
+# @csrf.exempt
+# def addcandidate():
+#     ticker=request.json['ticker']
+#     description = request.json['description']
+#     c=Candidate()
+#     c.ticker=ticker
+#     c.description=description
+#     c.email=current_user.email
+#     c.update_position()
+#     candidates=Candidate.query.all()
+#     return render_template('userview/usercandidates.html',candidates=candidates, user=current_user, form=None)
