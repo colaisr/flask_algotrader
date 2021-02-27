@@ -90,6 +90,9 @@ def create_app(config):
     from .market_data import marketdata as marketdata_blueprint
     app.register_blueprint(marketdata_blueprint, url_prefix='/marketdata')
 
+    from .algotrader_settings import algotradersettings as algotradersettings_blueprint
+    app.register_blueprint(algotradersettings_blueprint, url_prefix='/algotradersettings')
+
     return app
 
 

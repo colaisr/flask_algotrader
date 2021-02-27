@@ -1,0 +1,69 @@
+{% extends 'layouts/base.html' %}
+{% import 'macros/form_macros.html' as f %}
+
+{% macro user_info(user) %}
+    <table class="ui compact definition table">
+        <tr><td>Full name</td><td>{{ '%s %s' % (user.first_name, user.last_name) }}</td></tr>
+        <tr><td>Email address</td><td>{{ user.email }}</td></tr>
+        <tr><td>Account type</td><td>{{ user.role.name }}</td></tr>
+    </table>
+{% endmacro %}
+
+{% block content %}
+<div class="app-main__inner">
+    <div class="app-page-title">
+        <div class="page-title-wrapper">
+            <div class="page-title-heading">
+                <div class="page-title-icon">
+                    <i class="pe-7s-albums icon-gradient bg-mean-fruit">
+                    </i>
+                </div>
+                <div>User Algotrader Settings
+                    <div class="page-title-subheading">Settings for Algotrader client.
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="column">
+    <div class="ui stackable centered grid container">
+        <div class="twelve wide column">
+            <h2 class="ui header">
+                Account Settings
+                <div class="sub header">Manage your account settings and change your login information.</div>
+            </h2>
+        </div>
+        <div class="stretched divided very relaxed row">
+            <div class="eight wide column">
+                {% if form %}
+                    {{ f.render_form(form, extra_classes='fluid') }}
+                {% else %}
+                    {{ user_info(user) }}
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    </div>
+</div>
+
+<script type="text/javascript">
+     $(document).ready(function () {
+            $('#search-users').keyup(function () {
+                var searchText = $(this).val();
+                if (searchText.length > 0) {
+                    $('tbody td:icontains(' + searchText + ')').addClass('positive');
+                    $('td.positive').not(':icontains(' + searchText + ')').removeClass('positive');
+                    $('tbody td').not(':icontains(' + searchText + ')').closest('tr').addClass('hidden').hide();
+                    $('tr.hidden:icontains(' + searchText + ')').removeClass('hidden').show();
+                } else {
+                    $('td.positive').removeClass('positive');
+                    $('tr.hidden').removeClass('hidden').show();
+                }
+            });
+ })
+
+
+</script>
+{% endblock %}
