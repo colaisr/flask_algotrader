@@ -2,11 +2,20 @@
 {% import 'macros/form_macros.html' as f %}
 
 {% macro user_info(user) %}
-    <table class="ui compact definition table">
-        <tr><td>Full name</td><td>{{ '%s %s' % (user.first_name, user.last_name) }}</td></tr>
-        <tr><td>Email address</td><td>{{ user.email }}</td></tr>
-        <tr><td>Account type</td><td>{{ user.role.name }}</td></tr>
-    </table>
+<table class="ui compact definition table">
+    <tr>
+        <td>Full name</td>
+        <td>{{ '%s %s' % (user.first_name, user.last_name) }}</td>
+    </tr>
+    <tr>
+        <td>Email address</td>
+        <td>{{ user.email }}</td>
+    </tr>
+    <tr>
+        <td>Account type</td>
+        <td>{{ user.role.name }}</td>
+    </tr>
+</table>
 {% endmacro %}
 
 {% block content %}
@@ -27,23 +36,24 @@
         </div>
     </div>
     <div class="column">
-    <div class="ui stackable centered grid container">
-        <div class="twelve wide column">
-            <h2 class="ui header">
-                Account Settings
-                <div class="sub header">Manage your account settings and change your login information.</div>
-            </h2>
-        </div>
-        <div class="stretched divided very relaxed row">
-            <div class="eight wide column">
-                {% if form %}
+        <div class="ui stackable centered grid container">
+            <div class="twelve wide column">
+                <h2 class="ui header">
+                    Account Settings
+                    <div class="sub header">Manage your account settings and change your login information.</div>
+                </h2>
+            </div>
+            <div class="stretched divided very relaxed row">
+                <div class="eight wide column">
+                    <button id="savebtn" type="button" class="btn mr-2 mb-2 btn-primary">Save</button>
+                    {% if form %}
                     {{ f.render_form(form, extra_classes='fluid') }}
-                {% else %}
+                    {% else %}
                     {{ user_info(user) }}
-                {% endif %}
+                    {% endif %}
+                </div>
             </div>
         </div>
-    </div>
 
     </div>
 </div>
@@ -62,7 +72,15 @@
                     $('tr.hidden').removeClass('hidden').show();
                 }
             });
+            $('#savebtn').click(function () {
+            f=$('form')
+            f[0].submit()
+
+
+            });
+
  })
+
 
 
 </script>

@@ -9,3 +9,4 @@ from .clients import *
 from .market_data import *
 from .positions import *
 from .candidates import *
+from .user_settings import *
