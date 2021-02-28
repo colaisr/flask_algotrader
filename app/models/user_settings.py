@@ -21,6 +21,7 @@ class UserSetting(db.Model):
     algo_trailing_percent = db.Column('algo_trailing_percent', db.Integer)
     algo_bulk_amount_usd = db.Column('algo_bulk_amount_usd', db.Integer)
 
+
     connection_account_name = db.Column('connection_account_name', db.String)
     connection_port = db.Column('connection_port', db.Integer)
     connection_break_from_hour = db.Column('connection_break_from_hour', db.Integer)
@@ -38,6 +39,7 @@ class UserSetting(db.Model):
 
     server_url = db.Column('server_url', db.String)
     server_report_interval_sec = db.Column('server_report_interval_sec', db.Integer)
+    server_use_system_candidates = db.Column('server_use_system_candidates', db.Boolean)
 
     def update_user_settings(self):
         settings = UserSetting.query.filter((UserSetting.email==self.email)).first()
@@ -65,6 +67,7 @@ class UserSetting(db.Model):
         d['connection_break_from_hour']=self.connection_break_from_hour
         d['server_url']=self.server_url
         d['server_report_interval_sec']=self.server_report_interval_sec
+        d['server_use_system_candidates'] = self.server_use_system_candidates
         d['station_linux_path_to_webdriver']=self.station_linux_path_to_webdriver
         d['station_win_path_to_webdriver']=self.station_win_path_to_webdriver
         d['station_mac_path_to_webdriver']=self.station_mac_path_to_webdriver

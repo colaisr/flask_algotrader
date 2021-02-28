@@ -40,7 +40,7 @@ class Settings_form(FlaskForm):
 def usersettings():
     user_settings = UserSetting.query.filter_by(email=current_user.email).first()
 
-    if user_settings is None:
+    if user_settings is None:      #default settings for user
         user_settings=UserSetting()
         user_settings.email=current_user.email
 
@@ -49,7 +49,7 @@ def usersettings():
         user_settings.algo_bulk_amount_usd=1000
         user_settings.algo_trailing_percent=1
 
-        user_settings.connection_account_name = 'U4263540'
+        user_settings.connection_account_name = 'Default,needs to be changed'
         user_settings.connection_port=7498
         user_settings.connection_break_from_hour=8
         user_settings.connection_break_from_min=0
@@ -66,6 +66,7 @@ def usersettings():
 
         user_settings.server_url='http://colak.pythonanywhere.com'
         user_settings.server_report_interval_sec=30
+        user_settings.server_use_system_candidates=True
 
     SettingsForm = model_form(UserSetting,base_class=FlaskForm)
     form=SettingsForm(obj=user_settings)

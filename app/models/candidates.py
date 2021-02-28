@@ -18,3 +18,9 @@ class Candidate(db.Model):
     def delete_candidate(self):
         db.session.delete(self)
         db.session.commit()
+
+    def to_dictionary(self):
+        d={}
+        d['ticker']=self.ticker
+        d['description'] = self.description
+        return d

@@ -114,3 +114,32 @@ def removecandidate():
     candidate = Candidate.query.filter_by(email=current_user.email,ticker=ticker).first()
     candidate.delete_candidate()
     return redirect(url_for('userview.usercandidates'))
+
+@csrf.exempt
+@userview.route('/retrieveusercandidates', methods=['GET'])
+def retrievecandidates():
+    request_data = request.get_json()
+    use_system_candidates=request_data["use_system_candidates"]
+    logged_user = request_data["user"]
+    user_candidates=Candidate.query.filter_by(email=logged_user).all()
+    if use_system_candidates:
+        admin_candidates=Candidate.query.filter_by(email='admin@gmail.com').all()
+        for uc in user_candidates:
+            for ac in admin_candidates:
+                if ac.ticker == uc.ticker:
+                    print("i found it!")
+                    break
+            else:
+                admin_candidates.append(uc)
+        requested_candidates=admin_candidates
+    else:
+        requested_candidates=user_candidates
+    cand_dictionaries=[]
+    for c in requested_candidates:
+        cand_dictionaries.append(c.to_dictionary())
+    response=json.dumps(cand_dictionaries)
+
+
+
+
+    return response
