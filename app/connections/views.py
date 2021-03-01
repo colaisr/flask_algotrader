@@ -10,7 +10,7 @@ from flask import (
 )
 from datetime import datetime
 from app import db, csrf
-from app.models import User, Connection, Report, Position
+from app.models import User, Connection, Report, Position, RestartRequest
 
 connections = Blueprint('connections', __name__)
 
@@ -54,9 +54,25 @@ def logreport():
         report.market_state = request_data["market_state"]
 
         report.update_report()
-        return "Report snapshot for " + logged_user + " stored at server."
+        response="Report snapshot for " + logged_user + " stored at server."
+        #check for restart requests
+        requ = RestartRequest.query.filter_by(email=logged_user).first()
+        if requ is not None:
+            response+='$restart$'
+            requ.remove_request()
+        return response
     else:
         return "The user configured is not found on Server the report is not logged"
+
+
+@csrf.exempt
+@connections.route('logrestartrequest/', methods=['POST'])
+def log_restart_request():
+    logged_user=request.form['usersemail']
+    r=RestartRequest()
+    r.email=logged_user
+    r.log_request()
+    return redirect(url_for('userview.traderstationstate'))
 
 
 @csrf.exempt

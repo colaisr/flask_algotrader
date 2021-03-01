@@ -10,3 +10,4 @@ from .market_data import *
 from .positions import *
 from .candidates import *
 from .user_settings import *
+from .restart_request import *
