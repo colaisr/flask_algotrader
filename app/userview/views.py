@@ -31,10 +31,6 @@ from app.models import User, Position, Report, Candidate
 
 userview = Blueprint('userview', __name__)
 
-
-
-
-
 @userview.route('traderstationstate', methods=['GET', 'POST'])
 @login_required
 def traderstationstate():

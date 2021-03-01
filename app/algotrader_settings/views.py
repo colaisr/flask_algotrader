@@ -44,7 +44,7 @@ def usersettings():
         user_settings=UserSetting()
         user_settings.email=current_user.email
 
-        user_settings.algo_max_loss=10
+        user_settings.algo_max_loss=-10
         user_settings.algo_take_profit=6
         user_settings.algo_bulk_amount_usd=1000
         user_settings.algo_trailing_percent=1
