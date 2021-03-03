@@ -31,12 +31,12 @@ def updatemarketdata():
     received_data=request_data["tickers"]
     logged_user = request_data["user"]
     parsed_data = json.loads(received_data)
-    for k,v in parsed_data.items():
-        s=v['Stock']
-        d=v['averagePriceDropP']
-        sp=v['averagePriceSpreadP']
-        r=v['tipranksRank']
-        u=datetime.fromisoformat(v['LastUpdate'])
+    for marker in parsed_data:
+        s=marker['ticker']
+        d=marker['yahoo_avdropP']
+        sp=marker['yahoo_avspreadP']
+        r=marker['tipranks']
+        u=datetime.fromisoformat(marker['updated'])
         t=TickerData(ticker=s,yahoo_avdropP=d,yahoo_avspreadP=sp,tipranks=r,updated=u)
         if int(t.tipranks)!=0:
             t.update_ticker_data()
