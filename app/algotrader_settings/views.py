@@ -48,6 +48,7 @@ def usersettings():
         user_settings.algo_take_profit=6
         user_settings.algo_bulk_amount_usd=1000
         user_settings.algo_trailing_percent=1
+        user_settings.algo_allow_buy=True
 
         user_settings.connection_account_name = 'Default,needs to be changed'
         user_settings.connection_port=7498
