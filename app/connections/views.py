@@ -48,6 +48,7 @@ def logreport():
         report.all_positions_value = request_data["all_positions_value"]
         report.net_liquidation = request_data["net_liquidation"]
         report.remaining_sma_with_safety = request_data["remaining_sma_with_safety"]
+        report.excess_liquidity=request_data["excess_liquidity"]
         report.dailyPnl = request_data["dailyPnl"]
         report.last_worker_execution =datetime.fromisoformat(request_data["last_worker_run"])
         report.market_time =datetime.fromisoformat(request_data["market_time"])

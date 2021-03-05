@@ -46,6 +46,7 @@
     <div class="row">
         <div class="col-md-6 col-xl-4">
             <div class="card mb-3 widget-content bg-midnight-bloom">
+                {%if margin_used%}
                 <div class="widget-content-wrapper text-white">
                     <div class="widget-content-left">
                         <div class="widget-heading">SMA</div>
@@ -56,6 +57,19 @@
                         </div>
                     </div>
                 </div>
+                {%else%}
+                <div class="widget-content-wrapper text-white">
+                    <div class="widget-content-left">
+                        <div class="widget-heading">Excess Liquidity</div>
+                        <div class="widget-subheading">Available for trading</div>
+                    </div>
+                    <div class="widget-content-right">
+                        <div class="widget-numbers text-white"><span>$ {{ report.excess_liquidity }}</span>
+                        </div>
+                    </div>
+                </div>
+
+                {%endif%}
             </div>
         </div>
         <div class="col-md-6 col-xl-4">

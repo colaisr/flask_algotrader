@@ -1,58 +1,70 @@
 {% extends 'layouts/base.html' %}
 
 {% block content %}
-    <div class="ui stackable grid container">
-        <div class="sixteen wide tablet twelve wide computer centered column">
-            <a class="ui basic compact button" href="{{ url_for('admin.index') }}">
-                <i class="caret left icon"></i>
-                Back to dashboard
-            </a>
-            <h2 class="ui header">
-                MARKET DATA
-                <div class="sub header">
-                    All the data reported by client applications.
-                </div>
-            </h2>
-
-            <div class="ui menu">
-                <div class="ui left search item">
-                    <div class="ui transparent icon input">
-                        <input id="search-users" type="text" placeholder="Search users…">
-                        <i class="search icon"></i>
-                    </div>
-                </div>
+<div class="ui stackable grid container">
+    <div class="sixteen wide tablet sixteen wide computer centered column">
+        <a class="ui basic compact button" href="{{ url_for('admin.index') }}">
+            <i class="caret left icon"></i>
+            Back to dashboard
+        </a>
+        <form action="{{url_for('marketdata.updatefmpall')}}" method="post">
+            <button type="submit">Update FMP All</button>
+        </form>
+        <h2 class="ui header">
+            MARKET DATA
+            <div class="sub header">
+                All the data reported by client applications.
             </div>
+        </h2>
 
-            {# Use overflow-x: scroll so that mobile views don't freak out
-             # when the table is too wide #}
-            <div style="overflow-x: scroll;">
-                <table class="ui searchable sortable unstackable selectable celled table">
-                    <thead>
-                        <tr>
-                            <th>Ticker</th>
-                            <th>Average drop %</th>
-                            <th>Average spread %</th>
-                            <th>TipRank</th>
-                            <th class="sorted descending">Updated</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    {% for m in marketdata | sort(attribute='updated') %}
-                        <tr onclick="alert('implement going to candidate')">
-                            <td>{{ m.ticker }}</td>
-                            <td>{{ m.yahoo_avdropP }}</td>
-                            <td>{{ m.yahoo_avspreadP }}</td>
-                            <td>{{ m.tipranks }}</td>
-                            <td>{{ m.updated }}</td>
-                        </tr>
-                    {% endfor %}
-                    </tbody>
-                </table>
+        <div class="ui menu">
+            <div class="ui left search item">
+                <div class="ui transparent icon input">
+                    <input id="search-users" type="text" placeholder="Search users…">
+                    <i class="search icon"></i>
+                </div>
             </div>
         </div>
-    </div>
 
-    <script type="text/javascript">
+        {# Use overflow-x: scroll so that mobile views don't freak out
+        # when the table is too wide #}
+        <div style="overflow-x: scroll;">
+            <table class="ui searchable sortable unstackable selectable celled table">
+                <thead>
+                <tr>
+                    <th>Ticker</th>
+                    <th>Average drop %</th>
+                    <th>Average spread %</th>
+                    <th>TipRank</th>
+                    <th class="sorted descending">TipRank Updated</th>
+                    <th>PE</th>
+                    <th>FMP rating</th>
+                    <th>FMP score</th>
+                    <th>FMP Updated</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for m in marketdata | sort(attribute='tiprank_updated') %}
+                <tr onclick="alert('implement going to candidate')">
+                    <td>{{ m.ticker }}</td>
+                    <td>{{ m.yahoo_avdropP }}</td>
+                    <td>{{ m.yahoo_avspreadP }}</td>
+                    <td>{{ m.tipranks }}</td>
+                    <td>{{ m.tiprank_updated }}</td>
+                    <td>{{ m.fmp_pe }}</td>
+                    <td>{{ m.fmp_rating }}</td>
+                    <td>{{ m.fmp_score }}</td>
+                    <td>{{ m.fmp_updated }}</td>
+
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
         $(document).ready(function () {
             $('#search-users').keyup(function () {
                 var searchText = $(this).val();
@@ -74,5 +86,6 @@
                 }
             });
         });
-    </script>
+
+</script>
 {% endblock %}

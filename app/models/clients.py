@@ -21,6 +21,7 @@ class Report(db.Model):
     report_time = db.Column('report_time', db.DateTime)
     net_liquidation = db.Column('net_liquidation', db.Float)
     remaining_sma_with_safety = db.Column('remaining_sma_with_safety', db.Float)
+    excess_liquidity = db.Column('excess_liquidity', db.Float)
     remaining_trades = db.Column('remaining_trades', db.Integer)
     all_positions_value = db.Column('all_positions_value', db.Float)
     open_positions_json = db.Column('open_positions_json', db.String)
@@ -38,6 +39,7 @@ class Report(db.Model):
             report.report_time=self.report_time
             report.net_liquidation = self.net_liquidation
             report.remaining_sma_with_safety = self.remaining_sma_with_safety
+            report.excess_liquidity = self.excess_liquidity
             report.remaining_trades = self.remaining_trades
             report.all_positions_value = self.all_positions_value
             report.open_positions_json = self.open_positions_json

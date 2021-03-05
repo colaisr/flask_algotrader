@@ -21,6 +21,7 @@ class UserSetting(db.Model):
     algo_trailing_percent = db.Column('algo_trailing_percent', db.Integer)
     algo_bulk_amount_usd = db.Column('algo_bulk_amount_usd', db.Integer)
     algo_allow_buy = db.Column('algo_allow_buy', db.Boolean)
+    algo_allow_margin = db.Column('algo_allow_margin', db.Boolean)
 
 
     connection_account_name = db.Column('connection_account_name', db.String)
@@ -77,4 +78,5 @@ class UserSetting(db.Model):
         d['station_debug_ui']=self.station_debug_ui
         d['station_autostart_worker']=self.station_autostart_worker
         d['algo_allow_buy'] = self.algo_allow_buy
+        d['algo_allow_margin'] = self.algo_allow_margin
         return d

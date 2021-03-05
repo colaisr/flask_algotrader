@@ -27,7 +27,7 @@ from app.account.forms import (
     ResetPasswordForm,
 )
 from app.email import send_email
-from app.models import User, Position, Report, Candidate
+from app.models import User, Position, Report, Candidate, UserSetting
 
 userview = Blueprint('userview', __name__)
 
@@ -36,6 +36,8 @@ userview = Blueprint('userview', __name__)
 def traderstationstate():
 
     report = Report.query.filter_by(email=current_user.email).first()
+    settings=UserSetting.query.filter_by(email=current_user.email).first()
+    use_margin=settings.algo_allow_margin
     if report is None:
         report=Report()
         open_positions={}
@@ -65,7 +67,7 @@ def traderstationstate():
                 v['profit_class'] = 'text-danger'
                 v['profit_progress_colour'] = 'bg-danger'
                 v['profit_progress_percent'] = abs(profit / 10 * 100)
-    return render_template('userview/traderstationstate.html',open_positions=open_positions,open_orders=open_orders, user=current_user,report=report, form=None)
+    return render_template('userview/traderstationstate.html',open_positions=open_positions,open_orders=open_orders, user=current_user,report=report,margin_used=use_margin, form=None)
 
 @userview.route('closedpositions', methods=['GET', 'POST'])
 @login_required
