@@ -2,8 +2,6 @@ import json
 import ssl
 from urllib.request import urlopen
 
-import fmpsdk
-import jsonpickle
 from flask import (
     Blueprint,
     flash,
