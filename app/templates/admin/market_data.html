@@ -49,7 +49,11 @@
                     <td>{{ m.ticker }}</td>
                     <td>{{ m.yahoo_avdropP }}</td>
                     <td>{{ m.yahoo_avspreadP }}</td>
-                    <td>{{ m.tipranks }}</td>
+                    <td
+                    {% if m.tipranks>8 %}
+                        style="background-color: aquamarine;"
+                    {% endif %}
+                    >{{ m.tipranks }}</td>
                     <td>{{ m.tiprank_updated }}</td>
                     <td>{{ m.fmp_pe }}</td>
                     <td>{{ m.fmp_rating }}</td>
