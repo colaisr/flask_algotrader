@@ -93,6 +93,9 @@ def create_app(config):
     from .algotrader_settings import algotradersettings as algotradersettings_blueprint
     app.register_blueprint(algotradersettings_blueprint, url_prefix='/algotradersettings')
 
+    from .closed_position_info import closed_position_info as closed_position_info_blueprint
+    app.register_blueprint(closed_position_info_blueprint, url_prefix='/closed_position_info')
+
     return app
 
 

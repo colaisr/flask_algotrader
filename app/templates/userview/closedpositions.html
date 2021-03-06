@@ -17,12 +17,12 @@
 
         </div>
     </div>
-        <div class="column">
+    <div class="column">
 
         <div class="ui menu">
             <div class="ui left search item">
                 <div class="ui transparent icon input">
-                    <input id="search-users" type="text" placeholder="Search users…">
+                    <input id="search-users" type="text" placeholder="Search positions…">
                     <i class="search icon"></i>
                 </div>
             </div>
@@ -35,6 +35,7 @@
                 <thead>
                 <tr>
                     <th>Ticker</th>
+                    <th></th>
                     <th>Stocks</th>
                     <th>Opened</th>
                     <th>Closed</th>
@@ -46,15 +47,22 @@
                 </thead>
                 <tbody>
                 {% for m in positions | sort(attribute='closed') %}
-                <tr >
-                    <td >{{ m.ticker }}</td>
-                    <td >{{ m.stocks }}</td>
-                    <td >{{ m.opened }}</td>
-                    <td >{{ m.closed }}</td>
-                    <td >{{ m.open_price }}</td>
-                    <td >{{ m.close_price }}</td>
-                    <td >{{  "%.1f"|format(m.profit)  }}</td>
-                    <td >{{ "%.1f"|format(m.profit/(m.open_price*m.stocks)*100)   }}</td>
+                <tr>
+                    <td>{{ m.ticker }}</td>
+                    <td>
+                        <form action="{{url_for('closed_position_info.view')}}" method="post">
+                            <input type="hidden" name="ticker_to_remove" value="{{ m.id }}">
+                            <button type="submit"><i class="fa  fa-area-chart"></i></button>
+                        </form>
+
+                    </td>
+                    <td>{{ m.stocks }}</td>
+                    <td>{{ m.opened }}</td>
+                    <td>{{ m.closed }}</td>
+                    <td>{{ m.open_price }}</td>
+                    <td>{{ m.close_price }}</td>
+                    <td>{{ "%.1f"|format(m.profit) }}</td>
+                    <td>{{ "%.1f"|format(m.profit/(m.open_price*m.stocks)*100) }}</td>
 
 
                 </tr>
@@ -81,6 +89,7 @@
                 }
             });
  })
+
 
 
 </script>

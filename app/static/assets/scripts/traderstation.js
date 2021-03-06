@@ -1,6 +1,10 @@
 $(document).ready(function(){
 paint_pnl()
 
+setTimeout(function(){
+   window.location.reload(1);
+}, 30000);
+
 })
 function paint_pnl() {
 box_pnl=$(".box_pnl");
