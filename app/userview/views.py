@@ -103,6 +103,7 @@ def updatecandidate():
     c.description=request.form['txt_description']
     c.email=current_user.email
     c.update_candidate()
+    c.enabled=True
     return redirect(url_for('userview.usercandidates'))
 
 @userview.route('removecandidate/', methods=['POST'])

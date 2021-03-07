@@ -7,6 +7,7 @@ class Candidate(db.Model):
     email = db.Column('email', db.String)
     ticker = db.Column('ticker', db.String)
     description = db.Column('description', db.String)
+    enabled = db.Column('enabled', db.Boolean)
 
     def update_candidate(self):
         candidate = Candidate.query.filter((Candidate.email==self.email) & (Candidate.ticker==self.ticker)).first()
