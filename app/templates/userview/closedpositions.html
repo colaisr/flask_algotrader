@@ -50,8 +50,8 @@
                 <tr>
                     <td>{{ m.ticker }}</td>
                     <td>
-                        <form action="{{url_for('closed_position_info.view')}}" method="post">
-                            <input type="hidden" name="ticker_to_remove" value="{{ m.id }}">
+                        <form action="{{url_for('closed_position_info.view')}}" method="get">
+                            <input type="hidden" name="position_to_show" value="{{ m.id }}">
                             <button type="submit"><i class="fa  fa-area-chart"></i></button>
                         </form>
 

@@ -10,7 +10,7 @@
                     </i>
                 </div>
                 <div>Closed position Information
-                    <div class="page-title-subheading">Detailed info on closed position.
+                    <div class="page-title-subheading">Detailed info on {{position.ticker}} .
                     </div>
                 </div>
             </div>
@@ -19,12 +19,21 @@
     </div>
     <div class="column">
 
-here the graph will come
+<div id="container" style="width:100%; height:400px;"></div>
+        <div>
+            <input type="hidden" id="ticker" value="{{ position.ticker }}">
+            <input type="hidden" id="closed" value="{{ position.closed }}">
+            <input type="hidden" id="opened" value="{{ position.opened }}">
+            <input type="hidden" id="profit" value="{{ position.profit }}">
+
+        </div>
 
     </div>
 
 </div>
-<script type="text/javascript">
-
-</script>
+<script src="https://code.highcharts.com/stock/highstock.js"></script>
+<script src="https://code.highcharts.com/stock/modules/data.js"></script>
+<script src="https://code.highcharts.com/stock/modules/exporting.js"></script>
+<script src="https://code.highcharts.com/stock/modules/export-data.js"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='assets/scripts/closed_position_info.js') }}"></script>
 {% endblock %}

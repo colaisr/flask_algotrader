@@ -7,4 +7,3 @@ rq==1.1.0
 Werkzeug==0.15.5
 WTForms==2.2.1
 
-fmpsdk~=20210221.0

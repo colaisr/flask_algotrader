@@ -1,6 +1,11 @@
 import json
 import ssl
 from urllib.request import urlopen
+from datetime import datetime
+
+import numpy as np
+import pandas
+import yfinance as yf
 
 from flask import (
     Blueprint,
@@ -12,7 +17,7 @@ from flask import (
 )
 from datetime import datetime, date, timedelta
 from app import db, csrf
-from app.models import User, Connection, Report, TickerData
+from app.models import User, Connection, Report, TickerData, Position
 
 closed_position_info = Blueprint('closed_position_info', __name__)
 apikey='f6003a61d13c32709e458a1e6c7df0b0'
@@ -45,69 +50,25 @@ def get_fmg_pe_rating_for_ticker(s):
 
 
 @csrf.exempt
-@closed_position_info.route('/view', methods=['POST'])
+@closed_position_info.route('/view', methods=['GET'])
 def view():
-    # request_data = request.get_json()
-    # received_data=request_data["tickers"]
-    # logged_user = request_data["user"]
-    # parsed_data = json.loads(received_data)
-    # for marker in parsed_data:
-    #     ticker=marker['ticker']
-    #     yahoo_avdropP=marker['yahoo_avdropP']
-    #     yahoo_avspreadP=marker['yahoo_avspreadP']
-    #     tipranks=marker['tipranks']
-    #     tiprank_updated=datetime.fromisoformat(marker['tiprank_updated'])
-    #     fmp_pe = marker['fmp_pe']
-    #     fmp_rating = marker['fmp_rating']
-    #     fmp_score = marker['fmp_score']
-    #     fmp_updated = datetime.fromisoformat(marker['fmp_updated'])
-    #     t=TickerData(ticker=ticker,
-    #                  yahoo_avdropP=yahoo_avdropP,
-    #                  yahoo_avspreadP=yahoo_avspreadP,
-    #                  tipranks=tipranks,
-    #                  tiprank_updated=tiprank_updated,
-    #                  fmp_pe=fmp_pe,
-    #                  fmp_rating=fmp_rating,
-    #                  fmp_score=fmp_score,
-    #                  fmp_updated=fmp_updated,
-    #                  updated_by_user=logged_user)
-    #     if int(t.tipranks)!=0:
-    #         t.update_ticker_data()
+    id=request.args['position_to_show']
+    position = Position.query.filter_by(id=id).first()
+    # last_year=get_stock_rank(position.ticker)
 
-    return render_template('userview/closed_position_info.html')
-# @csrf.exempt
-# @marketdata.route('/retrievemarketdata', methods=['GET'])
-# def retrievemarketdata():
-#     request_data = request.get_json()
-#     received_data=request_data["tickers"]
-#     logged_user = request_data["user"]
-#     parsed_data = json.loads(received_data)
-#     requested_tickers={}
-#     for t in parsed_data:
-#         td=TickerData.query.filter_by(ticker=t).first()
-#         if td is None:#not data-fake
-#             td=TickerData(ticker=t,
-#                           yahoo_avdropP=0,
-#                           yahoo_avspreadP=0,
-#                           tipranks=0,
-#                           tiprank_updated=(datetime.today() - timedelta(days=1)),
-#                           fmp_updated=(datetime.today() - timedelta(days=1)))
+    return render_template('userview/closed_position_info.html',position=position)
+
+
+# def get_stock_rank(s):
+#     pass
+#     df=yf.download(s,interval = "1m", period = "1y")
 #
-#         tdj=json.dumps(td.toDictionary())
-#         requested_tickers[td.ticker]=tdj
-#     parsed_response=json.dumps(requested_tickers)
-#     return requested_tickers
-#
-# @marketdata.route('updatefmpall/', methods=['POST'])
-# @csrf.exempt
-# def updatefmpall():
-#     td = TickerData.query.all()
-#     for candidate in td:
-#         pe, rating, score=get_fmg_pe_rating_for_ticker(candidate.ticker)
-#         candidate.fmp_pe=pe
-#         candidate.fmp_rating=rating
-#         candidate.fmp_score=score
-#         candidate.fmp_updated=datetime.today()
-#         db.session.commit()
+#     s=df["Close"]
+#     list_of_dates=s.index.to_list()
+#     conv=[]
+#     for d in list_of_dates:
+#         ts=datetime.timestamp(d)
+#         conv.append([ts,s[d]])
+#         dt_object = datetime.fromtimestamp(ts)
 #         i=3
-#     return redirect(url_for('admin.market_data'))
+#     return conv
