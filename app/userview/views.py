@@ -85,12 +85,6 @@ def portfoliostatistics():
 @userview.route('usercandidates', methods=['GET', 'POST'])
 @login_required
 def usercandidates():
-    """Display a user's account information."""
-    # c=Candidate()
-    # c.ticker='gama'
-    # c.description='boom boom'
-    # c.email='cola.isr@gmail.com'
-    # c.update_position()
     candidates=Candidate.query.filter_by(email=current_user.email).all()
     return render_template('userview/usercandidates.html',candidates=candidates, user=current_user, form=None)
 
@@ -114,15 +108,23 @@ def removecandidate():
     candidate.delete_candidate()
     return redirect(url_for('userview.usercandidates'))
 
+@userview.route('enabledisable/', methods=['POST'])
+@csrf.exempt
+def enabledisable():
+    ticker=request.form['ticker_to_change']
+    candidate = Candidate.query.filter_by(email=current_user.email,ticker=ticker).first()
+    candidate.change_enabled_state()
+    return redirect(url_for('userview.usercandidates'))
+
 @csrf.exempt
 @userview.route('/retrieveusercandidates', methods=['GET'])
 def retrievecandidates():
     request_data = request.get_json()
     use_system_candidates=request_data["use_system_candidates"]
     logged_user = request_data["user"]
-    user_candidates=Candidate.query.filter_by(email=logged_user).all()
+    user_candidates=Candidate.query.filter_by(email=logged_user,enabled=True).all()
     if use_system_candidates:
-        admin_candidates=Candidate.query.filter_by(email='admin@gmail.com').all()
+        admin_candidates=Candidate.query.filter_by(email='admin@gmail.com',enabled=True).all()
         for uc in user_candidates:
             for ac in admin_candidates:
                 if ac.ticker == uc.ticker:

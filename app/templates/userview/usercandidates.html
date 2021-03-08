@@ -40,17 +40,30 @@
                 <tr>
                     <th class="sorted descending">Ticker</th>
                     <th></th>
+                    <th>Enabled</th>
                     <th>Description</th>
                 </tr>
                 </thead>
                 <tbody>
                 {% for m in candidates | sort(attribute='ticker') %}
-                <tr >
-                    <td >{{ m.ticker }}</td>
+                <tr>
+                    <td>{{ m.ticker }}</td>
                     <td>
                         <form action="{{url_for('userview.removecandidate')}}" method="post">
                             <input type="hidden" name="ticker_to_remove" value="{{ m.ticker }}">
-                            <button type="submit" ><i class="fa fa-trash"></i></button>
+                            <button type="submit"><i class="fa fa-trash"></i></button>
+                        </form>
+
+                    </td>
+                    <td>
+                        <form action="{{url_for('userview.enabledisable')}}" method="post">
+                            <input type="hidden" name="ticker_to_change" value="{{ m.ticker }}">
+                            <input type="checkbox" onChange="this.form.submit()"
+                                   {%if m.enabled%}
+                                   checked
+                            {% endif %}
+                            >
+
                         </form>
 
                     </td>
@@ -80,6 +93,7 @@
                 }
             });
  })
+
 
 
 </script>

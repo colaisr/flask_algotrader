@@ -20,6 +20,13 @@ class Candidate(db.Model):
         db.session.delete(self)
         db.session.commit()
 
+    def change_enabled_state(self):
+        if self.enabled:
+            self.enabled=False
+        else:
+            self.enabled=True
+        db.session.commit()
+
     def to_dictionary(self):
         d={}
         d['ticker']=self.ticker
