@@ -51,15 +51,16 @@ def traderstationstate():
 
         open_positions = json.loads(report.open_positions_json)
         open_orders = json.loads(report.open_orders_json)
+        report.all_positions_value=0
         for k,v in open_positions.items():
 
             if v['Value'] !=0:
                 profit=v['UnrealizedPnL']/v['Value']*100
-                report.all_positions_value+=v['Value']
             else:
                 profit=0
             v['profit_in_percents']=profit
-
+            if v['stocks'] !=0:
+                report.all_positions_value+=int(v['Value'])
             if profit>0:
                 v['profit_class'] = 'text-success'
                 v['profit_progress_colour'] = 'bg-success'
