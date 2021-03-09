@@ -55,6 +55,7 @@ def traderstationstate():
 
             if v['Value'] !=0:
                 profit=v['UnrealizedPnL']/v['Value']*100
+                report.all_positions_value+=v['Value']
             else:
                 profit=0
             v['profit_in_percents']=profit
