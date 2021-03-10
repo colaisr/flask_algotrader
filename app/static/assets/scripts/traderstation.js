@@ -16,8 +16,8 @@ time_report=Date.parse(el)
 time_current=Date.now()
 seconds_passed=(time_current-time_report)/1000
 i=2
-el=$("#seconds_passed").val()
-if(el>30){
+//el=$("#seconds_passed").val()
+if(seconds_passed>30){
 el=$("#connection_state").addClass('badge-danger').removeClass('badge-success');
 el=$("#connection_state").text("Offline");
 }else{
