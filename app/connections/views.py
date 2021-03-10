@@ -73,6 +73,7 @@ def log_restart_request():
     r=RestartRequest()
     r.email=logged_user
     r.log_request()
+    flash('Request for Restart TWS and Algotraider logged. Sending to station', 'form-success')
     return redirect(url_for('userview.traderstationstate'))
 
 

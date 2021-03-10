@@ -144,8 +144,4 @@ def retrievecandidates():
     for c in requested_candidates:
         cand_dictionaries.append(c.to_dictionary())
     response=json.dumps(cand_dictionaries)
-
-
-
-
     return response

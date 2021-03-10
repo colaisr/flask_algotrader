@@ -96,6 +96,9 @@ def create_app(config):
     from .closed_position_info import closed_position_info as closed_position_info_blueprint
     app.register_blueprint(closed_position_info_blueprint, url_prefix='/closed_position_info')
 
+    from .station import station as station_blueprint
+    app.register_blueprint(station_blueprint, url_prefix='/station')
+
     return app
 
 
