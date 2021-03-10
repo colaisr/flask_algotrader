@@ -72,9 +72,7 @@ def traderstationstate():
                 v['profit_progress_percent'] = abs(profit / 10 * 100)
 
         report_time=report.report_time
-        server_time=datetime.now()
-        seconds_since_last_report=(server_time-report_time).total_seconds()
-    return render_template('userview/traderstationstate.html',report_time=report_time,server_time=server_time,seconds_passed=seconds_since_last_report,open_positions=open_positions,open_orders=open_orders, user=current_user,report=report,margin_used=use_margin, form=None)
+    return render_template('userview/traderstationstate.html',report_time=report_time,open_positions=open_positions,open_orders=open_orders, user=current_user,report=report,margin_used=use_margin, form=None)
 
 @userview.route('closedpositions', methods=['GET', 'POST'])
 @login_required

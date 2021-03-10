@@ -1,22 +1,18 @@
 $(document).ready(function(){
-
-
-
-
 paint_pnl()
 set_connection_state()
-//setTimeout(function(){
-//   window.location.reload(1);
-//}, 30000);
+setTimeout(function(){
+   window.location.reload(1);
+}, 30000);
 
 })
+
 function set_connection_state(){
 el=$("#report_time").val()
 time_report=Date.parse(el)
 time_current=Date.now()
 seconds_passed=(time_current-time_report)/1000
 i=2
-//el=$("#seconds_passed").val()
 if(seconds_passed>30){
 el=$("#connection_state").addClass('badge-danger').removeClass('badge-success');
 el=$("#connection_state").text("Offline");
