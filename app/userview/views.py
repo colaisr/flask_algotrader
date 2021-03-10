@@ -1,4 +1,5 @@
 import json
+from datetime import datetime
 
 from flask import (
     Blueprint,
@@ -69,7 +70,11 @@ def traderstationstate():
                 v['profit_class'] = 'text-danger'
                 v['profit_progress_colour'] = 'bg-danger'
                 v['profit_progress_percent'] = abs(profit / 10 * 100)
-    return render_template('userview/traderstationstate.html',open_positions=open_positions,open_orders=open_orders, user=current_user,report=report,margin_used=use_margin, form=None)
+
+        report_time=report.report_time
+        current_time=datetime.now()
+        seconds_since_last_report=(current_time-report_time).total_seconds()
+    return render_template('userview/traderstationstate.html',seconds_passed=seconds_since_last_report,open_positions=open_positions,open_orders=open_orders, user=current_user,report=report,margin_used=use_margin, form=None)
 
 @userview.route('closedpositions', methods=['GET', 'POST'])
 @login_required
