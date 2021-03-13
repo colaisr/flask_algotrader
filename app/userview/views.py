@@ -40,13 +40,14 @@ def traderstationstate():
     settings=UserSetting.query.filter_by(email=current_user.email).first()
     use_margin=settings.algo_allow_margin
     if report is None:
-        report=Report()
+        #report=Report()
         open_positions={}
         open_orders={}
+        i=3
     else:
-        report.reported_text=report.report_time.strftime("%Y-%m-%d %H:%M:%S")
-        report.last_worker_execution_text=report.last_worker_execution.strftime("%Y-%m-%d %H:%M:%S")
-        report.market_time_text = report.market_time.strftime("%Y-%m-%d %H:%M:%S")
+        report.reported_text=report.report_time#.strftime("%Y-%m-%d %H:%M:%S")
+        report.last_worker_execution_text=report.last_worker_execution#.strftime("%Y-%m-%d %H:%M:%S")
+        report.market_time_text = report.market_time#.strftime("%Y-%m-%d %H:%M:%S")
         report.dailyPnl=round(report.dailyPnl,2)
         report.remaining_sma_with_safety = round(report.remaining_sma_with_safety, 2)
 
@@ -72,7 +73,11 @@ def traderstationstate():
                 v['profit_progress_percent'] = abs(profit / 10 * 100)
 
         report_time=report.report_time
-    return render_template('userview/traderstationstate.html',report_time=report_time,open_positions=open_positions,open_orders=open_orders, user=current_user,report=report,margin_used=use_margin, form=None)
+
+    if report is None:
+        return redirect(url_for('userview.usercandidates'))
+    else:
+        return render_template('userview/traderstationstate.html',report_time=report_time,open_positions=open_positions,open_orders=open_orders, user=current_user,report=report,margin_used=use_margin, form=None)
 
 @userview.route('closedpositions', methods=['GET', 'POST'])
 @login_required

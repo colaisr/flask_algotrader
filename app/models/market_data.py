@@ -12,7 +12,7 @@ def json_serial(obj):
 
 class TickerData(db.Model):
     __tablename__ = 'Tickersdata'
-    __bind_key__ = 'db_market_data'
+    # __bind_key__ = 'db_market_data'
     id = db.Column('id', db.Integer, primary_key=True)
     ticker = db.Column('ticker', db.String)
     yahoo_avdropP = db.Column('yahoo_avdropP', db.Float)

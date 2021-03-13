@@ -4,7 +4,7 @@ from .. import db
 
 class Position(db.Model):
     __tablename__ = 'Positions'
-    __bind_key__ = 'db_clients'
+    # __bind_key__ = 'db_clients'
     id = db.Column('id', db.Integer, primary_key=True)
     email = db.Column('email', db.String)
     ticker = db.Column('ticker', db.String)

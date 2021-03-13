@@ -2,7 +2,7 @@ from .. import db
 
 class RestartRequest(db.Model):
     __tablename__ = 'RestartRequests'
-    __bind_key__ = 'db_clients'
+    # __bind_key__ = 'db_clients'
     id = db.Column('id', db.Integer, primary_key=True)
     email = db.Column('email', db.String)
 

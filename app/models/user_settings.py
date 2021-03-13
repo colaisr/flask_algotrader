@@ -12,7 +12,7 @@ def json_serial(obj):
 
 class UserSetting(db.Model):
     __tablename__ = 'UserSettings'
-    __bind_key__ = 'db_clients'
+    # __bind_key__ = 'db_clients'
     id = db.Column('id', db.Integer, primary_key=True)
     email = db.Column('email', db.String)
 

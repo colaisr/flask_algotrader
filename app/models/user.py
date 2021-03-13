@@ -14,7 +14,7 @@ class Permission:
 
 class Role(db.Model):
     __tablename__ = 'roles'
-    __bind_key__ = 'db_users'
+    # __bind_key__ = 'db_users'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(64), unique=True)
     index = db.Column(db.String(64))
@@ -48,7 +48,7 @@ class Role(db.Model):
 
 class User(UserMixin, db.Model):
     __tablename__ = 'users'
-    __bind_key__ = 'db_users'
+    # __bind_key__ = 'db_users'
     id = db.Column(db.Integer, primary_key=True)
     confirmed = db.Column(db.Boolean, default=False)
     first_name = db.Column(db.String(64), index=True)

@@ -3,7 +3,7 @@ from .. import db
 
 class Connection(db.Model):
     __tablename__ = 'Connections'
-    __bind_key__ = 'db_clients'
+    # __bind_key__ = 'db_clients'
     id = db.Column('id', db.Integer, primary_key=True)
     email = db.Column('email', db.String)
     reported_connection = db.Column('reported_connection', db.DateTime)
@@ -15,7 +15,7 @@ class Connection(db.Model):
 
 class Report(db.Model):
     __tablename__ = 'Reports'
-    __bind_key__ = 'db_clients'
+    # __bind_key__ = 'db_clients'
     id = db.Column('id', db.Integer, primary_key=True)
     email = db.Column('email', db.String)
     report_time = db.Column('report_time', db.DateTime)
