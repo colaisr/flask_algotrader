@@ -20,22 +20,17 @@ def download():
     uemail=current_user.email
     return render_template('userview/download.html', user=current_user)
 
-@station.route('/download-zip', methods=['GET'])
+@station.route('/downloadzip', methods=['GET'])
 def request_zip():
     import shutil
-    # base_path = pathlib.Path('./app/static/algotrader-station/')
-    # h = pathlib.Path.cwd()
-    # p=pathlib.Path.joinpath(h,'/app/')
-    shutil.make_archive('exampleOrg_letter', 'zip', './app/static/algotrader-station/','./app/static/algotrader-station/')
-    #
-    # data = io.BytesIO()
-    # with zipfile.ZipFile(data, mode='w') as z:
-    #     for f_name in base_path.iterdir():
-    #         z.write(f_name)
-    # data.seek(0)
-    h = pathlib.Path.cwd()
-    p=pathlib.Path.joinpath(h,'/static/test.zip')
+    uid = str(current_user.id)
+    try:
+        shutil.rmtree('./app/static/ready_package/algotrader'+uid+'.zip') #removing prev packages
+    except:
+        i=2
+    shutil.make_archive('./app/static/ready_package/algotrader'+uid, 'zip', 'app/static','algotrader-station')
+
     return send_from_directory(
-        directory='static',
-        filename='test.zip'
+        directory='static/ready_package',
+        filename='algotrader'+uid+'.zip'
     )
