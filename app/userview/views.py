@@ -45,9 +45,9 @@ def traderstationstate():
         open_orders={}
         i=3
     else:
-        report.reported_text=report.report_time#.strftime("%Y-%m-%d %H:%M:%S")
-        report.last_worker_execution_text=report.last_worker_execution#.strftime("%Y-%m-%d %H:%M:%S")
-        report.market_time_text = report.market_time#.strftime("%Y-%m-%d %H:%M:%S")
+        report.reported_text=report.report_time.strftime("%Y-%m-%d %H:%M:%S")
+        report.last_worker_execution_text=report.last_worker_execution.strftime("%Y-%m-%d %H:%M:%S")
+        report.market_time_text = report.market_time.strftime("%Y-%m-%d %H:%M:%S")
         report.dailyPnl=round(report.dailyPnl,2)
         report.remaining_sma_with_safety = round(report.remaining_sma_with_safety, 2)
 
