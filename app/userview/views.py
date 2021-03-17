@@ -72,6 +72,9 @@ def traderstationstate():
                 v['profit_progress_colour'] = 'bg-danger'
                 v['profit_progress_percent'] = abs(profit / 10 * 100)
 
+        if not use_margin:
+            report.excess_liquidity=round(report.net_liquidation-report.all_positions_value,1)
+
         report_time=report.report_time
 
     if report is None:

@@ -90,6 +90,8 @@ class DevelopmentConfig(Config):
     SQLALCHEMY_DATABASE_URI = os.environ.get('MYSQL_DB',
         'sqlite:///' + os.path.join(basedir, 'problem-with-mysql-variable'))
 
+    # SQLALCHEMY_ENGINE_OPTIONS = os.environ.get('SQLALCHEMY_ENGINE_OPTIONS')
+
     @classmethod
     def init_app(cls, app):
         print('THIS APP IS IN DEBUG MODE. \
