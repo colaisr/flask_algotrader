@@ -1,4 +1,4 @@
-
+import json
 
 from flask import (
     Blueprint,
@@ -37,4 +37,15 @@ def updatemarketdataforcandidate():
     marketdata.update_ticker_data()
 
     return redirect(url_for('admin.market_data'))
+
+@csrf.exempt
+@research.route('/alltickers', methods=['GET'])
+def alltickers():
+
+    marketdata = TickerData.query.all()
+    resp=[]
+    for c in marketdata:
+        resp.append(c.ticker)
+
+    return json.dumps(resp)
 
