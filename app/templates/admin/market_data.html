@@ -32,6 +32,7 @@
             <table class="ui searchable sortable unstackable selectable celled table">
                 <thead>
                 <tr>
+                    <th>Refresh</th>
                     <th>Ticker</th>
                     <th>Average drop %</th>
                     <th>Average spread %</th>
@@ -46,14 +47,21 @@
                 <tbody>
                 {% for m in marketdata | sort(attribute='tiprank_updated') %}
                 <tr onclick="alert('implement going to candidate')">
+                    <td>
+                        <form action="{{url_for('research.updatemarketdataforcandidate')}}" method="post">
+                            <input type="hidden" name="ticker_to_update" value="{{ m.ticker }}">
+                            <button type="submit"><i class="fa fa-refresh"></i></button>
+                        </form>
+                    </td>
                     <td>{{ m.ticker }}</td>
                     <td>{{ m.yahoo_avdropP }}</td>
                     <td>{{ m.yahoo_avspreadP }}</td>
                     <td
-                    {% if m.tipranks>8 %}
+                            {% if m.tipranks>8 %}
                         style="background-color: aquamarine;"
-                    {% endif %}
-                    >{{ m.tipranks }}</td>
+                        {% endif %}
+                        >{{ m.tipranks }}
+                    </td>
                     <td>{{ m.tiprank_updated }}</td>
                     <td>{{ m.fmp_pe }}</td>
                     <td>{{ m.fmp_rating }}</td>
@@ -90,6 +98,7 @@
                 }
             });
         });
+
 
 </script>
 {% endblock %}

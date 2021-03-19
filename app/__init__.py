@@ -121,6 +121,9 @@ def create_app(config):
     from .station import station as station_blueprint
     app.register_blueprint(station_blueprint, url_prefix='/station')
 
+    from .research import research as research_blueprint
+    app.register_blueprint(research_blueprint, url_prefix='/research')
+
     return app
 
 
