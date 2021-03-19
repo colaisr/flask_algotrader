@@ -91,6 +91,7 @@ class DevelopmentConfig(Config):
         'sqlite:///' + os.path.join(basedir, 'problem-with-mysql-variable'))
 
     # SQLALCHEMY_ENGINE_OPTIONS = os.environ.get('SQLALCHEMY_ENGINE_OPTIONS')
+    SQLALCHEMY_POOL_RECYCLE = int(os.environ.get('SQLALCHEMY_POOL_RECYCLE'))
 
     @classmethod
     def init_app(cls, app):
