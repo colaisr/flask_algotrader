@@ -43,6 +43,28 @@ def create_app(config):
 
     # Set up extensions
     mail.init_app(app)
+    p=app.static_folder
+
+    if 'colakamornik' in app.static_folder:    #means running on local machine
+        import sshtunnel
+        ssh_url = os.getenv('SSH_URL', 'default')
+        ssh_user = os.getenv('SSH_USER', 'default')
+        ssh_password = os.getenv('SSH_PASSWORD', 'default')
+        mysql_user = os.getenv('MYSQL_USER', 'default')
+        mysql_password = os.getenv('MYSQL_PASSWORD', 'default')
+
+        tunnel = sshtunnel.SSHTunnelForwarder(
+            (ssh_url), ssh_username=ssh_user, ssh_password=ssh_password,
+            remote_bind_address=('colak.mysql.pythonanywhere-services.com', 3306)
+        )
+
+        tunnel.start()
+        app.config[
+            'SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://{}:{}@127.0.0.1:{}/colak$algotrader'.format(
+            mysql_user,
+            mysql_password,
+            tunnel.local_bind_port)
+
     db.init_app(app)
     login_manager.init_app(app)
     csrf.init_app(app)
