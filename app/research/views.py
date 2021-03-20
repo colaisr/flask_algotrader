@@ -21,31 +21,30 @@ from app.research.yahoo_research import get_yahoo_stats_for_ticker
 research = Blueprint('research', __name__)
 
 
-
 @csrf.exempt
 @research.route('/updatemarketdataforcandidate', methods=['POST'])
 def updatemarketdataforcandidate():
-    ticker=request.form['ticker_to_update']
+    ticker = request.form['ticker_to_update']
     marketdata = TickerData.query.filter_by(ticker=ticker).first()
-    marketdata.tipranks=get_tiprank_for_ticker(ticker)
-    marketdata.fmp_pe=get_fmp_pe_for_ticker(ticker)
-    marketdata.fmp_rating,marketdata.fmp_score=get_fmp_ratings_score_for_ticker(ticker)
+    marketdata.tipranks = get_tiprank_for_ticker(ticker)
+    marketdata.fmp_pe = get_fmp_pe_for_ticker(ticker)
+    marketdata.fmp_rating, marketdata.fmp_score = get_fmp_ratings_score_for_ticker(ticker)
     marketdata.yahoo_avdropP, marketdata.yahoo_avspreadP = get_yahoo_stats_for_ticker(ticker)
-    ct=datetime.now()
-    marketdata.tiprank_updated=ct
-    marketdata.fmp_updated=ct
+    ct = datetime.now()
+    marketdata.tiprank_updated = ct
+    marketdata.fmp_updated = ct
+    marketdata.updated_server_time = ct
     marketdata.update_ticker_data()
 
     return redirect(url_for('admin.market_data'))
 
-@csrf.exempt
-@research.route('/alltickers', methods=['GET'])
-def alltickers():
 
+@csrf.exempt
+@research.route('/alltickers', methods=['GET'])  # for use from the task
+def alltickers():
     marketdata = TickerData.query.all()
-    resp=[]
+    resp = []
     for c in marketdata:
         resp.append(c.ticker)
 
     return json.dumps(resp)
-

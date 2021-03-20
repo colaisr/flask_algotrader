@@ -24,6 +24,7 @@ class TickerData(db.Model):
     fmp_score = db.Column('fmp_score', db.Integer)
     fmp_updated = db.Column('fmp_updated', db.DateTime)
     updated_by_user = db.Column('updated_by_user', db.String)
+    updated_server_time=db.Column('updated_server_time', db.DateTime)
 
 
     def update_ticker_data(self):
@@ -39,6 +40,7 @@ class TickerData(db.Model):
             td.fmp_rating=self.fmp_rating
             td.fmp_score=self.fmp_score
             td.fmp_updated=self.fmp_updated
+            td.updated_server_time = self.updated_server_time
 
         db.session.commit()
 
@@ -56,4 +58,5 @@ class TickerData(db.Model):
         d['fmp_rating'] = self.fmp_rating
         d['fmp_score'] = self.fmp_score
         d['fmp_updated'] = datetime.isoformat(self.fmp_updated)
+        d['updated_server_time'] = datetime.isoformat(self.updated_server_time)
         return d

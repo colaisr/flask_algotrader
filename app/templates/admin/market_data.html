@@ -7,20 +7,17 @@
             <i class="caret left icon"></i>
             Back to dashboard
         </a>
-        <form action="{{url_for('marketdata.updatefmpall')}}" method="post">
-            <button type="submit">Update FMP All</button>
-        </form>
         <h2 class="ui header">
             MARKET DATA
             <div class="sub header">
-                All the data reported by client applications.
+                Market data from different sources.
             </div>
         </h2>
 
         <div class="ui menu">
             <div class="ui left search item">
                 <div class="ui transparent icon input">
-                    <input id="search-users" type="text" placeholder="Search users…">
+                    <input id="search-users" type="text" placeholder="Search data…">
                     <i class="search icon"></i>
                 </div>
             </div>
@@ -54,8 +51,8 @@
                         </form>
                     </td>
                     <td>{{ m.ticker }}</td>
-                    <td>{{ m.yahoo_avdropP }}</td>
-                    <td>{{ m.yahoo_avspreadP }}</td>
+                    <td>{{ m.yahoo_avdropP|round(1, 'floor') }}</td>
+                    <td>{{ m.yahoo_avspreadP|round(1, 'floor') }}</td>
                     <td
                             {% if m.tipranks>8 %}
                         style="background-color: aquamarine;"
@@ -63,7 +60,7 @@
                         >{{ m.tipranks }}
                     </td>
                     <td>{{ m.tiprank_updated }}</td>
-                    <td>{{ m.fmp_pe }}</td>
+                    <td>{{ m.fmp_pe|round(1, 'floor') }}</td>
                     <td>{{ m.fmp_rating }}</td>
                     <td>{{ m.fmp_score }}</td>
                     <td>{{ m.fmp_updated }}</td>

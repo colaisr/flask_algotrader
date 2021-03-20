@@ -15,7 +15,6 @@ from app import db, csrf
 from app.models import User, Connection, Report, TickerData
 
 marketdata = Blueprint('marketdata', __name__)
-apikey='f6003a61d13c32709e458a1e6c7df0b0'
 
 def json_serial(obj):
     """JSON serializer for objects not serializable by default json code"""
@@ -23,25 +22,6 @@ def json_serial(obj):
     if isinstance(obj, (datetime, date)):
         return obj.isoformat()
     raise TypeError("Type %s not serializable" % type(obj))
-
-
-def get_fmg_pe_rating_for_ticker(s):
-    # data=fmpsdk.financial_ratios(apikey=apikey, symbol=s)
-    url = ("https://financialmodelingprep.com/api/v3/ratios-ttm/"+s+"?apikey="+apikey)
-    context = ssl._create_unverified_context()
-    response = urlopen(url, context=context)
-    data = response.read().decode("utf-8")
-    parsed=json.loads(data)
-    pe=parsed[0]['peRatioTTM']
-    url = ("https://financialmodelingprep.com/api/v3/rating/"+s+"?apikey="+apikey)
-    context = ssl._create_unverified_context()
-    response = urlopen(url, context=context)
-    data = response.read().decode("utf-8")
-    parsed=json.loads(data)
-    rating=parsed[0]['rating']
-    score = parsed[0]['ratingScore']
-
-    return pe,rating,score
 
 
 @csrf.exempt
@@ -97,17 +77,3 @@ def retrievemarketdata():
         requested_tickers[td.ticker]=tdj
     parsed_response=json.dumps(requested_tickers)
     return requested_tickers
-
-@marketdata.route('updatefmpall/', methods=['POST'])
-@csrf.exempt
-def updatefmpall():
-    td = TickerData.query.all()
-    for candidate in td:
-        pe, rating, score=get_fmg_pe_rating_for_ticker(candidate.ticker)
-        candidate.fmp_pe=pe
-        candidate.fmp_rating=rating
-        candidate.fmp_score=score
-        candidate.fmp_updated=datetime.today()
-        db.session.commit()
-        i=3
-    return redirect(url_for('admin.market_data'))
