@@ -43,8 +43,6 @@ def create_app(config):
 
     # Set up extensions
     mail.init_app(app)
-    p=app.static_folder
-
     if 'colakamornik' in app.static_folder:    #means running on local machine
         import sshtunnel
         ssh_url = os.getenv('SSH_URL', 'default')
