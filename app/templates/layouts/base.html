@@ -2,33 +2,39 @@
 <html lang="en">
 
 <head>
-    <!--    came from original template - need them to handle login/register/admin-->
-    {% include 'partials/_head.html' %}
+    <link rel="shortcut icon" href="#" />
+    <meta name="charset" content="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block page_title %}{{ config.APP_NAME }}{% endblock %}</title>
     {# Any templates that extend this template can set custom_head_tags to add scripts to their page #}
-    {% block custom_head_tags %}{% endblock %}
+    <!--    {% block custom_head_tags %}{% endblock %}-->
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta http-equiv="Content-Language" content="en">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <title>Algotrader-Server</title>
+    <!--    <title>Algotrader-Server</title>-->
     <meta name="viewport"
           content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, shrink-to-fit=no"/>
     <meta name="description" content="Algotrader server dashboard">
     <meta name="msapplication-tap-highlight" content="no">
 
-    <link href="{{ url_for('static', filename='styles/main.css') }}" rel="stylesheet">
-    <!--        <link href="{{ url_for('static', filename='styles/app.css') }}" rel="stylesheet">-->
-</head>
-<!-- Optional - Adds useful class to manipulate icon font display -->
-<link rel="stylesheet" href="{{ url_for('static', filename='font-icons/css/pe-icon-7-stroke.css') }}">
-<link rel="stylesheet" href="{{ url_for('static', filename='font-icons/css/helper.css') }}">
-<link rel="stylesheet" href="{{ url_for('static', filename='font-awesome/css/font-awesome.min.css') }}">
-<body>
-<style>
-      <!--to solve a popping error-->
-    .tab-content > .tab-pane:not(.active) { display: block; height: 0; overflow-y: hidden; }
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/main.css') }}">
+    <link href="{{ url_for('static', filename='styles/app.scss') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/app.css') }}">
 
-</style>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/semantic.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='font-icons/css/pe-icon-7-stroke.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='font-icons/css/helper.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='font-awesome/css/font-awesome.min.css') }}">
+</head>
+
+<body>
+<!--<style>-->
+<!--      &lt;!&ndash;to solve a popping error&ndash;&gt;-->
+<!--    .tab-content > .tab-pane:not(.active) { display: block; height: 0; overflow-y: hidden; }-->
+
+
+<!--</style>-->
 <div class="app-container app-theme-white body-tabs-shadow fixed-sidebar fixed-header">
     <div class="app-header header-shadow">
         {% if current_user.is_authenticated %}
@@ -196,7 +202,7 @@
                                 Portfolio performance
                             </a>
                         </li>
-                                                <li>
+                        <li>
                             <a href="/station/download">
                                 <i class="metismenu-icon pe-7s-box1"></i>
                                 Download
@@ -208,7 +214,25 @@
         </div>
         {% endif %}
         <div class="app-main__outer">
-            {% include 'partials/_flashes.html' %}
+            {% macro render_flashes(class) %}
+            {% with msgs = get_flashed_messages(category_filter=[class]) %}
+            {% for msg in msgs %}
+            <div class="ui {{ class }} message" data-autohide="5">
+                <i class="close icon"></i>
+                {{ msg }}
+            </div>
+            {% endfor %}
+            {% endwith %}
+            {% endmacro %}
+
+            <div class="ui text container">
+                <div class="flashes">
+                    {{ render_flashes('error') }}
+                    {{ render_flashes('warning') }}
+                    {{ render_flashes('info') }}
+                    {{ render_flashes('success') }}
+                </div>
+            </div>
             {% block content %}
             {% endblock %}
         </div>
@@ -223,7 +247,17 @@
     <input type="hidden" name="csrf_token" value="{{ csrf_token()|safe }}">
 </div>
 {% endif %}
-<script type="text/javascript" src="{{ url_for('static', filename='assets/scripts/main.js') }}"></script>
+
+<script type="text/javascript" src="{{ url_for('static', filename='scripts/packages/jquery.min.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='scripts/packages/main.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='scripts/packages/app.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='scripts/packages/semantic.min.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='scripts/packages/tablesort.min.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='scripts/packages/zxcvbn.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='scripts/pages/base.js') }}"></script>
+<!--page specific script includes-->
+{% block scripting %}
+{% endblock %}
 </body>
 </html>
 
