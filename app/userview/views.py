@@ -78,7 +78,7 @@ def traderstationstate():
         report_time=report.report_time
 
     if report is None:
-        return redirect(url_for('userview.usercandidates'))
+        return redirect(url_for('candidates.usercandidates'))
     else:
         return render_template('userview/traderstationstate.html',report_time=report_time,open_positions=open_positions,open_orders=open_orders, user=current_user,report=report,margin_used=use_margin, form=None)
 
@@ -95,61 +95,3 @@ def portfoliostatistics():
     """Display a user's account information."""
     return render_template('userview/portfoliostatistics.html', user=current_user, form=None)
 
-@userview.route('usercandidates', methods=['GET', 'POST'])
-@login_required
-def usercandidates():
-    candidates=Candidate.query.filter_by(email=current_user.email).all()
-    return render_template('userview/usercandidates.html',candidates=candidates, user=current_user, form=None)
-
-@userview.route('updatecandidate/', methods=['POST'])
-@csrf.exempt
-def updatecandidate():
-
-    c=Candidate()
-    c.ticker=request.form['txt_ticker']
-    c.description=request.form['txt_description']
-    c.email=current_user.email
-    c.update_candidate()
-    c.enabled=True
-    return redirect(url_for('userview.usercandidates'))
-
-@userview.route('removecandidate/', methods=['POST'])
-@csrf.exempt
-def removecandidate():
-    ticker=request.form['ticker_to_remove']
-    candidate = Candidate.query.filter_by(email=current_user.email,ticker=ticker).first()
-    candidate.delete_candidate()
-    return redirect(url_for('userview.usercandidates'))
-
-@userview.route('enabledisable/', methods=['POST'])
-@csrf.exempt
-def enabledisable():
-    ticker=request.form['ticker_to_change']
-    candidate = Candidate.query.filter_by(email=current_user.email,ticker=ticker).first()
-    candidate.change_enabled_state()
-    return redirect(url_for('userview.usercandidates'))
-
-@csrf.exempt
-@userview.route('/retrieveusercandidates', methods=['GET'])
-def retrievecandidates():
-    request_data = request.get_json()
-    use_system_candidates=request_data["use_system_candidates"]
-    logged_user = request_data["user"]
-    user_candidates=Candidate.query.filter_by(email=logged_user,enabled=True).all()
-    if use_system_candidates:
-        admin_candidates=Candidate.query.filter_by(email='admin@gmail.com',enabled=True).all()
-        for uc in user_candidates:
-            for ac in admin_candidates:
-                if ac.ticker == uc.ticker:
-                    print("i found it!")
-                    break
-            else:
-                admin_candidates.append(uc)
-        requested_candidates=admin_candidates
-    else:
-        requested_candidates=user_candidates
-    cand_dictionaries=[]
-    for c in requested_candidates:
-        cand_dictionaries.append(c.to_dictionary())
-    response=json.dumps(cand_dictionaries)
-    return response

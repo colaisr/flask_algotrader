@@ -49,14 +49,14 @@
                 <tr>
                     <td>{{ m.ticker }}</td>
                     <td>
-                        <form action="{{url_for('userview.removecandidate')}}" method="post">
+                        <form action="{{url_for('candidates.removecandidate')}}" method="post">
                             <input type="hidden" name="ticker_to_remove" value="{{ m.ticker }}">
                             <button type="submit"><i class="fa fa-trash"></i></button>
                         </form>
 
                     </td>
                     <td>
-                        <form action="{{url_for('userview.enabledisable')}}" method="post">
+                        <form action="{{url_for('candidates.enabledisable')}}" method="post">
                             <input type="hidden" name="ticker_to_change" value="{{ m.ticker }}">
                             <input type="checkbox" onChange="this.form.submit()"
                                    {%if m.enabled%}
