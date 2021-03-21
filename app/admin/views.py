@@ -101,6 +101,10 @@ def registered_users():
 def market_data():
     """View all registered users."""
     marketdata = TickerData.query.all()
+    for m in marketdata:
+        if m.fmp_pe is None:
+            m.fmp_pe=0
+
     return render_template('admin/market_data.html', marketdata=marketdata)
 
 
