@@ -1,11 +1,7 @@
 {% extends 'layouts/base.html' %}
 
 {% block content %}
-<style>
-    .modal-backdrop {
-  z-index: -1;
-}
-</style>
+
 <div class="app-main__inner">
     <div class="app-page-title">
         <div class="page-title-wrapper">
@@ -89,8 +85,11 @@
     </div>
 
 </div>
+{% endblock %}
+
+{% block modal %}
 <!-- Modal -->
-    <div class="modal fade"  id="add_candidate_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    <div class="modal fade" id="add_candidate_modal" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
      aria-hidden="true">
     <div class="modal-dialog" role="document">
         <form action="{{url_for('candidates.updatecandidate')}}" method="post">
@@ -123,8 +122,8 @@
         </form>
     </div>
 </div>
-
 {% endblock %}
+
 {% block scripting %}
 <script type="text/javascript" src="{{ url_for('static', filename='scripts/pages/usercandidates.js') }}"></script>
 {% endblock %}
