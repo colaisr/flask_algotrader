@@ -206,6 +206,43 @@
             </div>
         </div>
     </div>
+    <div class="divider mt-0" style="margin-bottom: 30px;"></div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="main-card mb-3 card">
+                <div class="card-header">Tracked Candidates
+                </div>
+                <div class="table-responsive">
+                    <table class="align-middle mb-0 table table-borderless table-striped table-hover">
+                        <thead>
+                        <tr>
+                            <th class="text-center">Ticker</th>
+                            <th class="text-center">Close</th>
+                            <th class="text-center">Open</th>
+                            <th class="text-center">Ask Price</th>
+                            <th class="text-center">Target Price</th>
+                            <th class="text-center">Rank</th>
+
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for key, value in candidates_live.items() %}
+                        <tr>
+                            <td class="text-center text-muted">{{value['Stock']}}</td>
+                            <td class="text-center">{{value['Close']}}</td>
+                            <td class="text-center">{{value['Open']}}</td>
+                            <td class="text-center">{{value['Ask']}}</td>
+                            <td class="text-center">{{value['target_price']|round(2)}}</td>
+                            <td class="text-center">{{value['tipranksRank']}}</td>
+
+                        </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 {% endblock %}
 {% block scripting %}

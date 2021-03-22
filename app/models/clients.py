@@ -26,6 +26,7 @@ class Report(db.Model):
     all_positions_value = db.Column('all_positions_value', db.Float)
     open_positions_json = db.Column('open_positions_json', db.String)
     open_orders_json = db.Column('open_orders_json', db.String)
+    candidates_live_json = db.Column('candidates_live_json', db.String)
     dailyPnl=db.Column('dailyPnl', db.Float)
     last_worker_execution = db.Column('last_worker_execution', db.DateTime)
     market_time = db.Column('market_time', db.DateTime)
@@ -44,6 +45,7 @@ class Report(db.Model):
             report.all_positions_value = self.all_positions_value
             report.open_positions_json = self.open_positions_json
             report.open_orders_json = self.open_orders_json
+            report.candidates_live_json=self.candidates_live_json
             report.dailyPnl = self.dailyPnl
             report.last_worker_execution = self.last_worker_execution
             report.market_time = self.market_time

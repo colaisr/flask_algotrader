@@ -45,6 +45,7 @@ def logreport():
         report.remaining_trades = request_data["remaining_trades"]
         report.open_positions_json = request_data["open_positions"]
         report.open_orders_json = request_data["open_orders"]
+        report.candidates_live_json=request_data["candidates_live"]
         report.all_positions_value = request_data["all_positions_value"]
         report.net_liquidation = request_data["net_liquidation"]
         report.remaining_sma_with_safety = request_data["remaining_sma_with_safety"]

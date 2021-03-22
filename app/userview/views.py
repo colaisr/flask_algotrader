@@ -43,6 +43,7 @@ def traderstationstate():
         #report=Report()
         open_positions={}
         open_orders={}
+        candidates_live={}
         i=3
     else:
         report.reported_text=report.report_time.strftime("%Y-%m-%d %H:%M:%S")
@@ -75,12 +76,14 @@ def traderstationstate():
         if not use_margin:
             report.excess_liquidity=round(report.net_liquidation-report.all_positions_value,1)
 
+        candidates_live = json.loads(report.candidates_live_json)
+
         report_time=report.report_time
 
     if report is None:
         return redirect(url_for('candidates.usercandidates'))
     else:
-        return render_template('userview/traderstationstate.html',report_time=report_time,open_positions=open_positions,open_orders=open_orders, user=current_user,report=report,margin_used=use_margin, form=None)
+        return render_template('userview/traderstationstate.html',report_time=report_time,candidates_live=candidates_live,open_positions=open_positions,open_orders=open_orders, user=current_user,report=report,margin_used=use_margin, form=None)
 
 @userview.route('closedpositions', methods=['GET', 'POST'])
 @login_required
