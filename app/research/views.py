@@ -25,6 +25,12 @@ research = Blueprint('research', __name__)
 @research.route('/updatemarketdataforcandidate', methods=['POST'])
 def updatemarketdataforcandidate():
     ticker = request.form['ticker_to_update']
+    research_ticker(ticker)
+
+    return redirect(url_for('admin.market_data'))
+
+
+def research_ticker(ticker):
     marketdata = TickerData.query.filter_by(ticker=ticker).first()
     marketdata.tipranks = get_tiprank_for_ticker(ticker)
     marketdata.fmp_pe = get_fmp_pe_for_ticker(ticker)
@@ -35,8 +41,6 @@ def updatemarketdataforcandidate():
     marketdata.fmp_updated = ct
     marketdata.updated_server_time = ct
     marketdata.update_ticker_data()
-
-    return redirect(url_for('admin.market_data'))
 
 
 @csrf.exempt

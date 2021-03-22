@@ -16,6 +16,7 @@ from flask_login import login_required, current_user
 
 from app import db, csrf
 from app.models import User, Connection, Report, TickerData, Candidate
+from app.research.views import research_ticker
 
 candidates = Blueprint('candidates', __name__)
 
@@ -33,8 +34,10 @@ def updatecandidate():
     c.ticker=request.form['txt_ticker']
     c.description=request.form['txt_description']
     c.email=current_user.email
-    c.update_candidate()
     c.enabled=True
+    c.update_candidate()
+    research_ticker(c.ticker)
+
     return redirect(url_for('candidates.usercandidates'))
 
 @candidates.route('removecandidate/', methods=['POST'])
