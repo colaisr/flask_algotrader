@@ -19,7 +19,12 @@
         </div>
     </div>
     <div class="column">
-        <button type="button" class="btn mr-2 mb-2 btn-primary" data-toggle="modal" data-target="#add_candidate_modal">
+<!--        <button type="button" id="btnAddCandidate" class="btn mr-2 mb-2 btn-primary" data-toggle="modal" data-target="#add_candidate_modal">-->
+<!--            Add-->
+<!--            Candidate-->
+<!--        </button>-->
+
+                <button type="button" id="btnAddCandidate" class="btn mr-2 mb-2 btn-primary" >
             Add
             Candidate
         </button>
@@ -89,7 +94,7 @@
 
 {% block modal %}
 <!-- Modal -->
-    <div class="modal fade" id="add_candidate_modal" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    <div class="modal" id="add_candidate_modal" data-backdrop="static" data-keyboard="false" role="dialog" aria-labelledby="exampleModalLabel"
      aria-hidden="true">
     <div class="modal-dialog" role="document">
         <form action="{{url_for('candidates.updatecandidate')}}" method="post">
@@ -115,13 +120,14 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-secondary" onclick="m.hide()" data-dismiss="modal">Close</button>
                     <input type="submit" class="btn btn-primary" value="Submit">
                 </div>
             </div>
         </form>
     </div>
 </div>
+
 {% endblock %}
 
 {% block scripting %}

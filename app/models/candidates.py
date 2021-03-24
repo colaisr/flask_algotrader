@@ -14,6 +14,10 @@ class Candidate(db.Model):
 
         if candidate is None:
             db.session.add(self)
+        else:
+            candidate.ticker=self.ticker
+            candidate.description=self.description
+            candidate.enabled=self.enabled
         db.session.commit()
 
     def delete_candidate(self):
