@@ -40,6 +40,8 @@
         {# Use overflow-x: scroll so that mobile views don't freak out
         # when the table is too wide #}
         <div style="overflow-x: scroll;">
+                                    <div class="page-title-subheading">User Candidates:
+                    </div>
             <table class="ui searchable sortable unstackable selectable celled table">
                 <thead>
                 <tr>
@@ -86,7 +88,32 @@
                 </tbody>
             </table>
         </div>
+    <div class="divider mt-0" style="margin-bottom: 30px;"></div>
+        {% if admin_candidates|length != 0 %}
+<div style="overflow-x: scroll;">
+                        <div class="page-title-subheading">Admin Candidates enabled:
+                    </div>
+            <table class="ui searchable sortable unstackable selectable celled table">
+                <thead>
+                <tr>
+                    <th class="sorted descending">Ticker</th>
 
+                    <th>Description</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for m in admin_candidates | sort(attribute='ticker') %}
+                <tr>
+                    <td>{{ m.ticker }}</td>
+
+                    <td>{{ m.description }}</td>
+
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% endif %}
     </div>
 
 </div>

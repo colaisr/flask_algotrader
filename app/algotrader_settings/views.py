@@ -29,12 +29,6 @@ def json_serial(obj):
         return obj.isoformat()
     raise TypeError("Type %s not serializable" % type(obj))
 
-
-class Settings_form(FlaskForm):
-    username = StringField('Username', validators=[DataRequired()])
-    account = StringField('Account', validators=[DataRequired()])
-    submit = SubmitField('Save')
-
 @algotradersettings.route('/usersettings', methods=['GET','POST'])
 @login_required
 def usersettings():

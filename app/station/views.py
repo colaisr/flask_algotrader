@@ -1,7 +1,9 @@
+import fileinput
 import io
 import os
 import pathlib
 import zipfile
+from shutil import copyfile
 
 from flask import (
     Blueprint,
@@ -13,12 +15,42 @@ from flask import (
 )
 from flask_login import current_user
 
+from app.models import UserSetting
+
 station=Blueprint('station', __name__)
 
 @station.route('/download', methods=['GET'])
 def download():
     uemail=current_user.email
     return render_template('userview/download.html', user=current_user)
+
+
+def create_script_for_package():
+    user_settings = UserSetting.query.filter_by(email=current_user.email).first()
+
+    if user_settings is not None:
+        origin='./app/static/installation_templates/twsRestartScript_template.vbs'
+        destination = './app/static/algotrader-station/algotrader/twsRestartScript.vbs'
+        copyfile(origin, destination)
+        with fileinput.FileInput(destination, inplace=True) as file:
+            for line in file:
+                print(line.replace("tws_user", 'colak1982'), end='')
+        with fileinput.FileInput(destination, inplace=True) as file:
+            for line in file:
+                print(line.replace("tws_password", 'klk5489103'), end='')
+
+
+def create_config_for_package():
+    user_settings = UserSetting.query.filter_by(email=current_user.email).first()
+
+    if user_settings is not None:
+        origin = './app/static/installation_templates/config_template.ini'
+        destination = './app/static/algotrader-station/algotrader/config.ini'
+        copyfile(origin, destination)
+        with fileinput.FileInput(destination, inplace=True) as file:
+            for line in file:
+                print(line.replace("server_user", user_settings.email), end='')
+
 
 @station.route('/downloadzip', methods=['GET'])
 def request_zip():
@@ -28,6 +60,8 @@ def request_zip():
         shutil.rmtree('./app/static/ready_package/algotrader'+uid+'.zip') #removing prev packages
     except:
         i=2
+    create_script_for_package()
+    create_config_for_package()
     shutil.make_archive('./app/static/ready_package/algotrader'+uid, 'zip', 'app/static','algotrader-station')
 
     return send_from_directory(

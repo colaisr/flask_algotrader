@@ -15,7 +15,7 @@ from datetime import datetime, date, timedelta
 from flask_login import login_required, current_user
 
 from app import db, csrf
-from app.models import User, Connection, Report, TickerData, Candidate
+from app.models import User, Connection, Report, TickerData, Candidate, UserSetting
 from app.research.views import research_ticker
 
 candidates = Blueprint('candidates', __name__)
@@ -24,7 +24,11 @@ candidates = Blueprint('candidates', __name__)
 @login_required
 def usercandidates():
     candidates=Candidate.query.filter_by(email=current_user.email).all()
-    return render_template('candidates/usercandidates.html',candidates=candidates, user=current_user, form=None)
+    user_settings = UserSetting.query.filter_by(email=current_user.email).first()
+    admin_candidates={}
+    if user_settings.server_use_system_candidates:
+        admin_candidates = Candidate.query.filter_by(email='admin@gmail.com', enabled=True).all()
+    return render_template('candidates/usercandidates.html',admin_candidates=admin_candidates,candidates=candidates, user=current_user, form=None)
 
 @candidates.route('updatecandidate/', methods=['POST'])
 @csrf.exempt
@@ -63,6 +67,7 @@ def retrievecandidates():
     use_system_candidates=request_data["use_system_candidates"]
     logged_user = request_data["user"]
     user_candidates=Candidate.query.filter_by(email=logged_user,enabled=True).all()
+
     if use_system_candidates:
         admin_candidates=Candidate.query.filter_by(email='admin@gmail.com',enabled=True).all()
         for uc in user_candidates:

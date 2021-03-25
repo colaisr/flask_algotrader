@@ -30,6 +30,8 @@ class UserSetting(db.Model):
     connection_break_from_min = db.Column('connection_break_from_min', db.Integer)
     connection_break_to_hour = db.Column('connection_break_to_hour', db.Integer)
     connection_break_to_min = db.Column('connection_break_to_min', db.Integer)
+    connection_tws_user = db.Column('connection_tws_user', db.String)
+    connection_tws_pass = db.Column('connection_tws_pass', db.String)
 
     station_debug_ui = db.Column('station_debug_ui', db.Boolean)
     station_autostart_worker = db.Column('station_autostart_worker', db.Boolean)
@@ -65,6 +67,8 @@ class UserSetting(db.Model):
         d['connection_break_to_hour']=self.connection_break_to_hour
         d['connection_break_to_min']=self.connection_break_to_min
         d['connection_account_name']=self.connection_account_name
+        d['connection_tws_user'] = self.connection_tws_user
+        d['connection_tws_pass'] = self.connection_tws_pass
         d['connection_break_from_min']=self.connection_break_from_min
         d['connection_break_from_hour']=self.connection_break_from_hour
         d['server_url']=self.server_url
@@ -79,4 +83,5 @@ class UserSetting(db.Model):
         d['station_autostart_worker']=self.station_autostart_worker
         d['algo_allow_buy'] = self.algo_allow_buy
         d['algo_allow_margin'] = self.algo_allow_margin
+
         return d
