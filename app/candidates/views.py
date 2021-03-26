@@ -36,7 +36,12 @@ def updatecandidate():
 
     c=Candidate()
     c.ticker=request.form['txt_ticker']
-    c.description=request.form['txt_description']
+    c.reason=request.form['txt_reason']
+    c.company_name = request.form['txt_company_name']
+    c.full_description = request.form['txt_company_description']
+    c.exchange = request.form['txt_exchange']
+    c.industry = request.form['txt_industry']
+    c.logo = request.form['txt_logo']
     c.email=current_user.email
     c.enabled=True
     c.update_candidate()

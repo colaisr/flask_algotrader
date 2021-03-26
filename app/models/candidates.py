@@ -6,7 +6,14 @@ class Candidate(db.Model):
     id = db.Column('id', db.Integer, primary_key=True)
     email = db.Column('email', db.String)
     ticker = db.Column('ticker', db.String)
-    description = db.Column('description', db.String)
+    reason = db.Column('reason', db.String)
+
+    company_name=db.Column('company_name', db.String)
+    exchange=db.Column('exchange', db.String)
+    industry=db.Column('industry', db.String)
+    full_description=db.Column('full_description', db.String)
+    logo=db.Column('logo', db.String)
+
     enabled = db.Column('enabled', db.Boolean)
 
     def update_candidate(self):
@@ -16,8 +23,13 @@ class Candidate(db.Model):
             db.session.add(self)
         else:
             candidate.ticker=self.ticker
-            candidate.description=self.description
+            candidate.reason=self.reason
             candidate.enabled=self.enabled
+            candidate.company_name=self.company_name
+            candidate.exchange=self.exchange
+            candidate.industry=self.industry
+            candidate.full_description=self.full_description
+            candidate.logo=self.logo
         db.session.commit()
 
     def delete_candidate(self):
@@ -34,5 +46,5 @@ class Candidate(db.Model):
     def to_dictionary(self):
         d={}
         d['ticker']=self.ticker
-        d['description'] = self.description
+        d['description'] = self.reason
         return d

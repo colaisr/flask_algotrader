@@ -19,10 +19,6 @@
         </div>
     </div>
     <div class="column">
-<!--        <button type="button" id="btnAddCandidate" class="btn mr-2 mb-2 btn-primary" data-toggle="modal" data-target="#add_candidate_modal">-->
-<!--            Add-->
-<!--            Candidate-->
-<!--        </button>-->
 
                 <button type="button" id="btnAddCandidate" class="btn mr-2 mb-2 btn-primary" >
             Add
@@ -45,16 +41,21 @@
             <table class="ui searchable sortable unstackable selectable celled table">
                 <thead>
                 <tr>
+                    <th></th>
                     <th class="sorted descending">Ticker</th>
                     <th></th>
                     <th></th>
                     <th>Enabled</th>
+                    <th>Reason</th>
+                    <th>Company</th>
+                    <th>Industry</th>
                     <th>Description</th>
                 </tr>
                 </thead>
                 <tbody>
                 {% for m in candidates | sort(attribute='ticker') %}
                 <tr>
+                    <td><img src="{{ m.logo }}"  width="20" height="20"></td>
                     <td>{{ m.ticker }}</td>
                     <td>
                         <form action="{{url_for('candidates.removecandidate')}}" method="post">
@@ -67,7 +68,7 @@
 
                             <button class="btn_edit"><i class="fa fa-edit"></i></button>
                             <input type="hidden" class="h_tick" value="{{ m.ticker }}">
-                            <input type="hidden" class="h_desc" value="{{ m.description }}">
+                            <input type="hidden" class="h_reason" value="{{ m.reason }}">
                     </td>
                     <td>
                         <form action="{{url_for('candidates.enabledisable')}}" method="post">
@@ -81,7 +82,10 @@
                         </form>
 
                     </td>
-                    <td>{{ m.description }}</td>
+                    <td><textarea disabled  rows="2" cols="40">{{ m.reason }}</textarea></td>
+                    <td>{{ m.company_name }}</td>
+                    <td>{{ m.industry }}</td>
+                    <td><textarea disabled  rows="2" cols="40">{{ m.full_description }}</textarea>
 
                 </tr>
                 {% endfor %}
@@ -96,17 +100,24 @@
             <table class="ui searchable sortable unstackable selectable celled table">
                 <thead>
                 <tr>
+                    <th></th>
                     <th class="sorted descending">Ticker</th>
-
+                    <th>Reason</th>
+                    <th>Company</th>
+                    <th>Industry</th>
                     <th>Description</th>
                 </tr>
                 </thead>
                 <tbody>
                 {% for m in admin_candidates | sort(attribute='ticker') %}
                 <tr>
+                    <td><img src="{{ m.logo }}"  width="20" height="20"></td>
                     <td>{{ m.ticker }}</td>
-
-                    <td>{{ m.description }}</td>
+                    <td><textarea disabled  rows="2" cols="40">{{ m.reason }}</textarea></td>
+                    <td>{{ m.company_name }}</td>
+                    <td>{{ m.industry }}</td>
+                    <td><textarea disabled  rows="2" cols="40">{{ m.full_description }}</textarea>
+                    </td>
 
                 </tr>
                 {% endfor %}
@@ -127,10 +138,7 @@
         <form action="{{url_for('candidates.updatecandidate')}}" method="post">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Candidate stock</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+                    <h5 class="modal-title" id="exampleModalLabel">Candidate</h5>
                 </div>
                 <div class="modal-body">
                     <div>
@@ -140,15 +148,38 @@
                                    placeholder="Enter a ticker ...">
                         </div>
                         <div class="form-group">
-                            <label class="form-label" for="txt_description">Description</label>
-                            <textarea required class="form-control" name="txt_description" id="txt_description" rows="3"
-                                      placeholder="Enter a description ..."></textarea>
+                            <label class="form-label" for="txt_reason">Reason</label>
+                            <textarea required class="form-control" name="txt_reason" id="txt_reason" rows="3"
+                                      placeholder="Enter a reason ..."></textarea>
+                        </div>
+                        <div class="form-group">
+                            <button type="button" id="btn_validate" class="btn btn-primary">Validate</button>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="txt_company_name">Name</label>
+                                <input required id="txt_company_name" name="txt_company_name" type="text" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="txt_company_description">Description</label>
+                            <textarea required class="form-control" name="txt_company_description" id="txt_company_description" rows="3"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="txt_exchange">Exchange</label>
+                                <input required id="txt_exchange" name="txt_exchange" type="text" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="txt_industry">Industry</label>
+                                <input required id="txt_industry" name="txt_industry" type="text" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="txt_logo">Logo URL</label>
+                                <input required id="txt_logo" name="txt_logo" type="text" class="form-control">
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" onclick="m.hide()" data-dismiss="modal">Close</button>
-                    <input type="submit" class="btn btn-primary" value="Submit">
+                    <input type="submit" title="Validate to Submit" class="btn btn-primary" disabled id="btn_submit" value="Submit">
                 </div>
             </div>
         </form>
