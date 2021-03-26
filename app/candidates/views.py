@@ -71,7 +71,7 @@ def retrievecandidates():
     request_data = request.get_json()
     logged_user = request_data["user"]
     user_candidates=Candidate.query.filter_by(email=logged_user,enabled=True).all()
-    user_settings = UserSetting.query.filter_by(email=current_user.email).first()
+    user_settings = UserSetting.query.filter_by(email=logged_user).first()
 
     if user_settings.server_use_system_candidates:
         admin_candidates=Candidate.query.filter_by(email='admin@gmail.com',enabled=True).all()
