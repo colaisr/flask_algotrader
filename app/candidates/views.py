@@ -69,11 +69,11 @@ def enabledisable():
 @candidates.route('/retrieveusercandidates', methods=['GET'])
 def retrievecandidates():
     request_data = request.get_json()
-    use_system_candidates=request_data["use_system_candidates"]
     logged_user = request_data["user"]
     user_candidates=Candidate.query.filter_by(email=logged_user,enabled=True).all()
+    user_settings = UserSetting.query.filter_by(email=current_user.email).first()
 
-    if use_system_candidates:
+    if user_settings.server_use_system_candidates:
         admin_candidates=Candidate.query.filter_by(email='admin@gmail.com',enabled=True).all()
         for uc in user_candidates:
             for ac in admin_candidates:
