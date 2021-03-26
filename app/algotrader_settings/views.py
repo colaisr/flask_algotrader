@@ -37,6 +37,7 @@ def usersettings():
         user_settings.algo_trailing_percent=1
         user_settings.algo_allow_buy=True
         user_settings.algo_allow_margin = True
+        user_settings.algo_min_rank=8
 
         user_settings.connection_account_name = 'Default,needs to be changed'
         user_settings.connection_port=7498

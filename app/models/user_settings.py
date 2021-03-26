@@ -22,6 +22,7 @@ class UserSetting(db.Model):
     algo_bulk_amount_usd = db.Column('algo_bulk_amount_usd', db.Integer)
     algo_allow_buy = db.Column('algo_allow_buy', db.Boolean)
     algo_allow_margin = db.Column('algo_allow_margin', db.Boolean)
+    algo_min_rank = db.Column('algo_min_rank', db.Integer)
 
 
     connection_account_name = db.Column('connection_account_name', db.String)
@@ -65,5 +66,6 @@ class UserSetting(db.Model):
         d['station_interval_ui_sec']=self.station_interval_ui_sec
         d['algo_allow_buy'] = self.algo_allow_buy
         d['algo_allow_margin'] = self.algo_allow_margin
+        d['algo_min_rank'] = self.algo_min_rank
 
         return d

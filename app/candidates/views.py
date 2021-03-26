@@ -65,6 +65,17 @@ def enabledisable():
     candidate.change_enabled_state()
     return redirect(url_for('candidates.usercandidates'))
 
+
+def filter_candidates(requested_candidates,logged_user):
+    user_settings = UserSetting.query.filter_by(email=logged_user).first()
+    filtered=[]
+    for c in requested_candidates:
+        td=TickerData.query.filter_by(ticker=c.ticker).first()
+        if td.tipranks>=user_settings.algo_min_rank:
+            filtered.append(c)
+    return filtered
+
+
 @csrf.exempt
 @candidates.route('/retrieveusercandidates', methods=['GET'])
 def retrievecandidates():
@@ -85,6 +96,7 @@ def retrievecandidates():
         requested_candidates=admin_candidates
     else:
         requested_candidates=user_candidates
+    requested_candidates=filter_candidates(requested_candidates,logged_user)
     cand_dictionaries=[]
     for c in requested_candidates:
         cand_dictionaries.append(c.to_dictionary())
