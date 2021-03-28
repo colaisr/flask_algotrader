@@ -53,7 +53,7 @@ def create_app(config):
 
         tunnel = sshtunnel.SSHTunnelForwarder(
             (ssh_url), ssh_username=ssh_user, ssh_password=ssh_password,
-            remote_bind_address=('colak.mysql.pythonanywhere-services.com', 3306)
+            remote_bind_address=('colak.mysql.eu.pythonanywhere-services.com', 3306)
         )
 
         tunnel.start()
