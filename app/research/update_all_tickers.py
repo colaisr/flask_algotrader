@@ -2,7 +2,7 @@ import json
 import ssl
 import urllib
 from urllib.request import urlopen
-server_url="http://colak.pythonanywhere.com/"
+server_url="http://colak.eu.pythonanywhere.com/"
 
 def get_all_tickers():
     url = (server_url+"/research/alltickers")

@@ -71,6 +71,8 @@ def filter_candidates(requested_candidates,logged_user):
     filtered=[]
     for c in requested_candidates:
         td=TickerData.query.filter_by(ticker=c.ticker).first()
+        if td is None:
+            print(c.ticker)
         if td.tipranks>=user_settings.algo_min_rank:
             filtered.append(c)
     return filtered
@@ -100,5 +102,6 @@ def retrievecandidates():
     cand_dictionaries=[]
     for c in requested_candidates:
         cand_dictionaries.append(c.to_dictionary())
+
     response=json.dumps(cand_dictionaries)
     return response
