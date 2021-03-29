@@ -20,3 +20,5 @@ for t in tickers:
 
     url =server_url+"/research/updatemarketdataforcandidate"
     response = urllib.request.urlopen(url, data)
+    u=3
+done=2

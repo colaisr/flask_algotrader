@@ -1,8 +1,12 @@
 import requests
 def get_tiprank_for_ticker(ticker):
-    url = "https://www.tipranks.com/api/stocks/stockAnalysisOverview/?tickers=" + ticker
+    score=0
+    try:
+        url = "https://www.tipranks.com/api/stocks/stockAnalysisOverview/?tickers=" + ticker
 
-    url = requests.get(url)
-    result=url.json()
-    score=result[0]['smartScore']
+        url = requests.get(url)
+        result=url.json()
+        score=result[0]['smartScore']
+    except:
+        score=0
     return score
