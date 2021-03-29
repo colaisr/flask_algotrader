@@ -151,6 +151,7 @@
                 All existing positions value : {{report.all_positions_value|round(1)}} USD
             </div>
         </div>
+    {% if open_orders|length != 0 %}
     <div class="divider mt-0" style="margin-bottom: 30px;"></div>
     <div class="row">
         <div class="col-md-12">
@@ -206,6 +207,7 @@
             </div>
         </div>
     </div>
+    {% endif %}
     <div class="divider mt-0" style="margin-bottom: 30px;"></div>
     <div class="row">
         <div class="col-md-12">
