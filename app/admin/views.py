@@ -19,7 +19,7 @@ from app.admin.forms import (
 )
 from app.decorators import admin_required
 from app.email import send_email
-from app.models import EditableHTML, Role, User, TickerData
+from app.models import EditableHTML, Role, User, TickerData, UserSetting
 
 admin = Blueprint('admin', __name__)
 
@@ -101,11 +101,12 @@ def registered_users():
 def market_data():
     """View all registered users."""
     marketdata = TickerData.query.all()
+    user_settings = UserSetting.query.filter_by(email=current_user.email).first()
     for m in marketdata:
         if m.fmp_pe is None:
             m.fmp_pe=0
 
-    return render_template('admin/market_data.html', marketdata=marketdata)
+    return render_template('admin/market_data.html',user_settings=user_settings, marketdata=marketdata)
 
 
 @admin.route('/user/<int:user_id>')

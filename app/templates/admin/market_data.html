@@ -59,7 +59,7 @@
                     <td>{{ m.yahoo_avdropP|round(1, 'floor') }}</td>
                     <td>{{ m.yahoo_avspreadP|round(1, 'floor') }}</td>
                     <td
-                            {% if m.tipranks>8 %}
+                            {% if m.tipranks>=user_settings.algo_min_rank %}
                         style="background-color: aquamarine;"
                         {% endif %}
                         >{{ m.tipranks }}
