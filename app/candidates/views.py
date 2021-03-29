@@ -68,12 +68,14 @@ def enabledisable():
 @csrf.exempt
 @candidates.route('/info', methods=['GET'])
 def info():
+
     ticker=request.args['ticker_to_show']
     candidate = Candidate.query.filter_by(ticker=ticker).first()
     m_data=td=TickerData.query.filter_by(ticker=ticker).first()
+    user_settings = UserSetting.query.filter_by(email=current_user.email).first()
     # last_year=get_stock_rank(position.ticker)
 
-    return render_template('candidates/ticker_info.html',candidate=candidate,market_data=m_data)
+    return render_template('candidates/ticker_info.html',user_settings=user_settings,candidate=candidate,market_data=m_data)
 
 
 def filter_candidates(requested_candidates,logged_user):
