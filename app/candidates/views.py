@@ -65,6 +65,16 @@ def enabledisable():
     candidate.change_enabled_state()
     return redirect(url_for('candidates.usercandidates'))
 
+@csrf.exempt
+@candidates.route('/info', methods=['GET'])
+def info():
+    ticker=request.args['ticker_to_show']
+    candidate = Candidate.query.filter_by(ticker=ticker).first()
+    m_data=td=TickerData.query.filter_by(ticker=ticker).first()
+    # last_year=get_stock_rank(position.ticker)
+
+    return render_template('candidates/ticker_info.html',candidate=candidate,market_data=m_data)
+
 
 def filter_candidates(requested_candidates,logged_user):
     user_settings = UserSetting.query.filter_by(email=logged_user).first()
