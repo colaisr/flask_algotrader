@@ -55,6 +55,7 @@ def updatemarketdata():
             t.update_ticker_data()
 
     return "Market data updated at server"
+
 @csrf.exempt
 @marketdata.route('/retrievemarketdata', methods=['GET'])
 def retrievemarketdata():

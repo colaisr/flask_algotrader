@@ -229,7 +229,10 @@
                         </thead>
                         <tbody>
                         {% for key, value in candidates_live.items() %}
-                        <tr>
+                        <tr {% if value['Ask']<value['target_price']%}
+                        style="background-color: aquamarine;"
+                        {% endif %}
+                        >
                             <td class="text-center text-muted">{{value['Stock']}}</td>
                             <td class="text-center">{{value['Close']}}</td>
                             <td class="text-center">{{value['Open']}}</td>
