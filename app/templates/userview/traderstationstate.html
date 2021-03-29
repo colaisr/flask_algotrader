@@ -24,8 +24,8 @@
             <div class="page-title-actions">
                 <div>
                     <input id="report_time" type="hidden" value="{{report_time}}">
-                    <div  class="mb-2 mr-2 badge badge-secondary">Last update : {{ report.reported_text }}</div>
-                    <div id="connection_state"  class="mb-2 mr-2 badge badge-pill badge-danger">offline</div>
+                    <div class="mb-2 mr-2 badge badge-secondary">Last update : {{ report.reported_text }}</div>
+                    <div id="connection_state" class="mb-2 mr-2 badge badge-pill badge-danger">offline</div>
                 </div>
 
 
@@ -112,7 +112,12 @@
                 <div class="widget-content-outer">
                     <div class="widget-content-wrapper">
                         <div class="widget-content-left">
-                            <div class="widget-heading"> {{key}}</div>
+                            <div class="widget-heading">
+                                <a href="{{url_for('candidates.info')}}?ticker_to_show={{ key }}">
+                                    {{ key}}
+                                </a>
+
+                            </div>
                             <div class="widget-subheading">Today change:
                                 {%if value['DailyPnL']>0%}
                                 <span style="color:#3AC47D;font-weight:bold">${{value['DailyPnL']|round(1) }}</span>
@@ -146,11 +151,11 @@
 
     </div>
     <div class="divider mt-0" style="margin-bottom: 30px;"></div>
-        <div class="row">
-            <div class="col-md-12">
-                All existing positions value : {{report.all_positions_value|round(1)}} USD
-            </div>
+    <div class="row">
+        <div class="col-md-12">
+            All existing positions value : {{report.all_positions_value|round(1)}} USD
         </div>
+    </div>
     {% if open_orders|length != 0 %}
     <div class="divider mt-0" style="margin-bottom: 30px;"></div>
     <div class="row">
@@ -229,16 +234,23 @@
                         </thead>
                         <tbody>
                         {% for key, value in candidates_live.items() %}
-                        <tr {% if value['Ask']<value['target_price']%}
+                        <tr {% if value[
+                        'Ask']
+                        <value
+                        ['target_price']%}
                         style="background-color: aquamarine;"
                         {% endif %}
                         >
-                            <td class="text-center text-muted">{{value['Stock']}}</td>
-                            <td class="text-center">{{value['Close']}}</td>
-                            <td class="text-center">{{value['Open']}}</td>
-                            <td class="text-center">{{value['Ask']}}</td>
-                            <td class="text-center">{{value['target_price']|round(2)}}</td>
-                            <td class="text-center">{{value['tipranksRank']}}</td>
+                        <td class="text-center text-muted">
+                            <a href="{{url_for('candidates.info')}}?ticker_to_show={{value['Stock']}}">
+                                {{value['Stock']}}
+                            </a>
+                        </td>
+                        <td class="text-center">{{value['Close']}}</td>
+                        <td class="text-center">{{value['Open']}}</td>
+                        <td class="text-center">{{value['Ask']}}</td>
+                        <td class="text-center">{{value['target_price']|round(2)}}</td>
+                        <td class="text-center">{{value['tipranksRank']}}</td>
 
                         </tr>
                         {% endfor %}

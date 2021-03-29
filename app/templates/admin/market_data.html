@@ -44,14 +44,18 @@
                 </thead>
                 <tbody>
                 {% for m in marketdata | sort(attribute='tiprank_updated') %}
-                <tr onclick="alert('implement going to candidate')">
+                <tr >
                     <td>
                         <form action="{{url_for('research.updatemarketdataforcandidate')}}" method="post">
                             <input type="hidden" name="ticker_to_update" value="{{ m.ticker }}">
                             <button type="submit"><i class="fa fa-refresh"></i></button>
                         </form>
                     </td>
-                    <td>{{ m.ticker }}</td>
+                    <td>
+                        <a href="{{url_for('candidates.info')}}?ticker_to_show={{ m.ticker }}">
+                                {{ m.ticker }}
+                            </a>
+                        </td>
                     <td>{{ m.yahoo_avdropP|round(1, 'floor') }}</td>
                     <td>{{ m.yahoo_avspreadP|round(1, 'floor') }}</td>
                     <td

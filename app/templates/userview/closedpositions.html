@@ -48,7 +48,11 @@
                 <tbody>
                 {% for m in positions | sort(attribute='closed') %}
                 <tr>
-                    <td>{{ m.ticker }}</td>
+                    <td>
+                        <a href="{{url_for('candidates.info')}}?ticker_to_show={{ m.ticker }}">
+                                {{ m.ticker }}
+                            </a>
+                        </td>
                     <td>
                         <form action="{{url_for('closed_position_info.view')}}" method="get">
                             <input type="hidden" name="position_to_show" value="{{ m.id }}">
