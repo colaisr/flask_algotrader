@@ -27,28 +27,6 @@ def json_serial(obj):
 def usersettings():
     user_settings = UserSetting.query.filter_by(email=current_user.email).first()
 
-    if user_settings is None:      #default settings for user
-        user_settings=UserSetting()
-        user_settings.email=current_user.email
-
-        user_settings.algo_max_loss=-10
-        user_settings.algo_take_profit=6
-        user_settings.algo_bulk_amount_usd=1000
-        user_settings.algo_trailing_percent=1
-        user_settings.algo_allow_buy=True
-        user_settings.algo_allow_margin = True
-        user_settings.algo_min_rank=8
-
-        user_settings.connection_account_name = 'Default,needs to be changed'
-        user_settings.connection_port=7498
-
-        user_settings.station_interval_ui_sec=1
-        user_settings.station_interval_worker_sec=60
-
-        user_settings.server_url='http://colak.pythonanywhere.com'
-        user_settings.server_report_interval_sec=30
-        user_settings.server_use_system_candidates=True
-
     SettingsForm = model_form(UserSetting,base_class=FlaskForm)
     form=SettingsForm(obj=user_settings)
     if form.validate_on_submit():

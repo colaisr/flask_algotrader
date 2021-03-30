@@ -25,7 +25,7 @@ from app.account.forms import (
     ResetPasswordForm,
 )
 from app.email import send_email
-from app.models import User
+from app.models import User, UserSetting
 
 account = Blueprint('account', __name__)
 
@@ -57,7 +57,28 @@ def register():
             email=form.email.data,
             password=form.password.data,
             confirmed = True)
+        user_settings = UserSetting(
+            email=form.email.data,
+            algo_max_loss=-10,
+            algo_take_profit=6,
+            algo_bulk_amount_usd=1000,
+            algo_trailing_percent=1,
+            algo_allow_buy=True,
+            algo_allow_margin = True,
+            algo_min_rank=8,
+
+            connection_account_name = 'Default,needs to be changed',
+            connection_port=7498,
+
+            station_interval_ui_sec=1,
+            station_interval_worker_sec=60,
+
+            server_url='http://colak.eu.pythonanywhere.com',
+            server_report_interval_sec=30,
+            server_use_system_candidates=True
+        )
         db.session.add(user)
+        db.session.add(user_settings)
         db.session.commit()
         token = user.generate_confirmation_token()
         confirm_link = url_for('account.confirm', token=token, _external=True)
@@ -69,11 +90,11 @@ def register():
         #     user=user,
         #     confirm_link=confirm_link)
 
-        # send_email(recipient=user.email,
-        #     subject='Confirm Your Account',
-        #     template='account/email/confirm',
-        #     user=user,
-        #     confirm_link=confirm_link)
+        send_email(recipient=user.email,
+            subject='Confirm Your Account',
+            template='account/email/confirm',
+            user=user,
+            confirm_link=confirm_link)
 
         flash('A confirmation link has been sent to {}.'.format(user.email),
               'warning')
@@ -109,9 +130,15 @@ def reset_password_request():
             token = user.generate_password_reset_token()
             reset_link = url_for(
                 'account.reset_password', token=token, _external=True)
-            get_queue().enqueue(
-                send_email,
-                recipient=user.email,
+            # get_queue().enqueue(
+            #     send_email,
+            #     recipient=user.email,
+            #     subject='Reset Your Password',
+            #     template='account/email/reset_password',
+            #     user=user,
+            #     reset_link=reset_link,
+            #     next=request.args.get('next'))
+            send_email(recipient=user.email,
                 subject='Reset Your Password',
                 template='account/email/reset_password',
                 user=user,
