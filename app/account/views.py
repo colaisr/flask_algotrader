@@ -55,8 +55,8 @@ def register():
             first_name=form.first_name.data,
             last_name=form.last_name.data,
             email=form.email.data,
-            password=form.password.data,
-            confirmed = True)
+            password=form.password.data)
+
         user_settings = UserSetting(
             email=form.email.data,
             algo_max_loss=-10,
@@ -130,14 +130,6 @@ def reset_password_request():
             token = user.generate_password_reset_token()
             reset_link = url_for(
                 'account.reset_password', token=token, _external=True)
-            # get_queue().enqueue(
-            #     send_email,
-            #     recipient=user.email,
-            #     subject='Reset Your Password',
-            #     template='account/email/reset_password',
-            #     user=user,
-            #     reset_link=reset_link,
-            #     next=request.args.get('next'))
             send_email(recipient=user.email,
                 subject='Reset Your Password',
                 template='account/email/reset_password',
@@ -199,15 +191,24 @@ def change_email_request():
             token = current_user.generate_email_change_token(new_email)
             change_email_link = url_for(
                 'account.change_email', token=token, _external=True)
-            get_queue().enqueue(
-                send_email,
+            send_email(
                 recipient=new_email,
                 subject='Confirm Your New Email',
                 template='account/email/change_email',
                 # current_user is a LocalProxy, we want the underlying user
                 # object
                 user=current_user._get_current_object(),
-                change_email_link=change_email_link)
+                change_email_link=change_email_link
+                       )
+            # get_queue().enqueue(
+            #     send_email,
+            #     recipient=new_email,
+            #     subject='Confirm Your New Email',
+            #     template='account/email/change_email',
+            #     # current_user is a LocalProxy, we want the underlying user
+            #     # object
+            #     user=current_user._get_current_object(),
+            #     change_email_link=change_email_link)
             flash('A confirmation link has been sent to {}.'.format(new_email),
                   'warning')
             return redirect(url_for('main.index'))
@@ -233,14 +234,23 @@ def confirm_request():
     """Respond to new user's request to confirm their account."""
     token = current_user.generate_confirmation_token()
     confirm_link = url_for('account.confirm', token=token, _external=True)
-    get_queue().enqueue(
-        send_email,
+    send_email(
         recipient=current_user.email,
         subject='Confirm Your Account',
         template='account/email/confirm',
         # current_user is a LocalProxy, we want the underlying user object
         user=current_user._get_current_object(),
-        confirm_link=confirm_link)
+        confirm_link=confirm_link
+    )
+
+    # get_queue().enqueue(
+    #     send_email,
+    #     recipient=current_user.email,
+    #     subject='Confirm Your Account',
+    #     template='account/email/confirm',
+    #     # current_user is a LocalProxy, we want the underlying user object
+    #     user=current_user._get_current_object(),
+    #     confirm_link=confirm_link)
     flash('A new confirmation link has been sent to {}.'.format(
         current_user.email), 'warning')
     return redirect(url_for('main.index'))
@@ -298,13 +308,21 @@ def join_from_invite(user_id, token):
             user_id=user_id,
             token=token,
             _external=True)
-        get_queue().enqueue(
-            send_email,
+
+        send_email(
             recipient=new_user.email,
             subject='You Are Invited To Join',
             template='account/email/invite',
             user=new_user,
-            invite_link=invite_link)
+            invite_link=invite_link
+        )
+        # get_queue().enqueue(
+        #     send_email,
+        #     recipient=new_user.email,
+        #     subject='You Are Invited To Join',
+        #     template='account/email/invite',
+        #     user=new_user,
+        #     invite_link=invite_link)
     return redirect(url_for('main.index'))
 
 
