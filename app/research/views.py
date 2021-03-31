@@ -31,10 +31,7 @@ def updatemarketdataforcandidate():
 
 
 def research_ticker(ticker):
-    marketdata = TickerData.query.filter_by(ticker=ticker).first()
-    if marketdata is None:
-        marketdata=TickerData()
-        marketdata.ticker=ticker
+    marketdata = TickerData()
     marketdata.tipranks = get_tiprank_for_ticker(ticker)
     marketdata.fmp_pe = get_fmp_pe_for_ticker(ticker)
     marketdata.fmp_rating, marketdata.fmp_score = get_fmp_ratings_score_for_ticker(ticker)
@@ -42,7 +39,7 @@ def research_ticker(ticker):
     ct = datetime.now()
 
     marketdata.updated_server_time = ct
-    marketdata.update_ticker_data()
+    marketdata.add_ticker_data()
 
 
 @csrf.exempt

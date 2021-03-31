@@ -46,7 +46,7 @@ def updatemarketdata():
                      fmp_rating=fmp_rating,
                      fmp_score=fmp_score)
         if int(t.tipranks)!=0:
-            t.update_ticker_data()
+            t.add_ticker_data()
 
     return "Market data updated at server"
 
@@ -58,7 +58,7 @@ def retrievemarketdata():
     parsed_data = json.loads(received_data)
     requested_tickers={}
     for t in parsed_data:
-        td=TickerData.query.filter_by(ticker=t).first()
+        td=TickerData.query.filter_by(ticker=t).last()
         if td is None:#not data-fake
             td=TickerData(ticker=t,
                           yahoo_avdropP=0,

@@ -24,19 +24,16 @@ class TickerData(db.Model):
     updated_server_time=db.Column('updated_server_time', db.DateTime)
 
 
-    def update_ticker_data(self):
-        td = TickerData.query.filter_by(ticker=self.ticker).first()
-        if td is None:
-            db.session.add(self)
-        else:
-            td.yahoo_avdropP=self.yahoo_avdropP
-            td.yahoo_avspreadP = self.yahoo_avspreadP
-            td.tipranks=self.tipranks
-            td.fmp_pe=self.fmp_pe
-            td.fmp_rating=self.fmp_rating
-            td.fmp_score=self.fmp_score
-            td.updated_server_time = self.updated_server_time
-
+    def add_ticker_data(self):
+        td = TickerData()
+        td.yahoo_avdropP=self.yahoo_avdropP
+        td.yahoo_avspreadP = self.yahoo_avspreadP
+        td.tipranks=self.tipranks
+        td.fmp_pe=self.fmp_pe
+        td.fmp_rating=self.fmp_rating
+        td.fmp_score=self.fmp_score
+        td.updated_server_time = self.updated_server_time
+        db.session.add(td)
         db.session.commit()
 
     def toJson(self):
