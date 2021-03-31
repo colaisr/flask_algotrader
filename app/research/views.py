@@ -35,14 +35,12 @@ def research_ticker(ticker):
     if marketdata is None:
         marketdata=TickerData()
         marketdata.ticker=ticker
-        marketdata.updated_by_user='cola.isr@gmail.com'
     marketdata.tipranks = get_tiprank_for_ticker(ticker)
     marketdata.fmp_pe = get_fmp_pe_for_ticker(ticker)
     marketdata.fmp_rating, marketdata.fmp_score = get_fmp_ratings_score_for_ticker(ticker)
     marketdata.yahoo_avdropP, marketdata.yahoo_avspreadP = get_yahoo_stats_for_ticker(ticker)
     ct = datetime.now()
-    marketdata.tiprank_updated = ct
-    marketdata.fmp_updated = ct
+
     marketdata.updated_server_time = ct
     marketdata.update_ticker_data()
 

@@ -29,28 +29,22 @@ def json_serial(obj):
 def updatemarketdata():
     request_data = request.get_json()
     received_data=request_data["tickers"]
-    logged_user = request_data["user"]
     parsed_data = json.loads(received_data)
     for marker in parsed_data:
         ticker=marker['ticker']
         yahoo_avdropP=marker['yahoo_avdropP']
         yahoo_avspreadP=marker['yahoo_avspreadP']
         tipranks=marker['tipranks']
-        tiprank_updated=datetime.fromisoformat(marker['tiprank_updated'])
         fmp_pe = marker['fmp_pe']
         fmp_rating = marker['fmp_rating']
         fmp_score = marker['fmp_score']
-        fmp_updated = datetime.fromisoformat(marker['fmp_updated'])
         t=TickerData(ticker=ticker,
                      yahoo_avdropP=yahoo_avdropP,
                      yahoo_avspreadP=yahoo_avspreadP,
                      tipranks=tipranks,
-                     tiprank_updated=tiprank_updated,
                      fmp_pe=fmp_pe,
                      fmp_rating=fmp_rating,
-                     fmp_score=fmp_score,
-                     fmp_updated=fmp_updated,
-                     updated_by_user=logged_user)
+                     fmp_score=fmp_score)
         if int(t.tipranks)!=0:
             t.update_ticker_data()
 
@@ -61,7 +55,6 @@ def updatemarketdata():
 def retrievemarketdata():
     request_data = request.get_json()
     received_data=request_data["tickers"]
-    logged_user = request_data["user"]
     parsed_data = json.loads(received_data)
     requested_tickers={}
     for t in parsed_data:
@@ -70,11 +63,8 @@ def retrievemarketdata():
             td=TickerData(ticker=t,
                           yahoo_avdropP=0,
                           yahoo_avspreadP=0,
-                          tipranks=0,
-                          tiprank_updated=(datetime.today() - timedelta(days=1)),
-                          fmp_updated=(datetime.today() - timedelta(days=1)))
+                          tipranks=0)
 
         tdj=json.dumps(td.toDictionary())
         requested_tickers[td.ticker]=tdj
-    parsed_response=json.dumps(requested_tickers)
     return requested_tickers

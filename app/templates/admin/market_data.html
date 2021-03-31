@@ -34,16 +34,14 @@
                     <th>Average drop %</th>
                     <th>Average spread %</th>
                     <th>TipRank</th>
-                    <th class="sorted descending">TipRank Updated</th>
                     <th>PE</th>
                     <th>FMP rating</th>
                     <th>FMP score</th>
-                    <th>FMP Updated</th>
                     <th>Updated</th>
                 </tr>
                 </thead>
                 <tbody>
-                {% for m in marketdata | sort(attribute='tiprank_updated') %}
+                {% for m in marketdata  %}
                 <tr >
                     <td>
                         <form action="{{url_for('research.updatemarketdataforcandidate')}}" method="post">
@@ -64,11 +62,9 @@
                         {% endif %}
                         >{{ m.tipranks }}
                     </td>
-                    <td>{{ m.tiprank_updated }}</td>
                     <td>{{ m.fmp_pe|round(1, 'floor') }}</td>
                     <td>{{ m.fmp_rating }}</td>
                     <td>{{ m.fmp_score }}</td>
-                    <td>{{ m.fmp_updated }}</td>
                     <td>{{ m.updated_server_time }}</td>
 
                 </tr>

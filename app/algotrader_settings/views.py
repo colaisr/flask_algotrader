@@ -65,18 +65,6 @@ def savesettings():
     user_settings.update_user_settings()
     return redirect(url_for('algotradersettings.usersettings'))
 
-# @algotradersettings.route('/usersettings', methods=['GET','POST'])
-# @login_required
-# def usersettings():
-#     user_settings = UserSetting.query.filter_by(email=current_user.email).first()
-#
-#     SettingsForm = model_form(UserSetting,base_class=FlaskForm)
-#     form=SettingsForm(obj=user_settings)
-#     if form.validate_on_submit():
-#         form.populate_obj(user_settings)
-#         user_settings.update_user_settings()
-#     return render_template('userview/algotraderSettings.html',user=current_user, form=form)
-
 @csrf.exempt
 @algotradersettings.route('/retrieveusersettings', methods=['GET'])
 def retrieve_user_settings():
