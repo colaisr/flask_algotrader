@@ -25,15 +25,8 @@ class TickerData(db.Model):
 
 
     def add_ticker_data(self):
-        td = TickerData()
-        td.yahoo_avdropP=self.yahoo_avdropP
-        td.yahoo_avspreadP = self.yahoo_avspreadP
-        td.tipranks=self.tipranks
-        td.fmp_pe=self.fmp_pe
-        td.fmp_rating=self.fmp_rating
-        td.fmp_score=self.fmp_score
-        td.updated_server_time = self.updated_server_time
-        db.session.add(td)
+
+        db.session.add(self)
         db.session.commit()
 
     def toJson(self):

@@ -107,8 +107,9 @@ def registered_users():
 @login_required
 @admin_required
 def market_data():
+    #.distinct(TickerData.ticker).group_by(TickerData.ticker)
     """View all registered users."""
-    marketdata = TickerData.query.all()
+    marketdata = TickerData.query.order_by(TickerData.updated_server_time.desc()).group_by(TickerData.ticker).distinct(TickerData.ticker)
     user_settings = UserSetting.query.filter_by(email=current_user.email).first()
     for m in marketdata:
         if m.fmp_pe is None:

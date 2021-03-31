@@ -32,6 +32,7 @@ def updatemarketdataforcandidate():
 
 def research_ticker(ticker):
     marketdata = TickerData()
+    marketdata.ticker=ticker
     marketdata.tipranks = get_tiprank_for_ticker(ticker)
     marketdata.fmp_pe = get_fmp_pe_for_ticker(ticker)
     marketdata.fmp_rating, marketdata.fmp_score = get_fmp_ratings_score_for_ticker(ticker)

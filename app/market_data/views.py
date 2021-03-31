@@ -58,7 +58,7 @@ def retrievemarketdata():
     parsed_data = json.loads(received_data)
     requested_tickers={}
     for t in parsed_data:
-        td=TickerData.query.filter_by(ticker=t).last()
+        td=TickerData.query.filter_by(ticker=t).order_by(TickerData.updated_server_time.desc()).first()
         if td is None:#not data-fake
             td=TickerData(ticker=t,
                           yahoo_avdropP=0,
