@@ -2,13 +2,14 @@ import json
 from flask import (
     Blueprint,
     render_template,
-    request
+    request, url_for
 )
 from datetime import datetime, date, timedelta
 
 from flask_login import login_required, current_user
-from flask_wtf import FlaskForm
-from wtforms.ext.sqlalchemy.orm import model_form
+
+from werkzeug.utils import redirect
+
 
 from app import db, csrf
 from app.models import UserSetting
@@ -22,17 +23,59 @@ def json_serial(obj):
         return obj.isoformat()
     raise TypeError("Type %s not serializable" % type(obj))
 
-@algotradersettings.route('/usersettings', methods=['GET','POST'])
+@algotradersettings.route('/usersettings', methods=['GET'])
 @login_required
 def usersettings():
     user_settings = UserSetting.query.filter_by(email=current_user.email).first()
+    return render_template('userview/algotraderSettings.html',user_settings=user_settings)
 
-    SettingsForm = model_form(UserSetting,base_class=FlaskForm)
-    form=SettingsForm(obj=user_settings)
-    if form.validate_on_submit():
-        form.populate_obj(user_settings)
-        user_settings.update_user_settings()
-    return render_template('userview/algotraderSettings.html',user=current_user, form=form)
+@algotradersettings.route('/savesettings', methods=['POST'])
+@login_required
+def savesettings():
+    user_settings = UserSetting.query.filter_by(email=current_user.email).first()
+    user_settings.algo_max_loss=request.form['algo_max_loss']
+    user_settings.algo_take_profit = request.form['algo_take_profit']
+    user_settings.algo_bulk_amount_usd = request.form['algo_bulk_amount_usd']
+    user_settings.algo_trailing_percent = request.form['algo_trailing_percent']
+    if "algo_allow_buy" in request.form.keys():
+        user_settings.algo_allow_buy = True
+    else:
+        user_settings.algo_allow_buy=False
+
+    if "algo_allow_margin" in request.form.keys():
+        user_settings.algo_allow_margin = True
+    else:
+        user_settings.algo_allow_margin =False
+    user_settings.algo_min_rank = request.form['algo_min_rank']
+
+    user_settings.connection_port = request.form['connection_port']
+    user_settings.connection_account_name = request.form['connection_account_name']
+    user_settings.connection_tws_user = request.form['connection_tws_user']
+    user_settings.connection_tws_pass = request.form['connection_tws_pass']
+    user_settings.server_url = request.form['server_url']
+    user_settings.server_report_interval_sec = request.form['server_report_interval_sec']
+
+    if "server_use_system_candidates" in request.form.keys():
+        user_settings.server_use_system_candidates = True
+    else:
+        user_settings.server_use_system_candidates = False
+    user_settings.station_interval_worker_sec = request.form['station_interval_worker_sec']
+    user_settings.station_interval_ui_sec = request.form['station_interval_ui_sec']
+
+    user_settings.update_user_settings()
+    return redirect(url_for('algotradersettings.usersettings'))
+
+# @algotradersettings.route('/usersettings', methods=['GET','POST'])
+# @login_required
+# def usersettings():
+#     user_settings = UserSetting.query.filter_by(email=current_user.email).first()
+#
+#     SettingsForm = model_form(UserSetting,base_class=FlaskForm)
+#     form=SettingsForm(obj=user_settings)
+#     if form.validate_on_submit():
+#         form.populate_obj(user_settings)
+#         user_settings.update_user_settings()
+#     return render_template('userview/algotraderSettings.html',user=current_user, form=form)
 
 @csrf.exempt
 @algotradersettings.route('/retrieveusersettings', methods=['GET'])
