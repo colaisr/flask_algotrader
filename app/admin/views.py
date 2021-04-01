@@ -9,6 +9,7 @@ from flask import (
 )
 from flask_login import current_user, login_required
 from flask_rq import get_queue
+from sqlalchemy import select, distinct
 
 from app import db
 from app.admin.forms import (
@@ -109,7 +110,9 @@ def registered_users():
 def market_data():
     #.distinct(TickerData.ticker).group_by(TickerData.ticker)
     """View all registered users."""
-    marketdata = TickerData.query.order_by(TickerData.updated_server_time.desc()).group_by(TickerData.ticker).distinct(TickerData.ticker)
+    # marketdata = TickerData.query.order_by(TickerData.updated_server_time.desc()).distinct(TickerData.ticker).all()
+
+    marketdata = TickerData.query.order_by(TickerData.updated_server_time.desc()).distinct(TickerData.ticker).group_by(TickerData.ticker).all()
     user_settings = UserSetting.query.filter_by(email=current_user.email).first()
     for m in marketdata:
         if m.fmp_pe is None:

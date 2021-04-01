@@ -71,7 +71,7 @@ def info():
 
     ticker=request.args['ticker_to_show']
     candidate = Candidate.query.filter_by(ticker=ticker).first()
-    m_data=td=TickerData.query.filter_by(ticker=ticker).first()
+    m_data=td=TickerData.query.filter_by(ticker=ticker).order_by(TickerData.updated_server_time.desc()).first()
     user_settings = UserSetting.query.filter_by(email=current_user.email).first()
     # last_year=get_stock_rank(position.ticker)
 
