@@ -25,7 +25,7 @@ class Position(db.Model):
                 p.close_price=self.close_price
                 p.closed = self.closed
                 p.last_exec_side=self.last_exec_side
-                p.profit = self.close_price*self.stocks-p.open_price*p.stocks
+                p.profit = p.close_price*p.stocks-p.open_price*p.stocks
         db.session.commit()
 
 
