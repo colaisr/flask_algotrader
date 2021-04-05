@@ -10,4 +10,5 @@ from .market_data import *
 from .positions import *
 from .candidates import *
 from .user_settings import *
-from .restart_request import *
+from .user_settings import *
+from .client_command import *

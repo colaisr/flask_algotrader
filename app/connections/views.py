@@ -10,7 +10,8 @@ from flask import (
 )
 from datetime import datetime
 from app import db, csrf
-from app.models import User, Connection, Report, Position, RestartRequest
+from app.models import User, Connection, Report, Position, ClientCommand, UserSetting, TickerData, \
+    Candidate
 
 connections = Blueprint('connections', __name__)
 
@@ -30,6 +31,41 @@ def logconnection():
         return "Application launch for " + logged_user + " is logged."
     else:
         return "The user configured is not found on Server the connection is not logged"
+
+
+def filter_add_data(requested_candidates,logged_user):
+    user_settings = UserSetting.query.filter_by(email=logged_user).first()
+    filtered=[]
+    for c in requested_candidates:
+        td=TickerData.query.filter_by(ticker=c.ticker).first()
+        if td.tipranks>=user_settings.algo_min_rank:
+            filtered.append(td)
+    return filtered
+
+
+def retrieve_user_candidates(user):
+    requested_for_user = user
+    user_candidates=Candidate.query.filter_by(email=requested_for_user,enabled=True).all()
+    user_settings = UserSetting.query.filter_by(email=requested_for_user).first()
+
+    if user_settings.server_use_system_candidates:
+        admin_candidates=Candidate.query.filter_by(email='admin@gmail.com',enabled=True).all()
+        for uc in user_candidates:
+            for ac in admin_candidates:
+                if ac.ticker == uc.ticker:
+                    print("i found it!")
+                    break
+            else:
+                admin_candidates.append(uc)
+        requested_candidates=admin_candidates
+    else:
+        requested_candidates=user_candidates
+    requested_candidates=filter_add_data(requested_candidates,requested_for_user)
+    cand_dictionaries=[]
+    for c in requested_candidates:
+        cand_dictionaries.append(c.toDictionary())
+    return cand_dictionaries
+
 
 @csrf.exempt
 @connections.route('/postreport', methods=['POST'])
@@ -54,26 +90,35 @@ def logreport():
         report.last_worker_execution =datetime.fromisoformat(request_data["last_worker_run"])
         report.market_time =datetime.fromisoformat(request_data["market_time"])
         report.market_state = request_data["market_state"]
-
         report.update_report()
-        response="Report snapshot for " + logged_user + " stored at server."
-        #check for restart requests
-        requ = RestartRequest.query.filter_by(email=logged_user).first()
-        if requ is not None:
-            response+='$restart$'
-            requ.remove_request()
-        return response
+
+        return "Report snapshot stored at server"
     else:
         return "The user configured is not found on Server the report is not logged"
 
+@csrf.exempt
+@connections.route('/getcommand', methods=['POST'])
+def get_command():
+    request_data = request.get_json()
+    logged_user = request_data["user"]
+    users = User.query.all()
+    if any(x.email == logged_user for x in users):
+        response={}
+        client_command = ClientCommand.query.filter_by(email=logged_user).first()
+        response['command']=client_command.command
+        response['candidates']=retrieve_user_candidates(logged_user)
+        if client_command.command=='restart_worker':
+            client_command.set_run_worker()
+        return response
+    else:
+        return "The user configured is not found on Server the report is not logged"
 
 @csrf.exempt
 @connections.route('logrestartrequest/', methods=['POST'])
 def log_restart_request():
     logged_user=request.form['usersemail']
-    r=RestartRequest()
-    r.email=logged_user
-    r.log_request()
+    client_command = ClientCommand.query.filter_by(email=logged_user).first()
+    client_command.set_restart()
     flash('Restart request logged', 'success')
     return redirect(url_for('userview.traderstationstate'))
 

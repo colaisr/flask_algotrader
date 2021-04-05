@@ -25,7 +25,7 @@ from app.account.forms import (
     ResetPasswordForm,
 )
 from app.email import send_email
-from app.models import User, UserSetting
+from app.models import User, UserSetting, ClientCommand
 
 account = Blueprint('account', __name__)
 
@@ -77,8 +77,13 @@ def register():
             server_report_interval_sec=30,
             server_use_system_candidates=True
         )
+        client_command=ClientCommand(
+            email=form.email.data,
+            command='run_worker'
+        )
         db.session.add(user)
         db.session.add(user_settings)
+        db.session.add(client_command)
         db.session.commit()
         token = user.generate_confirmation_token()
         confirm_link = url_for('account.confirm', token=token, _external=True)

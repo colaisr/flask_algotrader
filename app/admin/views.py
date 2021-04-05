@@ -20,7 +20,7 @@ from app.admin.forms import (
 )
 from app.decorators import admin_required
 from app.email import send_email
-from app.models import EditableHTML, Role, User, TickerData, UserSetting
+from app.models import EditableHTML, Role, User, TickerData, UserSetting, ClientCommand
 
 admin = Blueprint('admin', __name__)
 
@@ -112,13 +112,26 @@ def market_data():
     """View all registered users."""
     # marketdata = TickerData.query.order_by(TickerData.updated_server_time.desc()).distinct(TickerData.ticker).all()
 
-    marketdata = TickerData.query.order_by(TickerData.updated_server_time.desc()).distinct(TickerData.ticker).group_by(TickerData.ticker).all()
+    # marketdata = TickerData.query.order_by(TickerData.updated_server_time.desc()).distinct(TickerData.ticker).group_by(TickerData.ticker).all()
+
+
+    marketdata = TickerData.query.distinct(TickerData.ticker).group_by(TickerData.ticker).all()
+
+
+
     user_settings = UserSetting.query.filter_by(email=current_user.email).first()
     for m in marketdata:
         if m.fmp_pe is None:
             m.fmp_pe=0
 
     return render_template('admin/market_data.html',user_settings=user_settings, marketdata=marketdata)
+
+@admin.route('/clientcommands')
+@login_required
+@admin_required
+def clientcommands():
+    client_commands = ClientCommand.query.all()
+    return render_template('admin/client_commands.html',client_commands=client_commands)
 
 
 @admin.route('/user/<int:user_id>')
