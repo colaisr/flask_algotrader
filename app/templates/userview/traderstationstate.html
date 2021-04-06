@@ -202,7 +202,9 @@
                             <td class="text-center">{{value['adjustedTrailingAmount']}}</td>
                             <td class="text-center">{{value['percentOffset']}}</td>
                             <td class="text-center">
+                                {% if value['Type']=='TRAIL' %}
                                 <div class="badge badge-warning">Profit</div>
+                                {% endif %}
                             </td>
                         </tr>
                         {% endfor %}

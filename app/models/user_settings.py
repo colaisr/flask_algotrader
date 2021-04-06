@@ -22,7 +22,10 @@ class UserSetting(db.Model):
     algo_bulk_amount_usd = db.Column('algo_bulk_amount_usd', db.Integer)
     algo_allow_buy = db.Column('algo_allow_buy', db.Boolean)
     algo_allow_margin = db.Column('algo_allow_margin', db.Boolean)
+    algo_apply_min_rank = db.Column('algo_apply_min_rank', db.Boolean)
     algo_min_rank = db.Column('algo_min_rank', db.Integer)
+    algo_apply_accepted_fmp_ratings = db.Column('algo_apply_accepted_fmp_ratings', db.Boolean)
+    algo_accepted_fmp_ratings = db.Column('algo_accepted_fmp_ratings', db.String)
 
 
     connection_account_name = db.Column('connection_account_name', db.String)
@@ -67,5 +70,8 @@ class UserSetting(db.Model):
         d['algo_allow_buy'] = self.algo_allow_buy
         d['algo_allow_margin'] = self.algo_allow_margin
         d['algo_min_rank'] = self.algo_min_rank
+        d['algo_accepted_fmp_ratings'] = self.algo_accepted_fmp_ratings
+        d['algo_apply_min_rank'] = self.algo_apply_min_rank
+        d['algo_apply_accepted_fmp_ratings'] = self.algo_apply_accepted_fmp_ratings
 
         return d

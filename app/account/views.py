@@ -65,7 +65,10 @@ def register():
             algo_trailing_percent=1,
             algo_allow_buy=True,
             algo_allow_margin = True,
+            algo_apply_min_rank=True,
             algo_min_rank=8,
+            algo_apply_accepted_fmp_ratings=True,
+            algo_accepted_fmp_ratings='S-,S,S+',
 
             connection_account_name = 'Default,needs to be changed',
             connection_port=7498,

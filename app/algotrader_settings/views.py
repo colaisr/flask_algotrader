@@ -37,6 +37,11 @@ def savesettings():
     user_settings.algo_take_profit = request.form['algo_take_profit']
     user_settings.algo_bulk_amount_usd = request.form['algo_bulk_amount_usd']
     user_settings.algo_trailing_percent = request.form['algo_trailing_percent']
+    if "algo_apply_accepted_fmp_ratings" in request.form.keys():
+        user_settings.algo_apply_accepted_fmp_ratings = True
+    else:
+        user_settings.algo_apply_accepted_fmp_ratings =False
+    user_settings.algo_accepted_fmp_ratings = request.form['algo_accepted_fmp_ratings']
     if "algo_allow_buy" in request.form.keys():
         user_settings.algo_allow_buy = True
     else:
@@ -46,6 +51,11 @@ def savesettings():
         user_settings.algo_allow_margin = True
     else:
         user_settings.algo_allow_margin =False
+
+    if "algo_apply_min_rank" in request.form.keys():
+        user_settings.algo_apply_min_rank = True
+    else:
+        user_settings.algo_apply_min_rank =False
     user_settings.algo_min_rank = request.form['algo_min_rank']
 
     user_settings.connection_port = request.form['connection_port']

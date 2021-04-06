@@ -46,13 +46,15 @@
                             <div class="col-md-6">
                                 <div class="position-relative form-group">
                                     <label for="algo_max_loss" class="">Max loss in %</label>
-                                    <input value="{{user_settings.algo_max_loss}}" name="algo_max_loss" id="algo_max_loss" type="text" class="form-control">
+                                    <input value="{{user_settings.algo_max_loss}}" name="algo_max_loss"
+                                           id="algo_max_loss" type="text" class="form-control">
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="position-relative form-group">
                                     <label for="algo_take_profit" class="">Take profit in %</label>
-                                    <input value="{{user_settings.algo_take_profit}}" name="algo_take_profit" id="algo_take_profit" type="text"
+                                    <input value="{{user_settings.algo_take_profit}}" name="algo_take_profit"
+                                           id="algo_take_profit" type="text"
                                            class="form-control"></div>
                             </div>
                         </div>
@@ -60,13 +62,15 @@
                             <div class="col-md-6">
                                 <div class="position-relative form-group">
                                     <label for="algo_bulk_amount_usd" class="">Bulk size in USD</label>
-                                    <input value="{{user_settings.algo_bulk_amount_usd}}" name="algo_bulk_amount_usd" id="algo_bulk_amount_usd" type="text"
+                                    <input value="{{user_settings.algo_bulk_amount_usd}}" name="algo_bulk_amount_usd"
+                                           id="algo_bulk_amount_usd" type="text"
                                            class="form-control"></div>
                             </div>
                             <div class="col-md-6">
                                 <div class="position-relative form-group">
                                     <label for="algo_trailing_percent" class="">Trail in %</label>
-                                    <input value="{{user_settings.algo_trailing_percent}}" name="algo_trailing_percent" id="algo_trailing_percent" type="text"
+                                    <input value="{{user_settings.algo_trailing_percent}}" name="algo_trailing_percent"
+                                           id="algo_trailing_percent" type="text"
                                            class="form-control"></div>
                             </div>
                         </div>
@@ -75,10 +79,10 @@
                                 <div class="position-relative form-check">
                                     <input
                                             {%if user_settings.algo_allow_buy%}
-                                   checked
-                                   {% endif %}
+                                            checked
+                                            {% endif %}
                                             name="algo_allow_buy" id="algo_allow_buy" type="checkbox"
-                                           class="form-check-input">
+                                            class="form-check-input">
                                     <label for="algo_allow_buy" class="form-check-label">Allow buying</label>
                                 </div>
                             </div>
@@ -87,18 +91,57 @@
                                 <div class="position-relative form-check">
                                     <input
                                             {%if user_settings.algo_allow_margin%}
-                                   checked
-                                   {% endif %}
+                                            checked
+                                            {% endif %}
                                             name="algo_allow_margin" id="algo_allow_margin" type="checkbox"
-                                           class="form-check-input">
+                                            class="form-check-input">
                                     <label for="algo_allow_margin" class="form-check-label">Use margin for trade</label>
                                 </div>
                             </div>
+
+
+                        </div>
+                        <div class="form-row">
+
                             <div class="col-md-4">
                                 <div class="position-relative form-group">
                                     <label for="algo_min_rank" class="">Min Tiprank</label>
-                                    <input value="{{user_settings.algo_min_rank}}" name="algo_min_rank" id="algo_min_rank" type="text"
+
+                                    <input value="{{user_settings.algo_min_rank}}" name="algo_min_rank"
+                                           id="algo_min_rank" type="text"
                                            class="form-control"></div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="position-relative form-check">
+                                    <input
+                                            {%if user_settings.algo_apply_min_rank%}
+                                            checked
+                                            {% endif %}
+                                            name="algo_apply_min_rank" id="algo_apply_min_rank" type="checkbox"
+                                            class="form-check-input">
+                                    <label for="algo_apply_min_rank" class="form-check-label">Apply</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="col-md-4">
+                                <div class="position-relative form-group">
+                                    <label for="algo_accepted_fmp_ratings" class="">Accepted FMP</label>
+                                    <input value="{{user_settings.algo_accepted_fmp_ratings}}"
+                                           name="algo_accepted_fmp_ratings" id="algo_accepted_fmp_ratings" type="text"
+                                           class="form-control"></div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="position-relative form-check">
+                                    <input
+                                            {%if user_settings.algo_apply_accepted_fmp_ratings%}
+                                            checked
+                                            {% endif %}
+                                            name="algo_apply_accepted_fmp_ratings" id="algo_apply_accepted_fmp_ratings"
+                                            type="checkbox"
+                                            class="form-check-input">
+                                    <label for="algo_apply_accepted_fmp_ratings" class="form-check-label">Apply</label>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -113,13 +156,15 @@
                             <div class="col-md-6">
                                 <div class="position-relative form-group">
                                     <label for="connection_port" class="">TWS port</label>
-                                    <input value="{{user_settings.connection_port}}" name="connection_port" id="connection_port" type="text" class="form-control">
+                                    <input value="{{user_settings.connection_port}}" name="connection_port"
+                                           id="connection_port" type="text" class="form-control">
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="position-relative form-group">
                                     <label for="connection_account_name" class="">IBKR account</label>
-                                    <input value="{{user_settings.connection_account_name}}" name="connection_account_name" id="connection_account_name" type="text"
+                                    <input value="{{user_settings.connection_account_name}}"
+                                           name="connection_account_name" id="connection_account_name" type="text"
                                            class="form-control"></div>
                             </div>
                         </div>
@@ -127,13 +172,15 @@
                             <div class="col-md-6">
                                 <div class="position-relative form-group">
                                     <label for="connection_tws_user" class="">TWS user</label>
-                                    <input value="{{user_settings.connection_tws_user}}" name="connection_tws_user" id="connection_tws_user" type="text" class="form-control">
+                                    <input value="{{user_settings.connection_tws_user}}" name="connection_tws_user"
+                                           id="connection_tws_user" type="text" class="form-control">
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="position-relative form-group">
                                     <label for="connection_tws_pass" class="">TWS password</label>
-                                    <input value="{{user_settings.connection_tws_pass}}" name="connection_tws_pass" id="connection_tws_pass" type="password"
+                                    <input value="{{user_settings.connection_tws_pass}}" name="connection_tws_pass"
+                                           id="connection_tws_pass" type="password"
                                            class="form-control"></div>
                             </div>
                         </div>
@@ -141,27 +188,33 @@
                             <div class="col-md-6">
                                 <div class="position-relative form-group">
                                     <label for="server_url" class="">Server URL</label>
-                                    <input value="{{user_settings.server_url}}" name="server_url" id="server_url" type="text" class="form-control">
+                                    <input value="{{user_settings.server_url}}" name="server_url" id="server_url"
+                                           type="text" class="form-control">
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="position-relative form-group">
                                     <label for="server_report_interval_sec" class="">Server report interval</label>
-                                    <input value="{{user_settings.server_report_interval_sec}}" name="server_report_interval_sec" id="server_report_interval_sec" type="text"
+                                    <input value="{{user_settings.server_report_interval_sec}}"
+                                           name="server_report_interval_sec" id="server_report_interval_sec" type="text"
                                            class="form-control"></div>
                             </div>
                         </div>
                         <div class="form-row">
                             <div class="col-md-6">
                                 <div class="position-relative form-group">
-                                    <label for="station_interval_worker_sec" class="">Station worker interval(sec)</label>
-                                    <input value="{{user_settings.station_interval_worker_sec}}" name="station_interval_worker_sec" id="station_interval_worker_sec" type="text" class="form-control">
+                                    <label for="station_interval_worker_sec" class="">Station worker
+                                        interval(sec)</label>
+                                    <input value="{{user_settings.station_interval_worker_sec}}"
+                                           name="station_interval_worker_sec" id="station_interval_worker_sec"
+                                           type="text" class="form-control">
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="position-relative form-group">
                                     <label for="station_interval_ui_sec" class="">Station UI refresh interval</label>
-                                    <input value="{{user_settings.station_interval_ui_sec}}" name="station_interval_ui_sec" id="station_interval_ui_sec" type="text"
+                                    <input value="{{user_settings.station_interval_ui_sec}}"
+                                           name="station_interval_ui_sec" id="station_interval_ui_sec" type="text"
                                            class="form-control"></div>
                             </div>
                         </div>
@@ -169,10 +222,12 @@
                             <div class="col-md-4">
                                 <div class="position-relative form-check">
                                     <input {%if user_settings.server_use_system_candidates%}
-                                   checked
-                                   {% endif %} name="server_use_system_candidates" id="server_use_system_candidates" type="checkbox"
+                                           checked
+                                           {% endif %} name="server_use_system_candidates"
+                                           id="server_use_system_candidates" type="checkbox"
                                            class="form-check-input">
-                                    <label for="server_use_system_candidates" class="form-check-label">Use Admin Candidates</label>
+                                    <label for="server_use_system_candidates" class="form-check-label">Use Admin
+                                        Candidates</label>
                                 </div>
                             </div>
                         </div>
