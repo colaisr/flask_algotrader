@@ -1,4 +1,5 @@
 import json
+import time
 
 from flask import (
     Blueprint,
@@ -36,14 +37,19 @@ def logconnection():
 def filter_add_data(requested_candidates,logged_user):
     user_settings = UserSetting.query.filter_by(email=logged_user).first()
 
-    filtered_tipranks=[]
+    original_tds=[]
     for c in requested_candidates:
-        td=TickerData.query.filter_by(ticker=c.ticker).order_by(TickerData.updated_server_time.desc()).first()
+        td=TickerData.query.filter_by(ticker=c.ticker).order_by(TickerData.id.desc()).first()
+        original_tds.append(td)
+    filtered_tipranks=[]
+    for c in original_tds:
         if user_settings.algo_apply_min_rank:
-            if td.tipranks>=user_settings.algo_min_rank:
-                filtered_tipranks.append(td)
+            # filtered_tipranks=[number for number in original_tds if number.tipranks >= user_settings.algo_min_rank]
+            if c is not None:
+                if c.tipranks>=user_settings.algo_min_rank:
+                    filtered_tipranks.append(c)
         else:
-            filtered_tipranks.append(td)
+            filtered_tipranks.append(c)
 
     filtered_scores=[]
     for f in filtered_tipranks:
