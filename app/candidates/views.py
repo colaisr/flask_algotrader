@@ -49,6 +49,32 @@ def updatecandidate():
 
     return redirect(url_for('candidates.usercandidates'))
 
+@candidates.route('add_by_spider', methods=['POST'])
+@csrf.exempt
+def add_by_spider():
+    ticker_to_add= request.form['ticker_to_add']
+    company_name= request.form['company_name']
+    sector= request.form['sector']
+    p_e= request.form['p_e']
+
+    c=Candidate()
+    c.ticker=ticker_to_add
+    c.reason="Added by spider"
+    c.company_name = company_name
+    c.full_description = "Spider does not have it"
+    c.exchange = "Spider does not have it"
+    c.industry = sector
+    c.logo = "Spider does not have it"
+    c.email='admin@gmail.com'
+    c.enabled=True
+    candidate = Candidate.query.filter((Candidate.email == 'admin@gmail.com') & (Candidate.ticker == ticker_to_add)).first()
+    if candidate is None:
+        db.session.add(c)
+        db.session.commit()
+        research_ticker(c.ticker)
+
+    return "successfully added candidate"
+
 @candidates.route('removecandidate/', methods=['POST'])
 @csrf.exempt
 def removecandidate():
