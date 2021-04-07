@@ -10,6 +10,10 @@ from flask import (
     url_for,
 )
 from datetime import datetime
+
+from sqlalchemy import text
+from sqlalchemy.orm import sessionmaker
+
 from app import db, csrf
 from app.models import User, Connection, Report, Position, ClientCommand, UserSetting, TickerData, \
     Candidate
@@ -37,28 +41,28 @@ def logconnection():
 def filter_add_data(requested_candidates,logged_user):
     user_settings = UserSetting.query.filter_by(email=logged_user).first()
 
-    original_tds=[]
-    for c in requested_candidates:
-        td=TickerData.query.filter_by(ticker=c.ticker).order_by(TickerData.id.desc()).first()
-        original_tds.append(td)
-    filtered_tipranks=[]
-    for c in original_tds:
-        if user_settings.algo_apply_min_rank:
-            # filtered_tipranks=[number for number in original_tds if number.tipranks >= user_settings.algo_min_rank]
-            if c is not None:
-                if c.tipranks>=user_settings.algo_min_rank:
-                    filtered_tipranks.append(c)
-        else:
-            filtered_tipranks.append(c)
+    query_text="select a.* from Tickersdata a join (  select Tickersdata.`ticker`, max(Tickersdata.`updated_server_time`) as updated_server_time  from Tickersdata group by Tickersdata.`ticker`) b on b.`ticker`=a.`ticker` and b.`updated_server_time`=a.`updated_server_time`"
+    uniq_tickers_data=db.session.query(TickerData).from_statement(text(query_text)).all()
 
-    filtered_scores=[]
-    for f in filtered_tipranks:
-        if user_settings.algo_apply_accepted_fmp_ratings:
-            allowed=user_settings.algo_accepted_fmp_ratings.split(',')
-            if f.fmp_rating in allowed:
-                filtered_scores.append(f)
+    related_tds=[]
+    for c in requested_candidates:
+        adding = list(filter(lambda td: td.ticker == c.ticker, uniq_tickers_data))
+        if len(adding)==0:
+            # missed bringing a market data
+            b=3
         else:
-            filtered_scores.append(f)
+            related_tds.append(adding[0])
+
+    if user_settings.algo_apply_min_rank:
+        filtered_tipranks = list(filter(lambda td: td.tipranks >= user_settings.algo_min_rank, related_tds))
+    else:
+        filtered_tipranks=related_tds
+
+    if user_settings.algo_apply_accepted_fmp_ratings:
+        allowed = user_settings.algo_accepted_fmp_ratings.split(',')
+        filtered_scores = list(filter(lambda td: td.fmp_rating in allowed, filtered_tipranks))
+    else:
+        filtered_scores=filtered_tipranks
     return filtered_scores
 
 
@@ -72,7 +76,6 @@ def retrieve_user_candidates(user):
         for uc in user_candidates:
             for ac in admin_candidates:
                 if ac.ticker == uc.ticker:
-                    print("i found it!")
                     break
             else:
                 admin_candidates.append(uc)

@@ -9,7 +9,7 @@ from flask import (
 )
 from flask_login import current_user, login_required
 from flask_rq import get_queue
-from sqlalchemy import select, distinct
+from sqlalchemy import select, distinct, text
 
 from app import db
 from app.admin.forms import (
@@ -108,17 +108,10 @@ def registered_users():
 @login_required
 @admin_required
 def market_data():
-    #.distinct(TickerData.ticker).group_by(TickerData.ticker)
-    """View all registered users."""
-    # marketdata = TickerData.query.order_by(TickerData.updated_server_time.desc()).distinct(TickerData.ticker).all()
 
-    # marketdata = TickerData.query.order_by(TickerData.updated_server_time.desc()).distinct(TickerData.ticker).group_by(TickerData.ticker).all()
-
-
-    marketdata = TickerData.query.distinct(TickerData.ticker).group_by(TickerData.ticker).all()
-
-
-
+    query_text="select a.* from Tickersdata a join (  select Tickersdata.`ticker`, max(Tickersdata.`updated_server_time`) as updated_server_time  from Tickersdata group by Tickersdata.`ticker`) b on b.`ticker`=a.`ticker` and b.`updated_server_time`=a.`updated_server_time`"
+    r=db.session.query(TickerData).from_statement(text(query_text)).all()
+    marketdata=r
     user_settings = UserSetting.query.filter_by(email=current_user.email).first()
     for m in marketdata:
         if m.fmp_pe is None:
