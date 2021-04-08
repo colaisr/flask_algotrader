@@ -8,6 +8,8 @@ setTimeout(function(){
 })
 
 function set_connection_state(){
+last_exec=$("#last_execution_time")
+last_exec.text(last_exec.text().replace("00:00:00","-----------"))
 el=$("#report_time").val()
 interval=$("#report_interval").val()
 interval=parseInt(interval)
