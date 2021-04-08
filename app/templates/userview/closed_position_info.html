@@ -19,7 +19,8 @@
     </div>
     <div class="column">
 
-<div id="container" style="width:100%; height:400px;"></div>
+        <div id="container_position_on_graph" style="width:100%; height:400px;"></div>
+        <div id="tr_rating_graph" style="width:100%; height:400px;"></div>
         <div>
             <input type="hidden" id="ticker" value="{{ position.ticker }}">
             <input type="hidden" id="closed" value="{{ position.closed }}">
@@ -29,7 +30,10 @@
         </div>
 
     </div>
+    <script>
+    rank_array={{rank_array| safe}}
 
+    </script>
 </div>
 {% endblock %}
 {% block scripting %}

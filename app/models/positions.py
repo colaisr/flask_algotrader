@@ -18,7 +18,11 @@ class Position(db.Model):
 
     def update_position(self):
         if self.last_exec_side=='BOT':
-            db.session.add(self)
+            p = Position.query.filter_by(email=self.email, ticker=self.ticker,last_exec_side='BOT').order_by(Position.id.desc()).first()
+            if p is None:
+                db.session.add(self)
+            else:
+                v=3
         else:
             p = Position.query.filter_by(email=self.email,ticker=self.ticker).order_by(Position.id.desc()).first()
             if p is not None:

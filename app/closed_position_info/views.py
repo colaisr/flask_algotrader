@@ -54,9 +54,11 @@ def get_fmg_pe_rating_for_ticker(s):
 def view():
     id=request.args['position_to_show']
     position = Position.query.filter_by(id=id).first()
-    # last_year=get_stock_rank(position.ticker)
-
-    return render_template('userview/closed_position_info.html',position=position)
+    hist=TickerData.query.filter_by(ticker=position.ticker).order_by(TickerData.updated_server_time.asc()).all()
+    rank_array=[]
+    for h in hist:
+        rank_array.append([str(h.updated_server_time.strftime("%Y-%m-%d %H:%M:%S")),h.tipranks])
+    return render_template('userview/closed_position_info.html',position=position,rank_array=rank_array)
 
 
 # def get_stock_rank(s):

@@ -68,3 +68,17 @@ def retrievemarketdata():
         tdj=json.dumps(td.toDictionary())
         requested_tickers[td.ticker]=tdj
     return requested_tickers
+
+# @marketdata.route('/hist_market_data_for_stock', methods=['GET'])
+# def hist_market_data_for_stock():
+#     # request_data = request.get_json()
+#     # received_data=request_data["ticker"]
+#     # parsed_data = json.loads(received_data)
+#
+#     hist=TickerData.query.filter_by(ticker='AAPL').all()
+#     resp=[]
+#     for t in hist:
+#         tdj=json.dumps(t.toDictionary())
+#         resp.append(tdj)
+#
+#     return jsonify(resp)
