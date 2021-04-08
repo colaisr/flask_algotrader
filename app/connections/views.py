@@ -145,7 +145,7 @@ def log_restart_request():
     return redirect(url_for('userview.traderstationstate'))
 
 @csrf.exempt
-@connections.route('restart_all_stations/', methods=['POST'])
+@connections.route('restart_all_stations', methods=['POST'])
 def restart_all_stations():
     clients = ClientCommand.query.all()
     for c in clients:
