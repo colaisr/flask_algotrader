@@ -46,14 +46,14 @@
                             <div class="col-md-6">
                                 <div class="position-relative form-group">
                                     <label for="algo_max_loss" class="">Max loss in %</label>
-                                    <input value="{{user_settings.algo_max_loss}}" name="algo_max_loss"
+                                    <input title="Maximal Loss for position. Will be sold by market price" value="{{user_settings.algo_max_loss}}" name="algo_max_loss"
                                            id="algo_max_loss" type="text" class="form-control">
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="position-relative form-group">
                                     <label for="algo_take_profit" class="">Take profit in %</label>
-                                    <input value="{{user_settings.algo_take_profit}}" name="algo_take_profit"
+                                    <input title="Profit taker. At this profit trailing sell will be triggered with setted %" value="{{user_settings.algo_take_profit}}" name="algo_take_profit"
                                            id="algo_take_profit" type="text"
                                            class="form-control"></div>
                             </div>
@@ -62,14 +62,14 @@
                             <div class="col-md-6">
                                 <div class="position-relative form-group">
                                     <label for="algo_bulk_amount_usd" class="">Bulk size in USD</label>
-                                    <input value="{{user_settings.algo_bulk_amount_usd}}" name="algo_bulk_amount_usd"
+                                    <input title="Maximal size of a bulk to buy" value="{{user_settings.algo_bulk_amount_usd}}" name="algo_bulk_amount_usd"
                                            id="algo_bulk_amount_usd" type="text"
                                            class="form-control"></div>
                             </div>
                             <div class="col-md-6">
                                 <div class="position-relative form-group">
                                     <label for="algo_trailing_percent" class="">Trail in %</label>
-                                    <input value="{{user_settings.algo_trailing_percent}}" name="algo_trailing_percent"
+                                    <input title="Trailing with this percent when Profit is taken" value="{{user_settings.algo_trailing_percent}}" name="algo_trailing_percent"
                                            id="algo_trailing_percent" type="text"
                                            class="form-control"></div>
                             </div>
@@ -77,7 +77,7 @@
                         <div class="form-row">
                             <div class="col-md-4">
                                 <div class="position-relative form-check">
-                                    <input
+                                    <input title="Allow buying or only Stop/Profit"
                                             {%if user_settings.algo_allow_buy%}
                                             checked
                                             {% endif %}
@@ -89,7 +89,7 @@
                             <div class="col-md-4">
 
                                 <div class="position-relative form-check">
-                                    <input
+                                    <input title="Allow using margin for account or only personal cash"
                                             {%if user_settings.algo_allow_margin%}
                                             checked
                                             {% endif %}
@@ -107,13 +107,13 @@
                                 <div class="position-relative form-group">
                                     <label for="algo_min_rank" class="">Min Tiprank</label>
 
-                                    <input value="{{user_settings.algo_min_rank}}" name="algo_min_rank"
+                                    <input title="Minimal TipRank to transmit to station" value="{{user_settings.algo_min_rank}}" name="algo_min_rank"
                                            id="algo_min_rank" type="text"
                                            class="form-control"></div>
                             </div>
                             <div class="col-md-4">
                                 <div class="position-relative form-check">
-                                    <input
+                                    <input title="Use minimal Rank or transmit All"
                                             {%if user_settings.algo_apply_min_rank%}
                                             checked
                                             {% endif %}
@@ -127,13 +127,13 @@
                             <div class="col-md-4">
                                 <div class="position-relative form-group">
                                     <label for="algo_accepted_fmp_ratings" class="">Accepted FMP</label>
-                                    <input value="{{user_settings.algo_accepted_fmp_ratings}}"
+                                    <input title="Ratings to transmit to station. Coma separated" value="{{user_settings.algo_accepted_fmp_ratings}}"
                                            name="algo_accepted_fmp_ratings" id="algo_accepted_fmp_ratings" type="text"
                                            class="form-control"></div>
                             </div>
                             <div class="col-md-4">
                                 <div class="position-relative form-check">
-                                    <input
+                                    <input title="Use FMP Ratings or transmit all"
                                             {%if user_settings.algo_apply_accepted_fmp_ratings%}
                                             checked
                                             {% endif %}
@@ -156,14 +156,14 @@
                             <div class="col-md-6">
                                 <div class="position-relative form-group">
                                     <label for="connection_port" class="">TWS port</label>
-                                    <input value="{{user_settings.connection_port}}" name="connection_port"
+                                    <input title="Connect to TWS via that port- configured in TWS settings" value="{{user_settings.connection_port}}" name="connection_port"
                                            id="connection_port" type="text" class="form-control">
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="position-relative form-group">
                                     <label for="connection_account_name" class="">IBKR account</label>
-                                    <input value="{{user_settings.connection_account_name}}"
+                                    <input title="Account name- can be seen at IBKR.com" value="{{user_settings.connection_account_name}}"
                                            name="connection_account_name" id="connection_account_name" type="text"
                                            class="form-control"></div>
                             </div>
@@ -172,14 +172,14 @@
                             <div class="col-md-6">
                                 <div class="position-relative form-group">
                                     <label for="connection_tws_user" class="">TWS user</label>
-                                    <input value="{{user_settings.connection_tws_user}}" name="connection_tws_user"
+                                    <input title="User name - to login to TWS automatically on restarts" value="{{user_settings.connection_tws_user}}" name="connection_tws_user"
                                            id="connection_tws_user" type="text" class="form-control">
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="position-relative form-group">
                                     <label for="connection_tws_pass" class="">TWS password</label>
-                                    <input value="{{user_settings.connection_tws_pass}}" name="connection_tws_pass"
+                                    <input title="Password - to login to TWS automatically on restarts" value="{{user_settings.connection_tws_pass}}" name="connection_tws_pass"
                                            id="connection_tws_pass" type="password"
                                            class="form-control"></div>
                             </div>
@@ -188,40 +188,22 @@
                             <div class="col-md-6">
                                 <div class="position-relative form-group">
                                     <label for="server_url" class="">Server URL</label>
-                                    <input value="{{user_settings.server_url}}" name="server_url" id="server_url"
+                                    <input title="Server to connect"  value="{{user_settings.server_url}}" name="server_url" id="server_url"
                                            type="text" class="form-control">
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="position-relative form-group">
                                     <label for="server_report_interval_sec" class="">Server report interval</label>
-                                    <input value="{{user_settings.server_report_interval_sec}}"
+                                    <input title="Interval to report to Server" value="{{user_settings.server_report_interval_sec}}"
                                            name="server_report_interval_sec" id="server_report_interval_sec" type="text"
-                                           class="form-control"></div>
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="col-md-6">
-                                <div class="position-relative form-group">
-                                    <label for="station_interval_worker_sec" class="">Station worker
-                                        interval(sec)</label>
-                                    <input value="{{user_settings.station_interval_worker_sec}}"
-                                           name="station_interval_worker_sec" id="station_interval_worker_sec"
-                                           type="text" class="form-control">
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="position-relative form-group">
-                                    <label for="station_interval_ui_sec" class="">Station UI refresh interval</label>
-                                    <input value="{{user_settings.station_interval_ui_sec}}"
-                                           name="station_interval_ui_sec" id="station_interval_ui_sec" type="text"
                                            class="form-control"></div>
                             </div>
                         </div>
                         <div class="form-row">
                             <div class="col-md-4">
                                 <div class="position-relative form-check">
-                                    <input {%if user_settings.server_use_system_candidates%}
+                                    <input title="Use System Candidates or only personal " {%if user_settings.server_use_system_candidates%}
                                            checked
                                            {% endif %} name="server_use_system_candidates"
                                            id="server_use_system_candidates" type="checkbox"
