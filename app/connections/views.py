@@ -144,6 +144,14 @@ def log_restart_request():
     flash('Restart request logged', 'success')
     return redirect(url_for('userview.traderstationstate'))
 
+@csrf.exempt
+@connections.route('restart_all_stations/', methods=['POST'])
+def restart_all_stations():
+    clients = ClientCommand.query.all()
+    for c in clients:
+        c.set_restart()
+    return "all stations booked to restart"
+
 
 @csrf.exempt
 @connections.route('/postexecution', methods=['POST'])

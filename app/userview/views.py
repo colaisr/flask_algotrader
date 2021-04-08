@@ -39,6 +39,7 @@ def traderstationstate():
     report = Report.query.filter_by(email=current_user.email).first()
     settings=UserSetting.query.filter_by(email=current_user.email).first()
     use_margin=settings.algo_allow_margin
+    report_interval=settings.server_report_interval_sec
     if report is None:
         #report=Report()
         open_positions={}
@@ -46,9 +47,9 @@ def traderstationstate():
         candidates_live={}
         i=3
     else:
-        report.reported_text=report.report_time.strftime("%Y-%m-%d %H:%M:%S")
-        report.last_worker_execution_text=report.last_worker_execution.strftime("%Y-%m-%d %H:%M:%S")
-        report.market_time_text = report.market_time.strftime("%Y-%m-%d %H:%M:%S")
+        report.reported_text=report.report_time.strftime("%m-%d %H:%M:%S")
+        report.last_worker_execution_text=report.last_worker_execution.strftime("%H:%M:%S")
+        report.market_time_text = report.market_time.strftime("%H:%M")
         report.dailyPnl=round(report.dailyPnl,2)
         report.remaining_sma_with_safety = round(report.remaining_sma_with_safety, 2)
 
@@ -83,7 +84,7 @@ def traderstationstate():
     if report is None:
         return redirect(url_for('candidates.usercandidates'))
     else:
-        return render_template('userview/traderstationstate.html',report_time=report_time,candidates_live=candidates_live,open_positions=open_positions,open_orders=open_orders, user=current_user,report=report,margin_used=use_margin, form=None)
+        return render_template('userview/traderstationstate.html',report_interval=report_interval,report_time=report_time,candidates_live=candidates_live,open_positions=open_positions,open_orders=open_orders, user=current_user,report=report,margin_used=use_margin, form=None)
 
 @userview.route('closedpositions', methods=['GET', 'POST'])
 @login_required

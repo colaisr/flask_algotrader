@@ -13,7 +13,7 @@
                 <div style="    margin-right: 10px;">
                     <form action="/connections/logrestartrequest/" method="post">
                         <input type="hidden" name="usersemail" value={{user.email}}>
-                        <button type="submit"><i class="fa fa-retweet"></i></button>
+                        <button title="Restart station" type="submit"><i class="fa fa-retweet"></i></button>
                     </form>
                 </div>
                 <div>Trader station
@@ -24,6 +24,7 @@
             <div class="page-title-actions">
                 <div>
                     <input id="report_time" type="hidden" value="{{report_time}}">
+                    <input id="report_interval" type="hidden" value="{{report_interval}}">
                     <div class="mb-2 mr-2 badge badge-secondary">Last report : {{ report.reported_text }}</div>
                     <div id="connection_state" class="mb-2 mr-2 badge badge-pill badge-danger">offline</div>
                 </div>
@@ -56,7 +57,7 @@
                         <div class="widget-subheading">Available for trading</div>
                     </div>
                     <div class="widget-content-right">
-                        <div class="widget-numbers text-white"><span>$ {{ report.remaining_sma_with_safety }}</span>
+                        <div class="widget-numbers text-white"><span>$ {{ report.remaining_sma_with_safety |round |int }}</span>
                         </div>
                     </div>
                 </div>
@@ -67,7 +68,7 @@
                         <div class="widget-subheading">Available for trading</div>
                     </div>
                     <div class="widget-content-right">
-                        <div class="widget-numbers text-white"><span>$ {{ report.excess_liquidity}}</span>
+                        <div class="widget-numbers text-white"><span>$ {{ report.excess_liquidity |round |int}}</span>
                         </div>
                     </div>
                 </div>
@@ -83,7 +84,7 @@
                         <div class="widget-subheading">Daily PnL for all positions</div>
                     </div>
                     <div class="widget-content-right">
-                        <div class="widget-numbers text-white "><span class="val_pnl">$ {{ report.dailyPnl }}</span>
+                        <div class="widget-numbers text-white "><span class="val_pnl">$ {{ report.dailyPnl|round |int }}</span>
                         </div>
                     </div>
                 </div>
@@ -97,7 +98,7 @@
                         <div class="widget-subheading">NET liquidation value</div>
                     </div>
                     <div class="widget-content-right">
-                        <div class="widget-numbers text-white"><span>$ {{ report.net_liquidation }}</span></div>
+                        <div class="widget-numbers text-white"><span>$ {{ report.net_liquidation | round |int }}</span></div>
                     </div>
                 </div>
             </div>
