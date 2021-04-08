@@ -10,6 +10,7 @@ setTimeout(function(){
 function set_connection_state(){
 el=$("#report_time").val()
 interval=$("#report_interval").val()
+interval=parseInt(interval)
 time_report=Date.parse(el)
 time_current=Date.now()
 seconds_passed=(time_current-time_report)/1000
