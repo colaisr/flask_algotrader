@@ -69,8 +69,6 @@ def savesettings():
         user_settings.server_use_system_candidates = True
     else:
         user_settings.server_use_system_candidates = False
-    user_settings.station_interval_worker_sec = request.form['station_interval_worker_sec']
-    user_settings.station_interval_ui_sec = request.form['station_interval_ui_sec']
 
     user_settings.update_user_settings()
     return redirect(url_for('algotradersettings.usersettings'))
