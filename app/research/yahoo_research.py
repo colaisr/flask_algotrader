@@ -1,3 +1,5 @@
+
+
 import yfinance as yf
 
 
@@ -13,3 +15,5 @@ def get_yahoo_stats_for_ticker(s):
     avChange = df["diffP"].mean()
 
     return avdropP, avChange
+
+
