@@ -46,7 +46,7 @@ def research_ticker(ticker):
 @csrf.exempt
 @research.route('/alltickers', methods=['GET'])  # for use from the task
 def alltickers():
-    marketdata = TickerData.query.all()
+    marketdata = TickerData.query.group_by(TickerData.ticker).all()
     resp = []
     for c in marketdata:
         resp.append(c.ticker)
