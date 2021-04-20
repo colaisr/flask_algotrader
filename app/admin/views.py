@@ -9,7 +9,7 @@ from flask import (
 )
 from flask_login import current_user, login_required
 from flask_rq import get_queue
-from sqlalchemy import select, distinct, text
+from sqlalchemy import select, distinct, text, func
 
 from app import db
 from app.admin.forms import (
@@ -108,6 +108,15 @@ def registered_users():
 @login_required
 @admin_required
 def market_data():
+    # #cleaning db
+    # all=db.session.query(TickerData).all()
+    # for k in all:
+    #     i=2
+    #     my_data = db.session.query(TickerData).filter(func.date(TickerData.updated_server_time) == k.updated_server_time.date(),TickerData.ticker==k.ticker).all()
+    #     # same_dates=TickerData.query.filter_by(func.date(updated_server_time)=k.updated_server_time.date()).all()
+    #     if len(my_data)>1:
+    #         r=3
+    #
 
     query_text="select a.* from Tickersdata a join (  select Tickersdata.`ticker`, max(Tickersdata.`updated_server_time`) as updated_server_time  from Tickersdata group by Tickersdata.`ticker`) b on b.`ticker`=a.`ticker` and b.`updated_server_time`=a.`updated_server_time`"
     r=db.session.query(TickerData).from_statement(text(query_text)).all()
