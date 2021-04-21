@@ -58,8 +58,11 @@ def traderstationstate():
         report.all_positions_value=0
         for k,v in open_positions.items():
             position = Position.query.filter_by(email=current_user.email, last_exec_side='BOT',ticker=k).first()
-            delta=datetime.today()-position.opened
-            v['days_open']=delta.days
+            if position != None:
+                delta=datetime.today()-position.opened
+                v['days_open']=delta.days
+            else:
+                v['days_open'] = "many"
 
             if v['Value'] !=0:
                 profit=v['UnrealizedPnL']/v['Value']*100
