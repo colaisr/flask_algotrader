@@ -22,11 +22,11 @@ def get_fmp_ratings_score_for_ticker(s):
         response = urlopen(url, context=context)
         data = response.read().decode("utf-8")
         parsed=json.loads(data)
-        if len(parsed)>1:
+        if len(parsed)>0:
             rating=parsed[0]['rating']
             score = parsed[0]['ratingScore']
             return rating,score
         else:
-            return 1,1
+            return 'N',1
     except:
-        return 0,0
+        return 'NE',0
