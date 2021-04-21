@@ -16,4 +16,13 @@ def get_yahoo_stats_for_ticker(s):
 
     return avdropP, avChange
 
+def check_st(ticker):
+    msft = yf.Ticker(ticker)
+    i=msft.info
+    pass
+
+if __name__ == '__main__':
+    check_st('tcnnf')
+
+
 

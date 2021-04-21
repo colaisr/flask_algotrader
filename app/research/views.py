@@ -47,7 +47,7 @@ def research_ticker(ticker):
 @research.route('/alltickers', methods=['GET'])  # for use from the task
 def alltickers():
     # marketdata = TickerData.query.group_by(TickerData.ticker).all()
-    cands=Candidate.query.group_by(Candidate.ticker).all()
+    cands=Candidate.query.filter_by(enabled=True).group_by(Candidate.ticker).all()
     resp = []
     for c in cands:
         resp.append(c.ticker)
