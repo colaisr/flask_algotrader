@@ -29,4 +29,4 @@ def get_fmp_ratings_score_for_ticker(s):
         else:
             return 1,1
     except:
-        return 1,1
+        return 0,0
