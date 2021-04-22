@@ -30,6 +30,7 @@ class Report(db.Model):
     dailyPnl=db.Column('dailyPnl', db.Float)
     last_worker_execution = db.Column('last_worker_execution', db.DateTime)
     market_time = db.Column('market_time', db.DateTime)
+    started_time = db.Column('started_time', db.DateTime)
     market_state = db.Column('market_state', db.String)
 
     def update_report(self):
@@ -50,5 +51,6 @@ class Report(db.Model):
             report.last_worker_execution = self.last_worker_execution
             report.market_time = self.market_time
             report.market_state = self.market_state
+            report.started_time = self.started_time
 
         db.session.commit()

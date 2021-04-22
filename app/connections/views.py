@@ -112,6 +112,7 @@ def logreport():
         report.last_worker_execution =datetime.fromisoformat(request_data["last_worker_run"])
         report.market_time =datetime.fromisoformat(request_data["market_time"])
         report.market_state = request_data["market_state"]
+        report.started_time = datetime.fromisoformat(request_data["started_time"])
         report.update_report()
 
         return "Report snapshot stored at server"

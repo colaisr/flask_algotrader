@@ -48,6 +48,10 @@ def traderstationstate():
         i=3
     else:
         report.reported_text=report.report_time.strftime("%m-%d %H:%M:%S")
+        if report.started_time !=None:
+            report.started_time_text = report.started_time.strftime("%m-%d %H:%M:%S")
+        else:
+            report.started_time_text ='---------------------'
         report.last_worker_execution_text=report.last_worker_execution.strftime("%H:%M:%S")
         report.market_time_text = report.market_time.strftime("%H:%M")
         report.dailyPnl=round(report.dailyPnl,2)
