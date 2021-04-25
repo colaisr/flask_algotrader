@@ -45,11 +45,15 @@
             </div>
             <div class="page-title-actions">
                 <div>
-                    <div class="mb-2 mr-2 badge badge-info"><a target="_blank" href="https://finance.yahoo.com/quote/{{candidate.ticker}}">Go to Yahoo</a></div>
+                    <div class="mb-2 mr-2 badge badge-info"><a target="_blank"
+                                                               href="https://finance.yahoo.com/quote/{{candidate.ticker}}">Go
+                        to Yahoo</a></div>
                 </div>
 
                 <div>
-                    <div  class="mb-2 mr-2 badge badge-info"><a target="_blank" href="https://www.tipranks.com/stocks/{{candidate.ticker}}/forecast">Go Tiprank</a></div>
+                    <div class="mb-2 mr-2 badge badge-info"><a target="_blank"
+                                                               href="https://www.tipranks.com/stocks/{{candidate.ticker}}/forecast">Go
+                        Tiprank</a></div>
                 </div>
             </div>
         </div>
@@ -59,7 +63,18 @@
             <div id="container" style="width:100%; height:400px;"></div>
             <div>
                 <input type="hidden" id="ticker" value="{{ candidate.ticker }}">
+
+                <script> var hist_dates = {{ hist_dates|tojson }}; </script>
+                <script> var hist_tr_ranks = {{ hist_tr_ranks|tojson }}; </script>
+                <script> var hist_fmp_score = {{ hist_fmp_score|tojson }}; </script>
+<!--                <input type="hidden" id="hist_dates" value="{{ hist_dates }}">-->
+<!--                <input type="hidden" id="hist_tr_ranks" value="{{ hist_tr_ranks }}">-->
+<!--                <input type="hidden" id="hist_fmp_score" value="{{ hist_fmp_score }}">-->
             </div>
+        </div>
+        <div class="row">
+        <canvas id="myChart" style="width:100%; height:400px;"></canvas>
+
         </div>
         <div class="divider mt-0" style="margin-bottom: 30px;"></div>
 
@@ -101,10 +116,10 @@
                 <div class="main-card mb-3 card">
                     <div class="card-body"><h5 class="card-title">SPECS</h5>
                         <ul class="list-group">
-                            <li class="list-group-item">Industry:        {{candidate.industry}}</li>
-                            <li class="list-group-item">Exchange:        {{candidate.exchange}}</li>
-                            <li class="list-group-item">P/E:             {{market_data.fmp_pe}}</li>
-                            <li class="list-group-item">Av. daily drop:  {{market_data.yahoo_avdropP}} %</li>
+                            <li class="list-group-item">Industry: {{candidate.industry}}</li>
+                            <li class="list-group-item">Exchange: {{candidate.exchange}}</li>
+                            <li class="list-group-item">P/E: {{market_data.fmp_pe}}</li>
+                            <li class="list-group-item">Av. daily drop: {{market_data.yahoo_avdropP}} %</li>
                             <li class="list-group-item">Av. daily spread:{{market_data.yahoo_avdropP}} %</li>
                         </ul>
                     </div>
@@ -121,5 +136,6 @@
 <script src="https://code.highcharts.com/stock/modules/data.js"></script>
 <script src="https://code.highcharts.com/stock/modules/exporting.js"></script>
 <script src="https://code.highcharts.com/stock/modules/export-data.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.2.0/chart.min.js" integrity="sha512-VMsZqo0ar06BMtg0tPsdgRADvl0kDHpTbugCBBrL55KmucH6hP9zWdLIWY//OTfMnzz6xWQRxQqsUFefwHuHyg==" crossorigin="anonymous"></script>
 <script type="text/javascript" src="{{ url_for('static', filename='scripts/pages/ticker_info.js') }}"></script>
 {% endblock %}

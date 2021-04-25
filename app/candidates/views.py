@@ -97,8 +97,23 @@ def info():
 
     ticker=request.args['ticker_to_show']
     candidate = Candidate.query.filter_by(ticker=ticker).first()
-    m_data=td=TickerData.query.filter_by(ticker=ticker).order_by(TickerData.updated_server_time.desc()).first()
+    m_data=TickerData.query.filter_by(ticker=ticker).order_by(TickerData.updated_server_time.desc()).first()
     user_settings = UserSetting.query.filter_by(email=current_user.email).first()
-    # last_year=get_stock_rank(position.ticker)
+    td_history = TickerData.query.filter_by(ticker=ticker).order_by(TickerData.updated_server_time.asc()).all()
+    hist_dates=[]
+    hist_tr_ranks=[]
+    hist_fmp_score=[]
+    for td in td_history:
+        hist_dates.append(td.updated_server_time.strftime("%m/%d/%Y"))
+        hist_tr_ranks.append(td.tipranks)
+        hist_fmp_score.append(td.fmp_score)
+        t=2
 
-    return render_template('candidates/ticker_info.html',user_settings=user_settings,candidate=candidate,market_data=m_data)
+
+
+    return render_template('candidates/ticker_info.html',user_settings=user_settings,
+                           candidate=candidate,
+                           market_data=m_data,
+                           hist_dates=hist_dates,
+                           hist_tr_ranks=hist_tr_ranks,
+                           hist_fmp_score=hist_fmp_score)
