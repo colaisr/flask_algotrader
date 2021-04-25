@@ -3,6 +3,8 @@ ticker=$( "#ticker" )[0].value;
 profit=$( "#profit" )[0].value;
 enp=$("#closed")[0].value;
 stp=$( "#opened" )[0].value;
+fmp_rating_on_buy=$( "#fmp_rating_on_buy" )[0].value;
+tip_rank_on_buy=$( "#tip_rank_on_buy" )[0].value;
 point_start=Date.parse(stp)
 point_end=Date.parse(enp)
 //rank_array.forEach(element => element[0]=element[0].replace(/^"(.*)"$/, '$1'));
@@ -64,11 +66,11 @@ $.getJSON(url, function(data) {
             data: [{
                 x: Date.parse(stp),
                 title: ' ',
-                text: 'Some event with a description'
+                text: 'Tiprank: '+tip_rank_on_buy+' FMP: '+fmp_rating_on_buy
             }, {
                 x: Date.parse(enp),
                 title: ' ',
-                text: 'Some event with a description'
+                text: 'Position closed'
             }],
             onSeries: 'dataseries',
             shape: 'circlepin',

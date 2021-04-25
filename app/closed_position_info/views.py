@@ -16,6 +16,9 @@ from flask import (
     url_for, jsonify,
 )
 from datetime import datetime, date, timedelta
+
+from sqlalchemy import func
+
 from app import db, csrf
 from app.models import User, Connection, Report, TickerData, Position
 
@@ -54,11 +57,19 @@ def get_fmg_pe_rating_for_ticker(s):
 def view():
     id=request.args['position_to_show']
     position = Position.query.filter_by(id=id).first()
+    opened_date=position.opened.date()
+    day_of_buy_data=TickerData.query.filter_by(ticker=position.ticker,updated_server_time=opened_date).first()
+    if day_of_buy_data != None:
+        tip_rank_on_buy = str(day_of_buy_data.tipranks)
+        fmp_rating_on_buy = day_of_buy_data.fmp_rating
+    else:
+        tip_rank_on_buy='0'
+        fmp_rating_on_buy='0'
     hist=TickerData.query.filter_by(ticker=position.ticker).order_by(TickerData.updated_server_time.asc()).all()
     rank_array=[]
     for h in hist:
         rank_array.append([str(h.updated_server_time.strftime("%Y-%m-%d %H:%M:%S")),h.tipranks])
-    return render_template('userview/closed_position_info.html',position=position,rank_array=rank_array)
+    return render_template('userview/closed_position_info.html',position=position,rank_array=rank_array,tip_rank_on_buy=tip_rank_on_buy,fmp_rating_on_buy=fmp_rating_on_buy)
 
 
 # def get_stock_rank(s):
