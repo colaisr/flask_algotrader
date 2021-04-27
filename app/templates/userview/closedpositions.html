@@ -41,6 +41,7 @@
                     <th>Closed</th>
                     <th>Open price</th>
                     <th>Close price</th>
+                    <th>Days in work</th>
                     <th>Profit USD</th>
                     <th>Profit %</th>
                 </tr>
@@ -65,6 +66,7 @@
                     <td>{{ m.closed }}</td>
                     <td>{{ m.open_price }}</td>
                     <td>{{ m.close_price }}</td>
+                    <td>{{ m.days_in_action }}</td>
                     <td
                     {%if m.profit>0%}
                     style="background-color: chartreuse;"
