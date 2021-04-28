@@ -204,8 +204,8 @@ def postexecution():
             position.last_exec_side=side
             position.close_price=price
             position.closed=time
-            check_if_market_fall()
-        position.update_position(logged_user)
+            check_if_market_fall(logged_user)
+        position.update_position()
 
         return "Execution for " + logged_user + " stored at server."
     else:
