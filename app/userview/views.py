@@ -1,5 +1,5 @@
 import json
-from datetime import datetime
+from datetime import datetime, timedelta
 
 from flask import (
     Blueprint,
@@ -99,7 +99,6 @@ def traderstationstate():
 @userview.route('closedpositions', methods=['GET', 'POST'])
 @login_required
 def closedpositions():
-    """Display a user's account information."""
     closed_positions = Position.query.filter_by(email=current_user.email,last_exec_side='SLD').all()
     for c in closed_positions:
         delta=c.closed-c.opened

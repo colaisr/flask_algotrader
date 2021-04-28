@@ -15,6 +15,7 @@ from sqlalchemy import text
 from sqlalchemy.orm import sessionmaker
 
 from app import db, csrf
+from app.email import send_email
 from app.models import User, Connection, Report, Position, ClientCommand, UserSetting, TickerData, \
     Candidate
 
@@ -158,6 +159,22 @@ def restart_all_stations():
     return "all stations booked to restart"
 
 
+def check_if_market_fall(logged_user):
+    today = datetime.today().date()
+    today_closings = Position.query.filter(Position.email == logged_user, Position.last_exec_side == 'SLD',
+                                           Position.closed >= today,Position.profit<0).all()
+    if len(today_closings)>3:
+        #more than 3 positions closed same day on profit negative - stop buying option and notify
+        user_settings = UserSetting.query.filter_by(email=logged_user).first()
+        user_settings.algo_allow_buy=False
+        user_settings.update_user_settings()
+        send_email(recipient=logged_user,
+            subject='Confirm Your Account',
+            template='account/email/market_fall')
+
+
+
+
 @csrf.exempt
 @connections.route('/postexecution', methods=['POST'])
 def postexecution():
@@ -187,7 +204,9 @@ def postexecution():
             position.last_exec_side=side
             position.close_price=price
             position.closed=time
-        position.update_position()
+            check_if_market_fall()
+        position.update_position(logged_user)
+
         return "Execution for " + logged_user + " stored at server."
     else:
         return "The user configured is not found on Server the execution is not logged"
