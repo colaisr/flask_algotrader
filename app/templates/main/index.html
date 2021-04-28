@@ -9,58 +9,62 @@
                     <i class="pe-7s-albums icon-gradient bg-mean-fruit">
                     </i>
                 </div>
-                <div>Recent Logins
-                    <div class="page-title-subheading">Recent logins registered for AlgoTrader stations.
+                <div>STATUS
+                    <div class="page-title-subheading">Current server status.
                     </div>
                 </div>
             </div>
 
         </div>
     </div>
-    <div class="row">
-
-
-        <div class="ui stackable grid container" xmlns="http://www.w3.org/1999/html"
-             xmlns="http://www.w3.org/1999/html">
-            <div class="sixteen wide tablet twelve wide computer  column">
-
-                <div class="ui menu">
-                    <div class="ui left search item">
-                        <div class="ui transparent icon input">
-                            <input id="search-users" type="text" placeholder="Search users…">
-                            <i class="search icon"></i>
+<div class="row">
+                            <div class="col-md-6 col-xl-4">
+                                <div class="card mb-3 widget-content">
+                                    <div class="widget-content-outer">
+                                        <div class="widget-content-wrapper">
+                                            <div class="widget-content-left">
+                                                <div class="widget-heading">Users</div>
+                                                <div class="widget-subheading">Registered users</div>
+                                            </div>
+                                            <div class="widget-content-right">
+                                                <div class="widget-numbers text-success">{{system_status['users_registered']}}</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-xl-4">
+                                <div class="card mb-3 widget-content">
+                                    <div class="widget-content-outer">
+                                        <div class="widget-content-wrapper">
+                                            <div class="widget-content-left">
+                                                <div class="widget-heading">Tickers</div>
+                                                <div class="widget-subheading">Candidates tracked daily</div>
+                                            </div>
+                                            <div class="widget-content-right">
+                                                <div class="widget-numbers text-success">{{system_status['tickers_tracked']}}</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-xl-4">
+                                <div class="card mb-3 widget-content">
+                                    <div class="widget-content-outer">
+                                        <div class="widget-content-wrapper">
+                                            <div class="widget-content-left">
+                                                <div class="widget-heading">Executions</div>
+                                                <div class="widget-subheading">Deals executed</div>
+                                            </div>
+                                            <div class="widget-content-right">
+                                                <div class="widget-numbers text-success">{{system_status['all_positions']}}</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </div>
-
-                {# Use overflow-x: scroll so that mobile views don't freak out
-                # when the table is too wide #}
-                <div style="overflow-x: scroll;">
-                    <table class="ui searchable sortable unstackable selectable celled table">
-                        <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Email address</th>
-                            <th class="sorted descending">Connection time</th>
-
-                        </tr>
-                        </thead>
-                        <tbody>
-                        {% for u in connections | sort(reverse=true,attribute='reported_connection') %}
-                        <tr>
-
-                            <td>{{ u.id }}</td>
-                            <td>{{ u.email }}</td>
-                            <td>{{ u.reported_connection }}</td>
-
-                        </tr>
-                        {% endfor %}
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-
+        <div class="row">
 
     </div>
 </div>
