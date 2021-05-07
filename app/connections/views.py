@@ -85,7 +85,7 @@ def retrieve_user_candidates(user):
         requested_candidates=user_candidates
     requested_candidates=filter_add_data(requested_candidates,requested_for_user)
     requested_candidates.sort(key=sort_by_tiprank)
-    requested_candidates=requested_candidates[:85]    #trader station allow to track only 100
+    # requested_candidates=requested_candidates[:85]    #trader station allow to track only 100
     cand_dictionaries=[]
     for c in requested_candidates:
         cand_dictionaries.append(c.toDictionary())
