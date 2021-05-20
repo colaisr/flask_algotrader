@@ -75,6 +75,7 @@ def register():
 
             station_interval_ui_sec=1,
             station_interval_worker_sec=60,
+            station_autorestart=True,
 
             server_url='http://colak.eu.pythonanywhere.com',
             server_report_interval_sec=30,

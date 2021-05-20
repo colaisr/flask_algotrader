@@ -52,6 +52,13 @@ def savesettings():
     else:
         user_settings.algo_allow_margin =False
 
+    if "station_autorestart" in request.form.keys():
+        user_settings.station_autorestart = True
+    else:
+        user_settings.station_autorestart =False
+
+
+
     if "algo_apply_min_rank" in request.form.keys():
         user_settings.algo_apply_min_rank = True
     else:

@@ -212,6 +212,16 @@
                                         Candidates</label>
                                 </div>
                             </div>
+                                                        <div class="col-md-4">
+                                <div class="position-relative form-check">
+                                    <input title="Autorestart station daily at 13.00 local time" {%if user_settings.station_autorestart%}
+                                           checked
+                                           {% endif %} name="station_autorestart"
+                                           id="station_autorestart" type="checkbox"
+                                           class="form-check-input">
+                                    <label for="server_use_system_candidates" class="form-check-label">Autorestart daily</label>
+                                </div>
+                            </div>
                         </div>
 
                     </div>

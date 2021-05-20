@@ -35,6 +35,7 @@ class UserSetting(db.Model):
 
     station_interval_ui_sec = db.Column('station_interval_ui_sec', db.Integer)
     station_interval_worker_sec = db.Column('station_interval_worker_sec', db.Integer)
+    station_autorestart = db.Column('station_autorestart', db.Boolean)
 
     server_url = db.Column('server_url', db.String)
     server_report_interval_sec = db.Column('server_report_interval_sec', db.Integer)
@@ -67,6 +68,7 @@ class UserSetting(db.Model):
         d['server_use_system_candidates'] = self.server_use_system_candidates
         d['station_interval_worker_sec']=self.station_interval_worker_sec
         d['station_interval_ui_sec']=self.station_interval_ui_sec
+        d['station_autorestart'] = self.station_autorestart
         d['algo_allow_buy'] = self.algo_allow_buy
         d['algo_allow_margin'] = self.algo_allow_margin
         d['algo_min_rank'] = self.algo_min_rank
