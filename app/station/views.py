@@ -30,7 +30,7 @@ def create_script_for_package():
 
     if user_settings is not None:
         origin='./app/static/installation_templates/twsRestartScript_template.vbs'
-        destination = './app/static/algotrader-station/algotrader/twsRestartScript.vbs'
+        destination = './app/static/algotrader-station/algotrader/Scripts/win_twsRestartScript.vbs'
         copyfile(origin, destination)
         with fileinput.FileInput(destination, inplace=True) as file:
             for line in file:

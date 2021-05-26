@@ -1,5 +1,6 @@
 import json
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, time
+from pytz import timezone
 
 from flask import (
     Blueprint,
@@ -96,10 +97,37 @@ def traderstationstate():
 
         report_time=report.report_time
 
+    trading_session_state=check_session_state()
+
     if report is None:
         return redirect(url_for('candidates.usercandidates'))
     else:
-        return render_template('userview/traderstationstate.html',report_interval=report_interval,report_time=report_time,candidates_live=candidates_live,open_positions=open_positions,open_orders=open_orders, user=current_user,report=report,margin_used=use_margin, form=None)
+        return render_template('userview/traderstationstate.html',trading_session_state=trading_session_state,report_interval=report_interval,report_time=report_time,candidates_live=candidates_live,open_positions=open_positions,open_orders=open_orders, user=current_user,report=report,margin_used=use_margin, form=None)
+
+def check_session_state():
+    tz = timezone('US/Eastern')
+    current_est_time=datetime.now(tz).time()
+    dstart = time(4, 0, 0)
+    dend=time(20, 0, 0)
+    tstart=time(9, 30, 0)
+    tend=time(16, 0, 0)
+    if time_in_range(dstart,tstart,current_est_time):
+        return "Pre Market"
+    elif time_in_range(tstart,tend,current_est_time):
+        return "Open"
+    elif time_in_range(tend,dend,current_est_time):
+        return "After Market"
+    else:
+        return "Closed"
+
+
+def time_in_range(start, end, x):
+    """Return true if x is in the range [start, end]"""
+    if start <= end:
+        return start <= x <= end
+    else:
+        return start <= x or x <= end
+
 
 @userview.route('closedpositions', methods=['GET', 'POST'])
 @login_required
