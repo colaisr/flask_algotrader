@@ -125,6 +125,8 @@ def market_data():
     for m in marketdata:
         if m.fmp_pe is None:
             m.fmp_pe=0
+        if m.tipranks is None:
+            m.tipranks=0
 
     return render_template('admin/market_data.html',user_settings=user_settings, marketdata=marketdata)
 
