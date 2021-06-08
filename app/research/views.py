@@ -31,6 +31,7 @@ def updatemarketdataforcandidate():
 
 
 def research_ticker(ticker):
+    #todo exception handling
     marketdata = TickerData()
     marketdata.ticker=ticker
     marketdata.tipranks = get_tiprank_for_ticker(ticker)

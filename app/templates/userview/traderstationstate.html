@@ -244,7 +244,16 @@
                         </thead>
                         <tbody>
                         {% for key, value in candidates_live.items() %}
-                        <tr>
+                        <tr
+
+                        {% if value['target_price']>value['Ask'] and value['Ask']!=-1%}
+                        style="background-color: chartreuse;"
+                        {% endif %}
+
+
+
+
+                        >
                         <td class="text-center text-muted">
                             <a href="{{url_for('candidates.info')}}?ticker_to_show={{value['Stock']}}">
                                 {{value['Stock']}}
