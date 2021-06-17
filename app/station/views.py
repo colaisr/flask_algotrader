@@ -40,8 +40,8 @@ def create_script_for_package():
             for line in file:
                 print(line.replace("tws_password", user_settings.connection_tws_pass), end='')
         #linux
-        origin = './app/static/installation_templates/linux_twsRestartScript_template.vbs'
-        destination = './app/static/algotrader-station/algotrader/Scripts/linux_twsRestartScript.vbs'
+        origin = './app/static/installation_templates/linux_twsRestartScript_template.sh'
+        destination = './app/static/algotrader-station/algotrader/Scripts/linux_twsRestartScript.sh'
         copyfile(origin, destination)
         with fileinput.FileInput(destination, inplace=True) as file:
             for line in file:
