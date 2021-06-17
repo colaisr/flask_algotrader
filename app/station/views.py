@@ -29,15 +29,26 @@ def create_script_for_package():
     user_settings = UserSetting.query.filter_by(email=current_user.email).first()
 
     if user_settings is not None:
-        origin='./app/static/installation_templates/twsRestartScript_template.vbs'
+        #windows
+        origin='./app/static/installation_templates/win_twsRestartScript_template.vbs'
         destination = './app/static/algotrader-station/algotrader/Scripts/win_twsRestartScript.vbs'
         copyfile(origin, destination)
         with fileinput.FileInput(destination, inplace=True) as file:
             for line in file:
-                print(line.replace("tws_user", 'colak1982'), end='')
+                print(line.replace("tws_user", user_settings.connection_tws_user), end='')
         with fileinput.FileInput(destination, inplace=True) as file:
             for line in file:
-                print(line.replace("tws_password", 'klk5489103'), end='')
+                print(line.replace("tws_password", user_settings.connection_tws_pass), end='')
+        #linux
+        origin = './app/static/installation_templates/linux_twsRestartScript_template.vbs'
+        destination = './app/static/algotrader-station/algotrader/Scripts/linux_twsRestartScript.vbs'
+        copyfile(origin, destination)
+        with fileinput.FileInput(destination, inplace=True) as file:
+            for line in file:
+                print(line.replace("tws_user", user_settings.connection_tws_user), end='')
+        with fileinput.FileInput(destination, inplace=True) as file:
+            for line in file:
+                print(line.replace("tws_password", user_settings.connection_tws_pass), end='')
 
 
 def create_config_for_package():
