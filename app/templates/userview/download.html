@@ -1,7 +1,7 @@
 {% extends 'layouts/base.html' %}
 
 {% block content %}
-<div class="app-main__inner">
+<div class="app-main__inner" xmlns="http://www.w3.org/1999/html">
     <div class="app-page-title">
         <div class="page-title-wrapper">
             <div class="page-title-heading">
@@ -18,7 +18,10 @@
         </div>
     </div>
     <div class="column">
-        <h1>Windows algotrader installation</h1>
+        <h1>Windows</h1>
+
+        <h2>Algotrader installation</h2>
+
         1. Download and install TWS Trader station. (Gateway can be used - but it have no AutoUpdate feature)<br>
         <a href="https://www.interactivebrokers.com/en/index.php?f=16040" target="_blank"><i class="nav-link-icon fa fa-download"> </i>Download TWS</a><br>
         2. Make sure to open API and set port as in the settings, remove precauctious message<br>
@@ -29,7 +32,29 @@
         <a href="/station/downloadzip" download ><i class="nav-link-icon fa fa-download"> </i>AlgoTrader Package</a><br>
         5. Unzip where feels good :)<br>
         6. Go to forder "twsapi" run : installWindows.bat<br>
-        6. Ready! Launch with "win_start_all.bat"<br>
+        7. Ready! Launch with "win_start_all.bat"<br>
+
+        <h2>Setting a PC</h2>
+        <h4>Adding to Autostart</h4>
+        1. Go to algotrader folder. Right-click win_start_all.bat, create shortcut. Cut/Copy it.
+        2. Go to C:\Users\Administrator\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup
+        3. Paste shortcut.
+        <h4>Setting Autorestart</h4>
+        1. Open Task Scheduler
+        2. Create Basic task. Action: shutdown  Argument: /r
+        <h4>Setting AutoLogOn</h4>
+        1. Right click on Start and select Run, type NetPLWiz and then press Enter.
+        2. Select User Account. Uncheck the option to ask for a password.
+
+
+        <h1>Linux</h1>
+
+        <h2>Algotrader installation</h2>
+
+        1. Download and install TWS Trader station. (Gateway can be used - but it have no AutoUpdate feature)<br>
+        <a href="https://www.interactivebrokers.com/en/index.php?f=16040" target="_blank"><i class="nav-link-icon fa fa-download"> </i>Download TWS</a><br>
+        2. Make sure to open API and set port as in the settings, remove precauctious message<br>
+
 
     </div>
 </div>
