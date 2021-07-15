@@ -137,6 +137,8 @@ def get_command():
         response['candidates']=retrieve_user_candidates(logged_user)
         if client_command.command=='restart_worker':
             client_command.set_run_worker()
+        elif client_command.command=='close_all_positions':
+            client_command.set_run_worker()
         return response
     else:
         return "The user configured is not found on Server the report is not logged"

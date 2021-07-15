@@ -25,3 +25,8 @@ class ClientCommand(db.Model):
         c = ClientCommand.query.filter_by(email=self.email).first()
         c.command="run_worker"
         db.session.commit()
+
+    def set_close_all_positions(self):
+        c = ClientCommand.query.filter_by(email=self.email).first()
+        c.command="close_all_positions"
+        db.session.commit()
