@@ -13,6 +13,7 @@ from datetime import datetime, date, timedelta
 from flask_login import current_user
 
 from app import db, csrf
+from app.email import send_email
 from app.models import User, Connection, Report, TickerData, Candidate
 from app.research.fmp_research import get_fmp_pe_for_ticker, get_fmp_ratings_score_for_ticker
 from app.research.tipranks_research import get_tiprank_for_ticker
@@ -25,7 +26,13 @@ research = Blueprint('research', __name__)
 @research.route('/updatemarketdataforcandidate', methods=['POST'])
 def updatemarketdataforcandidate():
     ticker = request.form['ticker_to_update']
-    research_ticker(ticker)
+    try:
+        research_ticker(ticker)
+    except:
+        send_email(recipient='cola.isr@gmail.com',
+                   subject='Algotrader research problem with '+ticker,
+                   template='account/email/research_issue',
+                   ticker=ticker)
 
     return redirect(url_for('admin.market_data'))
 
