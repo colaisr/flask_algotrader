@@ -160,17 +160,22 @@ def restart_all_stations():
 
 
 def check_if_market_fall(logged_user):
-    today = datetime.today().date()
-    today_closings = Position.query.filter(Position.email == logged_user, Position.last_exec_side == 'SLD',
-                                           Position.closed >= today,Position.profit<0).all()
-    if len(today_closings)>3:
-        #more than 3 positions closed same day on profit negative - stop buying option and notify
-        user_settings = UserSetting.query.filter_by(email=logged_user).first()
-        user_settings.algo_allow_buy=False
-        user_settings.update_user_settings()
-        send_email(recipient=logged_user,
-            subject='Confirm Your Account',
-            template='account/email/market_fall')
+    user_settings = UserSetting.query.filter_by(email=logged_user).first()
+    if user_settings.algo_sell_on_swan==False:
+        return
+    else:
+        today = datetime.today().date()
+        today_closings = Position.query.filter(Position.email == logged_user, Position.last_exec_side == 'SLD',
+                                               Position.closed >= today,Position.profit<0).all()
+        if len(today_closings)>user_settings.algo_positions_for_swan:
+            #more than 3 positions closed same day on profit negative - stop buying option and notify
+            user_settings = UserSetting.query.filter_by(email=logged_user).first()
+            user_settings.algo_allow_buy=False
+            user_settings.update_user_settings()
+            send_email(recipient=logged_user,
+                subject='Algotrader: Black Swan is suspected!',
+                template='account/email/market_fall')
+            #todo add signal to sell
 
 
 
@@ -204,8 +209,9 @@ def postexecution():
             position.last_exec_side=side
             position.close_price=price
             position.closed=time
+            new_closing_happened=position.update_position()
+        if new_closing_happened:
             check_if_market_fall(logged_user)
-        position.update_position()
 
         return "Execution for " + logged_user + " stored at server."
     else:

@@ -17,6 +17,7 @@ class Position(db.Model):
     profit = db.Column('profit', db.Float)
 
     def update_position(self):
+        new_closing=False
         if self.last_exec_side=='BOT':
             p = Position.query.filter_by(email=self.email, ticker=self.ticker,last_exec_side='BOT').order_by(Position.id.desc()).first()
             if p is None:
@@ -30,7 +31,9 @@ class Position(db.Model):
                 p.closed = self.closed
                 p.last_exec_side=self.last_exec_side
                 p.profit = p.close_price*p.stocks-p.open_price*p.stocks
+                new_closing=True
         db.session.commit()
+        return new_closing
 
 
 
