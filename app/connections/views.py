@@ -177,7 +177,9 @@ def check_if_market_fall(logged_user):
             send_email(recipient=logged_user,
                 subject='Algotrader: Black Swan is suspected!',
                 template='account/email/market_fall')
-            #todo add signal to sell
+
+            client_command = ClientCommand.query.filter_by(email=logged_user).first()
+            client_command.set_close_all_positions()
 
 
 
