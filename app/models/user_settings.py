@@ -26,6 +26,8 @@ class UserSetting(db.Model):
     algo_min_rank = db.Column('algo_min_rank', db.Integer)
     algo_apply_accepted_fmp_ratings = db.Column('algo_apply_accepted_fmp_ratings', db.Boolean)
     algo_accepted_fmp_ratings = db.Column('algo_accepted_fmp_ratings', db.String)
+    algo_sell_on_swan = db.Column('algo_sell_on_swan', db.Boolean)
+    algo_positions_for_swan = db.Column('algo_positions_for_swan', db.Integer)
 
 
     connection_account_name = db.Column('connection_account_name', db.String)
@@ -40,6 +42,10 @@ class UserSetting(db.Model):
     server_url = db.Column('server_url', db.String)
     server_report_interval_sec = db.Column('server_report_interval_sec', db.Integer)
     server_use_system_candidates = db.Column('server_use_system_candidates', db.Boolean)
+
+    notify_buy = db.Column('notify_buy', db.Boolean)
+    notify_sell = db.Column('notify_sell', db.Boolean)
+    notify_trail = db.Column('notify_trail', db.Boolean)
 
     def update_user_settings(self):
         settings = UserSetting.query.filter((UserSetting.email==self.email)).first()

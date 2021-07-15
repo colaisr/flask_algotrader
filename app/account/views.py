@@ -69,6 +69,8 @@ def register():
             algo_min_rank=8,
             algo_apply_accepted_fmp_ratings=True,
             algo_accepted_fmp_ratings='S-,S,S+',
+            algo_sell_on_swan=True,
+            algo_positions_for_swan=3,
 
             connection_account_name = 'Default,needs to be changed',
             connection_port=7498,
@@ -79,7 +81,11 @@ def register():
 
             server_url='http://colak.eu.pythonanywhere.com',
             server_report_interval_sec=30,
-            server_use_system_candidates=True
+            server_use_system_candidates=True,
+
+            notify_buy=True,
+            notify_sell=True,
+            notify_trail=True
         )
         client_command=ClientCommand(
             email=form.email.data,
