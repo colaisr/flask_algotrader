@@ -1,0 +1,3 @@
+New position was open for {{ position.ticker }}
+Algotrader bought {{ str(position.stocks) }} by {{ str(position.open_price) }} each.
+

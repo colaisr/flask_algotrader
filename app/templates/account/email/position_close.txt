@@ -1,0 +1,4 @@
+The position for {{ position.ticker }} was closed!
+Algotrader sold {{ str(position.stocks) }} by {{ str(position.close_price) }} each.
+PROFIT :{{str(position.profit)}}
+

@@ -176,12 +176,33 @@ def check_if_market_fall(logged_user):
             user_settings.update_user_settings()
             send_email(recipient=logged_user,
                 subject='Algotrader: Black Swan is suspected!',
-                template='account/email/market_fall')
+                template='account/email/position_open')
 
             client_command = ClientCommand.query.filter_by(email=logged_user).first()
             client_command.set_close_all_positions()
 
 
+def notify_open(position, logged_user):
+    user_settings = UserSetting.query.filter_by(email=logged_user).first()
+    if user_settings.notify_buy:
+        send_email(recipient=logged_user,
+                   subject='Algotrader: new position is open for '+position.ticker,
+                   template='account/email/position_open',
+                   position=position)
+
+
+def notify_closed(position, logged_user):
+    user_settings = UserSetting.query.filter_by(email=logged_user).first()
+
+    if user_settings.notify_buy:
+        if position.profit>0:
+            text_for_message='Algotrader: closed position for ' + position.ticker+"with Profit"
+        else:
+            text_for_message = 'Algotrader: closed position for ' + position.ticker + "with Loss"
+        send_email(recipient=logged_user,
+                   subject=text_for_message,
+                   template='account/email/position_close',
+                   position=position)
 
 
 @csrf.exempt
@@ -206,6 +227,7 @@ def postexecution():
             position.last_exec_side=side
             position.open_price=price
             position.opened=time
+            result = position.update_position()
         else:
             position.ticker=symbol
             position.email=logged_user
@@ -213,9 +235,12 @@ def postexecution():
             position.last_exec_side=side
             position.close_price=price
             position.closed=time
-            new_closing_happened=position.update_position()
-        if new_closing_happened:
+            result=position.update_position()
+        if result=="new_sell":
             check_if_market_fall(logged_user)
+            notify_closed(position, logged_user)
+        elif result=="new_buy":
+            notify_open(position,logged_user)
 
         return "Execution for " + logged_user + " stored at server."
     else:
