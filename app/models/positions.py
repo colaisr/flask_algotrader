@@ -28,7 +28,7 @@ class Position(db.Model):
             else:
                 v=3
         else:
-            p = Position.query.filter_by(email=self.email,ticker=self.ticker,close_price="NULL").order_by(Position.id.desc()).first()
+            p = Position.query.filter_by(email=self.email,ticker=self.ticker).order_by(Position.id.desc()).first()
             if p is not None:
                 p.close_price=self.close_price
                 p.closed = self.closed
