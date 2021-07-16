@@ -57,12 +57,17 @@ def savesettings():
     else:
         user_settings.station_autorestart =False
 
-
-
     if "algo_apply_min_rank" in request.form.keys():
         user_settings.algo_apply_min_rank = True
     else:
         user_settings.algo_apply_min_rank =False
+
+    if "algo_sell_on_swan" in request.form.keys():
+        user_settings.algo_sell_on_swan = True
+    else:
+        user_settings.algo_sell_on_swan =False
+    user_settings.algo_positions_for_swan = request.form['algo_positions_for_swan']
+
     user_settings.algo_min_rank = request.form['algo_min_rank']
 
     user_settings.connection_port = request.form['connection_port']

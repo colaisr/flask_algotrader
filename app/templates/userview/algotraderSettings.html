@@ -40,8 +40,9 @@
             <form action="/algotradersettings/savesettings" method="post">
                 <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
                 <div class="main-card mb-3 card">
-                    <div class="card-body"><h5 class="card-title">Trading settings </h5>
-
+                    <div class="card-body">
+                        <h2 style="font-size: large;" class="card-title">Trading settings </h2>
+                        <h5 style="font-size: medium;" class="card-title">Strategy </h5>
                         <div class="form-row">
                             <div class="col-md-6">
                                 <div class="position-relative form-group">
@@ -101,17 +102,36 @@
 
 
                         </div>
-                        <div class="form-row">
-
-                            <div class="col-md-4">
-                                <div class="position-relative form-group">
-                                    <label for="algo_min_rank" class="">Min Tiprank</label>
-
-                                    <input title="Minimal TipRank to transmit to station" value="{{user_settings.algo_min_rank}}" name="algo_min_rank"
-                                           id="algo_min_rank" type="text"
-                                           class="form-control"></div>
+                        <div style="    margin-top: 8px" class="form-row">
+                            <div class="col-md-3">
+                                <div class="position-relative form-check">
+                                    <input title="Close all positions on market fall signal of number of consequentive LOSS closes within a day"
+                                            {%if user_settings.algo_sell_on_swan%}
+                                            checked
+                                            {% endif %}
+                                            name="algo_sell_on_swan" id="algo_sell_on_swan" type="checkbox"
+                                            class="form-check-input">
+                                    <label for="algo_sell_on_swan" class="form-check-label">Close Positions on market fall</label>
+                                </div>
                             </div>
                             <div class="col-md-4">
+                                <div class="position-relative form-group">
+                                    <label for="algo_positions_for_swan" class="">Positions for Fall</label>
+
+                                    <input title="number of positions for market fall signal" value="{{user_settings.algo_positions_for_swan}}" name="algo_positions_for_swan"
+                                           id="algo_positions_for_swan" type="text"
+                                           class="form-control">
+                                </div>
+                            </div>
+
+
+
+                        </div>
+                        <h5 style="font-size: medium;" class="card-title">Filters </h5>
+                        <div class="form-row">
+
+
+                            <div class="col-md-1">
                                 <div class="position-relative form-check">
                                     <input title="Use minimal Rank or transmit All"
                                             {%if user_settings.algo_apply_min_rank%}
@@ -122,16 +142,18 @@
                                     <label for="algo_apply_min_rank" class="form-check-label">Apply</label>
                                 </div>
                             </div>
-                        </div>
-                        <div class="form-row">
                             <div class="col-md-4">
                                 <div class="position-relative form-group">
-                                    <label for="algo_accepted_fmp_ratings" class="">Accepted FMP</label>
-                                    <input title="Ratings to transmit to station. Coma separated" value="{{user_settings.algo_accepted_fmp_ratings}}"
-                                           name="algo_accepted_fmp_ratings" id="algo_accepted_fmp_ratings" type="text"
+                                    <label for="algo_min_rank" class="">Min Tiprank</label>
+
+                                    <input title="Minimal TipRank to transmit to station" value="{{user_settings.algo_min_rank}}" name="algo_min_rank"
+                                           id="algo_min_rank" type="text"
                                            class="form-control"></div>
                             </div>
-                            <div class="col-md-4">
+                        </div>
+                        <div class="form-row">
+
+                            <div class="col-md-1">
                                 <div class="position-relative form-check">
                                     <input title="Use FMP Ratings or transmit all"
                                             {%if user_settings.algo_apply_accepted_fmp_ratings%}
@@ -143,6 +165,13 @@
                                     <label for="algo_apply_accepted_fmp_ratings" class="form-check-label">Apply</label>
                                 </div>
                             </div>
+                            <div class="col-md-4">
+                                <div class="position-relative form-group">
+                                    <label for="algo_accepted_fmp_ratings" class="">Accepted FMP</label>
+                                    <input title="Ratings to transmit to station. Coma separated" value="{{user_settings.algo_accepted_fmp_ratings}}"
+                                           name="algo_accepted_fmp_ratings" id="algo_accepted_fmp_ratings" type="text"
+                                           class="form-control"></div>
+                            </div>
                         </div>
                     </div>
 
@@ -150,7 +179,8 @@
 
                 </div>
                 <div class="main-card mb-3 card">
-                    <div class="card-body"><h5 class="card-title">Station settings </h5>
+                    <div class="card-body">
+                        <h5 style="font-size: large;" class="card-title">Station settings </h5>
 
                         <div class="form-row">
                             <div class="col-md-6">
@@ -212,16 +242,7 @@
                                         Candidates</label>
                                 </div>
                             </div>
-                                                        <div class="col-md-4">
-                                <div class="position-relative form-check">
-                                    <input title="Autorestart station daily at 13.00 local time" {%if user_settings.station_autorestart%}
-                                           checked
-                                           {% endif %} name="station_autorestart"
-                                           id="station_autorestart" type="checkbox"
-                                           class="form-check-input">
-                                    <label for="server_use_system_candidates" class="form-check-label">Autorestart daily</label>
-                                </div>
-                            </div>
+
                         </div>
 
                     </div>
