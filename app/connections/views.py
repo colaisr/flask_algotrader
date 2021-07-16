@@ -196,7 +196,7 @@ def notify_closed(position, logged_user):
 
     if user_settings.notify_sell:
         if position.profit>0:
-            text_for_message='Algotrader: closed position for ' + position.ticker+"with Profit"
+            text_for_message='Algotrader: closed position for ' + position.ticker+" with Profit"
         else:
             text_for_message = 'Algotrader: closed position for ' + position.ticker + "with Loss"
         send_email(recipient=logged_user,
