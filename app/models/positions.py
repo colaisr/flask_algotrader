@@ -19,7 +19,7 @@ class Position(db.Model):
     def update_position(self):
         updating_result="Nothing"
         if self.last_exec_side=='BOT':
-            p = Position.query.filter_by(email=self.email, ticker=self.ticker,last_exec_side='BOT').order_by(Position.id.desc()).first()
+            p = Position.query.filter_by(email=self.email, ticker=self.ticker,last_exec_side='BOT').first()
             if p is None:
                 db.session.add(self)
                 updating_result = "new_buy"
@@ -28,7 +28,7 @@ class Position(db.Model):
             else:
                 v=3
         else:
-            p = Position.query.filter_by(email=self.email,ticker=self.ticker,last_exec_side='BOT').order_by(Position.id.desc()).first()
+            p = Position.query.filter_by(email=self.email,ticker=self.ticker,last_exec_side='BOT').first()
             if p is not None:
                 p.close_price=self.close_price
                 p.closed = self.closed
