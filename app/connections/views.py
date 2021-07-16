@@ -202,7 +202,7 @@ def notify_closed(position, logged_user):
         send_email(recipient=logged_user,
                    subject=text_for_message,
                    template='account/email/position_close',
-                   position=position)
+                   profit=position.close_price-position.open_price)
 
 
 @csrf.exempt
