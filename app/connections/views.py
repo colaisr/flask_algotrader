@@ -194,8 +194,8 @@ def notify_open(position, logged_user):
 def notify_closed(position, logged_user):
     user_settings = UserSetting.query.filter_by(email=logged_user).first()
 
-    if user_settings.notify_buy:
-        if position.profit>0:
+    if user_settings.notify_sell:
+        if position.close_price-position.open_price>0:
             text_for_message='Algotrader: closed position for ' + position.ticker+"with Profit"
         else:
             text_for_message = 'Algotrader: closed position for ' + position.ticker + "with Loss"
