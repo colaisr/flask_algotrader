@@ -54,6 +54,24 @@
         1. Download and install TWS Trader station. (Gateway can be used - but it have no AutoUpdate feature)<br>
         <a href="https://www.interactivebrokers.com/en/index.php?f=16040" target="_blank"><i class="nav-link-icon fa fa-download"> </i>Download TWS</a><br>
         2. Make sure to open API and set port as in the settings, remove precauctious message<br>
+        4. Download Algotrader package<br>
+        <a href="/station/downloadzip" download ><i class="nav-link-icon fa fa-download"> </i>AlgoTrader Package</a><br>
+        5. Unzip <br>
+        6. Go to forder "twsapi" make linux_install.sh executable
+        7. run : linux_install.sh<br>
+        7. Ready! Launch with "linux_start_all.sh"<br>
+
+        <h2>Setting a PC</h2>
+        <h4>Adding to Autostart</h4>
+        1. Go to Startup applications.Add new command.Select linux_start_all.sh
+        2. modify to format:    mate-terminal -e "bash -c PATHTOFILE"
+        3. create cron job for autorestart:
+        4. sudo crontab -e
+        5. 0 16   *   *   *    /sbin/shutdown -r
+        6. 0 7   *   *   *    /sbin/shutdown -r
+        7. it configures 2 daily restarts : mornig and before trade.
+        8.Ready
+
 
 
     </div>
