@@ -68,6 +68,21 @@ def savesettings():
         user_settings.algo_sell_on_swan =False
     user_settings.algo_positions_for_swan = request.form['algo_positions_for_swan']
 
+    if "notify_buy" in request.form.keys():
+        user_settings.notify_buy = True
+    else:
+        user_settings.notify_buy =False
+
+    if "notify_sell" in request.form.keys():
+        user_settings.notify_sell = True
+    else:
+        user_settings.notify_sell =False
+
+    if "notify_trail" in request.form.keys():
+        user_settings.notify_trail = True
+    else:
+        user_settings.notify_trail =False
+
     user_settings.algo_min_rank = request.form['algo_min_rank']
 
     user_settings.connection_port = request.form['connection_port']

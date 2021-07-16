@@ -250,7 +250,51 @@
                     <button type="submit" class="mt-2 btn btn-primary">Save</button>
 
                 </div>
+                <div class="main-card mb-3 card">
+                    <div class="card-body">
+                        <h2 style="font-size: large;" class="card-title">Notification settings </h2>
+                        <div class="form-row">
+                            <div class="col-md-4">
+                                <div class="position-relative form-check">
+                                    <input title="Notify on opening position"
+                                            {%if user_settings.notify_buy%}
+                                            checked
+                                            {% endif %}
+                                            name="notify_buy" id="notify_buy" type="checkbox"
+                                            class="form-check-input">
+                                    <label for="notify_buy" class="form-check-label">Notify buying</label>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
 
+                                <div class="position-relative form-check">
+                                    <input title="Notify on closed position"
+                                            {%if user_settings.notify_sell%}
+                                            checked
+                                            {% endif %}
+                                            name="notify_sell" id="notify_sell" type="checkbox"
+                                            class="form-check-input">
+                                    <label for="notify_sell" class="form-check-label">Notify selling</label>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="position-relative form-check">
+                                    <input title="Notify on start Trailing"
+                                            {%if user_settings.notify_trail%}
+                                            checked
+                                            {% endif %}
+                                            name="notify_trail" id="notify_trail" type="checkbox"
+                                            class="form-check-input">
+                                    <label for="notify_trail" class="form-check-label">Notify trailing</label>
+                                </div>
+                            </div>
+
+
+                        </div>
+
+                    </div>
+                    <button type="submit" class="mt-2 btn btn-primary">Save</button>
+                </div>
             </form>
 
         </div>
