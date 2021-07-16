@@ -227,7 +227,7 @@ def postexecution():
             position.last_exec_side=side
             position.open_price=price
             position.opened=time
-            result = position.update_position()
+            result,np = position.update_position()
         else:
             position.ticker=symbol
             position.email=logged_user
