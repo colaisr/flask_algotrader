@@ -23,6 +23,8 @@ class Position(db.Model):
             if p is None:
                 db.session.add(self)
                 updating_result = "new_buy"
+                p = Position.query.filter_by(email=self.email, ticker=self.ticker, last_exec_side='BOT').order_by(
+                    Position.id.desc()).first()
             else:
                 v=3
         else:
@@ -34,7 +36,7 @@ class Position(db.Model):
                 p.profit = p.close_price*p.stocks-p.open_price*p.stocks
                 updating_result = "new_sell"
         db.session.commit()
-        return updating_result
+        return updating_result,p
 
 
 

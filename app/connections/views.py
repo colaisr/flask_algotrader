@@ -235,12 +235,12 @@ def postexecution():
             position.last_exec_side=side
             position.close_price=price
             position.closed=time
-            result=position.update_position()
+            result,np=position.update_position()
         if result=="new_sell":
             check_if_market_fall(logged_user)
-            notify_closed(position, logged_user)
+            notify_closed(np, logged_user)
         elif result=="new_buy":
-            notify_open(position,logged_user)
+            notify_open(np,logged_user)
 
         return "Execution for " + logged_user + " stored at server."
     else:
