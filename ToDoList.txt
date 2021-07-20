@@ -1,0 +1,12 @@
+things to Add:
+
+
+closing a positions longer than 1 month on 1% positive
+Yahoo analytics include
+Logger problem for Java in linux
+Station restart on Linux +recheck on Windows VM
+Try catch for settings - to avoid crash
+Tinkoff integration....
+fix offline-online
+check may be to get volatility for a stock to bid or Asimptota of last 3 months...
+maybe analytics for all 5500 stocks...

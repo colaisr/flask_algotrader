@@ -18,6 +18,7 @@ class TickerData(db.Model):
     yahoo_avdropP = db.Column('yahoo_avdropP', db.Float)
     yahoo_avspreadP = db.Column('yahoo_avspreadP', db.Float)
     tipranks = db.Column('tipranks', db.Integer)
+    yahoo_rank=db.Column('yahoo_rank', db.Float)
     fmp_pe = db.Column('fmp_pe', db.Float)
     fmp_rating = db.Column('fmp_rating', db.String)
     fmp_score = db.Column('fmp_score', db.Integer)
@@ -38,6 +39,7 @@ class TickerData(db.Model):
         d['yahoo_avdropP'] = self.yahoo_avdropP
         d['yahoo_avspreadP'] = self.yahoo_avspreadP
         d['tipranks'] = self.tipranks
+        d['yahoo_rank']=self.yahoo_rank
         d['fmp_pe'] = self.fmp_pe
         d['fmp_rating'] = self.fmp_rating
         d['fmp_score'] = self.fmp_score

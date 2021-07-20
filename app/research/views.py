@@ -17,6 +17,7 @@ from app.email import send_email
 from app.models import User, Connection, Report, TickerData, Candidate
 from app.research.fmp_research import get_fmp_pe_for_ticker, get_fmp_ratings_score_for_ticker
 from app.research.tipranks_research import get_tiprank_for_ticker
+from app.research.yahoo_finance_research import get_yahoo_rank_for_ticker
 from app.research.yahoo_research import get_yahoo_stats_for_ticker
 
 research = Blueprint('research', __name__)
@@ -42,6 +43,7 @@ def research_ticker(ticker):
     marketdata = TickerData()
     marketdata.ticker=ticker
     marketdata.tipranks = get_tiprank_for_ticker(ticker)
+    marketdata.yahoo_rank=get_yahoo_rank_for_ticker(ticker)
     marketdata.fmp_pe = get_fmp_pe_for_ticker(ticker)
     marketdata.fmp_rating, marketdata.fmp_score = get_fmp_ratings_score_for_ticker(ticker)
     marketdata.yahoo_avdropP, marketdata.yahoo_avspreadP = get_yahoo_stats_for_ticker(ticker)
