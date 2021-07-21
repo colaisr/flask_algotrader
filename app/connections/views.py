@@ -64,7 +64,12 @@ def filter_add_data(requested_candidates,logged_user):
         filtered_scores = list(filter(lambda td: td.fmp_rating in allowed, filtered_tipranks))
     else:
         filtered_scores=filtered_tipranks
-    return filtered_scores
+
+    if user_settings.algo_apply_max_yahoo_rank:
+        filtered_yahoo_ranks = list(filter(lambda td: td.yahoo_rank < user_settings.algo_max_yahoo_rank, filtered_scores))
+    else:
+        filtered_yahoo_ranks=filtered_scores
+    return filtered_yahoo_ranks
 
 
 def retrieve_user_candidates(user):
