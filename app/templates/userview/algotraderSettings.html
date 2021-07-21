@@ -173,6 +173,28 @@
                                            class="form-control"></div>
                             </div>
                         </div>
+                        <div class="form-row">
+
+                            <div class="col-md-1">
+                                <div class="position-relative form-check">
+                                    <input title="Maximum Yahoo rank: 1-Strong buy, 2-Buy,3-Hold,4-Underperform, 5-Sell"
+                                            {%if user_settings.algo_apply_max_yahoo_rank%}
+                                            checked
+                                            {% endif %}
+                                            name="algo_apply_max_yahoo_rank" id="algo_apply_max_yahoo_rank"
+                                            type="checkbox"
+                                            class="form-check-input">
+                                    <label for="algo_apply_max_yahoo_rank" class="form-check-label">Apply</label>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="position-relative form-group">
+                                    <label for="algo_accepted_fmp_ratings" class="">Maximal Yahoo rating</label>
+                                    <input title="Maximal accepted rating" value="{{user_settings.algo_max_yahoo_rank}}"
+                                           name="algo_max_yahoo_rank" id="algo_max_yahoo_rank" type="text"
+                                           class="form-control"></div>
+                            </div>
+                        </div>
                     </div>
 
                     <button type="submit" class="mt-2 btn btn-primary">Save</button>

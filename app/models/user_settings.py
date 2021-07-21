@@ -28,7 +28,8 @@ class UserSetting(db.Model):
     algo_accepted_fmp_ratings = db.Column('algo_accepted_fmp_ratings', db.String)
     algo_sell_on_swan = db.Column('algo_sell_on_swan', db.Boolean)
     algo_positions_for_swan = db.Column('algo_positions_for_swan', db.Integer)
-
+    algo_apply_max_yahoo_rank = db.Column('algo_apply_max_yahoo_rank', db.Boolean)
+    algo_max_yahoo_rank = db.Column('algo_max_yahoo_rank', db.Float)
 
     connection_account_name = db.Column('connection_account_name', db.String)
     connection_port = db.Column('connection_port', db.Integer)

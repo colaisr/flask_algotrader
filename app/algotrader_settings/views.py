@@ -42,6 +42,13 @@ def savesettings():
     else:
         user_settings.algo_apply_accepted_fmp_ratings =False
     user_settings.algo_accepted_fmp_ratings = request.form['algo_accepted_fmp_ratings']
+
+    if "algo_apply_max_yahoo_rank" in request.form.keys():
+        user_settings.algo_apply_max_yahoo_rank = True
+    else:
+        user_settings.algo_apply_max_yahoo_rank =False
+    user_settings.algo_max_yahoo_rank = request.form['algo_max_yahoo_rank']
+
     if "algo_allow_buy" in request.form.keys():
         user_settings.algo_allow_buy = True
     else:

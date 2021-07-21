@@ -69,6 +69,8 @@ def register():
             algo_min_rank=8,
             algo_apply_accepted_fmp_ratings=True,
             algo_accepted_fmp_ratings='S-,S,S+',
+            algo_apply_max_yahoo_rank=True,
+            algo_max_yahoo_rank=2,
             algo_sell_on_swan=True,
             algo_positions_for_swan=3,
 
