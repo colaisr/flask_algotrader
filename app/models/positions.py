@@ -1,5 +1,5 @@
 
-
+from datetime import datetime,date
 from .. import db
 
 class Position(db.Model):
@@ -37,6 +37,10 @@ class Position(db.Model):
         db.session.commit()
         return updating_result,p
 
-
+    def toDictionary(self):
+        d={}
+        d['ticker']=self.ticker
+        d['opened'] = datetime.isoformat(self.opened)
+        return d
 
 
