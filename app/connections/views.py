@@ -129,6 +129,14 @@ def logreport():
     else:
         return "The user configured is not found on Server the report is not logged"
 
+
+def retrieve_user_positions(logged_user):
+    open_positions = Position.query.filter_by(last_exec_side='BOT',email=logged_user)
+    open_positions_dictionaries = []
+    for c in open_positions:
+        open_positions_dictionaries.append(c.toDictionary())
+
+
 @csrf.exempt
 @connections.route('/getcommand', methods=['POST'])
 def get_command():
@@ -140,6 +148,7 @@ def get_command():
         client_command = ClientCommand.query.filter_by(email=logged_user).first()
         response['command']=client_command.command
         response['candidates']=retrieve_user_candidates(logged_user)
+        response['open_positions'] = retrieve_user_positions(logged_user)
         if client_command.command=='restart_worker':
             client_command.set_run_worker()
         elif client_command.command=='close_all_positions':
