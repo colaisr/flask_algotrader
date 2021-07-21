@@ -73,6 +73,8 @@ def register():
             algo_max_yahoo_rank=2,
             algo_sell_on_swan=True,
             algo_positions_for_swan=3,
+            algo_apply_max_hold=True,
+            algo_max_hold_days=31,
 
             connection_account_name = 'Default,needs to be changed',
             connection_port=7498,

@@ -127,6 +127,29 @@
 
 
                         </div>
+                        <div class="form-row">
+
+                            <div class="col-md-1">
+                                <div class="position-relative form-check">
+                                    <input title="Sell if longer then configured perion and profit more than 2%"
+                                            {%if user_settings.algo_apply_max_hold%}
+                                            checked
+                                            {% endif %}
+                                            name="algo_apply_max_hold" id="algo_apply_max_hold"
+                                            type="checkbox"
+                                            class="form-check-input">
+                                    <label for="algo_apply_max_hold" class="form-check-label">Apply</label>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="position-relative form-group">
+                                    <label for="algo_accepted_fmp_ratings" class="">Maximal holding period (days)</label>
+                                    <input title="Maximal days" value="{{user_settings.algo_max_hold_days}}"
+                                           name="algo_max_hold_days" id="algo_max_hold_days" type="text"
+                                           class="form-control"></div>
+                            </div>
+                        </div>
+
                         <h5 style="font-size: medium;" class="card-title">Filters </h5>
                         <div class="form-row">
 

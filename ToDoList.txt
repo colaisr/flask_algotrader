@@ -1,8 +1,6 @@
 things to Add:
 
-the last candidates are not waited in client
 closing a positions longer than 1 month on 1% positive
-Yahoo analytics include
 Logger problem for Java in linux
 Station restart on Linux +recheck on Windows VM
 Try catch for settings - to avoid crash

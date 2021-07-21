@@ -30,6 +30,8 @@ class UserSetting(db.Model):
     algo_positions_for_swan = db.Column('algo_positions_for_swan', db.Integer)
     algo_apply_max_yahoo_rank = db.Column('algo_apply_max_yahoo_rank', db.Boolean)
     algo_max_yahoo_rank = db.Column('algo_max_yahoo_rank', db.Float)
+    algo_apply_max_hold = db.Column('algo_apply_max_hold', db.Boolean)
+    algo_max_hold_days = db.Column('algo_max_hold_days', db.Integer)
 
     connection_account_name = db.Column('connection_account_name', db.String)
     connection_port = db.Column('connection_port', db.Integer)
@@ -82,5 +84,15 @@ class UserSetting(db.Model):
         d['algo_accepted_fmp_ratings'] = self.algo_accepted_fmp_ratings
         d['algo_apply_min_rank'] = self.algo_apply_min_rank
         d['algo_apply_accepted_fmp_ratings'] = self.algo_apply_accepted_fmp_ratings
+        d['algo_sell_on_swan'] = self.algo_sell_on_swan
+        d['algo_positions_for_swan'] = self.algo_positions_for_swan
+        d['algo_apply_max_yahoo_rank'] = self.algo_apply_max_yahoo_rank
+        d['algo_max_yahoo_rank'] = self.algo_max_yahoo_rank
+        d['algo_apply_max_hold'] = self.algo_apply_max_hold
+        d['algo_max_hold_days'] = self.algo_max_hold_days
+        d['notify_buy'] = self.notify_buy
+        d['notify_sell'] = self.notify_sell
+        d['notify_trail'] = self.notify_trail
+
 
         return d

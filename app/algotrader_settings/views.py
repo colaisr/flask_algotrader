@@ -49,6 +49,12 @@ def savesettings():
         user_settings.algo_apply_max_yahoo_rank =False
     user_settings.algo_max_yahoo_rank = request.form['algo_max_yahoo_rank']
 
+    if "algo_apply_max_hold" in request.form.keys():
+        user_settings.algo_apply_max_hold = True
+    else:
+        user_settings.algo_apply_max_hold =False
+    user_settings.algo_max_hold_days = request.form['algo_max_hold_days']
+
     if "algo_allow_buy" in request.form.keys():
         user_settings.algo_allow_buy = True
     else:
