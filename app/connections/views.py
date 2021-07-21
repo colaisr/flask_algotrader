@@ -135,6 +135,7 @@ def retrieve_user_positions(logged_user):
     open_positions_dictionaries = []
     for c in open_positions:
         open_positions_dictionaries.append(c.toDictionary())
+    return open_positions_dictionaries
 
 
 @csrf.exempt
