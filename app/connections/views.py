@@ -156,7 +156,7 @@ def get_open_positions():
     users = User.query.all()
     if any(x.email == logged_user for x in users):
         response={}
-        open_positions=Position.query.filter_by(last_exec_side='BOT').All()
+        open_positions=Position.query.filter_by(last_exec_side='BOT')
         response['open_positions'] =open_positions
         return response
     else:
