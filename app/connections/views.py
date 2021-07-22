@@ -158,22 +158,22 @@ def get_command():
     else:
         return "The user configured is not found on Server the report is not logged"
 
-@csrf.exempt
-@connections.route('/getopenpositions', methods=['POST'])
-def get_open_positions():
-    request_data = request.get_json()
-    logged_user = request_data["user"]
-    users = User.query.all()
-    if any(x.email == logged_user for x in users):
-        response={}
-        open_positions=Position.query.filter_by(last_exec_side='BOT')
-        open_positions_dictionaries = []
-        for c in open_positions:
-            open_positions_dictionaries.append(c.toDictionary())
-        response['open_positions'] =open_positions_dictionaries
-        return response
-    else:
-        return "The user configured is not found on Server the report is not logged"
+# @csrf.exempt
+# @connections.route('/getopenpositions', methods=['POST'])
+# def get_open_positions():
+#     request_data = request.get_json()
+#     logged_user = request_data["user"]
+#     users = User.query.all()
+#     if any(x.email == logged_user for x in users):
+#         response={}
+#         open_positions=Position.query.filter_by(last_exec_side='BOT')
+#         open_positions_dictionaries = []
+#         for c in open_positions:
+#             open_positions_dictionaries.append(c.toDictionary())
+#         response['open_positions'] =open_positions_dictionaries
+#         return response
+#     else:
+#         return "The user configured is not found on Server the report is not logged"
 
 @csrf.exempt
 @connections.route('logrestartrequest/', methods=['POST'])

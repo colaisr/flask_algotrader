@@ -1,6 +1,5 @@
 things to Add:
 
-closing a positions longer than 1 month on 1% positive
 Logger problem for Java in linux
 Station restart on Linux +recheck on Windows VM
 Try catch for settings - to avoid crash
