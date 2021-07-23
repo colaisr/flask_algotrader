@@ -48,6 +48,7 @@ def get_fmp_ticker_data(ticker):
         ticker_data['sector'] = parsed[0]['sector']
         ticker_data['logo'] = parsed[0]['image']
     except:
+        print('failed to extract fmp')
         ticker_data=None
     return ticker_data
 
@@ -80,6 +81,7 @@ def updatecandidate():
 def add_by_spider():
     ticker_to_add= request.form['ticker_to_add']
     try:
+        print('adding '+ticker_to_add)
         c=Candidate()
         c.ticker = ticker_to_add
         c.reason = "added automatically"
