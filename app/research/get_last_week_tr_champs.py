@@ -24,9 +24,6 @@ for p in range(int(pages)):
 
 for c in champs_list:
     data = urllib.parse.urlencode({"ticker_to_add": c['ticker'],
-                                   "company_name":c['companyName'],
-                                   "sector":c['sectorId'],
-                                   "p_e":c['peRatio'],
                                    })
     data = data.encode('ascii')
 

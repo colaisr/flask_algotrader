@@ -11,6 +11,7 @@ class Candidate(db.Model):
     company_name=db.Column('company_name', db.String)
     exchange=db.Column('exchange', db.String)
     industry=db.Column('industry', db.String)
+    sector = db.Column('sector', db.String)
     full_description=db.Column('full_description', db.String)
     logo=db.Column('logo', db.String)
 
@@ -28,6 +29,7 @@ class Candidate(db.Model):
             candidate.company_name=self.company_name
             candidate.exchange=self.exchange
             candidate.industry=self.industry
+            candidate.sector = self.sector
             candidate.full_description=self.full_description
             candidate.logo=self.logo
         db.session.commit()

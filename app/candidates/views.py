@@ -15,6 +15,7 @@ from datetime import datetime, date, timedelta
 from flask_login import login_required, current_user
 
 from app import db, csrf
+from app.email import send_email
 from app.models import User, Connection, Report, TickerData, Candidate, UserSetting
 from app.research.views import research_ticker
 
@@ -30,6 +31,24 @@ def usercandidates():
         admin_candidates = Candidate.query.filter_by(email='admin@gmail.com', enabled=True).all()
     return render_template('candidates/usercandidates.html',admin_candidates=admin_candidates,candidates=candidates, user=current_user, form=None)
 
+
+def get_fmp_ticker_data(ticker):
+    fmpkey='f6003a61d13c32709e458a1e6c7df0b0'
+    url = ("https://financialmodelingprep.com/api/v3/profile/"+ticker+"?apikey="+fmpkey)
+    context = ssl._create_unverified_context()
+    response = urlopen(url, context=context)
+    data = response.read().decode("utf-8")
+    parsed=json.loads(data)
+    ticker_data={}
+    ticker_data['company_name']=parsed[0]['companyName']
+    ticker_data['full_description'] = parsed[0]['description']
+    ticker_data['exchange'] = parsed[0]['exchangeShortName']
+    ticker_data['industry'] = parsed[0]['industry']
+    ticker_data['sector'] = parsed[0]['sector']
+    ticker_data['logo'] = parsed[0]['image']
+    return ticker_data
+
+
 @candidates.route('updatecandidate/', methods=['POST'])
 @csrf.exempt
 def updatecandidate():
@@ -37,13 +56,17 @@ def updatecandidate():
     c=Candidate()
     c.ticker=request.form['txt_ticker']
     c.reason=request.form['txt_reason']
-    c.company_name = request.form['txt_company_name']
-    c.full_description = request.form['txt_company_description']
-    c.exchange = request.form['txt_exchange']
-    c.industry = request.form['txt_industry']
-    c.logo = request.form['txt_logo']
-    c.email=current_user.email
-    c.enabled=True
+    c.email = current_user.email
+    c.enabled = True
+    candidate_data=get_fmp_ticker_data(c.ticker)
+    
+    c.company_name = candidate_data['company_name']
+    c.full_description = candidate_data['full_description']
+    c.exchange = candidate_data['exchange']
+    c.industry = candidate_data['industry']
+    c.sector = candidate_data['sector']
+    c.logo = candidate_data['logo']
+    
     c.update_candidate()
     research_ticker(c.ticker)
 
@@ -53,27 +76,31 @@ def updatecandidate():
 @csrf.exempt
 def add_by_spider():
     ticker_to_add= request.form['ticker_to_add']
-    company_name= request.form['company_name']
-    sector= request.form['sector']
-    p_e= request.form['p_e']
+    try:
+        c=Candidate()
+        c.ticker = ticker_to_add
+        c.reason = "added automatically"
+        c.email = 'admin@gmail.com'
+        c.enabled = True
+        candidate_data = get_fmp_ticker_data(c.ticker)
 
-    c=Candidate()
-    c.ticker=ticker_to_add
-    c.reason="Added by spider"
-    c.company_name = company_name
-    c.full_description = "Spider does not have it"
-    c.exchange = "Spider does not have it"
-    c.industry = sector
-    c.logo = "Spider does not have it"
-    c.email='admin@gmail.com'
-    c.enabled=True
-    candidate = Candidate.query.filter((Candidate.email == 'admin@gmail.com') & (Candidate.ticker == ticker_to_add)).first()
-    if candidate is None:
-        db.session.add(c)
-        db.session.commit()
+        c.company_name = candidate_data['company_name']
+        c.full_description = candidate_data['full_description']
+        c.exchange = candidate_data['exchange']
+        c.industry = candidate_data['industry']
+        c.sector = candidate_data['sector']
+        c.logo = candidate_data['logo']
+
+        c.update_candidate()
         research_ticker(c.ticker)
-
-    return "successfully added candidate"
+        print('successfully added candidate')
+        return "successfully added candidate"
+    except:
+        send_email(recipient='cola.isr@gmail.com',
+                   subject='Algotrader adding candidate problem with '+ticker_to_add,
+                   template='account/email/research_issue',
+                   ticker=ticker_to_add)
+        print("failed to add candidate")
 
 @candidates.route('removecandidate/', methods=['POST'])
 @csrf.exempt

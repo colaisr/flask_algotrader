@@ -1,9 +1,6 @@
 things to Add:
 
-Logger problem for Java in linux
 Station restart on Linux +recheck on Windows VM
-Try catch for settings - to avoid crash
-Tinkoff integration....
-fix offline-online
+fix offline-online apply Is the stock market open Api from FMP
 check may be to get volatility for a stock to bid or Asimptota of last 3 months...
 maybe analytics for all 5500 stocks...

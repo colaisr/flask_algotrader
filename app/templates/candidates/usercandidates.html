@@ -48,6 +48,7 @@
                     <th>Enabled</th>
                     <th>Reason</th>
                     <th>Company</th>
+                    <th>Sector</th>
                     <th>Industry</th>
                     <th>Description</th>
                 </tr>
@@ -88,6 +89,7 @@
                     </td>
                     <td><textarea disabled rows="2" cols="40">{{ m.reason }}</textarea></td>
                     <td>{{ m.company_name }}</td>
+                    <td>{{ m.sector }}</td>
                     <td>{{ m.industry }}</td>
                     <td><textarea disabled rows="2" cols="40">{{ m.full_description }}</textarea>
 
@@ -108,6 +110,7 @@
                     <th class="sorted descending">Ticker</th>
                     <th>Reason</th>
                     <th>Company</th>
+                    <th>Sector</th>
                     <th>Industry</th>
                     <th>Description</th>
                 </tr>
@@ -123,6 +126,7 @@
                     </td>
                     <td><textarea disabled rows="2" cols="40">{{ m.reason }}</textarea></td>
                     <td>{{ m.company_name }}</td>
+                    <td>{{ m.sector }}</td>
                     <td>{{ m.industry }}</td>
                     <td><textarea disabled rows="2" cols="40">{{ m.full_description }}</textarea>
                     </td>
@@ -166,25 +170,25 @@
                         </div>
                         <div class="form-group">
                             <label class="form-label" for="txt_company_name">Name</label>
-                            <input required id="txt_company_name" name="txt_company_name" type="text"
+                            <input required id="txt_company_name" name="txt_company_name" type="text" disabled
                                    class="form-control">
                         </div>
                         <div class="form-group">
                             <label class="form-label" for="txt_company_description">Description</label>
-                            <textarea required class="form-control" name="txt_company_description"
+                            <textarea required class="form-control" name="txt_company_description" disabled
                                       id="txt_company_description" rows="3"></textarea>
                         </div>
                         <div class="form-group">
                             <label class="form-label" for="txt_exchange">Exchange</label>
-                            <input required id="txt_exchange" name="txt_exchange" type="text" class="form-control">
+                            <input required id="txt_exchange" name="txt_exchange" type="text" class="form-control" disabled>
                         </div>
                         <div class="form-group">
                             <label class="form-label" for="txt_industry">Industry</label>
-                            <input required id="txt_industry" name="txt_industry" type="text" class="form-control">
+                            <input required id="txt_industry" name="txt_industry" type="text" class="form-control" disabled>
                         </div>
                         <div class="form-group">
                             <label class="form-label" for="txt_logo">Logo URL</label>
-                            <input required id="txt_logo" name="txt_logo" type="text" class="form-control">
+                            <input required id="txt_logo" name="txt_logo" type="text" class="form-control" disabled>
                         </div>
                     </div>
                 </div>

@@ -30,21 +30,35 @@ def updatemarketdataforcandidate():
     try:
         research_ticker(ticker)
     except:
-        send_email(recipient='cola.isr@gmail.com',
-                   subject='Algotrader research problem with '+ticker,
-                   template='account/email/research_issue',
-                   ticker=ticker)
+        print('problem with research')
 
     return redirect(url_for('admin.market_data'))
 
 
 def research_ticker(ticker):
-    #todo exception handling
     marketdata = TickerData()
     marketdata.ticker=ticker
-    marketdata.tipranks = get_tiprank_for_ticker(ticker)
-    marketdata.yahoo_rank=get_yahoo_rank_for_ticker(ticker)
-    marketdata.fmp_pe = get_fmp_pe_for_ticker(ticker)
+    try:
+        marketdata.tipranks = get_tiprank_for_ticker(ticker)
+    except:
+        send_email(recipient='cola.isr@gmail.com',
+                   subject='Algotrader research Tipranks problem with '+ticker,
+                   template='account/email/research_issue',
+                   ticker=ticker)
+    try:
+        marketdata.yahoo_rank=get_yahoo_rank_for_ticker(ticker)
+    except:
+        send_email(recipient='cola.isr@gmail.com',
+                   subject='Algotrader research Yahoo Rating problem with '+ticker,
+                   template='account/email/research_issue',
+                   ticker=ticker)
+    try:
+        marketdata.fmp_pe = get_fmp_pe_for_ticker(ticker)
+    except:
+        send_email(recipient='cola.isr@gmail.com',
+                   subject='Algotrader research FMP problem with '+ticker,
+                   template='account/email/research_issue',
+                   ticker=ticker)
     marketdata.fmp_rating, marketdata.fmp_score = get_fmp_ratings_score_for_ticker(ticker)
     marketdata.yahoo_avdropP, marketdata.yahoo_avspreadP = get_yahoo_stats_for_ticker(ticker)
     ct = datetime.now()
