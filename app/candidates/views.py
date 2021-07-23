@@ -47,6 +47,7 @@ def get_fmp_ticker_data(ticker):
         ticker_data['industry'] = parsed[0]['industry']
         ticker_data['sector'] = parsed[0]['sector']
         ticker_data['logo'] = parsed[0]['image']
+        ticker_data['isEtf'] = parsed[0]['isEtf']
     except:
         print('failed to extract fmp')
         ticker_data=None
@@ -89,17 +90,21 @@ def add_by_spider():
         c.enabled = True
         candidate_data = get_fmp_ticker_data(c.ticker)
         if candidate_data is not None:
-            c.company_name = candidate_data['company_name']
-            c.full_description = candidate_data['full_description']
-            c.exchange = candidate_data['exchange']
-            c.industry = candidate_data['industry']
-            c.sector = candidate_data['sector']
-            c.logo = candidate_data['logo']
+            if candidate_data['isEtf']==False:
+                c.company_name = candidate_data['company_name']
+                c.full_description = candidate_data['full_description']
+                c.exchange = candidate_data['exchange']
+                c.industry = candidate_data['industry']
+                c.sector = candidate_data['sector']
+                c.logo = candidate_data['logo']
 
-            c.update_candidate()
-            research_ticker(c.ticker)
-            print('successfully added candidate')
-            return "successfully added candidate"
+                c.update_candidate()
+                research_ticker(c.ticker)
+                print('successfully added candidate')
+                return "successfully added candidate"
+            else:
+                print(ticker_to_add + " skept - it is ETF- not supported...")
+                return "skept candidate"
         else:
             print(ticker_to_add+" skept no FMP data...")
             return "skept candidate"

@@ -1,8 +1,64 @@
 import json
 import ssl
+import urllib
+from urllib.request import urlopen
+server_url="http://colak.eu.pythonanywhere.com/"
+apikey='f6003a61d13c32709e458a1e6c7df0b0'
+url = ("https://financialmodelingprep.com/api/v3/stock/list?apikey=" + apikey)
+context = ssl._create_unverified_context()
+response = urlopen(url, context=context)
+data = response.read().decode("utf-8")
+parsed = json.loads(data)
+needed=[]
+for s in parsed:
+    ticker=s['symbol']
+    data = urllib.parse.urlencode({"ticker_to_add": ticker,
+                                   })
+    data = data.encode('ascii')
+
+    url =server_url+"candidates/add_by_spider"
+    response = urllib.request.urlopen(url, data)
+    i = 2
+
+
+url = ("https://www.tipranks.com/api/Screener/GetStocks/?break=1111111111111&country=US&page=1&scoreChangeDate=2&sortBy=1&sortDir=2&tipranksScore=5")
+context = ssl._create_unverified_context()
+response = urlopen(url, context=context)
+data = response.read().decode("utf-8")
+parsed = json.loads(data)
+pages=(parsed['count']/20)
+champs_list=[]
+for p in range(int(pages)):
+    url = (
+        "https://www.tipranks.com/api/Screener/GetStocks/?break=1111111111111&country=US&page="+str(p+1)+"&scoreChangeDate=2&sortBy=1&sortDir=2&tipranksScore=5")
+    context = ssl._create_unverified_context()
+    response = urlopen(url, context=context)
+    data = response.read().decode("utf-8")
+    parsed = json.loads(data)
+    for c in parsed['data']:
+        ticker=c['ticker']
+        champs_list.append(c)
+
+for c in champs_list:
+    data = urllib.parse.urlencode({"ticker_to_add": c['ticker'],
+                                   })
+    data = data.encode('ascii')
+
+    url =server_url+"candidates/add_by_spider"
+    response = urllib.request.urlopen(url, data)
+
+
+
+
+
+
+
+
+import json
+import ssl
 from urllib.request import urlopen
 
-apikey='f6003a61d13c32709e458a1e6c7df0b0'
+
 
 
 if __name__ == '__main__':
