@@ -40,12 +40,15 @@ def get_fmp_ticker_data(ticker):
     data = response.read().decode("utf-8")
     parsed=json.loads(data)
     ticker_data={}
-    ticker_data['company_name']=parsed[0]['companyName']
-    ticker_data['full_description'] = parsed[0]['description']
-    ticker_data['exchange'] = parsed[0]['exchangeShortName']
-    ticker_data['industry'] = parsed[0]['industry']
-    ticker_data['sector'] = parsed[0]['sector']
-    ticker_data['logo'] = parsed[0]['image']
+    try:
+        ticker_data['company_name']=parsed[0]['companyName']
+        ticker_data['full_description'] = parsed[0]['description']
+        ticker_data['exchange'] = parsed[0]['exchangeShortName']
+        ticker_data['industry'] = parsed[0]['industry']
+        ticker_data['sector'] = parsed[0]['sector']
+        ticker_data['logo'] = parsed[0]['image']
+    except:
+        ticker_data=None
     return ticker_data
 
 
@@ -59,16 +62,16 @@ def updatecandidate():
     c.email = current_user.email
     c.enabled = True
     candidate_data=get_fmp_ticker_data(c.ticker)
-    
-    c.company_name = candidate_data['company_name']
-    c.full_description = candidate_data['full_description']
-    c.exchange = candidate_data['exchange']
-    c.industry = candidate_data['industry']
-    c.sector = candidate_data['sector']
-    c.logo = candidate_data['logo']
-    
-    c.update_candidate()
-    research_ticker(c.ticker)
+    if candidate_data is not None:
+        c.company_name = candidate_data['company_name']
+        c.full_description = candidate_data['full_description']
+        c.exchange = candidate_data['exchange']
+        c.industry = candidate_data['industry']
+        c.sector = candidate_data['sector']
+        c.logo = candidate_data['logo']
+
+        c.update_candidate()
+        research_ticker(c.ticker)
 
     return redirect(url_for('candidates.usercandidates'))
 
@@ -83,18 +86,20 @@ def add_by_spider():
         c.email = 'admin@gmail.com'
         c.enabled = True
         candidate_data = get_fmp_ticker_data(c.ticker)
+        if candidate_data is not None:
+            c.company_name = candidate_data['company_name']
+            c.full_description = candidate_data['full_description']
+            c.exchange = candidate_data['exchange']
+            c.industry = candidate_data['industry']
+            c.sector = candidate_data['sector']
+            c.logo = candidate_data['logo']
 
-        c.company_name = candidate_data['company_name']
-        c.full_description = candidate_data['full_description']
-        c.exchange = candidate_data['exchange']
-        c.industry = candidate_data['industry']
-        c.sector = candidate_data['sector']
-        c.logo = candidate_data['logo']
-
-        c.update_candidate()
-        research_ticker(c.ticker)
-        print('successfully added candidate')
-        return "successfully added candidate"
+            c.update_candidate()
+            research_ticker(c.ticker)
+            print('successfully added candidate')
+            return "successfully added candidate"
+        else:
+            print(ticker_to_add+" skept no FMP data...")
     except:
         send_email(recipient='cola.isr@gmail.com',
                    subject='Algotrader adding candidate problem with '+ticker_to_add,
