@@ -11,6 +11,7 @@ data = response.read().decode("utf-8")
 parsed = json.loads(data)
 needed=[]
 for s in parsed:
+    print('Adding'+s['symbol'])
     ticker=s['symbol']
     data = urllib.parse.urlencode({"ticker_to_add": ticker,
                                    })
@@ -18,7 +19,8 @@ for s in parsed:
 
     url =server_url+"candidates/add_by_spider"
     response = urllib.request.urlopen(url, data)
-    i = 2
+    print(s['symbol']+'Added')
+
 
 
 url = ("https://www.tipranks.com/api/Screener/GetStocks/?break=1111111111111&country=US&page=1&scoreChangeDate=2&sortBy=1&sortDir=2&tipranksScore=5")

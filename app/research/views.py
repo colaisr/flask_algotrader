@@ -1,4 +1,5 @@
 import json
+import math
 
 from flask import (
     Blueprint,
@@ -61,6 +62,10 @@ def research_ticker(ticker):
                    ticker=ticker)
     marketdata.fmp_rating, marketdata.fmp_score = get_fmp_ratings_score_for_ticker(ticker)
     marketdata.yahoo_avdropP, marketdata.yahoo_avspreadP = get_yahoo_stats_for_ticker(ticker)
+    if math.isnan(marketdata.yahoo_avdropP):
+        marketdata.yahoo_avdropP=0
+    if math.isnan(marketdata.yahoo_avspreadP):
+        marketdata.yahoo_avspreadP=0
     ct = datetime.now()
 
     marketdata.updated_server_time = ct
