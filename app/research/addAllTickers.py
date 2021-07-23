@@ -10,6 +10,7 @@ response = urlopen(url, context=context)
 data = response.read().decode("utf-8")
 parsed = json.loads(data)
 needed=[]
+print("finished download")
 i=1
 for s in parsed:
     print('Adding'+s['symbol']+str(i)+'from '+str(len(parsed)))
