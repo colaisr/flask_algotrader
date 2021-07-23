@@ -102,12 +102,14 @@ def add_by_spider():
             return "successfully added candidate"
         else:
             print(ticker_to_add+" skept no FMP data...")
+            return "skept candidate"
     except:
         send_email(recipient='cola.isr@gmail.com',
                    subject='Algotrader adding candidate problem with '+ticker_to_add,
                    template='account/email/research_issue',
                    ticker=ticker_to_add)
         print("failed to add candidate")
+        return "exception in candidate "+ticker_to_add
 
 @candidates.route('removecandidate/', methods=['POST'])
 @csrf.exempt
