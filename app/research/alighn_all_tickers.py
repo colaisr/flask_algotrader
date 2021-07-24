@@ -30,7 +30,7 @@ for s in tickers:
 
     url =server_url+"candidates/add_by_spider"
     response = urllib.request.urlopen(url, data)
-    print(s['symbol']+'Added')
+    print(s+'Added')
 
 print('finished alighning')
 
