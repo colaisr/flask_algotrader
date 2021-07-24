@@ -17,7 +17,7 @@ def get_all_tickers():
 
 
 now = datetime.now()
-print("Starting Updater spider "+now.strftime("%d/%m/%Y %H:%M:%S"))
+print("****Starting Updater spider for all existing Candidates"+now.strftime("%d/%m/%Y %H:%M:%S"))
 tickers=get_all_tickers()
 for t in tickers:
     print("Updating data for : "+t)
@@ -26,6 +26,6 @@ for t in tickers:
 
     url =server_url+"/research/updatemarketdataforcandidate"
     response = urllib.request.urlopen(url, data)
-    print("done")
-    u=3
-print("All tickers successfully updated")
+    print("Updated")
+now = datetime.now()
+print("***All tickers successfully updated"+now.strftime("%d/%m/%Y %H:%M:%S"))

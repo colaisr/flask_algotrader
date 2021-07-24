@@ -13,6 +13,7 @@ needed=[]
 print("finished download")
 i=1
 for s in parsed:
+    i=i+1
     print('Adding'+s['symbol']+str(i)+'from '+str(len(parsed)))
     ticker=s['symbol']
     data = urllib.parse.urlencode({"ticker_to_add": ticker,
