@@ -21,9 +21,9 @@ print("****Starting Updater spider for all existing Candidates"+now.strftime("%d
 tickers=get_all_tickers()
 
 for s in tickers:
-    i=i+1
-    print('Adding'+s['symbol']+str(i)+'from '+str(len(tickers)))
-    ticker=s['symbol']
+
+    print('Adding'+s+'from '+str(len(tickers)))
+    ticker=s
     data = urllib.parse.urlencode({"ticker_to_add": ticker,
                                    })
     data = data.encode('ascii')

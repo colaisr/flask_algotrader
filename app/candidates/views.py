@@ -82,44 +82,44 @@ def updatecandidate():
 def add_by_spider():
     ticker_to_add= request.form['ticker_to_add']
     candidate = Candidate.query.filter_by(email='admin@gmail.com', ticker=ticker_to_add).first()
-    if candidate is None:
-        try:
-            print('adding '+ticker_to_add)
-            c=Candidate()
-            c.ticker = ticker_to_add
-            c.reason = "added automatically"
-            c.email = 'admin@gmail.com'
-            c.enabled = True
-            candidate_data = get_fmp_ticker_data(c.ticker)
-            if candidate_data is not None:
-                if candidate_data['isEtf']==False:
-                    c.company_name = candidate_data['company_name']
-                    c.full_description = candidate_data['full_description']
-                    c.exchange = candidate_data['exchange']
-                    c.industry = candidate_data['industry']
-                    c.sector = candidate_data['sector']
-                    c.logo = candidate_data['logo']
+    # if candidate is None:
+    try:
+        print('adding '+ticker_to_add)
+        c=Candidate()
+        c.ticker = ticker_to_add
+        c.reason = "added automatically"
+        c.email = 'admin@gmail.com'
+        c.enabled = True
+        candidate_data = get_fmp_ticker_data(c.ticker)
+        if candidate_data is not None:
+            if candidate_data['isEtf']==False:
+                c.company_name = candidate_data['company_name']
+                c.full_description = candidate_data['full_description']
+                c.exchange = candidate_data['exchange']
+                c.industry = candidate_data['industry']
+                c.sector = candidate_data['sector']
+                c.logo = candidate_data['logo']
 
-                    c.update_candidate()
-                    research_ticker(c.ticker)
-                    print('successfully added candidate')
-                    return "successfully added candidate"
-                else:
-                    print(ticker_to_add + " skept - it is ETF- not supported...")
-                    return "skept candidate"
+                c.update_candidate()
+                research_ticker(c.ticker)
+                print('successfully added candidate')
+                return "successfully added candidate"
             else:
-                print(ticker_to_add+" skept no FMP data...")
+                print(ticker_to_add + " skept - it is ETF- not supported...")
                 return "skept candidate"
-        except:
-            send_email(recipient='cola.isr@gmail.com',
-                       subject='Algotrader adding candidate problem with '+ticker_to_add,
-                       template='account/email/research_issue',
-                       ticker=ticker_to_add)
-            print("failed to add candidate")
-            return "exception in candidate "+ticker_to_add
-    else:
-        print("skept-exist")
-        return "skept"
+        else:
+            print(ticker_to_add+" skept no FMP data...")
+            return "skept candidate"
+    except:
+        send_email(recipient='cola.isr@gmail.com',
+                   subject='Algotrader adding candidate problem with '+ticker_to_add,
+                   template='account/email/research_issue',
+                   ticker=ticker_to_add)
+        print("failed to add candidate")
+        return "exception in candidate "+ticker_to_add
+    # else:
+    #     print("skept-exist")
+    #     return "skept"
 
 @candidates.route('removecandidate/', methods=['POST'])
 @csrf.exempt
