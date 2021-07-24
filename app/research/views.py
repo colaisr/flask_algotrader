@@ -53,13 +53,13 @@ def research_ticker(ticker):
                    subject='Algotrader research Yahoo Rating problem with '+ticker,
                    template='account/email/research_issue',
                    ticker=ticker)
-    try:
-        marketdata.fmp_pe = get_fmp_pe_for_ticker(ticker)
-    except:
-        send_email(recipient='cola.isr@gmail.com',
-                   subject='Algotrader research FMP problem with '+ticker,
-                   template='account/email/research_issue',
-                   ticker=ticker)
+    # try:
+    #     marketdata.fmp_pe = get_fmp_pe_for_ticker(ticker)
+    # except:
+    #     send_email(recipient='cola.isr@gmail.com',
+    #                subject='Algotrader research FMP problem with '+ticker,
+    #                template='account/email/research_issue',
+    #                ticker=ticker)
     marketdata.fmp_rating, marketdata.fmp_score = get_fmp_ratings_score_for_ticker(ticker)
     marketdata.yahoo_avdropP, marketdata.yahoo_avspreadP = get_yahoo_stats_for_ticker(ticker)
     if math.isnan(marketdata.yahoo_avdropP):
