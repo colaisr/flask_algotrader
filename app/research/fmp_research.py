@@ -6,7 +6,7 @@ apikey='f6003a61d13c32709e458a1e6c7df0b0'
 
 
 
-def get_fmp_pe_for_ticker(s):
+def get_fmp_pe_for_ticker(s):   #deprecated
     url = ("https://financialmodelingprep.com/api/v3/ratios-ttm/"+s+"?apikey="+apikey)
     context = ssl._create_unverified_context()
     response = urlopen(url, context=context)

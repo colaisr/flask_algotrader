@@ -123,8 +123,6 @@ def market_data():
     marketdata=r
     user_settings = UserSetting.query.filter_by(email=current_user.email).first()
     for m in marketdata:
-        if m.fmp_pe is None:
-            m.fmp_pe=0
         if m.tipranks is None:
             m.tipranks=0
 
