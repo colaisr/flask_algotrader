@@ -19,11 +19,17 @@ def get_yahoo_rank_for_ticker(ticker):
         try:
             result = r.json()['quoteSummary']['result'][0]
             recommendation = result['financialData']['recommendationMean']['fmt']
+
+            target_price=float(result['financialData']['targetMeanPrice']['fmt'])
+            current_price=float(result['financialData']['currentPrice']['fmt'])
+            difference=target_price-current_price
+            under_priced_percents=round(difference/target_price*100,1)
+
         except:
             recommendation = 6
     except:
         score=6
-    return float(recommendation)
+    return float(recommendation),under_priced_percents
 
 if __name__ == '__main__':
     get_yahoo_rank_for_ticker('MSFT')

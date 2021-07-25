@@ -37,6 +37,7 @@
                     <th>Yahoo</th>
                     <th>FMP rating</th>
                     <th>FMP score</th>
+                    <th>Underpriced</th>
                     <th>Updated</th>
                 </tr>
                 </thead>
@@ -56,15 +57,12 @@
                         </td>
                     <td>{{ m.yahoo_avdropP|round(1, 'floor') }}</td>
                     <td>{{ m.yahoo_avspreadP|round(1, 'floor') }}</td>
-                    <td
-                            {% if m.tipranks>=user_settings.algo_min_rank %}
-                        style="background-color: aquamarine;"
-                        {% endif %}
-                        >{{ m.tipranks }}
+                    <td>{{ m.tipranks }}
                     </td>
                     <td>{{ m.yahoo_rank }}</td>
                     <td>{{ m.fmp_rating }}</td>
                     <td>{{ m.fmp_score }}</td>
+                    <td>{{ m.under_priced_pnt }}</td>
                     <td>{{ m.updated_server_time }}</td>
 
                 </tr>
