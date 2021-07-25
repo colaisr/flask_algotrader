@@ -20,6 +20,7 @@ class TickerData(db.Model):
     tipranks = db.Column('tipranks', db.Integer)
     yahoo_rank=db.Column('yahoo_rank', db.Float)
     under_priced_pnt = db.Column('under_priced_pnt', db.Float)
+    twelve_month_momentum = db.Column('twelve_month_momentum', db.Float)
     fmp_rating = db.Column('fmp_rating', db.String)
     fmp_score = db.Column('fmp_score', db.Integer)
     updated_server_time=db.Column('updated_server_time', db.DateTime)
@@ -41,6 +42,7 @@ class TickerData(db.Model):
         d['tipranks'] = self.tipranks
         d['yahoo_rank']=self.yahoo_rank
         d['under_priced_pnt'] = self.under_priced_pnt
+        d['twelve_month_momentum'] = self.twelve_month_momentum
         d['fmp_rating'] = self.fmp_rating
         d['fmp_score'] = self.fmp_score
         d['updated_server_time'] = datetime.isoformat(self.updated_server_time)

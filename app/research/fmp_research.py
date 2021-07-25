@@ -30,3 +30,6 @@ def get_fmp_ratings_score_for_ticker(s):
             return 'N',1
     except:
         return 'NE',0
+
+if __name__ == '__main__':
+    r=get_fmp_ratings_score_for_ticker("csspf")

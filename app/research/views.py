@@ -40,7 +40,7 @@ def research_ticker(ticker):
     marketdata = TickerData()
     marketdata.ticker=ticker
     try:
-        marketdata.tipranks = get_tiprank_for_ticker(ticker)
+        marketdata.tipranks,marketdata.twelve_month_momentum = get_tiprank_for_ticker(ticker)
     except:
         send_email(recipient='cola.isr@gmail.com',
                    subject='Algotrader research Tipranks problem with '+ticker,

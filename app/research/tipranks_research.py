@@ -7,8 +7,11 @@ def get_tiprank_for_ticker(ticker):
         url = requests.get(url)
         result=url.json()
         score=result[0]['smartScore']
+        momentum=result[0]['technicalsTwelveMonthsMomentum']
         if score is None:
             score=0
     except:
         score=0
-    return score
+    return score,momentum
+if __name__ == '__main__':
+    r,q=get_tiprank_for_ticker('CSSPF')
