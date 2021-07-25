@@ -18,10 +18,10 @@ def get_yahoo_rank_for_ticker(ticker):
             recommendation = 6
         try:
             result = r.json()['quoteSummary']['result'][0]
-            recommendation = result['financialData']['recommendationMean']['fmt']
+            recommendation = result['financialData']['recommendationMean']['raw']
 
-            target_price=float(result['financialData']['targetMeanPrice']['fmt'])
-            current_price=float(result['financialData']['currentPrice']['fmt'])
+            target_price=result['financialData']['targetMeanPrice']['raw']
+            current_price=result['financialData']['currentPrice']['raw']
             difference=target_price-current_price
             under_priced_percents=round(difference/target_price*100,1)
 
@@ -29,7 +29,7 @@ def get_yahoo_rank_for_ticker(ticker):
             recommendation = 6
     except:
         score=6
-    return float(recommendation),under_priced_percents
+    return recommendation,under_priced_percents
 
 if __name__ == '__main__':
-    get_yahoo_rank_for_ticker('MSFT')
+    get_yahoo_rank_for_ticker('googl')
