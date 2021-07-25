@@ -27,9 +27,11 @@ def get_yahoo_rank_for_ticker(ticker):
 
         except:
             recommendation = 6
+            under_priced_percents=0
     except:
-        score=6
+        recommendation = 6
+        under_priced_percents = 0
     return recommendation,under_priced_percents
 
 if __name__ == '__main__':
-    get_yahoo_rank_for_ticker('googl')
+    get_yahoo_rank_for_ticker('tipt')

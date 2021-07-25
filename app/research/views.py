@@ -49,7 +49,7 @@ def research_ticker(ticker):
     try:
         marketdata.yahoo_rank,marketdata.under_priced_pnt=get_yahoo_rank_for_ticker(ticker)
     except:
-        2
+        print('exception occured for '+ticker)
         # send_email(recipient='cola.isr@gmail.com',
         #            subject='Algotrader research Yahoo Rating problem with '+ticker,
         #            template='account/email/research_issue',
