@@ -34,4 +34,4 @@ def get_yahoo_rank_for_ticker(ticker):
     return recommendation,under_priced_percents
 
 if __name__ == '__main__':
-    get_yahoo_rank_for_ticker('tipt')
+    get_yahoo_rank_for_ticker('tals')

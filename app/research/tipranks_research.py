@@ -10,6 +10,8 @@ def get_tiprank_for_ticker(ticker):
         momentum=result[0]['technicalsTwelveMonthsMomentum']
         if score is None:
             score=0
+        if momentum is None:
+            momentum=0
     except:
         score=0
     return score,momentum
