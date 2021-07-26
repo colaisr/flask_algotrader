@@ -72,7 +72,7 @@ def filter_add_data(requested_candidates,logged_user):
     return filtered_yahoo_ranks
 
 def sort_by_parameter_desc(object,property):
-    return sorted(object, key=lambda x: x[1][property], reverse=False)
+    return sorted(object, key=lambda x: x[property], reverse=False)
 
 def sort_candidates(cand_dictionaries):
     sorted_momentum=sort_by_parameter_desc(cand_dictionaries,'twelve_month_momentum')
