@@ -76,7 +76,7 @@ def sort_by_parameter_desc(object,property):
 
 def sort_candidates(cand_dictionaries):
     sorted_momentum=sort_by_parameter_desc(cand_dictionaries,'twelve_month_momentum')
-    sorted_rank=sort_by_parameter_desc(sorted_momentum,'tipranksRank')
+    sorted_rank=sort_by_parameter_desc(sorted_momentum,'tipranks')
     return sorted_rank
 
 
