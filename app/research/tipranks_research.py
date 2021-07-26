@@ -14,6 +14,7 @@ def get_tiprank_for_ticker(ticker):
             momentum=0
     except:
         score=0
+        momentum=0
     return score,momentum
 if __name__ == '__main__':
-    r,q=get_tiprank_for_ticker('CSSPF')
+    r,q=get_tiprank_for_ticker('FGNA')
