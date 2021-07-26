@@ -71,6 +71,13 @@ def filter_add_data(requested_candidates,logged_user):
         filtered_yahoo_ranks=filtered_scores
     return filtered_yahoo_ranks
 
+def sort_by_parameter_desc(object,property):
+    return sorted(object, key=lambda x: x[1][property], reverse=False)
+
+def sort_candidates(cand_dictionaries):
+    sorted_momentum=sort_by_parameter_desc(cand_dictionaries,'twelve_month_momentum')
+    return sorted_momentum
+
 
 def retrieve_user_candidates(user):
     requested_for_user = user
@@ -94,6 +101,7 @@ def retrieve_user_candidates(user):
     cand_dictionaries=[]
     for c in requested_candidates:
         cand_dictionaries.append(c.toDictionary())
+    sorted_list=sort_candidates(cand_dictionaries)
     return cand_dictionaries
 
 def sort_by_tiprank(e):
