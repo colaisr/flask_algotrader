@@ -76,7 +76,8 @@ def sort_by_parameter_desc(object,property):
 
 def sort_candidates(cand_dictionaries):
     sorted_momentum=sort_by_parameter_desc(cand_dictionaries,'twelve_month_momentum')
-    return sorted_momentum
+    sorted_rank=sort_by_parameter_desc(sorted_momentum,'tipranksRank')
+    return sorted_rank
 
 
 def retrieve_user_candidates(user):
