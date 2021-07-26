@@ -218,6 +218,50 @@
                                            class="form-control"></div>
                             </div>
                         </div>
+                        <div class="form-row">
+
+                            <div class="col-md-1">
+                                <div class="position-relative form-check">
+                                    <input title="Minimal Underprice- current price is lower than Yahoo analyst estimate in %"
+                                            {%if user_settings.algo_apply_min_underprice%}
+                                            checked
+                                            {% endif %}
+                                            name="algo_apply_min_underprice" id="algo_apply_min_underprice"
+                                            type="checkbox"
+                                            class="form-check-input">
+                                    <label for="algo_apply_min_underprice" class="form-check-label">Apply</label>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="position-relative form-group">
+                                    <label for="algo_min_underprice" class="">Minimal underprice level %</label>
+                                    <input title="Minimal allowed underprice: use negative for overpriced" value="{{user_settings.algo_min_underprice}}"
+                                           name="algo_min_underprice" id="algo_min_underprice" type="text"
+                                           class="form-control"></div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+
+                            <div class="col-md-1">
+                                <div class="position-relative form-check">
+                                    <input title="Last 12 Month momentum: stock got more expensive than 1Y ago in %"
+                                            {%if user_settings.algo_apply_min_momentum%}
+                                            checked
+                                            {% endif %}
+                                            name="algo_apply_min_momentum" id="algo_apply_min_momentum"
+                                            type="checkbox"
+                                            class="form-check-input">
+                                    <label for="algo_apply_min_momentum" class="form-check-label">Apply</label>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="position-relative form-group">
+                                    <label for="algo_min_momentum" class="">Minimal Momentum % </label>
+                                    <input title="Minimal allowed Momentum use negative for descending graph" value="{{user_settings.algo_min_momentum}}"
+                                           name="algo_min_momentum" id="algo_min_momentum" type="text"
+                                           class="form-control"></div>
+                            </div>
+                        </div>
                     </div>
 
                     <button type="submit" class="mt-2 btn btn-primary">Save</button>

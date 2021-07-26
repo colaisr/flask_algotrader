@@ -69,7 +69,18 @@ def filter_add_data(requested_candidates,logged_user):
         filtered_yahoo_ranks = list(filter(lambda td: td.yahoo_rank < user_settings.algo_max_yahoo_rank, filtered_scores))
     else:
         filtered_yahoo_ranks=filtered_scores
-    return filtered_yahoo_ranks
+
+    if user_settings.algo_apply_min_underprice:
+        filtered_underprice = list(filter(lambda td: td.under_priced_pnt >= user_settings.algo_min_underprice, filtered_yahoo_ranks))
+    else:
+        filtered_underprice=filtered_yahoo_ranks
+
+    if user_settings.algo_apply_min_momentum:
+        filtered_momentum = list(filter(lambda td: td.twelve_month_momentum >= user_settings.algo_min_momentum, filtered_underprice))
+    else:
+        filtered_momentum=filtered_underprice
+
+    return filtered_momentum
 
 def sort_by_parameter_desc(object,property):
     return sorted(object, key=lambda x: x[property], reverse=True)

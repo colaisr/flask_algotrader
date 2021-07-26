@@ -32,6 +32,10 @@ class UserSetting(db.Model):
     algo_max_yahoo_rank = db.Column('algo_max_yahoo_rank', db.Float)
     algo_apply_max_hold = db.Column('algo_apply_max_hold', db.Boolean)
     algo_max_hold_days = db.Column('algo_max_hold_days', db.Integer)
+    algo_apply_min_underprice = db.Column('algo_apply_min_underprice', db.Boolean)
+    algo_min_underprice = db.Column('algo_min_underprice', db.Float)
+    algo_apply_min_momentum = db.Column('algo_apply_min_momentum', db.Boolean)
+    algo_min_momentum = db.Column('algo_min_momentum', db.Float)
 
     connection_account_name = db.Column('connection_account_name', db.String)
     connection_port = db.Column('connection_port', db.Integer)
@@ -90,6 +94,10 @@ class UserSetting(db.Model):
         d['algo_max_yahoo_rank'] = self.algo_max_yahoo_rank
         d['algo_apply_max_hold'] = self.algo_apply_max_hold
         d['algo_max_hold_days'] = self.algo_max_hold_days
+        d['algo_apply_min_underprice'] = self.algo_apply_min_underprice
+        d['algo_min_underprice'] = self.algo_min_underprice
+        d['algo_apply_min_momentum'] = self.algo_apply_min_momentum
+        d['algo_min_momentum'] = self.algo_min_momentum
         d['notify_buy'] = self.notify_buy
         d['notify_sell'] = self.notify_sell
         d['notify_trail'] = self.notify_trail

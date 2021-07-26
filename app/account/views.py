@@ -75,6 +75,10 @@ def register():
             algo_positions_for_swan=3,
             algo_apply_max_hold=True,
             algo_max_hold_days=31,
+            algo_apply_min_underprice=True,
+            algo_min_underprice=0,
+            algo_apply_min_momentum=True,
+            algo_min_momentum=0,
 
             connection_account_name = 'Default,needs to be changed',
             connection_port=7498,

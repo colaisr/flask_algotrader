@@ -74,6 +74,7 @@ def savesettings():
         user_settings.algo_apply_min_rank = True
     else:
         user_settings.algo_apply_min_rank =False
+    user_settings.algo_min_rank = request.form['algo_min_rank']
 
     if "algo_sell_on_swan" in request.form.keys():
         user_settings.algo_sell_on_swan = True
@@ -96,7 +97,18 @@ def savesettings():
     else:
         user_settings.notify_trail =False
 
-    user_settings.algo_min_rank = request.form['algo_min_rank']
+    if "algo_apply_min_underprice" in request.form.keys():
+        user_settings.algo_apply_min_underprice = True
+    else:
+        user_settings.algo_apply_min_underprice =False
+    user_settings.algo_min_underprice = request.form['algo_min_underprice']
+
+    if "algo_apply_min_momentum" in request.form.keys():
+        user_settings.algo_apply_min_momentum = True
+    else:
+        user_settings.algo_apply_min_momentum =False
+    user_settings.algo_min_momentum = request.form['algo_min_momentum']
+
 
     user_settings.connection_port = request.form['connection_port']
     user_settings.connection_account_name = request.form['connection_account_name']
