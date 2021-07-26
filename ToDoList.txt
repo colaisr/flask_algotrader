@@ -2,4 +2,6 @@ things to Add:
 
 Station restart on Linux +recheck on Windows VM
 fix offline-online apply Is the stock market open Api from FMP
-check may be to get volatility for a stock to bid or Asimptota of last 3 months...
+check may be to get volatility for a stock to bid or Asimptota of last 3 months... underpriced - filter ?
+ordering according momentum + underpriced
+last report to not to kill the existing - if no candidates : yellow sighn online no station
