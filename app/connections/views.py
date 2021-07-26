@@ -73,11 +73,13 @@ def filter_add_data(requested_candidates,logged_user):
 
 def sort_by_parameter_desc(object,property):
     return sorted(object, key=lambda x: x[property], reverse=True)
+def sort_by_parameter_asc(object,property):
+    return sorted(object, key=lambda x: x[property], reverse=False)
 
 def sort_candidates(cand_dictionaries):
     sorted_momentum=sort_by_parameter_desc(cand_dictionaries,'twelve_month_momentum')
     sorted_underprice = sort_by_parameter_desc(sorted_momentum, 'under_priced_pnt')
-    sorted_yahooo = sort_by_parameter_desc(sorted_momentum, 'yahoo_rank')
+    sorted_yahooo = sort_by_parameter_asc(sorted_underprice, 'yahoo_rank')
     sorted_tiprank=sort_by_parameter_desc(sorted_yahooo,'tipranks')
     return sorted_tiprank
 
