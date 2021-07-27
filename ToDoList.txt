@@ -6,7 +6,6 @@ email if not latest...
 Station restart on Linux +recheck on Windows VM
 fix offline-online
 Apply Is the stock market open Api from FMP
-1.last report to not to kill the existing - if no candidates : +yellow sighn API disconnected
 more data to the position open + stream it to the email
 may be historical data from Yahoo- for stock details ?
 update presentation

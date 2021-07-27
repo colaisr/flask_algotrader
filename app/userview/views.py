@@ -1,5 +1,7 @@
 import json
 from datetime import datetime, timedelta, time
+
+import pytz
 from pytz import timezone
 
 from flask import (
@@ -36,7 +38,7 @@ userview = Blueprint('userview', __name__)
 @userview.route('traderstationstate', methods=['GET', 'POST'])
 @login_required
 def traderstationstate():
-
+    re=request
     report = Report.query.filter_by(email=current_user.email).first()
     settings=UserSetting.query.filter_by(email=current_user.email).first()
     use_margin=settings.algo_allow_margin
@@ -96,6 +98,12 @@ def traderstationstate():
                 v['target_price']=0
 
         report_time=report.report_time
+
+        aware=pytz.utc.localize(report_time)
+        tz = timezone('Europe/Moscow')
+        moscow_time=datetime.now(tz)
+        delta= moscow_time-aware
+
         if report.api_connected:
             api_error=False
         else:
