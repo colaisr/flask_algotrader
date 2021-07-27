@@ -32,6 +32,7 @@ class Report(db.Model):
     market_time = db.Column('market_time', db.DateTime)
     started_time = db.Column('started_time', db.DateTime)
     market_state = db.Column('market_state', db.String)
+    api_connected=db.Column('api_connected', db.Boolean)
 
     def update_report(self):
         report = Report.query.filter_by(email=self.email).first()
@@ -52,5 +53,6 @@ class Report(db.Model):
             report.market_time = self.market_time
             report.market_state = self.market_state
             report.started_time = self.started_time
+            report.api_connected = self.api_connected
 
         db.session.commit()
