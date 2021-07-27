@@ -98,11 +98,17 @@ def traderstationstate():
                 v['target_price']=0
 
         report_time=report.report_time
-
-        aware=pytz.utc.localize(report_time)
-        tz = timezone('Europe/Moscow')
-        moscow_time=datetime.now(tz)
-        delta= moscow_time-aware
+        current=datetime.utcnow()
+        #
+        # aware=pytz.utc.localize(report_time)
+        # tz = timezone('Europe/Moscow')
+        # moscow_time=datetime.now(tz)
+        delta= (current-report_time).seconds
+        refresh_rate=settings.station_interval_worker_sec+10
+        if delta<refresh_rate:
+            online=True
+        else:
+            online=False
 
         if report.api_connected:
             api_error=False
@@ -114,7 +120,7 @@ def traderstationstate():
     if report is None:
         return redirect(url_for('candidates.usercandidates'))
     else:
-        return render_template('userview/traderstationstate.html',api_error=api_error,trading_session_state=trading_session_state,report_interval=report_interval,report_time=report_time,candidates_live=candidates_live,open_positions=open_positions,open_orders=open_orders, user=current_user,report=report,margin_used=use_margin, form=None)
+        return render_template('userview/traderstationstate.html',online=online,api_error=api_error,trading_session_state=trading_session_state,report_interval=report_interval,report_time=report_time,candidates_live=candidates_live,open_positions=open_positions,open_orders=open_orders, user=current_user,report=report,margin_used=use_margin, form=None)
 
 def check_session_state():
     tz = timezone('US/Eastern')

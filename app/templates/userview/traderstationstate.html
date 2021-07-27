@@ -26,7 +26,11 @@
                     <input id="report_time" type="hidden" value="{{report_time}}">
                     <input id="report_interval" type="hidden" value="{{report_interval}}">
                     <div class="mb-2 mr-2 badge badge-secondary">Last report : {{ report.reported_text }}</div>
-                    <div id="connection_state" class="mb-2 mr-2 badge badge-pill badge-danger">offline</div>
+                    {%if online%}
+                    <div  class="mb-2 mr-2 badge badge-pill badge-success">online</div>
+                    {%else%}
+                    <div  class="mb-2 mr-2 badge badge-pill badge-danger">offline</div>
+                    {%endif%}
                     {%if api_error%}
                     <div id="api_error" class="mb-2 mr-2 badge badge-pill badge-warning">TWS offline</div>
                     {%endif%}
