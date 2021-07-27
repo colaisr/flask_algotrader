@@ -104,7 +104,7 @@ def traderstationstate():
         # tz = timezone('Europe/Moscow')
         # moscow_time=datetime.now(tz)
         delta= (current-report_time).seconds
-        refresh_rate=settings.station_interval_worker_sec+10
+        refresh_rate=settings.station_interval_worker_sec*2 #takes time to process
         if delta<refresh_rate:
             online=True
         else:
