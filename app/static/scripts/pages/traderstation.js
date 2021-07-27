@@ -1,6 +1,5 @@
 $(document).ready(function(){
 paint_pnl()
-set_connection_state()
 setTimeout(function(){
    window.location.reload(1);
 }, 30000);
