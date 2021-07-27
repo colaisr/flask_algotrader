@@ -143,10 +143,6 @@ def logreport():
         report.remaining_sma_with_safety = request_data["remaining_sma_with_safety"]
         report.excess_liquidity=request_data["excess_liquidity"]
         report.dailyPnl = request_data["dailyPnl"]
-        print("eeeeeeeeeeeeeeeeeeeeeeeeee")
-        print(request_data["api_connected"])
-        print("eeeeeeeeeeeeeeeeeeeeeeeeee")
-
         report.api_connected=request_data["api_connected"]
         report.last_worker_execution =datetime.fromisoformat(request_data["last_worker_run"])
         report.market_time =datetime.fromisoformat(request_data["market_time"])
