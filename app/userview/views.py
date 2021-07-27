@@ -96,13 +96,17 @@ def traderstationstate():
                 v['target_price']=0
 
         report_time=report.report_time
+        if report.api_connected:
+            api_error=False
+        else:
+            api_error=True
 
     trading_session_state=check_session_state()
 
     if report is None:
         return redirect(url_for('candidates.usercandidates'))
     else:
-        return render_template('userview/traderstationstate.html',trading_session_state=trading_session_state,report_interval=report_interval,report_time=report_time,candidates_live=candidates_live,open_positions=open_positions,open_orders=open_orders, user=current_user,report=report,margin_used=use_margin, form=None)
+        return render_template('userview/traderstationstate.html',api_error=api_error,trading_session_state=trading_session_state,report_interval=report_interval,report_time=report_time,candidates_live=candidates_live,open_positions=open_positions,open_orders=open_orders, user=current_user,report=report,margin_used=use_margin, form=None)
 
 def check_session_state():
     tz = timezone('US/Eastern')
