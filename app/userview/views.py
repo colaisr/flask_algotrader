@@ -1,5 +1,7 @@
 import json
+import ssl
 from datetime import datetime, timedelta, time
+from urllib.request import urlopen
 
 import pytz
 from pytz import timezone
@@ -34,6 +36,23 @@ from app.email import send_email
 from app.models import User, Position, Report, Candidate, UserSetting
 
 userview = Blueprint('userview', __name__)
+
+def is_market_open():
+    url = ('https://financialmodelingprep.com/api/v3/is-the-market-open?apikey=f6003a61d13c32709e458a1e6c7df0b0')
+    state='Error'
+    try:
+        context = ssl._create_unverified_context()
+        response = urlopen(url, context=context)
+        data = response.read().decode("utf-8")
+        parsed=json.loads(data)
+        state=parsed['isTheStockMarketOpen']
+        if state:
+            state="Open"
+        else:
+            state="Closed"
+    except:
+        y=3
+    return state
 
 @userview.route('traderstationstate', methods=['GET', 'POST'])
 @login_required
@@ -115,28 +134,30 @@ def traderstationstate():
         else:
             api_error=True
 
-    trading_session_state=check_session_state()
+    trading_session_state=is_market_open()
+    tz = timezone('US/Eastern')
+    current_est_time=datetime.now(tz).time().strftime("%H:%M")
 
     if report is None:
         return redirect(url_for('candidates.usercandidates'))
     else:
-        return render_template('userview/traderstationstate.html',online=online,api_error=api_error,trading_session_state=trading_session_state,report_interval=report_interval,report_time=report_time,candidates_live=candidates_live,open_positions=open_positions,open_orders=open_orders, user=current_user,report=report,margin_used=use_margin, form=None)
+        return render_template('userview/traderstationstate.html',current_est_time=current_est_time,online=online,api_error=api_error,trading_session_state=trading_session_state,report_interval=report_interval,report_time=report_time,candidates_live=candidates_live,open_positions=open_positions,open_orders=open_orders, user=current_user,report=report,margin_used=use_margin, form=None)
 
-def check_session_state():
-    tz = timezone('US/Eastern')
-    current_est_time=datetime.now(tz).time()
-    dstart = time(4, 0, 0)
-    dend=time(20, 0, 0)
-    tstart=time(9, 30, 0)
-    tend=time(16, 0, 0)
-    if time_in_range(dstart,tstart,current_est_time):
-        return "Pre Market"
-    elif time_in_range(tstart,tend,current_est_time):
-        return "Open"
-    elif time_in_range(tend,dend,current_est_time):
-        return "After Market"
-    else:
-        return "Closed"
+# def check_session_state(): #changed to FMP API
+#     tz = timezone('US/Eastern')
+#     current_est_time=datetime.now(tz).time()
+#     dstart = time(4, 0, 0)
+#     dend=time(20, 0, 0)
+#     tstart=time(9, 30, 0)
+#     tend=time(16, 0, 0)
+#     if time_in_range(dstart,tstart,current_est_time):
+#         return "Pre Market"
+#     elif time_in_range(tstart,tend,current_est_time):
+#         return "Open"
+#     elif time_in_range(tend,dend,current_est_time):
+#         return "After Market"
+#     else:
+#         return "Closed"
 
 
 def time_in_range(start, end, x):

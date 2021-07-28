@@ -1,10 +1,6 @@
 things to Add:
 
-gateway - to know if latest ?
-gateway- trigger update ?
-email if not latest...
 Station restart on Linux +recheck on Windows VM
-Apply Is the stock market open Api from FMP
 more data to the position open + stream it to the email
 may be historical data from Yahoo- for stock details ?
 update presentation
