@@ -1,5 +1,7 @@
 
 from datetime import datetime,date
+
+from . import TickerData
 from .. import db
 
 class Position(db.Model):
@@ -15,12 +17,32 @@ class Position(db.Model):
     stocks = db.Column('stocks', db.Integer)
     last_exec_side = db.Column('last_exec_side', db.String)
     profit = db.Column('profit', db.Float)
+    buying_tiprank = db.Column('buying_tiprank', db.Integer)
+    buying_yahoo_rank = db.Column('buying_yahoo_rank', db.Float)
+    buying_underprice = db.Column('buying_underprice', db.Float)
+    buying_twelve_month_momentum = db.Column('buying_twelve_month_momentum', db.Float)
+    buying_average_drop = db.Column('buying_average_drop', db.Float)
+    buying_average_spread = db.Column('buying_average_spread', db.Float)
+    buying_fmp_rating = db.Column('buying_fmp_rating', db.String)
+    buying_fmp_score = db.Column('buying_fmp_score', db.Integer)
+
 
     def update_position(self):
         updating_result="Nothing"
         if self.last_exec_side=='BOT':
             p = Position.query.filter_by(email=self.email, ticker=self.ticker,last_exec_side='BOT').first()
             if p is None:
+                #adding market data
+                m_data = TickerData.query.filter_by(ticker=self.ticker).order_by(TickerData.updated_server_time.desc()).first()
+                self.buying_tiprank=m_data.tipranks
+                self.buying_yahoo_rank=m_data.yahoo_rank
+                self.buying_underprice=m_data.under_priced_pnt
+                self.buying_twelve_month_momentum=m_data.twelve_month_momentum
+                self.buying_average_drop=m_data.yahoo_avdropP
+                self.buying_average_spread=m_data.yahoo_avspreadP
+                self.buying_fmp_rating=m_data.fmp_rating
+                self.buying_fmp_score=m_data.fmp_score
+
                 db.session.add(self)
                 updating_result = "new_buy"
                 p = Position.query.filter_by(email=self.email, ticker=self.ticker, last_exec_side='BOT').first()

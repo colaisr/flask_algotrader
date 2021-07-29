@@ -4,3 +4,4 @@ Station restart on Linux +recheck on Windows VM
 more data to the position open + stream it to the email
 may be historical data from Yahoo- for stock details ?
 update presentation
+Admin backdoor inplace of user... maybe just for download page...
