@@ -1,5 +1,7 @@
 things to Add:
-
+longer than 30 seconds for Last Candidate- skip! to remove hangs...
+portfolio- by sectors- on the main page
+market data to infopage of a candidate(additional fields)
 Station restart on Linux +recheck on Windows VM
 more data to the position open + stream it to the email
 may be historical data from Yahoo- for stock details ?
