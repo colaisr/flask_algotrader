@@ -1,5 +1,3 @@
 things to Add:
-portfolio- by sectors- on the main page
-market data to infopage of a candidate(additional fields)
 more data to the position open + stream it to the email
 may be historical data from Yahoo- for stock details ?

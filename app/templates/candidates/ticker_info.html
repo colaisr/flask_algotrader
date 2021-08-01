@@ -27,7 +27,14 @@
                     {% endif %}">Tipranks
                         <span class="badge badge-pill badge-light">{{market_data.tipranks}}</span>
                     </button>
-
+                    <button class="mb-2 mr-2 btn
+                    {% if market_data.yahoo_rank<=user_settings.algo_max_yahoo_rank %}
+                    btn-success
+                    {% else %}
+                    btn-warning
+                    {% endif %}">Yahoo Rank
+                        <span class="badge badge-pill badge-light">{{market_data.yahoo_rank}}</span>
+                    </button>
                     <div class="mb-2 mr-2 badge badge-pill badge-secondary">Last Update(UTC) :
                         {{market_data.updated_server_time}}
                     </div>
@@ -42,6 +49,22 @@
                     {% endif %}">FMP......
                     <span class="badge badge-pill badge-light">{{market_data.fmp_rating}}</span>
                 </button>
+                                    <button class="mb-2 mr-2 btn
+                    {% if market_data.under_priced_pnt>=user_settings.algo_min_underprice %}
+                    btn-success
+                    {% else %}
+                    btn-warning
+                    {% endif %}">Underpriced
+                        <span class="badge badge-pill badge-light">{{market_data.under_priced_pnt}}</span>
+                    </button>
+                <button class="mb-2 mr-2 btn
+                    {% if market_data.twelve_month_momentum>=user_settings.algo_min_momentum %}
+                    btn-success
+                    {% else %}
+                    btn-warning
+                    {% endif %}">12M Momentum (%)
+                        <span class="badge badge-pill badge-light">{{market_data.twelve_month_momentum*100}}</span>
+                    </button>
             </div>
             <div class="page-title-actions">
                 <div>
@@ -67,6 +90,7 @@
                 <script> var hist_dates = {{ hist_dates|tojson }}; </script>
                 <script> var hist_tr_ranks = {{ hist_tr_ranks|tojson }}; </script>
                 <script> var hist_fmp_score = {{ hist_fmp_score|tojson }}; </script>
+                <script> var hist_yahoo_rank = {{ hist_yahoo_rank|tojson }}; </script>
 <!--                <input type="hidden" id="hist_dates" value="{{ hist_dates }}">-->
 <!--                <input type="hidden" id="hist_tr_ranks" value="{{ hist_tr_ranks }}">-->
 <!--                <input type="hidden" id="hist_fmp_score" value="{{ hist_fmp_score }}">-->
@@ -116,10 +140,11 @@
                 <div class="main-card mb-3 card">
                     <div class="card-body"><h5 class="card-title">SPECS</h5>
                         <ul class="list-group">
+                            <li class="list-group-item">Sector: {{candidate.sector}}</li>
                             <li class="list-group-item">Industry: {{candidate.industry}}</li>
                             <li class="list-group-item">Exchange: {{candidate.exchange}}</li>
-                            <li class="list-group-item">Av. daily drop: {{market_data.yahoo_avdropP}} %</li>
-                            <li class="list-group-item">Av. daily spread:{{market_data.yahoo_avdropP}} %</li>
+                            <li class="list-group-item">Av. daily drop: {{market_data.yahoo_avdropP|round(1, 'floor')}} %</li>
+                            <li class="list-group-item">Av. daily spread:{{market_data.yahoo_avdropP|round(1, 'floor')}} %</li>
                         </ul>
                     </div>
                 </div>

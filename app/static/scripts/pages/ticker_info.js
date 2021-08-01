@@ -57,6 +57,12 @@ const data = {
     fill: false,
     borderColor: 'rgb(255, 99, 132)',
     tension: 0.1
+  },  {
+    label: 'Yahoo Score',
+    data: hist_yahoo_rank,
+    fill: false,
+    borderColor: 'rgb(128, 128, 255)',
+    tension: 0.1
   }]
 };
 const config = {
