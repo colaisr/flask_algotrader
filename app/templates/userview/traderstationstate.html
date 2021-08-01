@@ -6,8 +6,10 @@
         <div class="page-title-wrapper">
             <div class="page-title-heading">
                 <div class="page-title-icon">
-                    <i class="pe-7s-albums icon-gradient bg-mean-fruit">
-                    </i>
+                    <button style="border: none;" onclick="fill_graph()" type="button" class="pe-7s-display1 icon-gradient bg-mean-fruit" data-toggle="modal" data-target="#sectors_modal">
+
+
+</button>
 
                 </div>
                 <div style="    margin-right: 10px;">
@@ -46,6 +48,7 @@
                     </div>
                 </div>
             </div>
+
             <div class="page-title-actions">
                 <div>
                     <div class="mb-2 mr-2 badge badge-info">EST : {{ current_est_time }}</div>
@@ -286,6 +289,36 @@
     </div>
 </div>
 {% endblock %}
+{% block modal %}
+<!-- Modal -->
+<div id="sectors_modal" class="modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Portfolio by sectors</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <canvas id="sectorsChart" width="400" height="400"></canvas>
+
+      </div>
+      <div class="modal-footer">
+
+        <button type="button" onclick="fill_graph()" class="btn btn-secondary">Fill</button>
+        <button id="close_modal_btn" type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
 {% block scripting %}
 <script type="text/javascript" src="{{ url_for('static', filename='scripts/pages/traderstation.js') }}"></script>
+<script>
+const graph_sectors = {{graph_sectors | tojson}};
+const graph_sectors_values = {{graph_sectors_values | tojson}};
+
+</script>
 {% endblock %}

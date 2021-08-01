@@ -82,6 +82,7 @@ def traderstationstate():
         open_positions = json.loads(report.open_positions_json)
         open_orders = json.loads(report.open_orders_json)
         report.all_positions_value=0
+        sectors_dict={}
         for k,v in open_positions.items():
             position = Position.query.filter_by(email=current_user.email, last_exec_side='BOT',ticker=k).first()
             if position != None:
@@ -105,6 +106,17 @@ def traderstationstate():
                 v['profit_class'] = 'text-danger'
                 v['profit_progress_colour'] = 'bg-danger'
                 v['profit_progress_percent'] = abs(profit / 10 * 100)
+
+            candidate = Candidate.query.filter_by(ticker=k).first()
+            if candidate.sector in sectors_dict.keys():
+                sectors_dict[candidate.sector]=sectors_dict[candidate.sector]+int(v['Value'])
+            else:
+                sectors_dict[candidate.sector] =int(v['Value'])
+        graph_sectors=[]
+        graph_sectors_values=[]
+        for sec,val in sectors_dict.items():
+            graph_sectors.append(sec)
+            graph_sectors_values.append(val)
 
 
 
@@ -141,7 +153,7 @@ def traderstationstate():
     if report is None:
         return redirect(url_for('candidates.usercandidates'))
     else:
-        return render_template('userview/traderstationstate.html',current_est_time=current_est_time,online=online,api_error=api_error,trading_session_state=trading_session_state,report_interval=report_interval,report_time=report_time,candidates_live=candidates_live,open_positions=open_positions,open_orders=open_orders, user=current_user,report=report,margin_used=use_margin, form=None)
+        return render_template('userview/traderstationstate.html',graph_sectors=graph_sectors,graph_sectors_values=graph_sectors_values,current_est_time=current_est_time,online=online,api_error=api_error,trading_session_state=trading_session_state,report_interval=report_interval,report_time=report_time,candidates_live=candidates_live,open_positions=open_positions,open_orders=open_orders, user=current_user,report=report,margin_used=use_margin, form=None)
 
 # def check_session_state(): #changed to FMP API
 #     tz = timezone('US/Eastern')
