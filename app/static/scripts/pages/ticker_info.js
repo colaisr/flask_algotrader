@@ -63,6 +63,12 @@ const data = {
     fill: false,
     borderColor: 'rgb(128, 128, 255)',
     tension: 0.1
+  },  {
+    label: 'Stock Invest Score',
+    data: stock_invest_rank,
+    fill: false,
+    borderColor: 'rgb(140, 255, 102)',
+    tension: 0.1
   }]
 };
 const config = {

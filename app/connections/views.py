@@ -67,12 +67,17 @@ def filter_add_data(requested_candidates,logged_user):
         filtered_scores=filtered_tipranks
 
     if user_settings.algo_apply_max_yahoo_rank:
-        filtered_yahoo_ranks = list(filter(lambda td: td.yahoo_rank < user_settings.algo_max_yahoo_rank, filtered_scores))
+        filtered_yahoo_ranks = list(filter(lambda td: td.yahoo_rank <= user_settings.algo_max_yahoo_rank, filtered_scores))
     else:
         filtered_yahoo_ranks=filtered_scores
 
+    if user_settings.algo_apply_min_stock_invest_rank:
+        filtered_stock_invest_ranks = list(filter(lambda td: td.stock_invest_rank >= user_settings.algo_min_stock_invest_rank, filtered_yahoo_ranks))
+    else:
+        filtered_stock_invest_ranks=filtered_scores
+
     if user_settings.algo_apply_min_underprice:
-        filtered_underprice = list(filter(lambda td: td.under_priced_pnt >= user_settings.algo_min_underprice, filtered_yahoo_ranks))
+        filtered_underprice = list(filter(lambda td: td.under_priced_pnt >= user_settings.algo_min_underprice, filtered_stock_invest_ranks))
     else:
         filtered_underprice=filtered_yahoo_ranks
 
@@ -91,7 +96,8 @@ def sort_by_parameter_asc(object,property):
 def sort_candidates(cand_dictionaries):
     sorted_momentum=sort_by_parameter_desc(cand_dictionaries,'twelve_month_momentum')
     sorted_underprice = sort_by_parameter_desc(sorted_momentum, 'under_priced_pnt')
-    sorted_yahooo = sort_by_parameter_asc(sorted_underprice, 'yahoo_rank')
+    sorted_stockinvest = sort_by_parameter_desc(sorted_underprice, 'stock_invest_rank')
+    sorted_yahooo = sort_by_parameter_asc(sorted_stockinvest, 'yahoo_rank')
     sorted_tiprank=sort_by_parameter_desc(sorted_yahooo,'tipranks')
     return sorted_tiprank
 
