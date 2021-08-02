@@ -98,6 +98,7 @@ def traderstationstate():
             v['profit_in_percents']=profit
             if v['stocks'] !=0:
                 report.all_positions_value+=int(v['Value'])
+                v['last_bid']=v['Value']/v['stocks']
             if profit>0:
                 v['profit_class'] = 'text-success'
                 v['profit_progress_colour'] = 'bg-success'

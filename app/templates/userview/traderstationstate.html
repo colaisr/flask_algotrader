@@ -153,9 +153,9 @@
                                  aria-valuemax="100" style="width: {{value['profit_progress_percent']}}%;"></div>
                         </div>
                         <div class="progress-sub-label">
-                            <div class="sub-label-left"> {{value['stocks']}} x {{value['cost']|round(1)}}</div>
+                            <div class="sub-label-left"> {{value['stocks']}} x {{value['last_bid']|round(1)}}</div>
                             <div class="sub-label-right">{{value['days_open']+1}} Days</div>
-                            <div class="sub-label-right">{{(value['stocks']*value['cost'])|round(1)}}</div>
+                            <div class="sub-label-right">{{value['Value']|round(1)}}</div>
                         </div>
                     </div>
                 </div>
@@ -185,10 +185,7 @@
                             <th class="text-center">Action</th>
                             <th>Ticker</th>
                             <th class="text-center">Type</th>
-                            <th class="text-center">adjustedStopPrice</th>
-                            <th class="text-center">adjustedStopLimitPrice</th>
-                            <th class="text-center">adjustedTrailingAmount</th>
-                            <th class="text-center">percentOffset</th>
+                            <th class="text-center">Adjusted Stop Price</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -213,9 +210,6 @@
                             </td>
                             <td class="text-center">{{value['Type']}}</td>
                             <td class="text-center">{{value['adjustedStopPrice']}}</td>
-                            <td class="text-center">{{value['adjustedStopLimitPrice']}}</td>
-                            <td class="text-center">{{value['adjustedTrailingAmount']}}</td>
-                            <td class="text-center">{{value['percentOffset']}}</td>
                             <td class="text-center">
                                 {% if value['Type']=='TRAIL' %}
                                 <div class="badge badge-warning">Profit</div>
