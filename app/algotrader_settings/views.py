@@ -109,6 +109,12 @@ def savesettings():
         user_settings.algo_apply_min_momentum =False
     user_settings.algo_min_momentum = request.form['algo_min_momentum']
 
+    if "algo_apply_min_stock_invest_rank" in request.form.keys():
+        user_settings.algo_apply_min_stock_invest_rank = True
+    else:
+        user_settings.algo_apply_min_stock_invest_rank =False
+    user_settings.algo_min_stock_invest_rank = request.form['algo_min_stock_invest_rank']
+
 
     user_settings.connection_port = request.form['connection_port']
     user_settings.connection_account_name = request.form['connection_account_name']

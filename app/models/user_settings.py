@@ -37,7 +37,7 @@ class UserSetting(db.Model):
     algo_apply_min_momentum = db.Column('algo_apply_min_momentum', db.Boolean)
     algo_min_momentum = db.Column('algo_min_momentum', db.Float)
     algo_apply_min_stock_invest_rank = db.Column('algo_apply_min_stock_invest_rank', db.Boolean)
-    algo_min_stock_invest_rank = db.Column('algo_apply_min_stock_invest_rank', db.Float)
+    algo_min_stock_invest_rank = db.Column('algo_min_stock_invest_rank', db.Float)
 
     connection_account_name = db.Column('connection_account_name', db.String)
     connection_port = db.Column('connection_port', db.Integer)
