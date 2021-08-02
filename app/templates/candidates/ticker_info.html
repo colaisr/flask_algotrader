@@ -35,6 +35,14 @@
                     {% endif %}">Yahoo Rank
                         <span class="badge badge-pill badge-light">{{market_data.yahoo_rank}}</span>
                     </button>
+                    <button class="mb-2 mr-2 btn
+                    {% if market_data.stock_invest_rank>=user_settings.algo_min_stock_invest_rank %}
+                    btn-success
+                    {% else %}
+                    btn-warning
+                    {% endif %}">Stock Invest Rank
+                        <span class="badge badge-pill badge-light">{{market_data.stock_invest_rank}}</span>
+                    </button>
                     <div class="mb-2 mr-2 badge badge-pill badge-secondary">Last Update(UTC) :
                         {{market_data.updated_server_time}}
                     </div>

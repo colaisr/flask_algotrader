@@ -19,6 +19,7 @@ class TickerData(db.Model):
     yahoo_avspreadP = db.Column('yahoo_avspreadP', db.Float)
     tipranks = db.Column('tipranks', db.Integer)
     yahoo_rank=db.Column('yahoo_rank', db.Float)
+    stock_invest_rank=db.Column('yahoo_rank', db.Float)
     under_priced_pnt = db.Column('under_priced_pnt', db.Float)
     twelve_month_momentum = db.Column('twelve_month_momentum', db.Float)
     fmp_rating = db.Column('fmp_rating', db.String)
@@ -45,5 +46,6 @@ class TickerData(db.Model):
         d['twelve_month_momentum'] = self.twelve_month_momentum
         d['fmp_rating'] = self.fmp_rating
         d['fmp_score'] = self.fmp_score
+        d['stock_invest_rank'] = self.stock_invest_rank
         d['updated_server_time'] = datetime.isoformat(self.updated_server_time)
         return d

@@ -17,6 +17,7 @@ from app import db, csrf
 from app.email import send_email
 from app.models import User, Connection, Report, TickerData, Candidate
 from app.research.fmp_research import get_fmp_ratings_score_for_ticker
+from app.research.stock_invest_research import get_stock_invest_rank_for_ticker
 from app.research.tipranks_research import get_tiprank_for_ticker
 from app.research.yahoo_finance_research import get_yahoo_rank_for_ticker
 from app.research.yahoo_research import get_yahoo_stats_for_ticker
@@ -44,6 +45,13 @@ def research_ticker(ticker):
     except:
         send_email(recipient='cola.isr@gmail.com',
                    subject='Algotrader research Tipranks problem with '+ticker,
+                   template='account/email/research_issue',
+                   ticker=ticker)
+    try:
+        marketdata.stock_invest_rank = get_stock_invest_rank_for_ticker(ticker)
+    except:
+        send_email(recipient='cola.isr@gmail.com',
+                   subject='Algotrader research Stock Invest problem with '+ticker,
                    template='account/email/research_issue',
                    ticker=ticker)
     try:

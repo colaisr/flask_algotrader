@@ -85,6 +85,8 @@ def register():
             algo_min_underprice=0,
             algo_apply_min_momentum=True,
             algo_min_momentum=0,
+            algo_apply_min_stock_invest_rank=True,
+            algo_min_stock_invest_rank=0,
 
             connection_account_name = 'Default,needs to be changed',
             connection_port=7498,
