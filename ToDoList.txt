@@ -1,12 +1,13 @@
 things to Add:
 
-3. more data to the position open + stream it to the email
+1. Market data for Admin : all columns
 
 2. allow sell - to the settings
 
-may be historical data from Yahoo- for stock details ?
+3. more data to the position open + stream it to the email
 
-1. Market data for Admin : all columns
+
+may be historical data from Yahoo- for stock details ?
 
 autoupdate to the settings
 
