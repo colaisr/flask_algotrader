@@ -126,7 +126,7 @@ def market_data():
         if m.tipranks is None:
             m.tipranks=0
 
-    return render_template('admin/market_data.html',user_settings=user_settings, marketdata=marketdata)
+    return render_template('admin/market_data.html', user_settings=user_settings, marketdata=marketdata)
 
 @admin.route('/clientcommands')
 @login_required
