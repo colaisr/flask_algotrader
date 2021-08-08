@@ -65,12 +65,13 @@
         <h4>Adding to Autostart</h4>
         1. Go to Startup applications.Add new command.Select linux_start_all.sh<br>
         2. modify to format:    mate-terminal -e "bash -c PATHTOFILE"<br>
-        3. create cron job for autorestart:<br>
+        3. create cron job's for autorestart and watch dog:<br>
         4. sudo crontab -e<br>
         5. 0 16   *   *   *    /sbin/shutdown -r<br>
-        6. 0 7   *   *   *    /sbin/shutdown -r<br>
-        7. it configures 2 daily restarts : mornig and before trade.<br>
-        8.Ready<br>
+        6. 0 10   *   *   *    /sbin/shutdown -r<br>
+        7. */5 * * * * /home/su/Downloads/algotrader-station/algotrader/linux_watch_dog_sh  <br>
+        8. it configures 2 daily restarts : mornig and before trade, and watchdog app to check if algotrader is running - every 5 minutes.<br>
+        9.Ready<br>
 
 
 

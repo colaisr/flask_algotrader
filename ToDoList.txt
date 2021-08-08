@@ -1,3 +1,17 @@
 things to Add:
+
 more data to the position open + stream it to the email
+
+allow sell - to the settings
+
 may be historical data from Yahoo- for stock details ?
+
+Market data for Admin : all columns
+
+cronjob to start the client
+
+autoupdate to the settings
+
+interactive brokert account opening - pdf
+
+s&p today - show on main page
