@@ -15,3 +15,5 @@ autoupdate to the settings
 interactive brokert account opening - pdf
 
 s&p today - show on main page
+
+change the admin email to actual - and recheck the procedure for new user
