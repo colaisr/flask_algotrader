@@ -58,8 +58,11 @@ def is_market_open():
 @login_required
 def traderstationstate():
     re=request
+    #s=db.session
     report = Report.query.filter_by(email=current_user.email).first()
     settings=UserSetting.query.filter_by(email=current_user.email).first()
+
+
     use_margin=settings.algo_allow_margin
     report_interval=settings.server_report_interval_sec
     if report is None:

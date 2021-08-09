@@ -63,6 +63,7 @@ def create_app(config):
             mysql_password,
             tunnel.local_bind_port)
 
+    app.config['SQLALCHEMY_POOL_RECYCLE'] = 280
     db.init_app(app)
     login_manager.init_app(app)
     csrf.init_app(app)
