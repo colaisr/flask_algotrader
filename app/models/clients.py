@@ -45,7 +45,6 @@ class Report(db.Model):
             report.market_state = self.market_state
             report.started_time = self.started_time
             report.api_connected = self.api_connected
-            report.invalid_market_data_reported=self.invalid_market_data_reported
             if report.api_connected:
                 report.net_liquidation = self.net_liquidation
                 report.remaining_sma_with_safety = self.remaining_sma_with_safety
