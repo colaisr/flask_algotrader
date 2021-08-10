@@ -21,6 +21,7 @@ class UserSetting(db.Model):
     algo_trailing_percent = db.Column('algo_trailing_percent', db.Integer)
     algo_bulk_amount_usd = db.Column('algo_bulk_amount_usd', db.Integer)
     algo_allow_buy = db.Column('algo_allow_buy', db.Boolean)
+    algo_allow_sell = db.Column('algo_allow_sell', db.Boolean)
     algo_allow_margin = db.Column('algo_allow_margin', db.Boolean)
     algo_apply_min_rank = db.Column('algo_apply_min_rank', db.Boolean)
     algo_min_rank = db.Column('algo_min_rank', db.Integer)
@@ -85,6 +86,7 @@ class UserSetting(db.Model):
         d['station_interval_ui_sec']=self.station_interval_ui_sec
         d['station_autorestart'] = self.station_autorestart
         d['algo_allow_buy'] = self.algo_allow_buy
+        d['algo_allow_sell'] = self.algo_allow_sell
         d['algo_allow_margin'] = self.algo_allow_margin
         d['algo_min_rank'] = self.algo_min_rank
         d['algo_accepted_fmp_ratings'] = self.algo_accepted_fmp_ratings

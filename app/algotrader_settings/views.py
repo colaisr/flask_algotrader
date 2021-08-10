@@ -60,6 +60,11 @@ def savesettings():
     else:
         user_settings.algo_allow_buy=False
 
+    if "algo_allow_sell" in request.form.keys():
+        user_settings.algo_allow_sell = True
+    else:
+        user_settings.algo_allow_sell = False
+
     if "algo_allow_margin" in request.form.keys():
         user_settings.algo_allow_margin = True
     else:
