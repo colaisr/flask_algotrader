@@ -33,6 +33,8 @@ class Report(db.Model):
     started_time = db.Column('started_time', db.DateTime)
     market_state = db.Column('market_state', db.String)
     api_connected=db.Column('api_connected', db.Boolean)
+    invalid_market_data_reported = db.Column('invalid_market_data_reported', db.DateTime)
+
 
     def update_report(self):
         report = Report.query.filter_by(email=self.email).first()
