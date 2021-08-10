@@ -88,6 +88,17 @@
                                 </div>
                             </div>
                             <div class="col-md-4">
+                                <div class="position-relative form-check">
+                                    <input title="Allow selling"
+                                            {%if user_settings.algo_allow_sell%}
+                                            checked
+                                            {% endif %}
+                                            name="algo_allow_sell" id="algo_allow_sell" type="checkbox"
+                                            class="form-check-input">
+                                    <label for="algo_allow_sell" class="form-check-label">Allow selling</label>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
 
                                 <div class="position-relative form-check">
                                     <input title="Allow using margin for account or only personal cash"
