@@ -310,3 +310,17 @@ def postexecution():
         return "Execution for " + logged_user + " stored at server."
     else:
         return "The user configured is not found on Server the execution is not logged"
+
+@csrf.exempt
+@connections.route('/postmarketdataerror', methods=['POST'])
+def postmarketdataerror():
+    request_data = request.get_json()
+    logged_user = request_data["user"]
+    reported_time=json.loads(request_data['market_data_error_time'])
+    normalized_time = datetime.fromisoformat(reported_time)
+
+    user_report = Report.query.filter_by(email=logged_user).first()
+    if user_report is not None:
+        user_report.invalid_market_data_reported=normalized_time
+        user_report.update_report()
+        return "Market Data Error registered on server"
