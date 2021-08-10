@@ -33,7 +33,7 @@
                     {%if api_error%}
                     <div id="api_error" class="mb-2 mr-2 badge badge-pill badge-warning">TWS offline</div>
                     {%endif%}
-                    {%if report.invalid_market_data_reported is not none%}
+                    {%if report.market_data_error%}
                     <div id="invalid_market_data_reported" class="mb-2 mr-2 badge badge-pill badge-warning">Market Data Invalid</div>
                     {%endif%}
 
