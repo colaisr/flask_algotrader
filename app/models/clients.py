@@ -33,7 +33,7 @@ class Report(db.Model):
     started_time = db.Column('started_time', db.DateTime)
     market_state = db.Column('market_state', db.String)
     api_connected=db.Column('api_connected', db.Boolean)
-    market_data_error = db.Column('invalid_market_data_reported', db.Boolean)
+    market_data_error = db.Column('market_data_error', db.Boolean)
 
 
     def update_report(self):
