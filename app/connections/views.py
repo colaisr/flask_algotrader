@@ -190,7 +190,7 @@ def get_command():
             client_command.set_run_worker()
         return response
     else:
-        return "The user configured is not found on Server the report is not logged"
+        return "The user configured for Get Command is not found on Server"
 
 # @csrf.exempt
 # @connections.route('/getopenpositions', methods=['POST'])

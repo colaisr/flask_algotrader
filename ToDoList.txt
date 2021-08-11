@@ -1,20 +1,38 @@
-things to Add:
-
+GENERAL NEXTs LIST
 
 2. allow sell - to the settings
 
 3. more data to the position open + stream it to the email
 
 
-may be historical data from Yahoo- for stock details ?
+Top priority
+---------------
+replace admin to algotrader.sup@gmail.com in project and DB (check login, candidates and spiders)
+User Journey - plan with Lily and alighn steps+ notification +enabling +admin notify +main page disableduntill
+Requirement page for TWS setting, Data subscriptions, Download option.
+Validate server EU is used only - find and remove old...
+Remove unused references ... manually ... both projects.
 
-autoupdate to the settings
+The Nexts
+-------------
 
-interactive brokert account opening - pdf
+spiders status to put on Index and Trader Station
+restart- to restart all the machine (via script - restart or exit the app- than watchdog will catch)
+show success/fail factor in general- all poritions- all users
+add daily snapshoting for users : before trading: Net assets,open positions,positions value
+My performance page : graph for Net, success rate, table with positions, link to IBKR
+Aggregated Users Performance on Admin Page - clicking on each -show them in personal perfomance page .
 
-s&p today - show on main page
+Nice to have
+--------------
+Bring   historical data from Yahoo- for stock details page. Inplace of FMP.
+S&P500 current - to Traderstation view + PnL in %
 
-change the admin email to actual - and recheck the procedure for new user
+
+Theory to check
+------------------
+Autoupdate client- depending on users settings
+
 
 
 

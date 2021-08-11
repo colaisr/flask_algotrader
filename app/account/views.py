@@ -69,7 +69,7 @@ def register():
             algo_take_profit=6,
             algo_bulk_amount_usd=1000,
             algo_trailing_percent=1,
-            algo_allow_buy=True,
+            algo_allow_buy=False,
             algo_allow_sell=False,
             algo_allow_margin = True,
             algo_apply_min_rank=True,
