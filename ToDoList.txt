@@ -7,6 +7,7 @@ GENERAL NEXTs LIST
 
 Top priority
 ---------------
+PnL colouring Trader view - take to code not JS
 replace admin to algotrader.sup@gmail.com in project and DB (check login, candidates and spiders)
 User Journey - plan with Lily and alighn steps+ notification +enabling +admin notify +main page disableduntill
 Requirement page for TWS setting, Data subscriptions, Download option.
