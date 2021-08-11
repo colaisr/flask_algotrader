@@ -1,19 +1,14 @@
 import json
-import time
-
-import pytz
 from flask import (
     Blueprint,
     flash,
     redirect,
-    render_template,
     request,
     url_for,
 )
 from datetime import datetime
 
 from sqlalchemy import text
-from sqlalchemy.orm import sessionmaker
 
 from app import db, csrf
 from app.email import send_email

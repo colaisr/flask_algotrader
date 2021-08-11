@@ -3,7 +3,7 @@ from flask_login import current_user
 from sqlalchemy import text
 from werkzeug.utils import redirect
 
-from app.models import EditableHTML, Connection, User, TickerData, Position
+from app.models import EditableHTML, User, TickerData, Position
 
 from app import db
 

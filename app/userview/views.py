@@ -1,14 +1,11 @@
 import json
 import ssl
-from datetime import datetime, timedelta, time
+from datetime import datetime
 from urllib.request import urlopen
-
-import pytz
 from pytz import timezone
 
 from flask import (
     Blueprint,
-    flash,
     redirect,
     render_template,
     request,
@@ -16,24 +13,9 @@ from flask import (
 )
 from flask_login import (
     current_user,
-    login_required,
-    login_user,
-    logout_user,
+    login_required
 )
-from flask_rq import get_queue
-
-from app import db, csrf
-from app.account.forms import (
-    ChangeEmailForm,
-    ChangePasswordForm,
-    CreatePasswordForm,
-    LoginForm,
-    RegistrationForm,
-    RequestResetPasswordForm,
-    ResetPasswordForm,
-)
-from app.email import send_email
-from app.models import User, Position, Report, Candidate, UserSetting
+from app.models import Position, Report, Candidate, UserSetting
 
 userview = Blueprint('userview', __name__)
 

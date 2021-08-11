@@ -1,18 +1,12 @@
 import json
-import ssl
-from urllib.request import urlopen
 
 from flask import (
     Blueprint,
-    flash,
-    redirect,
-    render_template,
-    request,
-    url_for, jsonify,
+    request
 )
-from datetime import datetime, date, timedelta
-from app import db, csrf
-from app.models import User, Connection, Report, TickerData
+from datetime import datetime, date
+from app import csrf
+from app.models import TickerData
 
 marketdata = Blueprint('marketdata', __name__)
 

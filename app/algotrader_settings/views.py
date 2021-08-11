@@ -4,7 +4,7 @@ from flask import (
     render_template,
     request, url_for
 )
-from datetime import datetime, date, timedelta
+from datetime import datetime, date
 
 from flask_login import login_required, current_user
 

@@ -4,19 +4,17 @@ from urllib.request import urlopen
 
 from flask import (
     Blueprint,
-    flash,
     redirect,
     render_template,
     request,
-    url_for, jsonify,
+    url_for
 )
-from datetime import datetime, date, timedelta
 
 from flask_login import login_required, current_user
 
-from app import db, csrf
+from app import csrf
 from app.email import send_email
-from app.models import User, Connection, Report, TickerData, Candidate, UserSetting
+from app.models import TickerData, Candidate, UserSetting
 from app.research.views import research_ticker
 
 candidates = Blueprint('candidates', __name__)

@@ -1,17 +1,10 @@
 import fileinput
-import io
-import os
-import pathlib
-import zipfile
 from shutil import copyfile
 
 from flask import (
     Blueprint,
-    flash,
-    redirect,
     render_template,
-    request,
-    url_for, jsonify, send_file, app, send_from_directory,
+    send_from_directory,
 )
 from flask_login import current_user
 

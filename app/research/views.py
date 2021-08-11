@@ -3,19 +3,14 @@ import math
 
 from flask import (
     Blueprint,
-    flash,
     redirect,
-    render_template,
     request,
-    url_for, jsonify,
+    url_for
 )
-from datetime import datetime, date, timedelta
-
-from flask_login import current_user
-
+from datetime import datetime
 from app import db, csrf
 from app.email import send_email
-from app.models import User, Connection, Report, TickerData, Candidate
+from app.models import TickerData, Candidate
 from app.research.fmp_research import get_fmp_ratings_score_for_ticker
 from app.research.stock_invest_research import get_stock_invest_rank_for_ticker
 from app.research.tipranks_research import get_tiprank_for_ticker

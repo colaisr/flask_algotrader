@@ -1,26 +1,17 @@
 import json
 import ssl
 from urllib.request import urlopen
-from datetime import datetime
-
-import numpy as np
-import pandas
-import yfinance as yf
 
 from flask import (
     Blueprint,
-    flash,
-    redirect,
     render_template,
-    request,
-    url_for, jsonify,
+    request
 )
-from datetime import datetime, date, timedelta
+from datetime import datetime, date
 
-from sqlalchemy import func
 
-from app import db, csrf
-from app.models import User, Connection, Report, TickerData, Position
+from app import csrf
+from app.models import TickerData, Position
 
 closed_position_info = Blueprint('closed_position_info', __name__)
 apikey='f6003a61d13c32709e458a1e6c7df0b0'
