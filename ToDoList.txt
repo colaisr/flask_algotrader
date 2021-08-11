@@ -15,7 +15,7 @@ Remove unused references ... manually ... both projects.
 
 The Nexts
 -------------
-
+New logo: order- main page - Emails.
 spiders status to put on Index and Trader Station
 restart- to restart all the machine (via script - restart or exit the app- than watchdog will catch)
 show success/fail factor in general- all poritions- all users
