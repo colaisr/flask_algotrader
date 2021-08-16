@@ -26,7 +26,7 @@ def usercandidates():
     user_settings = UserSetting.query.filter_by(email=current_user.email).first()
     admin_candidates={}
     if user_settings.server_use_system_candidates:
-        admin_candidates = Candidate.query.filter_by(email='admin@gmail.com', enabled=True).all()
+        admin_candidates = Candidate.query.filter_by(email='support@algotrader.company', enabled=True).all()
     return render_template('candidates/usercandidates.html',admin_candidates=admin_candidates,candidates=candidates, user=current_user, form=None)
 
 
@@ -79,14 +79,14 @@ def updatecandidate():
 @csrf.exempt
 def add_by_spider():
     ticker_to_add= request.form['ticker_to_add']
-    candidate = Candidate.query.filter_by(email='admin@gmail.com', ticker=ticker_to_add).first()
+    candidate = Candidate.query.filter_by(email='support@algotrader.company', ticker=ticker_to_add).first()
     # if candidate is None:
     try:
         print('adding '+ticker_to_add)
         c=Candidate()
         c.ticker = ticker_to_add
         c.reason = "added automatically"
-        c.email = 'admin@gmail.com'
+        c.email = 'support@algotrader.company'
         c.enabled = True
         candidate_data = get_fmp_ticker_data(c.ticker)
         if candidate_data is not None:
