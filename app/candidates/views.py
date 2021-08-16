@@ -138,6 +138,13 @@ def enabledisable():
 @csrf.exempt
 @candidates.route('/info', methods=['GET'])
 def info():
+    # # Test
+    # user = User.query.filter_by(email='liliana.isr@gmail.com').first()
+    # send_email(recipient='liliana.isr@gmail.com',
+    #            user=user,
+    #            subject='Algotrader: Black Swan is suspected!',
+    #            template='account/email/black_swan')
+    # # End Test
 
     ticker=request.args['ticker_to_show']
     candidate = Candidate.query.filter_by(ticker=ticker).first()
