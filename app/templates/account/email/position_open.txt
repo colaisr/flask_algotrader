@@ -1,5 +1,13 @@
 New position was open for {{ position.ticker }}
     Algotrader bought {{ position.stocks|string}} stocks by {{ position.open_price|string }} each.
     At open :
+    tiprank: {{ position.buying_tiprank }}
+    yahoo rank: {{ position.buying_yahoo_rank }}
+    underprice: {{ position.buying_underprice }}
+    12 momentum: {{ position.buying_twelve_month_momentum }}
+    average drop: {{ position.buying_average_drop }}
+    average spread: {{ position.buying_average_spread }}
+    fmp rating: {{ position.buying_fmp_rating }}
+    fmp score: {{ position.buying_fmp_score }}
 
 

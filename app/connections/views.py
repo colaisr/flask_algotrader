@@ -229,6 +229,7 @@ def restart_all_stations():
 
 def check_if_market_fall(logged_user):
     user_settings = UserSetting.query.filter_by(email=logged_user).first()
+    user = User.query.filter_by(email=logged_user).first()
     if user_settings.algo_sell_on_swan==False:
         return
     else:
@@ -241,8 +242,9 @@ def check_if_market_fall(logged_user):
             user_settings.algo_allow_buy=False
             user_settings.update_user_settings()
             send_email(recipient=logged_user,
+                user=user,
                 subject='Algotrader: Black Swan is suspected!',
-                template='account/email/position_open')
+                template='account/email/black_swan')
             #TODO: separate template Black Swan
 
             client_command = ClientCommand.query.filter_by(email=logged_user).first()

@@ -1,9 +1,9 @@
 things to Add:
 
 
-2. allow sell - to the settings
+2. allow sell - to the settings - DONE
 
-3. more data to the position open + stream it to the email
+3. more data to the position open + stream it to the email - DONE
 
 
 may be historical data from Yahoo- for stock details ?
