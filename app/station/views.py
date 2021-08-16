@@ -12,7 +12,7 @@ from app.models import UserSetting
 
 station=Blueprint('station', __name__)
 
-@station.route('/download', methods=['GET'])
+@station.route('/requirements', methods=['GET'])
 def download():
     uemail=current_user.email
     return render_template('userview/download.html', user=current_user)

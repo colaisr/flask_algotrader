@@ -9,8 +9,8 @@
                     <i class="pe-7s-albums icon-gradient bg-mean-fruit">
                     </i>
                 </div>
-                <div>Download
-                    <div class="page-title-subheading">Setting up a client station.
+                <div>Requirements
+                    <div class="page-title-subheading">All You need to Know to use the platform.
                     </div>
                 </div>
             </div>
@@ -18,9 +18,52 @@
         </div>
     </div>
     <div class="column">
-        <h1>Windows</h1>
+        <h1>IBKR Market Data subscriptions </h1>
+        <p>The Agrotrader system uses SMART exchange setting to place an orders with the best price via Interactive brokers.</br> In order to get the correct Live prices You need a following Data subscriptions enabled: </p>
+        <p><b>North America</b></p>
+        <p>IEX Depth of Book</p>
+        <p>NASDAQ (Network C/UTP) </p>
+        <p>NYSE (Network A/CTA)</p>
+        <p>NYSE American, BATS, ARCA, IEX, and Regional Exchanges (Network B)</p>
+        <p>US Mutual Funds</p>
+        <p><b>Global</b></p>
+        <p>IDEAL FX</p>
+        <p>US and EU Bond Quotes</p>
+        <p>Your subscription page should look as following(User Settings>Market Data Subscriptions) :</p>
+        <img style="width: 500px;" src="/static/images/Requirements/MarketDataSubscriptions.png">
 
-        <h2>Algotrader installation</h2>
+        <h1>TWS without SMS confirmation</h1>
+        <p>The security settings of the Interactive brokers require a daily restart for TWS Trader application. We do it for every user...</br>
+            In order to let us do that, the Secure Login System Opt Out should be applied.</p>
+        <p>1. Set a Secure Login Devices: </br>
+        a. Go to User Settings > Security > Secure Login System > Seamless Authentication.</br>
+        b. Use the check box to enable or disable Seamless Authentication for your mobile device with IB Key.</br>
+            c. If disabled, you will be required to use a challenge code and pass code sequence to log in.</br></p>
+       <p>2. SLS Opt Out: </br>
+        a. Go to User Settings >Security > Secure Login System > Secure Login required for trading..</br>
+        b. Check the radio button "I Only want to use my Secure Login Device When logging into Client Portal"</br></p>
+        <img style="width: 800px;" src="/static/images/Requirements/sls_optout.png">
+
+
+        <p>You may use TWS +Algotrader pair on Your personal computer. if You decide to do so - please follow the instruction below. </br>
+            Otherwise we <b>set everything for You </b> when we deploy a dedicated Virtual Machine</p>
+
+        <h1>TWS configuration</h1>
+       <p> 1. Select Never Lock Trader Workstation</br>
+        2.Select Autorestart option</p>
+        <img style="width: 500px;" src="/static/images/Requirements/tws1.png">
+        <p>3.Enable ActiveX and Socket clients</br>
+        4.Dismiss Read Only API</br>
+        5.Change Port to 7498</br>
+            6. Compare the rest to image below:</p>
+        <img style="width: 600px;" src="/static/images/Requirements/tws1.png">
+        <p>7.Bypass order precautions on API Oredrs</p>
+        <img style="width: 600px;" src="/static/images/Requirements/tws3.png">
+
+        <h1>Algotrader Client </h1>
+        <h2>Windows</h2>
+
+        <h3>Algotrader installation</h3>
 
         1. Download and install TWS Trader station. (Gateway can be used - but it have no AutoUpdate feature)<br>
         <a href="https://www.interactivebrokers.com/en/index.php?f=16040" target="_blank"><i class="nav-link-icon fa fa-download"> </i>Download TWS</a><br>
@@ -34,7 +77,7 @@
         6. Go to forder "twsapi" run : installWindows.bat<br>
         7. Ready! Launch with "win_start_all.bat"<br>
 
-        <h2>Setting a PC</h2>
+        <h3>Setting a PC</h3>
         <h4>Adding to Autostart</h4>
         1. Go to algotrader folder. Right-click win_start_all.bat, create shortcut. Cut/Copy it.<br>
         2. Go to C:\Users\Administrator\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup<br>
@@ -47,9 +90,9 @@
         2. Select User Account. Uncheck the option to ask for a password.<br>
 
 
-        <h1>Linux</h1>
+        <h2>Linux</h2>
 
-        <h2>Algotrader installation</h2>
+        <h3>Algotrader installation</h3>
 
         1. Download and install TWS Trader station. (Gateway can be used - but it have no AutoUpdate feature)<br>
         <a href="https://www.interactivebrokers.com/en/index.php?f=16040" target="_blank"><i class="nav-link-icon fa fa-download"> </i>Download TWS</a><br>
@@ -61,7 +104,7 @@
         7. run : linux_install.sh<br>
         7. Ready! Launch with "linux_start_all.sh"<br>
 
-        <h2>Setting a PC</h2>
+        <h3>Setting a PC</h3>
         <h4>Adding to Autostart</h4>
         1. Go to Startup applications.Add new command.Select linux_start_all.sh<br>
         2. modify to format:    mate-terminal -e "bash -c PATHTOFILE"<br>

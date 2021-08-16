@@ -1,16 +1,15 @@
 GENERAL NEXTs LIST
 
-2. allow sell - to the settings - DONE
+2. allow sell - to the settings
 
-3. more data to the position open + stream it to the email - DONE
+3. more data to the position open + stream it to the email
 
 
 Top priority
 ---------------
-1. PnL colouring Trader view - take to code not JS - DONE
+PnL colouring Trader view - take to code not JS
 replace admin to    support@algotrader.company     in project and DB (check login, candidates and spiders)
 User Journey - plan with Lily and alighn steps+ notification +enabling +admin notify +main page disableduntill
-Requirement page for TWS setting, Data subscriptions, Download option.
 Validate server EU is used only - find and remove old...
 Remove unused references ... manually ... both projects.
 
