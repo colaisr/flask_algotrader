@@ -1,8 +1,8 @@
 GENERAL NEXTs LIST
 
-2. allow sell - to the settings
+2. allow sell - to the settings - DONE
 
-3. more data to the position open + stream it to the email
+3. more data to the position open + stream it to the email - DONE
 
 
 Top priority
