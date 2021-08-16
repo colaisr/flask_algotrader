@@ -62,6 +62,9 @@ def traderstationstate():
         report.last_worker_execution_text=report.last_worker_execution.strftime("%H:%M:%S")
         report.market_time_text = report.market_time.strftime("%H:%M")
         report.dailyPnl=round(report.dailyPnl,2)
+        pnl_bg_box_color = 'bg-grow-early'
+        if report.dailyPnl<0:
+            pnl_bg_box_color = 'bg-love-kiss'
         report.remaining_sma_with_safety = round(report.remaining_sma_with_safety, 2)
 
         open_positions = json.loads(report.open_positions_json)
@@ -154,6 +157,7 @@ def traderstationstate():
                                user=current_user,
                                report=report,
                                margin_used=use_margin,
+                               pnl_bg_box_color=pnl_bg_box_color,
                                form=None)
 
 # def check_session_state(): #changed to FMP API
