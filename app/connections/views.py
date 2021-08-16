@@ -103,7 +103,7 @@ def retrieve_user_candidates(user):
     user_settings = UserSetting.query.filter_by(email=requested_for_user).first()
 
     if user_settings.server_use_system_candidates:
-        admin_candidates=Candidate.query.filter_by(email='admin@gmail.com',enabled=True).all()
+        admin_candidates=Candidate.query.filter_by(email='support@algotrader.company',enabled=True).all()
         for uc in user_candidates:
             for ac in admin_candidates:
                 if ac.ticker == uc.ticker:
