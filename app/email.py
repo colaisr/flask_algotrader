@@ -9,7 +9,7 @@ from sendgrid.helpers.mail import Mail
 
 def send_email(recipient, subject, template, **kwargs):
     message = Mail(
-        from_email='cola.isr@gmail.com',
+        from_email='support@algotrader.company',
         to_emails=recipient,
         subject=subject,
         html_content=render_template(template + '.html', **kwargs))
