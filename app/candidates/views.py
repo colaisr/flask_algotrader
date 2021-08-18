@@ -22,6 +22,9 @@ candidates = Blueprint('candidates', __name__)
 @candidates.route('usercandidates', methods=['GET', 'POST'])
 @login_required
 def usercandidates():
+    if not current_user.admin_confirmed:
+        return redirect(url_for('station.download'))
+
     candidates=Candidate.query.filter_by(email=current_user.email).all()
     user_settings = UserSetting.query.filter_by(email=current_user.email).first()
     admin_candidates={}

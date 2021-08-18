@@ -17,6 +17,66 @@
 
         </div>
     </div>
+    {% if not user.admin_confirmed %}
+    <div class="tab-content">
+        <div class="tab-pane tabs-animation fade active show">
+            <form action="/algotradersettings/saverequirementssettings" method="post">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                <div class="main-card mb-3 card">
+                    <div class="card-body">
+                        {% if user_settings.tws_requirements%}
+                        <h5 style="font-size: large; color: green;" class="card-title">All Ready! </h5>
+                        <div style="margin-bottom: 30px;">
+                            <p>Hello <span style="color:blue;">{{user.first_name}}!</span></p>
+                            <p>We got all necessary details and are working to set Your environment, it will not take long...</p>
+                            <p>You will get a message to <span style="color:blue;">{{user.email}}</span> once it is ready.</p>
+                            <p>If You have any questions/comments: <b>support@algotrader.company</b></p>
+                        </div>
+                        {%else%}
+                        <h5 style="font-size: large;" class="card-title">Station settings </h5>
+                        <div style="margin-bottom: 30px;">
+                            <p>Hello <span style="color:blue;">{{user.first_name}}!</span></p>
+                            <p>Your email : <span style="color:blue;">{{user.email}}</span> have been confirmed.</p>
+                            <p>In order to provide You a dedicated virtual machine for Agotrader Client execution, please provide a following details:</p>
+                        </div>
+                        {%endif%}
+
+
+                        <div class="form-row">
+                            <div class="col-md-4">
+                                <div class="position-relative form-group">
+                                    <label for="connection_account_name" class="">IBKR account</label>
+                                    <input title="Account name- can be seen at IBKR.com" value="{{user_settings.connection_account_name}}"
+                                           name="connection_account_name" id="connection_account_name" type="text"
+                                           class="form-control"></div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="position-relative form-group">
+                                    <label for="connection_tws_user" class="">TWS user</label>
+                                    <input title="User name - to login to TWS automatically on restarts" value="{{user_settings.connection_tws_user}}" name="connection_tws_user"
+                                           id="connection_tws_user" type="text" class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="position-relative form-group">
+                                    <label for="connection_tws_pass" class="">TWS password</label>
+                                    <input title="Password - to login to TWS automatically on restarts" value="{{user_settings.connection_tws_pass}}" name="connection_tws_pass"
+                                           id="connection_tws_pass" type="password"
+                                           class="form-control"></div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <button type="submit" class="mt-2 btn btn-primary">Save</button>
+
+                </div>
+            </form>
+
+        </div>
+
+    </div>
+    {% endif %}
     <div class="column">
         <h1>IBKR Market Data subscriptions </h1>
         <p>The Agrotrader system uses SMART exchange setting to place an orders with the best price via Interactive brokers.</br> In order to get the correct Live prices You need a following Data subscriptions enabled: </p>
@@ -122,3 +182,8 @@
 </div>
 
 {% endblock %}
+
+{% block scripting %}
+<script type="text/javascript" src="{{ url_for('static', filename='scripts/pages/settings.js') }}"></script>
+{% endblock %}
+

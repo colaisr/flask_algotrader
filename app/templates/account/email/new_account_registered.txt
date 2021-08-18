@@ -1,0 +1,2 @@
+New Account was registered for:  {{user.last_name}} {{user.first_name}}
+the email : {{user.email}} is pending confirmation

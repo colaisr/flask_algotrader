@@ -51,6 +51,7 @@ class User(UserMixin, db.Model):
     # __bind_key__ = 'db_users'
     id = db.Column(db.Integer, primary_key=True)
     confirmed = db.Column(db.Boolean, default=False)
+    admin_confirmed = db.Column(db.Boolean, default=False)
     first_name = db.Column(db.String(64), index=True)
     last_name = db.Column(db.String(64), index=True)
     email = db.Column(db.String(64), unique=True, index=True)
@@ -152,31 +153,31 @@ class User(UserMixin, db.Model):
         db.session.commit()
         return True
 
-    @staticmethod
-    def generate_fake(count=100, **kwargs):
-        """Generate a number of fake users for testing."""
-        from sqlalchemy.exc import IntegrityError
-        from random import seed, choice
-        from faker import Faker
-
-        fake = Faker()
-        roles = Role.query.all()
-
-        seed()
-        for i in range(count):
-            u = User(
-                first_name=fake.first_name(),
-                last_name=fake.last_name(),
-                email=fake.email(),
-                password='password',
-                confirmed=True,
-                role=choice(roles),
-                **kwargs)
-            db.session.add(u)
-            try:
-                db.session.commit()
-            except IntegrityError:
-                db.session.rollback()
+    # @staticmethod
+    # def generate_fake(count=100, **kwargs):
+    #     """Generate a number of fake users for testing."""
+    #     from sqlalchemy.exc import IntegrityError
+    #     from random import seed, choice
+    #     from faker import Faker
+    #
+    #     fake = Faker()
+    #     roles = Role.query.all()
+    #
+    #     seed()
+    #     for i in range(count):
+    #         u = User(
+    #             first_name=fake.first_name(),
+    #             last_name=fake.last_name(),
+    #             email=fake.email(),
+    #             password='password',
+    #             confirmed=True,
+    #             role=choice(roles),
+    #             **kwargs)
+    #         db.session.add(u)
+    #         try:
+    #             db.session.commit()
+    #         except IntegrityError:
+    #             db.session.rollback()
 
     def __repr__(self):
         return '<User \'%s\'>' % self.full_name()

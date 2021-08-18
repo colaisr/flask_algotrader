@@ -9,7 +9,8 @@ Top priority
 ---------------
 1. DONE - PnL colouring Trader view - take to code not JS
 2. DONE - replace admin to    support@algotrader.company     in project and DB (check login, candidates and spiders)
-User Journey - plan with Lily and alighn steps+ notification +enabling +admin notify +main page disableduntill
+3. DONE - User Journey - plan with Lily and alighn steps+ notification +enabling +admin notify +main page disableduntill
+4. Admin - new tab panding approval
 Validate server EU is used only - find and remove old...
 
 The Nexts

@@ -1,0 +1,68 @@
+{% extends 'layouts/base.html' %}
+{% import 'macros/form_macros.html' as f %}
+
+
+{% block content %}
+<div class="app-main__inner">
+    <div class="app-page-title">
+        <div class="page-title-wrapper">
+            <div class="page-title-heading">
+                <div class="page-title-icon">
+                    <i class="pe-7s-albums icon-gradient bg-mean-fruit">
+                    </i>
+                </div>
+                <div>User Algotrader Settings
+                    <div class="page-title-subheading">Settings for Algotrader client.
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="tab-content">
+        <div class="tab-pane tabs-animation fade active show">
+            <form action="/algotradersettings/savesettings" method="post">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                <div class="main-card mb-3 card">
+                    <div class="card-body">
+                        <h5 style="font-size: large;" class="card-title">Station settings </h5>
+
+                        <div class="form-row">
+                            <div class="col-md-4">
+                                <div class="position-relative form-group">
+                                    <label for="connection_account_name" class="">IBKR account</label>
+                                    <input title="Account name- can be seen at IBKR.com" value="{{user_settings.connection_account_name}}"
+                                           name="connection_account_name" id="connection_account_name" type="text"
+                                           class="form-control"></div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="position-relative form-group">
+                                    <label for="connection_tws_user" class="">TWS user</label>
+                                    <input title="User name - to login to TWS automatically on restarts" value="{{user_settings.connection_tws_user}}" name="connection_tws_user"
+                                           id="connection_tws_user" type="text" class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="position-relative form-group">
+                                    <label for="connection_tws_pass" class="">TWS password</label>
+                                    <input title="Password - to login to TWS automatically on restarts" value="{{user_settings.connection_tws_pass}}" name="connection_tws_pass"
+                                           id="connection_tws_pass" type="password"
+                                           class="form-control"></div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <button type="submit" class="mt-2 btn btn-primary">Save</button>
+
+                </div>
+            </form>
+
+        </div>
+
+    </div>
+</div>
+{% endblock %}
+{% block scripting %}
+<script type="text/javascript" src="{{ url_for('static', filename='scripts/pages/settings.js') }}"></script>
+{% endblock %}
