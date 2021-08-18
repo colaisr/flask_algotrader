@@ -2,4 +2,4 @@ Dear {{user.first_name}}, 3 Positions from Your portfolio were closed on LOSS tr
 The trigger for potential MARKET DROP was activated.
 Algotrader have closed all open positions and disabled a Buy option.
 
-To enable the BUY manually please follow: http://colak.eu.pythonanywhere.com/algotradersettings/usersettings
+To enable the BUY manually please follow: https://www.algotrader.company/algotradersettings/usersettings

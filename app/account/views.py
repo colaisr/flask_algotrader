@@ -104,7 +104,7 @@ def register():
             station_interval_worker_sec=60,
             station_autorestart=True,
 
-            server_url='http://colak.eu.pythonanywhere.com',
+            server_url='https://www.algotrader.company',
             server_report_interval_sec=30,
             server_use_system_candidates=True,
 

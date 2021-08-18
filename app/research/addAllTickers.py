@@ -2,7 +2,7 @@ import json
 import ssl
 import urllib
 from urllib.request import urlopen
-server_url="http://colak.eu.pythonanywhere.com/"
+server_url="https://www.algotrader.company"
 apikey='f6003a61d13c32709e458a1e6c7df0b0'
 url = ("https://financialmodelingprep.com/api/v3/stock/list?apikey=" + apikey)
 context = ssl._create_unverified_context()

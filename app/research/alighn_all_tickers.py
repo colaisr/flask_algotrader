@@ -3,7 +3,7 @@ import ssl
 import urllib
 from urllib.request import urlopen
 from datetime import datetime
-server_url="http://colak.eu.pythonanywhere.com/"
+server_url="https://www.algotrader.company"
 result=" Updater spider failed a work successfully"
 def get_all_tickers():
     print("Getting all necessary tickets from Algotrader server")
