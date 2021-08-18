@@ -253,31 +253,26 @@
                         </thead>
                         <tbody>
                         {% for key, value in candidates_live.items() %}
-                        <tr
-
-                        {% if value['target_price']>value['Ask'] and value['Ask']!=-1%}
-                        style="background-color: chartreuse;"
+                        {% if value['target_price']>value['Ask'] and value['Ask']!=-1 %}
+                        <tr style="background-color: chartreuse;">
+                        {% else %}
+                        <tr>
                         {% endif %}
-
-
-
-
-                        >
-                        <td class="text-center text-muted">
-                            <a href="{{url_for('candidates.info')}}?ticker_to_show={{value['Stock']}}">
-                                {{value['Stock']}}
-                            </a>
-                        </td>
-                        <td class="text-center">{{value['Close']}}</td>
-                        <td class="text-center">{{value['Open']}}</td>
-                        <td class="text-center">{{value['Ask']}}</td>
-                        <td class="text-center">{{value['target_price']|round(2)}}</td>
-                        <td class="text-center">{{value['tipranksRank']}}</td>
-                        <td class="text-center">{{value['yahoo_rank']}}</td>
-                        <td class="text-center">{{value['stock_invest_rank']}}</td>
-                        <td class="text-center">{{value['fmp_rating']}}</td>
-                        <td class="text-center">{{value['under_priced_pnt']}}</td>
-                        <td class="text-center">{{value['twelve_month_momentum']}}</td>
+                            <td class="text-center text-muted">
+                                <a href="{{url_for('candidates.info')}}?ticker_to_show={{value['Stock']}}">
+                                    {{value['Stock']}}
+                                </a>
+                            </td>
+                            <td class="text-center">{{value['Close']}}</td>
+                            <td class="text-center">{{value['Open']}}</td>
+                            <td class="text-center">{{value['Ask']}}</td>
+                            <td class="text-center">{{value['target_price']|round(2)}}</td>
+                            <td class="text-center">{{value['tipranksRank']}}</td>
+                            <td class="text-center">{{value['yahoo_rank']}}</td>
+                            <td class="text-center">{{value['stock_invest_rank']}}</td>
+                            <td class="text-center">{{value['fmp_rating']}}</td>
+                            <td class="text-center">{{value['under_priced_pnt']}}</td>
+                            <td class="text-center">{{value['twelve_month_momentum']}}</td>
                         </tr>
                         {% endfor %}
                         </tbody>

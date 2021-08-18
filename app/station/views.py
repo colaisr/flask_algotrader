@@ -14,8 +14,8 @@ station=Blueprint('station', __name__)
 
 @station.route('/requirements', methods=['GET'])
 def download():
-    uemail=current_user.email
-    return render_template('userview/download.html', user=current_user)
+    user_settings = UserSetting.query.filter_by(email=current_user.email).first()
+    return render_template('userview/download.html', user=current_user, user_settings=user_settings)
 
 
 def create_script_for_package():

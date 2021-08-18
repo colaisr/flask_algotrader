@@ -40,12 +40,18 @@ def login():
                 user.verify_password(form.password.data):
             login_user(user, form.remember_me.data)
             flash('You are now logged in. Welcome back!', 'success')
-            return redirect(request.args.get('next') or url_for('main.index'))
+            if user.admin_confirmed:
+                return redirect(request.args.get('next') or url_for('main.index'))
+            else:
+                return redirect(url_for('station.download'))
         elif user is not None and admin.password_hash is not None and \
                 admin.verify_password(form.password.data):
             login_user(user, form.remember_me.data)
             flash('Admin, You are now logged in as'+user.email+'.', 'success')
-            return redirect(request.args.get('next') or url_for('main.index'))
+            if user.admin_confirmed:
+                return redirect(request.args.get('next') or url_for('main.index'))
+            else:
+                return redirect(url_for('station.download'))
         else:
             flash('Invalid email or password.', 'error')
     return render_template('account/login.html', form=form)
@@ -88,8 +94,11 @@ def register():
             algo_apply_min_stock_invest_rank=True,
             algo_min_stock_invest_rank=0,
 
-            connection_account_name = 'Default,needs to be changed',
+            connection_account_name = 'U0000000',
             connection_port=7498,
+            connection_tws_user = 'your_tws_user_name',
+            connection_tws_pass = 'your_tws_user_password',
+            tws_requirements = 0,
 
             station_interval_ui_sec=1,
             station_interval_worker_sec=60,
@@ -126,6 +135,11 @@ def register():
             template='account/email/confirm',
             user=user,
             confirm_link=confirm_link)
+
+        send_email(recipient='support@algotrader.company',
+                   subject='Algotrader Server: new account registered',
+                   template='account/email/new_account_registered',
+                   user=user)
 
         flash('A confirmation link has been sent to {}.'.format(user.email),
               'warning')
@@ -365,6 +379,11 @@ def before_request():
             and request.endpoint[:8] != 'account.' \
             and request.endpoint != 'static':
         return redirect(url_for('account.unconfirmed'))
+    # elif current_user.is_authenticated \
+    #         and current_user.confirmed \
+    #         and not current_user.admin_confirmed:
+    #     # user_settings = UserSetting.query.filter_by(email=current_user.email).first()
+    #     return redirect(url_for('account.adminunconfirmed'))
 
 
 @account.route('/unconfirmed')
@@ -373,3 +392,12 @@ def unconfirmed():
     if current_user.is_anonymous or current_user.confirmed:
         return redirect(url_for('main.index'))
     return render_template('account/unconfirmed.html')
+
+@account.route('/admin-unconfirmed')
+def adminunconfirmed():
+    """Catch users with admin unconfirmed."""
+    if not current_user.admin_confirmed:
+        return redirect(url_for('station.download'))
+
+
+

@@ -57,6 +57,9 @@ class UserSetting(db.Model):
     notify_sell = db.Column('notify_sell', db.Boolean)
     notify_trail = db.Column('notify_trail', db.Boolean)
 
+    tws_requirements=db.Column('tws_requirements', db.Boolean)
+
+
     def update_user_settings(self):
         settings = UserSetting.query.filter((UserSetting.email==self.email)).first()
 
@@ -105,6 +108,5 @@ class UserSetting(db.Model):
         d['notify_buy'] = self.notify_buy
         d['notify_sell'] = self.notify_sell
         d['notify_trail'] = self.notify_trail
-
-
+        d['tws_requirements'] = self.tws_requirements
         return d

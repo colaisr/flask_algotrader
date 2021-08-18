@@ -240,7 +240,6 @@ def check_if_market_fall(logged_user):
                 user=user,
                 subject='Algotrader: Black Swan is suspected!',
                 template='account/email/black_swan')
-            #TODO: separate template Black Swan
 
             client_command = ClientCommand.query.filter_by(email=logged_user).first()
             client_command.set_close_all_positions()
