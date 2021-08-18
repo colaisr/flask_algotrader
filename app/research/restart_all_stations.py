@@ -1,6 +1,6 @@
 import urllib
 from urllib.request import urlopen
-server_url="https://www.algotrader.company"
+server_url="https://www.algotrader.company/"
 
 url =server_url+"/connections/restart_all_stations"
 

@@ -2,7 +2,7 @@ import json
 import ssl
 import urllib
 from urllib.request import urlopen
-server_url="https://www.algotrader.company"
+server_url="https://www.algotrader.company/"
 
 url = ("https://www.tipranks.com/api/Screener/GetStocks/?break=1111111111111&country=US&page=1&scoreChangeDate=2&sortBy=1&sortDir=2&tipranksScore=5")
 context = ssl._create_unverified_context()
