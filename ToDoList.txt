@@ -3,8 +3,13 @@ GENERAL NEXTs LIST
 The Nexts
 -------------
 New logo: order- main page - Emails.
-spiders status to put on Index and Trader Station
+
 show success/fail factor in general- all poritions- all users
+overall Fund value
+see design in mail
+
+spiders status to put on Index and Trader Station
+
 add daily snapshoting for users : before trading: Net assets,open positions,positions value
 My performance page : graph for Net, success rate, table with positions, link to IBKR
 Aggregated Users Performance on Admin Page - clicking on each -show them in personal perfomance page .
@@ -20,9 +25,3 @@ Theory to check
 Autoupdate client- depending on users settings
 
 
-
-
-
-Before go:
-Downloads page : requirements
-user story for new user
