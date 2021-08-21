@@ -10,7 +10,8 @@ from flask_login import current_user
 
 from app.models import UserSetting
 
-station=Blueprint('station', __name__)
+station = Blueprint('station', __name__)
+
 
 @station.route('/requirements', methods=['GET'])
 def download():
@@ -22,8 +23,8 @@ def create_script_for_package():
     user_settings = UserSetting.query.filter_by(email=current_user.email).first()
 
     if user_settings is not None:
-        #windows
-        origin='./app/static/installation_templates/win_twsRestartScript_template.vbs'
+        # windows
+        origin = './app/static/installation_templates/win_twsRestartScript_template.vbs'
         destination = './app/static/algotrader-station/algotrader/Scripts/win_twsRestartScript.vbs'
         copyfile(origin, destination)
         with fileinput.FileInput(destination, inplace=True) as file:
@@ -32,7 +33,7 @@ def create_script_for_package():
         with fileinput.FileInput(destination, inplace=True) as file:
             for line in file:
                 print(line.replace("tws_password", user_settings.connection_tws_pass), end='')
-        #linux
+        # linux
         origin = './app/static/installation_templates/tws_cred_login_template.py'
         destination = './app/static/algotrader-station/algotrader/Scripts/tws_cred_login.py'
         copyfile(origin, destination)
@@ -61,14 +62,14 @@ def request_zip():
     import shutil
     uid = str(current_user.id)
     try:
-        shutil.rmtree('./app/static/ready_package/algotrader'+uid+'.zip') #removing prev packages
+        shutil.rmtree('./app/static/ready_package/algotrader' + uid + '.zip')  # removing prev packages
     except:
-        i=2
+        i = 2
     create_script_for_package()
     create_config_for_package()
-    shutil.make_archive('./app/static/ready_package/algotrader'+uid, 'zip', 'app/static','algotrader-station')
+    shutil.make_archive('./app/static/ready_package/algotrader' + uid, 'zip', 'app/static', 'algotrader-station')
 
     return send_from_directory(
         directory='static/ready_package',
-        filename='algotrader'+uid+'.zip'
+        filename='algotrader' + uid + '.zip'
     )

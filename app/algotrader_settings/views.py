@@ -158,10 +158,12 @@ def saverequirementssettings():
         user_settings.connection_account_name = connection_account_name
         user_settings.connection_tws_user = connection_tws_user
         user_settings.connection_tws_pass = connection_tws_pass
-        user_settings.tws_requirements = 1
 
         user_settings.update_user_settings()
         flash('Credentials saved', 'success')
+
+        current_user.tws_requirements=1
+        current_user.update_user()
 
         send_email(recipient='support@algotrader.company',
                    subject='Algotrader Server: user provided all the details',

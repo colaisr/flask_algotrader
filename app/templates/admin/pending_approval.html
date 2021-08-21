@@ -1,0 +1,67 @@
+{% extends 'layouts/base.html' %}
+
+{% block content %}
+    <div class="ui stackable grid container">
+        <div class="sixteen wide tablet twelve wide computer centered column">
+            <a class="ui basic compact button" href="{{ url_for('admin.index') }}">
+                <i class="caret left icon"></i>
+                Back to dashboard
+            </a>
+            <h2 class="ui header">
+                Pending Users
+                <div class="sub header">
+                    View and manage currently pending users to approve.
+                </div>
+            </h2>
+
+            {# Use overflow-x: scroll so that mobile views don't freak out
+             # when the table is too wide #}
+            <div style="overflow-x: scroll;">
+                <table class="ui searchable sortable unstackable selectable celled table">
+                    <thead>
+                        <tr>
+                            <th>First name</th>
+                            <th class="sorted ascending">Last name</th>
+                            <th>Email address</th>
+                            <th>Email confirmed</th>
+                            <th>TWS requirements is sent</th>
+                            <th>Approve</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for u in users | sort(attribute='last_name') %}
+                        <tr>
+
+                            <td>{{ u.first_name }}</td>
+                            <td>{{ u.last_name }}</td>
+                            <td>{{ u.email }}</td>
+                            <td style="text-align: center;">
+                                {% if u.confirmed %}
+                                <i class="check icon green"></i>
+                                {%endif%}
+                            </td>
+                            <td style="text-align: center;">
+                                {% if u.tws_requirements %}
+                                <i class="check icon green"></i>
+                                {%endif%}
+                            </td>
+                            <td style="text-align: center;">
+                                <form action="{{url_for('admin.userapprove')}}" method="post">
+                                    <input type="hidden" name="user_to_approve" value="{{ u.id }}">
+                                    <button  type="submit" class="btn_approve" {% if not u.confirmed or not u.tws_requirements%} disabled {% else %} style="cursor: pointer;" {% endif %}><i class="check circle icon"></i></button>
+                                </form>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}
+
+{% block scripting %}
+<script type="text/javascript" src="{{ url_for('static', filename='scripts/pages/pending_approval.js') }}"></script>
+{% endblock %}

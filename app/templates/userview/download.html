@@ -24,7 +24,7 @@
                 <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
                 <div class="main-card mb-3 card">
                     <div class="card-body">
-                        {% if user_settings.tws_requirements%}
+                        {% if user.tws_requirements%}
                         <h5 style="font-size: large; color: green;" class="card-title">All Ready! </h5>
                         <div style="margin-bottom: 30px;">
                             <p>Hello <span style="color:blue;">{{user.first_name}}!</span></p>

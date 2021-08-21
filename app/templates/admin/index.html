@@ -29,10 +29,12 @@
             <div class="ui two column stackable grid">
                 {{ dashboard_option('Registered Users', 'admin.registered_users',
                                     description='View and manage user accounts', icon='users icon') }}
+                {{ dashboard_option('Pending Approval', 'admin.pending_approval',
+                                    description='Admin approval for new user', icon='check circle icon') }}
                 {{ dashboard_option('Add New User', 'admin.new_user',
                                     description='Create a new user account', icon='add user icon') }}
                 {{ dashboard_option('Invite New User', 'admin.invite_user',
-                                    description='Invites a new user to create their own account', icon='add user icon') }}
+                                    description='Invites a new user to create their own account', icon='paper plane icon') }}
                 {{ dashboard_option('Market Data', 'admin.market_data',
                                     description='Stored Market data') }}
                 {{ dashboard_option('Client Commands', 'admin.clientcommands',

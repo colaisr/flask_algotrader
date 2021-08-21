@@ -94,11 +94,10 @@ def register():
             algo_apply_min_stock_invest_rank=True,
             algo_min_stock_invest_rank=0,
 
-            connection_account_name = 'U0000000',
+            connection_account_name='U0000000',
             connection_port=7498,
-            connection_tws_user = 'your_tws_user_name',
-            connection_tws_pass = 'your_tws_user_password',
-            tws_requirements = 0,
+            connection_tws_user='your_tws_user_name',
+            connection_tws_pass='your_tws_user_password',
 
             station_interval_ui_sec=1,
             station_interval_worker_sec=60,
