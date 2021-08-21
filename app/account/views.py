@@ -43,7 +43,7 @@ def login():
             if user.admin_confirmed:
                 return redirect(request.args.get('next') or url_for('main.index'))
             else:
-                return redirect(url_for('station.download'))
+                return redirect(request.args.get('next') or url_for('station.download'))
         elif user is not None and admin.password_hash is not None and \
                 admin.verify_password(form.password.data):
             login_user(user, form.remember_me.data)
@@ -51,7 +51,7 @@ def login():
             if user.admin_confirmed:
                 return redirect(request.args.get('next') or url_for('main.index'))
             else:
-                return redirect(url_for('station.download'))
+                return redirect(request.args.get('next') or url_for('station.download'))
         else:
             flash('Invalid email or password.', 'error')
     return render_template('account/login.html', form=form)
