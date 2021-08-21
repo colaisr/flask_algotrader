@@ -165,10 +165,13 @@ def saverequirementssettings():
         current_user.tws_requirements=1
         current_user.update_user()
 
+        url = url_for('admin.pending_approval', _external=True)
+
         send_email(recipient='support@algotrader.company',
                    subject='Algotrader Server: user provided all the details',
                    template='account/email/user_data_provided',
-                   user=current_user)
+                   user=current_user,
+                   url=url)
 
     return redirect(url_for('station.download'))
 

@@ -1,4 +1,4 @@
 The user {{user.last_name}} {{user.first_name}}
 have provided all necessary details for {{user.email}}
 user is waiting for VM confirmation .
-to confirm user : link_to_users_at_admin
+to confirm user : {{url}}

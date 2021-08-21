@@ -251,8 +251,12 @@ def update_editor_contents():
 @admin.route('/userapprove', methods=['POST'])
 @csrf.exempt
 def userapprove():
-    user_id=request.form['user_to_approve']
+    user_id = request.form['user_to_approve']
     user = User.query.filter_by(id=user_id).first()
     user.admin_confirmed=1
     user.update_user()
+    send_email(recipient=user.email,
+               subject='Hello '+user.last_name+' '+user.first_name+',your Algotrader account is ready!',
+               template='account/email/account_is_ready',
+               user=user)
     return redirect(url_for('admin.pending_approval'))
