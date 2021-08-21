@@ -12,6 +12,7 @@ from flask_rq import get_queue
 from sqlalchemy import select, distinct, text, func
 
 from app import db
+from app import csrf
 from app.admin.forms import (
     ChangeAccountTypeForm,
     ChangeUserEmailForm,
@@ -103,6 +104,16 @@ def registered_users():
     roles = Role.query.all()
     return render_template(
         'admin/registered_users.html', users=users, roles=roles)
+
+@admin.route('/pendingapproval')
+@login_required
+@admin_required
+def pending_approval():
+    """View all registered users."""
+    users = User.query.filter_by(admin_confirmed=0).all()
+    #roles = Role.query.all()
+    return render_template(
+        'admin/pending_approval.html', users=users)
 
 @admin.route('/marketdata')
 @login_required
@@ -236,3 +247,12 @@ def update_editor_contents():
     db.session.commit()
 
     return 'OK', 200
+
+@admin.route('/userapprove', methods=['POST'])
+@csrf.exempt
+def userapprove():
+    user_id=request.form['user_to_approve']
+    user = User.query.filter_by(id=user_id).first()
+    user.admin_confirmed=1
+    user.update_user()
+    return redirect(url_for('admin.pending_approval'))
