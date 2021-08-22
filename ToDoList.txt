@@ -15,6 +15,7 @@ spiders status to put on Index and Trader Station
 add daily snapshoting for users : before trading: Net assets,open positions,positions value
 triger via Task
 
+Different strategies Risk/Weighted/Safe
 
 My performance page : graph for Net, success rate, table with positions, link to IBKR
 Aggregated Users Performance on Admin Page - clicking on each -show them in personal perfomance page .
