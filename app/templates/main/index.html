@@ -2,21 +2,21 @@
 
 {% block content %}
 <div class="app-main__inner">
-    <div class="app-page-title">
-        <div class="page-title-wrapper">
-            <div class="page-title-heading">
-                <div class="page-title-icon">
-                    <i class="pe-7s-albums icon-gradient bg-mean-fruit">
-                    </i>
-                </div>
-                <div>STATUS
-                    <div class="page-title-subheading">Current server status.
-                    </div>
-                </div>
-            </div>
+<!--    <div class="app-page-title">-->
+<!--        <div class="page-title-wrapper">-->
+<!--            <div class="page-title-heading">-->
+<!--                <div class="page-title-icon">-->
+<!--                    <i class="pe-7s-albums icon-gradient bg-mean-fruit">-->
+<!--                    </i>-->
+<!--                </div>-->
+<!--                <div>STATUS-->
+<!--                    <div class="page-title-subheading">Current server status.-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
 
-        </div>
-    </div>
+<!--        </div>-->
+<!--    </div>-->
     <div class="row">
         <div class="col-md-6 col-xl-4">
             <div class="card mb-3 widget-content">
@@ -65,7 +65,49 @@
         </div>
     </div>
     <div class="row">
-
+        <div class="col-md-6 col-xl-4">
+            <div class="card mb-3 widget-content">
+                <div class="widget-content-outer">
+                    <div class="widget-content-wrapper">
+                        <div class="widget-content-left">
+                            <div class="widget-heading">Funds</div>
+                            <div class="widget-subheading">All users portfolio value</div>
+                        </div>
+                        <div class="widget-content-right">
+                            <div class="widget-numbers text-warning">{{system_status['funds']}} $</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-xl-4">
+            <div class="card mb-3 widget-content">
+                <div class="widget-content-outer">
+                    <div class="widget-content-wrapper">
+                        <div class="widget-content-left">
+                            <div class="widget-heading">Last Update</div>
+                            <div class="widget-subheading">Last data update</div>
+                        </div>
+                        <div class="widget-content-right">
+                            <div class="text-primary">21/08 2021 12:36</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-xl-4">
+            <div class="card mb-3 widget-content">
+                <div class="widget-content-wrapper">
+                    <div class="widget-content-left">
+                        <div class="widget-heading">Success Rate</div>
+                    </div>
+                    <div class="widget-content-right">
+                        <div class="widget-heading text-success">{{system_status['profit_positions']}} Success</div>
+                        <div class="widget-subheading text-danger">{{system_status['lost_positions']}} Fail</div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 {% endblock %}

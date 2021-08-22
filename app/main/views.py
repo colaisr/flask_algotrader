@@ -3,7 +3,7 @@ from flask_login import current_user
 from sqlalchemy import text
 from werkzeug.utils import redirect
 
-from app.models import EditableHTML, User, TickerData, Position
+from app.models import EditableHTML, User, TickerData, Position, Report
 
 from app import db
 
@@ -24,13 +24,17 @@ def index():
         uniq_tickers_data = db.session.query(TickerData).from_statement(text(query_text)).all()
         system_status['tickers_tracked'] = len(uniq_tickers_data)
 
-        last_candidate=TickerData.query.order_by(TickerData.id.desc()).first()
-        last_update=last_candidate.updated_server_time
-        system_status['last_candidates_update'] =last_update.strftime("%d-%b-%Y (%H:%M:%S)")
-        system_status['users_registered'] = len(User.query.all())
-        system_status['lost_positions'] = len(Position.query.filter(Position.profit <= 0).all())
-        system_status['profit_positions'] = len(Position.query.filter(Position.profit >= 0).all())
-        system_status['all_positions']=system_status['lost_positions']+ system_status['profit_positions']
+        #TODO: from spider
+        # last_candidate=TickerData.query.order_by(TickerData.id.desc()).first()
+        # last_update=last_candidate.updated_server_time
+        # system_status['last_candidates_update'] = last_update.strftime("%d-%b-%Y (%H:%M:%S)")
+
+        system_status['users_registered'] = len(Report.query.all())
+        system_status['lost_positions'] = len(Position.query.filter(Position.profit <= 0, Position.last_exec_side == 'SLD').all())
+        system_status['profit_positions'] = len(Position.query.filter(Position.profit >= 0, Position.last_exec_side == 'SLD').all())
+        system_status['all_positions'] = system_status['lost_positions'] + system_status['profit_positions']
+
+        system_status['funds'] = db.session.query(db.func.sum(Report.net_liquidation)).scalar()
 
         return render_template('main/index.html', system_status=system_status)
 
