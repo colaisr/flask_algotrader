@@ -5,7 +5,8 @@ import urllib
 from urllib.request import urlopen
 from datetime import datetime
 
-server_url = "http://127.0.0.1:5000/"
+# server_url = "http://127.0.0.1:5000/"
+server_url = "https://www.algotrader.company/"
 error_message = "None"
 error_status = 0
 
@@ -22,6 +23,7 @@ def get_all_tickers():
 
 
 now = datetime.now()
+print("*************************************************")
 print("****Starting spider for last week champs  " + now.strftime("%d/%m/%Y %H:%M:%S")+"****")
 
 url = ("https://www.tipranks.com/api/Screener/GetStocks/?break=1111111111111&country=US&page=1&scoreChangeDate=2&sortBy=1&sortDir=2&tipranksScore=5")
@@ -82,3 +84,4 @@ try:
     print("***Date updated***")
 except:
     print("Saving time update data failed. ", sys.exc_info()[0])
+print("*************************************************")
