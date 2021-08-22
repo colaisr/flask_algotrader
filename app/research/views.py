@@ -81,7 +81,7 @@ def research_ticker(ticker):
         marketdata.yahoo_avdropP = 0
     if math.isnan(marketdata.yahoo_avspreadP):
         marketdata.yahoo_avspreadP = 0
-    ct = datetime.now()
+    ct = datetime.utcnow()
 
     marketdata.updated_server_time = ct
     marketdata.add_ticker_data()

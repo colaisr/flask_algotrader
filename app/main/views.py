@@ -21,7 +21,7 @@ def index():
         uniq_tickers_data = db.session.query(TickerData).from_statement(text(query_text)).all()
         system_status['tickers_tracked'] = len(uniq_tickers_data)
         last_update_date = db.session.query(LastUpdateSpyderData.last_update_date).scalar()
-        system_status['last_update_date'] = last_update_date.strftime("%d-%b-%Y")
+        system_status['last_update_date'] = last_update_date.strftime("%d-%b-%Y %H:%M")
         system_status['users_registered'] = len(Report.query.all())
         system_status['lost_positions'] = len(Position.query.filter(Position.profit <= 0, Position.last_exec_side == 'SLD').all())
         system_status['profit_positions'] = len(Position.query.filter(Position.profit >= 0, Position.last_exec_side == 'SLD').all())

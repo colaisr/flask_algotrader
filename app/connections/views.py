@@ -27,7 +27,7 @@ def logconnection():
     if any(x.email == logged_user for x in users):
         c = Connection()
         c.email = logged_user
-        now = datetime.now()
+        now = datetime.utcnow()
         c.reported_connection = now
         c.log_connection()
         return "Application launch for " + logged_user + " is logged."
