@@ -56,7 +56,6 @@ class Position(db.Model):
                 p.last_exec_side=self.last_exec_side
                 p.profit = p.close_price*p.stocks-p.open_price*p.stocks
                 updating_result = "new_sell"
-                #TODO check if profit sell or loss sell
         db.session.commit()
         return updating_result,p
 

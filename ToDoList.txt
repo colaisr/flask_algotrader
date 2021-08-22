@@ -4,9 +4,8 @@ The Nexts
 -------------
 New logo: Emails.
 
-show success/fail factor in general- all poritions- all users
-overall Fund value
-see design in mail
+DONE - show success/fail factor in general- all poritions- all users
+DONE - overall Fund value
 
 spiders - put two spiders together
 spider - report on finish via API
