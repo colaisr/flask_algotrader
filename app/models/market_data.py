@@ -1,7 +1,8 @@
-from datetime import datetime,date
+from datetime import datetime, date
 import json
 
 from .. import db
+
 
 def json_serial(obj):
     """JSON serializer for objects not serializable by default json code"""
@@ -9,6 +10,7 @@ def json_serial(obj):
     if isinstance(obj, (datetime, date)):
         return obj.isoformat()
     raise TypeError("Type %s not serializable" % type(obj))
+
 
 class TickerData(db.Model):
     __tablename__ = 'Tickersdata'
@@ -18,17 +20,15 @@ class TickerData(db.Model):
     yahoo_avdropP = db.Column('yahoo_avdropP', db.Float)
     yahoo_avspreadP = db.Column('yahoo_avspreadP', db.Float)
     tipranks = db.Column('tipranks', db.Integer)
-    yahoo_rank=db.Column('yahoo_rank', db.Float)
-    stock_invest_rank=db.Column('stock_invest_rank', db.Float)
+    yahoo_rank = db.Column('yahoo_rank', db.Float)
+    stock_invest_rank = db.Column('stock_invest_rank', db.Float)
     under_priced_pnt = db.Column('under_priced_pnt', db.Float)
     twelve_month_momentum = db.Column('twelve_month_momentum', db.Float)
     fmp_rating = db.Column('fmp_rating', db.String)
     fmp_score = db.Column('fmp_score', db.Integer)
-    updated_server_time=db.Column('updated_server_time', db.DateTime)
-
+    updated_server_time = db.Column('updated_server_time', db.DateTime)
 
     def add_ticker_data(self):
-
         db.session.add(self)
         db.session.commit()
 
@@ -36,12 +36,12 @@ class TickerData(db.Model):
         return json.dumps(self, default=lambda o: o.__dict__)
 
     def toDictionary(self):
-        d={}
-        d['ticker']=self.ticker
+        d = {}
+        d['ticker'] = self.ticker
         d['yahoo_avdropP'] = self.yahoo_avdropP
         d['yahoo_avspreadP'] = self.yahoo_avspreadP
         d['tipranks'] = self.tipranks
-        d['yahoo_rank']=self.yahoo_rank
+        d['yahoo_rank'] = self.yahoo_rank
         d['under_priced_pnt'] = self.under_priced_pnt
         d['twelve_month_momentum'] = self.twelve_month_momentum
         d['fmp_rating'] = self.fmp_rating
@@ -49,3 +49,17 @@ class TickerData(db.Model):
         d['stock_invest_rank'] = self.stock_invest_rank
         d['updated_server_time'] = datetime.isoformat(self.updated_server_time)
         return d
+
+
+class LastUpdateSpyderData(db.Model):
+    __tablename__ = 'LastUpdateSpyderData'
+    process_date_time = db.Column('process_date_time', db.DateTime, primary_key=True)
+    last_update_date = db.Column('last_update_date', db.DateTime)
+    error_status = db.Column('error_status', db.Boolean)
+    error_message = db.Column('error_message', db.String)
+
+    def update_data(self):
+        settings = LastUpdateSpyderData.query.first()
+        if settings is None:
+            db.session.add(self)
+        db.session.commit()
