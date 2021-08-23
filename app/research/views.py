@@ -48,10 +48,12 @@ def savelasttimeforupdatedata():
         else:
             last_update_data.last_update_date = now
             last_update_data.error_status = False
+            last_update_data.error_message = ''
         last_update_data.update_data()
+        return "successfully update date"
     except:
         print('problem with update last date')
-    return redirect(url_for('admin.market_data'))
+        return "failed to update date"
 
 
 def research_ticker(ticker):

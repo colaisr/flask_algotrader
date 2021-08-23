@@ -6,10 +6,12 @@
         <div class="page-title-wrapper">
             <div class="page-title-heading">
                 <div class="page-title-icon">
-                    <button style="border: none;" onclick="fill_graph()" type="button" class="pe-7s-display1 icon-gradient bg-mean-fruit" data-toggle="modal" data-target="#sectors_modal">
+                    <button style="border: none;" onclick="fill_graph()" type="button"
+                            class="pe-7s-display1 icon-gradient bg-mean-fruit" data-toggle="modal"
+                            data-target="#sectors_modal">
 
 
-</button>
+                    </button>
 
                 </div>
                 <div style="    margin-right: 10px;">
@@ -26,22 +28,23 @@
             <div class="page-title-actions">
                 <div>
                     {%if online%}
-                    <div  class="mb-2 mr-2 badge badge-pill badge-success">online</div>
+                    <div class="mb-2 mr-2 badge badge-pill badge-success">online</div>
                     {%else%}
-                    <div  class="mb-2 mr-2 badge badge-pill badge-danger">offline</div>
+                    <div class="mb-2 mr-2 badge badge-pill badge-danger">offline</div>
                     {%endif%}
                     {%if api_error%}
                     <div id="api_error" class="mb-2 mr-2 badge badge-pill badge-warning">TWS offline</div>
                     {%endif%}
                     {%if report.market_data_error%}
-                    <div id="invalid_market_data_reported" class="mb-2 mr-2 badge badge-pill badge-warning">Market Data Invalid</div>
+                    <div id="invalid_market_data_reported" class="mb-2 mr-2 badge badge-pill badge-warning">Market Data
+                        Invalid
+                    </div>
                     {%endif%}
 
                 </div>
-
-
                 <div>
-                    <div id="last_execution_time" class="mb-2 mr-2 badge badge-pill badge-secondary">Last processing : {{
+                    <div id="last_execution_time" class="mb-2 mr-2 badge badge-pill badge-secondary">Last processing :
+                        {{
                         report.last_worker_execution_text }}
                     </div>
                 </div>
@@ -51,7 +54,6 @@
                     </div>
                 </div>
             </div>
-
             <div class="page-title-actions">
                 <div>
                     <div class="mb-2 mr-2 badge badge-info">EST : {{ current_est_time }}</div>
@@ -100,7 +102,8 @@
                         <div class="widget-subheading">Daily PnL for all positions</div>
                     </div>
                     <div class="widget-content-right">
-                        <div class="widget-numbers text-white "><span class="val_pnl">$ {{ report.dailyPnl|round |int }}</span>
+                        <div class="widget-numbers text-white "><span
+                                class="val_pnl">$ {{ report.dailyPnl|round |int }}</span>
                         </div>
                     </div>
                 </div>
@@ -114,7 +117,8 @@
                         <div class="widget-subheading">NET liquidation value</div>
                     </div>
                     <div class="widget-content-right">
-                        <div class="widget-numbers text-white"><span>$ {{ report.net_liquidation | round |int }}</span></div>
+                        <div class="widget-numbers text-white"><span>$ {{ report.net_liquidation | round |int }}</span>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -231,7 +235,8 @@
     <div class="row">
         <div class="col-md-12">
             <div class="main-card mb-3 card">
-                <div class="card-header">Tracked Candidates {{ candidates_live|length }} Priority order : Tipranks > YahooRank >Stock Invest Rank> Underprice > Momentum
+                <div class="card-header">Tracked Candidates {{ candidates_live|length }} Priority order : Tipranks >
+                    YahooRank >Stock Invest Rank> Underprice > Momentum
                 </div>
                 <div class="table-responsive">
                     <table class="align-middle mb-0 table table-borderless table-striped table-hover">
@@ -255,9 +260,9 @@
                         {% for key, value in candidates_live.items() %}
                         {% if value['target_price']>value['Ask'] and value['Ask']!=-1 %}
                         <tr style="background-color: chartreuse;">
-                        {% else %}
+                            {% else %}
                         <tr>
-                        {% endif %}
+                            {% endif %}
                             <td class="text-center text-muted">
                                 <a href="{{url_for('candidates.info')}}?ticker_to_show={{value['Stock']}}">
                                     {{value['Stock']}}
@@ -286,23 +291,23 @@
 {% block modal %}
 <!-- Modal -->
 <div id="sectors_modal" class="modal" tabindex="-1" role="dialog">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Portfolio by sectors</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <canvas id="sectorsChart" width="400" height="400"></canvas>
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Portfolio by sectors</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <canvas id="sectorsChart" width="400" height="400"></canvas>
 
-      </div>
-      <div class="modal-footer">
-        <button id="close_modal_btn" type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
-      </div>
+            </div>
+            <div class="modal-footer">
+                <button id="close_modal_btn" type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
     </div>
-  </div>
 </div>
 
 {% endblock %}
@@ -311,6 +316,7 @@
 <script>
 const graph_sectors = {{graph_sectors | tojson}};
 const graph_sectors_values = {{graph_sectors_values | tojson}};
+
 
 </script>
 {% endblock %}
