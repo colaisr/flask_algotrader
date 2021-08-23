@@ -1,6 +1,4 @@
-import json
 import sys
-import ssl
 import urllib
 from urllib.request import urlopen
 from datetime import datetime

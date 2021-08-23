@@ -11,7 +11,7 @@ DONE - spiders - put two spiders together
 DONE - spider - report on finish via API
 DONE - spiders status to put on Index and Trader Station
 
-add daily snapshoting for users : before trading: Net assets,open positions,positions value
+DONE -add daily snapshoting for users : before trading: Net assets,open positions,positions value
 triger via Task
 
 Different strategies Risk/Weighted/Safe
