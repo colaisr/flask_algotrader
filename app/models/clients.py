@@ -59,3 +59,30 @@ class Report(db.Model):
                 report.market_data_error = self.market_data_error
 
         db.session.commit()
+
+
+class ReportStatistic(db.Model):
+    __tablename__ = 'ReportsStatistic'
+    # __bind_key__ = 'db_clients'
+    id = db.Column('id', db.Integer, primary_key=True)
+    email = db.Column('email', db.String)
+    report_time = db.Column('report_time', db.DateTime)
+    net_liquidation = db.Column('net_liquidation', db.Float)
+    remaining_sma_with_safety = db.Column('remaining_sma_with_safety', db.Float)
+    excess_liquidity = db.Column('excess_liquidity', db.Float)
+    remaining_trades = db.Column('remaining_trades', db.Integer)
+    all_positions_value = db.Column('all_positions_value', db.Float)
+    open_positions_json = db.Column('open_positions_json', db.String)
+    open_orders_json = db.Column('open_orders_json', db.String)
+    candidates_live_json = db.Column('candidates_live_json', db.String)
+    dailyPnl = db.Column('dailyPnl', db.Float)
+    last_worker_execution = db.Column('last_worker_execution', db.DateTime)
+    market_time = db.Column('market_time', db.DateTime)
+    started_time = db.Column('started_time', db.DateTime)
+    market_state = db.Column('market_state', db.String)
+    api_connected = db.Column('api_connected', db.Boolean)
+    market_data_error = db.Column('market_data_error', db.Boolean)
+
+    def add_report(self):
+        db.session.add(self)
+        db.session.commit()

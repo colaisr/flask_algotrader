@@ -10,7 +10,7 @@ from flask import (
 from datetime import datetime
 from app import csrf
 from app.email import send_email
-from app.models import TickerData, Candidate, LastUpdateSpyderData
+from app.models import TickerData, Candidate, LastUpdateSpyderData, ReportStatistic, Report
 from app.research.fmp_research import get_fmp_ratings_score_for_ticker
 from app.research.stock_invest_research import get_stock_invest_rank_for_ticker
 from app.research.tipranks_research import get_tiprank_for_ticker
@@ -54,6 +54,37 @@ def savelasttimeforupdatedata():
     except:
         print('problem with update last date')
         return "failed to update date"
+
+
+@csrf.exempt
+@research.route('/update_reports_statistic', methods=['GET'])
+def update_reports_statistic():
+    try:
+        reports = Report.query.all()
+        for r in reports:
+            snapshot = ReportStatistic()
+            snapshot.email = r.email
+            snapshot.report_time = r.report_time
+            snapshot.net_liquidation = r.net_liquidation
+            snapshot.remaining_sma_with_safety = r.remaining_sma_with_safety
+            snapshot.remaining_trades = r.remaining_trades
+            snapshot.all_positions_value = r.all_positions_value
+            snapshot.open_positions_json = r.open_positions_json
+            snapshot.open_orders_json = r.open_orders_json
+            snapshot.dailyPnl = r.dailyPnl
+            snapshot.last_worker_execution = r.last_worker_execution
+            snapshot.market_time = r.market_time
+            snapshot.market_state = r.market_state
+            snapshot.excess_liquidity = r.excess_liquidity
+            snapshot.candidates_live_json = r.candidates_live_json
+            snapshot.started_time = r.started_time
+            snapshot.api_connected = r.api_connected
+            snapshot.market_data_error = r.market_data_error
+            snapshot.add_report()
+        return "successfully update reports statistic"
+    except:
+        print('problem with update reports statistic')
+        return "update reports statistic failed"
 
 
 def research_ticker(ticker):
