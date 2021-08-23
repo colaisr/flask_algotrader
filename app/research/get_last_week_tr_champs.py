@@ -5,7 +5,8 @@ from urllib.request import urlopen
 
 server_url = "https://www.algotrader.company/"
 
-url = ("https://www.tipranks.com/api/Screener/GetStocks/?break=1111111111111&country=US&page=1&scoreChangeDate=2&sortBy=1&sortDir=2&tipranksScore=5")
+url = (
+    "https://www.tipranks.com/api/Screener/GetStocks/?break=1111111111111&country=US&page=1&scoreChangeDate=2&sortBy=1&sortDir=2&tipranksScore=5")
 context = ssl._create_unverified_context()
 response = urlopen(url, context=context)
 data = response.read().decode("utf-8")
@@ -14,7 +15,7 @@ pages = (parsed['count'] / 20)
 champs_list = []
 for p in range(int(pages)):
     url = ("https://www.tipranks.com/api/Screener/GetStocks/?break=1111111111111&country=US&page=" + \
-          str(p + 1) + "&scoreChangeDate=2&sortBy=1&sortDir=2&tipranksScore=5")
+           str(p + 1) + "&scoreChangeDate=2&sortBy=1&sortDir=2&tipranksScore=5")
     context = ssl._create_unverified_context()
     response = urlopen(url, context=context)
     data = response.read().decode("utf-8")

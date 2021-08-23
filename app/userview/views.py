@@ -8,7 +8,6 @@ from flask import (
     Blueprint,
     redirect,
     render_template,
-    request,
     url_for,
 )
 from flask_login import (

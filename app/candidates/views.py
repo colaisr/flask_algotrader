@@ -25,6 +25,7 @@ candidates = Blueprint('candidates', __name__)
 def usercandidates():
     if not current_user.admin_confirmed:
         return redirect(url_for('station.download'))
+    candidates = Candidate.query.filter_by(email=current_user.email).all()
     user_settings = UserSetting.query.filter_by(email=current_user.email).first()
     admin_candidates = {}
     if user_settings.server_use_system_candidates:

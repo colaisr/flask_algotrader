@@ -162,7 +162,7 @@ def saverequirementssettings():
         user_settings.update_user_settings()
         flash('Credentials saved', 'success')
 
-        current_user.tws_requirements=1
+        current_user.tws_requirements = 1
         current_user.update_user()
 
         url = url_for('admin.pending_approval', _external=True)

@@ -1,11 +1,9 @@
-
-import ssl
-
 from flask import render_template
 
 import os
 from sendgrid import SendGridAPIClient
 from sendgrid.helpers.mail import Mail
+
 
 def send_email(recipient, subject, template, **kwargs):
     message = Mail(
@@ -22,15 +20,3 @@ def send_email(recipient, subject, template, **kwargs):
         print(response.headers)
     except Exception as e:
         print(e.message)
-
-
-# def send_email_old(recipient, subject, template, **kwargs):
-#     app = create_app(os.getenv('FLASK_CONFIG') or 'default')
-#     with app.app_context():
-#         msg = Message(
-#             app.config['EMAIL_SUBJECT_PREFIX'] + ' ' + subject,
-#             sender='cola.isr@gmail.com',
-#             recipients=[recipient])
-#         msg.body = render_template(template + '.txt', **kwargs)
-#         msg.html = render_template(template + '.html', **kwargs)
-#         mail.send(msg)

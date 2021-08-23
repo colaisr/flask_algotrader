@@ -1,8 +1,8 @@
-
 from datetime import datetime
 
 from . import TickerData
 from .. import db
+
 
 class Position(db.Model):
     __tablename__ = 'Positions'
@@ -26,43 +26,41 @@ class Position(db.Model):
     buying_fmp_rating = db.Column('buying_fmp_rating', db.String)
     buying_fmp_score = db.Column('buying_fmp_score', db.Integer)
 
-
     def update_position(self):
-        updating_result="Nothing"
-        if self.last_exec_side=='BOT':
-            p = Position.query.filter_by(email=self.email, ticker=self.ticker,last_exec_side='BOT').first()
+        updating_result = "Nothing"
+        if self.last_exec_side == 'BOT':
+            p = Position.query.filter_by(email=self.email, ticker=self.ticker, last_exec_side='BOT').first()
             if p is None:
-                #adding market data
-                m_data = TickerData.query.filter_by(ticker=self.ticker).order_by(TickerData.updated_server_time.desc()).first()
-                self.buying_tiprank=m_data.tipranks
-                self.buying_yahoo_rank=m_data.yahoo_rank
-                self.buying_underprice=m_data.under_priced_pnt
-                self.buying_twelve_month_momentum=m_data.twelve_month_momentum
-                self.buying_average_drop=m_data.yahoo_avdropP
-                self.buying_average_spread=m_data.yahoo_avspreadP
-                self.buying_fmp_rating=m_data.fmp_rating
-                self.buying_fmp_score=m_data.fmp_score
+                # adding market data
+                m_data = TickerData.query.filter_by(ticker=self.ticker).order_by(
+                    TickerData.updated_server_time.desc()).first()
+                self.buying_tiprank = m_data.tipranks
+                self.buying_yahoo_rank = m_data.yahoo_rank
+                self.buying_underprice = m_data.under_priced_pnt
+                self.buying_twelve_month_momentum = m_data.twelve_month_momentum
+                self.buying_average_drop = m_data.yahoo_avdropP
+                self.buying_average_spread = m_data.yahoo_avspreadP
+                self.buying_fmp_rating = m_data.fmp_rating
+                self.buying_fmp_score = m_data.fmp_score
 
                 db.session.add(self)
                 updating_result = "new_buy"
                 p = Position.query.filter_by(email=self.email, ticker=self.ticker, last_exec_side='BOT').first()
             else:
-                v=3
+                pass
         else:
-            p = Position.query.filter_by(email=self.email,ticker=self.ticker,last_exec_side='BOT').first()
+            p = Position.query.filter_by(email=self.email, ticker=self.ticker, last_exec_side='BOT').first()
             if p is not None:
-                p.close_price=self.close_price
+                p.close_price = self.close_price
                 p.closed = self.closed
-                p.last_exec_side=self.last_exec_side
-                p.profit = p.close_price*p.stocks-p.open_price*p.stocks
+                p.last_exec_side = self.last_exec_side
+                p.profit = p.close_price * p.stocks - p.open_price * p.stocks
                 updating_result = "new_sell"
         db.session.commit()
-        return updating_result,p
+        return updating_result, p
 
     def toDictionary(self):
-        d={}
-        d['ticker']=self.ticker
+        d = {}
+        d['ticker'] = self.ticker
         d['opened'] = datetime.isoformat(self.opened)
         return d
-
-

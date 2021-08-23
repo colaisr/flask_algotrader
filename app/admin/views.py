@@ -8,8 +8,7 @@ from flask import (
     url_for,
 )
 from flask_login import current_user, login_required
-from flask_rq import get_queue
-from sqlalchemy import select, distinct, text, func
+from sqlalchemy import text
 
 from app import db
 from app import csrf
@@ -105,46 +104,38 @@ def registered_users():
     return render_template(
         'admin/registered_users.html', users=users, roles=roles)
 
+
 @admin.route('/pendingapproval')
 @login_required
 @admin_required
 def pending_approval():
     """View all registered users."""
     users = User.query.filter_by(admin_confirmed=0).all()
-    #roles = Role.query.all()
+    # roles = Role.query.all()
     return render_template(
         'admin/pending_approval.html', users=users)
+
 
 @admin.route('/marketdata')
 @login_required
 @admin_required
 def market_data():
-    # #cleaning db
-    # all=db.session.query(TickerData).all()
-    # for k in all:
-    #     i=2
-    #     my_data = db.session.query(TickerData).filter(func.date(TickerData.updated_server_time) == k.updated_server_time.date(),TickerData.ticker==k.ticker).all()
-    #     # same_dates=TickerData.query.filter_by(func.date(updated_server_time)=k.updated_server_time.date()).all()
-    #     if len(my_data)>1:
-    #         r=3
-    #
-
-    query_text="select a.* from Tickersdata a join (  select Tickersdata.`ticker`, max(Tickersdata.`updated_server_time`) as updated_server_time  from Tickersdata group by Tickersdata.`ticker`) b on b.`ticker`=a.`ticker` and b.`updated_server_time`=a.`updated_server_time`"
-    r=db.session.query(TickerData).from_statement(text(query_text)).all()
-    marketdata=r
+    query_text = "select a.* from Tickersdata a join (  select Tickersdata.`ticker`, max(Tickersdata.`updated_server_time`) as updated_server_time  from Tickersdata group by Tickersdata.`ticker`) b on b.`ticker`=a.`ticker` and b.`updated_server_time`=a.`updated_server_time`"
+    r = db.session.query(TickerData).from_statement(text(query_text)).all()
+    marketdata = r
     user_settings = UserSetting.query.filter_by(email=current_user.email).first()
     for m in marketdata:
         if m.tipranks is None:
-            m.tipranks=0
-
+            m.tipranks = 0
     return render_template('admin/market_data.html', user_settings=user_settings, marketdata=marketdata)
+
 
 @admin.route('/clientcommands')
 @login_required
 @admin_required
 def clientcommands():
     client_commands = ClientCommand.query.all()
-    return render_template('admin/client_commands.html',client_commands=client_commands)
+    return render_template('admin/client_commands.html', client_commands=client_commands)
 
 
 @admin.route('/user/<int:user_id>')
@@ -248,15 +239,16 @@ def update_editor_contents():
 
     return 'OK', 200
 
+
 @admin.route('/userapprove', methods=['POST'])
 @csrf.exempt
 def userapprove():
     user_id = request.form['user_to_approve']
     user = User.query.filter_by(id=user_id).first()
-    user.admin_confirmed=1
+    user.admin_confirmed = 1
     user.update_user()
     send_email(recipient=user.email,
-               subject='Hello '+user.last_name+' '+user.first_name+',your Algotrader account is ready!',
+               subject='Hello ' + user.last_name + ' ' + user.first_name + ',your Algotrader account is ready!',
                template='account/email/account_is_ready',
                user=user)
     return redirect(url_for('admin.pending_approval'))

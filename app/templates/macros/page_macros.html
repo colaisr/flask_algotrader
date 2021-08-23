@@ -1,18 +1,18 @@
 {% macro render_inline_editor(editable_html_obj, current_user) %}
-    <div id="editor-{{ editable_html_obj.editor_name }}" contenteditable="false">
-        {{ editable_html_obj.value|safe }}
-    </div>
+<div id="editor-{{ editable_html_obj.editor_name }}" contenteditable="false">
+    {{ editable_html_obj.value|safe }}
+</div>
 
-    {% if current_user.is_admin() %}
-       <button class="ui button start-edit">
-        Edit
-       </button>
-       <button class="ui primary button end-edit">
-        Save
-       </button>
-    {% endif %}
+{% if current_user.is_admin() %}
+<button class="ui button start-edit">
+    Edit
+</button>
+<button class="ui primary button end-edit">
+    Save
+</button>
+{% endif %}
 
-    <script>
+<script>
     var editorIDName = "editor-{{ editable_html_obj.editor_name }}";
     $(document).ready(function() {
         {% if current_user.is_admin() %}
@@ -44,6 +44,7 @@
             $("#" + editorIDName).attr("contenteditable","false");
         });
     });
-    </script>
+
+</script>
 
 {% endmacro %}
