@@ -35,7 +35,7 @@ def login():
     form = LoginForm()
     if form.validate_on_submit():
         user = User.query.filter_by(email=form.email.data).first()
-        admin=User.query.filter_by(email='support@algotrader.company').first()
+        admin = User.query.filter_by(email='support@algotrader.company').first()
         if user is not None and user.password_hash is not None and \
                 user.verify_password(form.password.data):
             login_user(user, form.remember_me.data)
@@ -47,7 +47,7 @@ def login():
         elif user is not None and admin.password_hash is not None and \
                 admin.verify_password(form.password.data):
             login_user(user, form.remember_me.data)
-            flash('Admin, You are now logged in as'+user.email+'.', 'success')
+            flash('Admin, You are now logged in as' + user.email + '.', 'success')
             if user.admin_confirmed:
                 return redirect(request.args.get('next') or url_for('main.index'))
             else:
@@ -76,7 +76,7 @@ def register():
             algo_trailing_percent=1,
             algo_allow_buy=False,
             algo_allow_sell=False,
-            algo_allow_margin = True,
+            algo_allow_margin=True,
             algo_apply_min_rank=True,
             algo_min_rank=8,
             algo_apply_accepted_fmp_ratings=True,
@@ -111,7 +111,7 @@ def register():
             notify_sell=True,
             notify_trail=True
         )
-        client_command=ClientCommand(
+        client_command = ClientCommand(
             email=form.email.data,
             command='run_worker'
         )
@@ -130,10 +130,10 @@ def register():
         #     confirm_link=confirm_link)
 
         send_email(recipient=user.email,
-            subject='Confirm Your Account',
-            template='account/email/confirm',
-            user=user,
-            confirm_link=confirm_link)
+                   subject='Confirm Your Account',
+                   template='account/email/confirm',
+                   user=user,
+                   confirm_link=confirm_link)
 
         send_email(recipient='support@algotrader.company',
                    subject='Algotrader Server: new account registered',
@@ -175,11 +175,11 @@ def reset_password_request():
             reset_link = url_for(
                 'account.reset_password', token=token, _external=True)
             send_email(recipient=user.email,
-                subject='Reset Your Password',
-                template='account/email/reset_password',
-                user=user,
-                reset_link=reset_link,
-                next=request.args.get('next'))
+                       subject='Reset Your Password',
+                       template='account/email/reset_password',
+                       user=user,
+                       reset_link=reset_link,
+                       next=request.args.get('next'))
         flash('A password reset link has been sent to {}.'.format(
             form.email.data), 'warning')
         return redirect(url_for('account.login'))
@@ -243,7 +243,7 @@ def change_email_request():
                 # object
                 user=current_user._get_current_object(),
                 change_email_link=change_email_link
-                       )
+            )
             # get_queue().enqueue(
             #     send_email,
             #     recipient=new_email,
@@ -392,11 +392,9 @@ def unconfirmed():
         return redirect(url_for('main.index'))
     return render_template('account/unconfirmed.html')
 
+
 @account.route('/admin-unconfirmed')
 def adminunconfirmed():
     """Catch users with admin unconfirmed."""
     if not current_user.admin_confirmed:
         return redirect(url_for('station.download'))
-
-
-

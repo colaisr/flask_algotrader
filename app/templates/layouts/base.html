@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-    <link rel="shortcut icon" href="#" />
+    <link rel="shortcut icon" href="#"/>
     <meta name="charset" content="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{% block page_title %}{{ config.APP_NAME }}{% endblock %}</title>
@@ -75,7 +75,8 @@
                 <ul class="header-menu nav">
                     <li class="btn-group">
                         <a href="/" class="nav-link">
-                            <img class="logo-img" style="width: 19%;" src="../../static/images/Logos_New/logo_transparent_background.png">
+                            <img class="logo-img" style="width: 19%;"
+                                 src="../../static/images/Logos_New/logo_transparent_background.png">
                         </a>
                     </li>
                     {% if current_user.is_admin() %}
@@ -194,7 +195,8 @@
                         </li>
                         <li>
                             <!--                            <a href="/userview/portfoliostatistics" >-->
-                            <a target="_blank" href="https://www.interactivebrokers.co.uk/portal/?action=ACCT_MGMT_MAIN&loginType=1&clt=0&RL=1#/portfolio/performance">
+                            <a target="_blank"
+                               href="https://www.interactivebrokers.co.uk/portal/?action=ACCT_MGMT_MAIN&loginType=1&clt=0&RL=1#/portfolio/performance">
 
                                 <i class="metismenu-icon pe-7s-graph2"></i>
                                 Portfolio performance

@@ -1,5 +1,5 @@
 from manage import manager
-app=manager.app
+app = manager.app
 
 
 if __name__ == '__main__':

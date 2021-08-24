@@ -76,7 +76,6 @@ class User(UserMixin, db.Model):
 
         db.session.commit()
 
-
     def full_name(self):
         return '%s %s' % (self.first_name, self.last_name)
 

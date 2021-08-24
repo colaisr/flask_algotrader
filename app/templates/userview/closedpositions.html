@@ -51,9 +51,9 @@
                 <tr>
                     <td>
                         <a href="{{url_for('candidates.info')}}?ticker_to_show={{ m.ticker }}">
-                                {{ m.ticker }}
-                            </a>
-                        </td>
+                            {{ m.ticker }}
+                        </a>
+                    </td>
                     <td>
                         <form action="{{url_for('closed_position_info.view')}}" method="get">
                             <input type="hidden" name="position_to_show" value="{{ m.id }}">
@@ -68,19 +68,21 @@
                     <td>{{ m.close_price }}</td>
                     <td>{{ m.days_in_action }}</td>
                     <td
-                    {%if m.profit>0%}
-                    style="background-color: chartreuse;"
+                            {%if m.profit>0%}
+                        style="background-color: chartreuse;"
                         {%else%}
                         style="background-color: coral"
                         {%endif%}
-                    >{{ "%.1f"|format(m.profit) }}</td>
+                        >{{ "%.1f"|format(m.profit) }}
+                    </td>
                     <td
-                    {%if m.profit>0%}
-                    style="background-color: chartreuse;"
+                            {%if m.profit>0%}
+                        style="background-color: chartreuse;"
                         {%else%}
                         style="background-color: coral"
                         {%endif%}
-                    >{{ "%.1f"|format(m.profit/(m.open_price*m.stocks)*100) }}</td>
+                        >{{ "%.1f"|format(m.profit/(m.open_price*m.stocks)*100) }}
+                    </td>
 
 
                 </tr>

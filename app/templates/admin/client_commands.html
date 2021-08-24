@@ -35,8 +35,8 @@
                 </tr>
                 </thead>
                 <tbody>
-                {% for m in client_commands  %}
-                <tr >
+                {% for m in client_commands %}
+                <tr>
                     <td>{{ m.id }}</td>
                     <td>{{ m.email }}</td>
                     <td>{{ m.command }}</td>
@@ -52,7 +52,7 @@
 {% endblock %}
 
 {% block scripting %}
-    <script type="text/javascript">
+<script type="text/javascript">
         $(document).ready(function () {
             $('#search-users').keyup(function () {
                 var searchText = $(this).val();
@@ -74,5 +74,6 @@
                 }
             });
         });
-    </script>
+
+</script>
 {% endblock %}

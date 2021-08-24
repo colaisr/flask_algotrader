@@ -64,7 +64,7 @@ def request_zip():
     try:
         shutil.rmtree('./app/static/ready_package/algotrader' + uid + '.zip')  # removing prev packages
     except:
-        i = 2
+        pass
     create_script_for_package()
     create_config_for_package()
     shutil.make_archive('./app/static/ready_package/algotrader' + uid, 'zip', 'app/static', 'algotrader-station')

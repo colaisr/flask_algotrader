@@ -7,11 +7,11 @@ New logo: Emails.
 DONE - show success/fail factor in general- all poritions- all users
 DONE - overall Fund value
 
-spiders - put two spiders together
-spider - report on finish via API
-spiders status to put on Index and Trader Station
+DONE - spiders - put two spiders together
+DONE - spider - report on finish via API
+DONE - spiders status to put on Index and Trader Station
 
-add daily snapshoting for users : before trading: Net assets,open positions,positions value
+DONE -add daily snapshoting for users : before trading: Net assets,open positions,positions value
 triger via Task
 
 "Your Account" replace by "FirstName LastName"

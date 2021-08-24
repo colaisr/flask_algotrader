@@ -28,8 +28,10 @@
                         <h5 style="font-size: large; color: green;" class="card-title">All Ready! </h5>
                         <div style="margin-bottom: 30px;">
                             <p>Hello <span style="color:blue;">{{user.first_name}}!</span></p>
-                            <p>We got all necessary details and are working to set Your environment, it will not take long...</p>
-                            <p>You will get a message to <span style="color:blue;">{{user.email}}</span> once it is ready.</p>
+                            <p>We got all necessary details and are working to set Your environment, it will not take
+                                long...</p>
+                            <p>You will get a message to <span style="color:blue;">{{user.email}}</span> once it is
+                                ready.</p>
                             <p>If You have any questions/comments: <b>support@algotrader.company</b></p>
                         </div>
                         {%else%}
@@ -37,7 +39,8 @@
                         <div style="margin-bottom: 30px;">
                             <p>Hello <span style="color:blue;">{{user.first_name}}!</span></p>
                             <p>Your email : <span style="color:blue;">{{user.email}}</span> have been confirmed.</p>
-                            <p>In order to provide You a dedicated virtual machine for Agotrader Client execution, please provide a following details:</p>
+                            <p>In order to provide You a dedicated virtual machine for Agotrader Client execution,
+                                please provide a following details:</p>
                         </div>
                         {%endif%}
 
@@ -46,21 +49,24 @@
                             <div class="col-md-4">
                                 <div class="position-relative form-group">
                                     <label for="connection_account_name" class="">IBKR account</label>
-                                    <input title="Account name- can be seen at IBKR.com" value="{{user_settings.connection_account_name}}"
+                                    <input title="Account name- can be seen at IBKR.com"
+                                           value="{{user_settings.connection_account_name}}"
                                            name="connection_account_name" id="connection_account_name" type="text"
                                            class="form-control"></div>
                             </div>
                             <div class="col-md-4">
                                 <div class="position-relative form-group">
                                     <label for="connection_tws_user" class="">TWS user</label>
-                                    <input title="User name - to login to TWS automatically on restarts" value="{{user_settings.connection_tws_user}}" name="connection_tws_user"
+                                    <input title="User name - to login to TWS automatically on restarts"
+                                           value="{{user_settings.connection_tws_user}}" name="connection_tws_user"
                                            id="connection_tws_user" type="text" class="form-control">
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="position-relative form-group">
                                     <label for="connection_tws_pass" class="">TWS password</label>
-                                    <input title="Password - to login to TWS automatically on restarts" value="{{user_settings.connection_tws_pass}}" name="connection_tws_pass"
+                                    <input title="Password - to login to TWS automatically on restarts"
+                                           value="{{user_settings.connection_tws_pass}}" name="connection_tws_pass"
                                            id="connection_tws_pass" type="password"
                                            class="form-control"></div>
                             </div>
@@ -79,7 +85,8 @@
     {% endif %}
     <div class="column">
         <h1>IBKR Market Data subscriptions </h1>
-        <p>The Agrotrader system uses SMART exchange setting to place an orders with the best price via Interactive brokers.</br> In order to get the correct Live prices You need a following Data subscriptions enabled: </p>
+        <p>The Agrotrader system uses SMART exchange setting to place an orders with the best price via Interactive
+            brokers.</br> In order to get the correct Live prices You need a following Data subscriptions enabled: </p>
         <p><b>North America</b></p>
         <p>IEX Depth of Book</p>
         <p>NASDAQ (Network C/UTP) </p>
@@ -93,28 +100,31 @@
         <img style="width: 500px;" src="/static/images/Requirements/MarketDataSubscriptions.png">
 
         <h1>TWS without SMS confirmation</h1>
-        <p>The security settings of the Interactive brokers require a daily restart for TWS Trader application. We do it for every user...</br>
+        <p>The security settings of the Interactive brokers require a daily restart for TWS Trader application. We do it
+            for every user...</br>
             In order to let us do that, the Secure Login System Opt Out should be applied.</p>
         <p>1. Set a Secure Login Devices: </br>
-        a. Go to User Settings > Security > Secure Login System > Seamless Authentication.</br>
-        b. Use the check box to enable or disable Seamless Authentication for your mobile device with IB Key.</br>
+            a. Go to User Settings > Security > Secure Login System > Seamless Authentication.</br>
+            b. Use the check box to enable or disable Seamless Authentication for your mobile device with IB Key.</br>
             c. If disabled, you will be required to use a challenge code and pass code sequence to log in.</br></p>
-       <p>2. SLS Opt Out: </br>
-        a. Go to User Settings >Security > Secure Login System > Secure Login required for trading..</br>
-        b. Check the radio button "I Only want to use my Secure Login Device When logging into Client Portal"</br></p>
+        <p>2. SLS Opt Out: </br>
+            a. Go to User Settings >Security > Secure Login System > Secure Login required for trading..</br>
+            b. Check the radio button "I Only want to use my Secure Login Device When logging into Client
+            Portal"</br></p>
         <img style="width: 800px;" src="/static/images/Requirements/sls_optout.png">
 
 
-        <p>You may use TWS +Algotrader pair on Your personal computer. if You decide to do so - please follow the instruction below. </br>
+        <p>You may use TWS +Algotrader pair on Your personal computer. if You decide to do so - please follow the
+            instruction below. </br>
             Otherwise we <b>set everything for You </b> when we deploy a dedicated Virtual Machine</p>
 
         <h1>TWS configuration</h1>
-       <p> 1. Select Never Lock Trader Workstation</br>
-        2.Select Autorestart option</p>
+        <p> 1. Select Never Lock Trader Workstation</br>
+            2.Select Autorestart option</p>
         <img style="width: 500px;" src="/static/images/Requirements/tws1.png">
         <p>3.Enable ActiveX and Socket clients</br>
-        4.Dismiss Read Only API</br>
-        5.Change Port to 7498</br>
+            4.Dismiss Read Only API</br>
+            5.Change Port to 7498</br>
             6. Compare the rest to image below:</p>
         <img style="width: 600px;" src="/static/images/Requirements/tws1.png">
         <p>7.Bypass order precautions on API Oredrs</p>
@@ -126,13 +136,15 @@
         <h3>Algotrader installation</h3>
 
         1. Download and install TWS Trader station. (Gateway can be used - but it have no AutoUpdate feature)<br>
-        <a href="https://www.interactivebrokers.com/en/index.php?f=16040" target="_blank"><i class="nav-link-icon fa fa-download"> </i>Download TWS</a><br>
+        <a href="https://www.interactivebrokers.com/en/index.php?f=16040" target="_blank"><i
+                class="nav-link-icon fa fa-download"> </i>Download TWS</a><br>
         2. Make sure to open API and set port as in the settings, remove precauctious message<br>
 
         3. Install Python 3.9 if needed <br>
-                <a href="https://www.python.org/downloads/release/python-392/" target="_blank"><i class="nav-link-icon fa fa-download"> </i>Python 3.9</a><br>
+        <a href="https://www.python.org/downloads/release/python-392/" target="_blank"><i
+                class="nav-link-icon fa fa-download"> </i>Python 3.9</a><br>
         4. Download Algotrader package<br>
-        <a href="/station/downloadzip" download ><i class="nav-link-icon fa fa-download"> </i>AlgoTrader Package</a><br>
+        <a href="/station/downloadzip" download><i class="nav-link-icon fa fa-download"> </i>AlgoTrader Package</a><br>
         5. Unzip where feels good :)<br>
         6. Go to forder "twsapi" run : installWindows.bat<br>
         7. Ready! Launch with "win_start_all.bat"<br>
@@ -144,7 +156,7 @@
         3. Paste shortcut.<br>
         <h4>Setting Autorestart</h4>
         1. Open Task Scheduler<br>
-        2. Create Basic task. Action: shutdown  Argument: /r<br>
+        2. Create Basic task. Action: shutdown Argument: /r<br>
         <h4>Setting AutoLogOn</h4>
         1. Right click on Start and select Run, type NetPLWiz and then press Enter.<br>
         2. Select User Account. Uncheck the option to ask for a password.<br>
@@ -155,10 +167,11 @@
         <h3>Algotrader installation</h3>
 
         1. Download and install TWS Trader station. (Gateway can be used - but it have no AutoUpdate feature)<br>
-        <a href="https://www.interactivebrokers.com/en/index.php?f=16040" target="_blank"><i class="nav-link-icon fa fa-download"> </i>Download TWS</a><br>
+        <a href="https://www.interactivebrokers.com/en/index.php?f=16040" target="_blank"><i
+                class="nav-link-icon fa fa-download"> </i>Download TWS</a><br>
         2. Make sure to open API and set port as in the settings, remove precauctious message<br>
         4. Download Algotrader package<br>
-        <a href="/station/downloadzip" download ><i class="nav-link-icon fa fa-download"> </i>AlgoTrader Package</a><br>
+        <a href="/station/downloadzip" download><i class="nav-link-icon fa fa-download"> </i>AlgoTrader Package</a><br>
         5. Unzip <br>
         6. Go to forder "twsapi" make linux_install.sh executable<br>
         7. run : linux_install.sh<br>
@@ -167,15 +180,15 @@
         <h3>Setting a PC</h3>
         <h4>Adding to Autostart</h4>
         1. Go to Startup applications.Add new command.Select linux_start_all.sh<br>
-        2. modify to format:    mate-terminal -e "bash -c PATHTOFILE"<br>
+        2. modify to format: mate-terminal -e "bash -c PATHTOFILE"<br>
         3. create cron job's for autorestart and watch dog:<br>
         4. sudo crontab -e<br>
-        5. 0 16   *   *   *    /sbin/shutdown -r<br>
-        6. 0 10   *   *   *    /sbin/shutdown -r<br>
-        7. */5 * * * * /home/su/Downloads/algotrader-station/algotrader/linux_watch_dog_sh  <br>
-        8. it configures 2 daily restarts : mornig and before trade, and watchdog app to check if algotrader is running - every 5 minutes.<br>
+        5. 0 16 * * * /sbin/shutdown -r<br>
+        6. 0 10 * * * /sbin/shutdown -r<br>
+        7. */5 * * * * /home/su/Downloads/algotrader-station/algotrader/linux_watch_dog_sh <br>
+        8. it configures 2 daily restarts : mornig and before trade, and watchdog app to check if algotrader is running
+        - every 5 minutes.<br>
         9.Ready<br>
-
 
 
     </div>

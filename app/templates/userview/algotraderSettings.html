@@ -47,14 +47,16 @@
                             <div class="col-md-6">
                                 <div class="position-relative form-group">
                                     <label for="algo_max_loss" class="">Max loss in %</label>
-                                    <input title="Maximal Loss for position. Will be sold by market price" value="{{user_settings.algo_max_loss}}" name="algo_max_loss"
+                                    <input title="Maximal Loss for position. Will be sold by market price"
+                                           value="{{user_settings.algo_max_loss}}" name="algo_max_loss"
                                            id="algo_max_loss" type="text" class="form-control">
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="position-relative form-group">
                                     <label for="algo_take_profit" class="">Take profit in %</label>
-                                    <input title="Profit taker. At this profit trailing sell will be triggered with setted %" value="{{user_settings.algo_take_profit}}" name="algo_take_profit"
+                                    <input title="Profit taker. At this profit trailing sell will be triggered with setted %"
+                                           value="{{user_settings.algo_take_profit}}" name="algo_take_profit"
                                            id="algo_take_profit" type="text"
                                            class="form-control"></div>
                             </div>
@@ -63,14 +65,16 @@
                             <div class="col-md-6">
                                 <div class="position-relative form-group">
                                     <label for="algo_bulk_amount_usd" class="">Bulk size in USD</label>
-                                    <input title="Maximal size of a bulk to buy" value="{{user_settings.algo_bulk_amount_usd}}" name="algo_bulk_amount_usd"
+                                    <input title="Maximal size of a bulk to buy"
+                                           value="{{user_settings.algo_bulk_amount_usd}}" name="algo_bulk_amount_usd"
                                            id="algo_bulk_amount_usd" type="text"
                                            class="form-control"></div>
                             </div>
                             <div class="col-md-6">
                                 <div class="position-relative form-group">
                                     <label for="algo_trailing_percent" class="">Trail in %</label>
-                                    <input title="Trailing with this percent when Profit is taken" value="{{user_settings.algo_trailing_percent}}" name="algo_trailing_percent"
+                                    <input title="Trailing with this percent when Profit is taken"
+                                           value="{{user_settings.algo_trailing_percent}}" name="algo_trailing_percent"
                                            id="algo_trailing_percent" type="text"
                                            class="form-control"></div>
                             </div>
@@ -79,22 +83,22 @@
                             <div class="col-md-4">
                                 <div class="position-relative form-check">
                                     <input title="Allow buying or only Stop/Profit"
-                                            {%if user_settings.algo_allow_buy%}
-                                            checked
-                                            {% endif %}
-                                            name="algo_allow_buy" id="algo_allow_buy" type="checkbox"
-                                            class="form-check-input">
+                                           {%if user_settings.algo_allow_buy%}
+                                           checked
+                                           {% endif %}
+                                           name="algo_allow_buy" id="algo_allow_buy" type="checkbox"
+                                           class="form-check-input">
                                     <label for="algo_allow_buy" class="form-check-label">Allow buying</label>
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="position-relative form-check">
                                     <input title="Allow selling"
-                                            {%if user_settings.algo_allow_sell%}
-                                            checked
-                                            {% endif %}
-                                            name="algo_allow_sell" id="algo_allow_sell" type="checkbox"
-                                            class="form-check-input">
+                                           {%if user_settings.algo_allow_sell%}
+                                           checked
+                                           {% endif %}
+                                           name="algo_allow_sell" id="algo_allow_sell" type="checkbox"
+                                           class="form-check-input">
                                     <label for="algo_allow_sell" class="form-check-label">Allow selling</label>
                                 </div>
                             </div>
@@ -102,11 +106,11 @@
 
                                 <div class="position-relative form-check">
                                     <input title="Allow using margin for account or only personal cash"
-                                            {%if user_settings.algo_allow_margin%}
-                                            checked
-                                            {% endif %}
-                                            name="algo_allow_margin" id="algo_allow_margin" type="checkbox"
-                                            class="form-check-input">
+                                           {%if user_settings.algo_allow_margin%}
+                                           checked
+                                           {% endif %}
+                                           name="algo_allow_margin" id="algo_allow_margin" type="checkbox"
+                                           class="form-check-input">
                                     <label for="algo_allow_margin" class="form-check-label">Use margin for trade</label>
                                 </div>
                             </div>
@@ -117,24 +121,26 @@
                             <div class="col-md-3">
                                 <div class="position-relative form-check">
                                     <input title="Close all positions on market fall signal of number of consequentive LOSS closes within a day"
-                                            {%if user_settings.algo_sell_on_swan%}
-                                            checked
-                                            {% endif %}
-                                            name="algo_sell_on_swan" id="algo_sell_on_swan" type="checkbox"
-                                            class="form-check-input">
-                                    <label for="algo_sell_on_swan" class="form-check-label">Close Positions on market fall</label>
+                                           {%if user_settings.algo_sell_on_swan%}
+                                           checked
+                                           {% endif %}
+                                           name="algo_sell_on_swan" id="algo_sell_on_swan" type="checkbox"
+                                           class="form-check-input">
+                                    <label for="algo_sell_on_swan" class="form-check-label">Close Positions on market
+                                        fall</label>
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="position-relative form-group">
                                     <label for="algo_positions_for_swan" class="">Positions for Fall</label>
 
-                                    <input title="number of positions for market fall signal" value="{{user_settings.algo_positions_for_swan}}" name="algo_positions_for_swan"
+                                    <input title="number of positions for market fall signal"
+                                           value="{{user_settings.algo_positions_for_swan}}"
+                                           name="algo_positions_for_swan"
                                            id="algo_positions_for_swan" type="text"
                                            class="form-control">
                                 </div>
                             </div>
-
 
 
                         </div>
@@ -143,18 +149,19 @@
                             <div class="col-md-1">
                                 <div class="position-relative form-check">
                                     <input title="Sell if longer then configured perion and profit more than 2%"
-                                            {%if user_settings.algo_apply_max_hold%}
-                                            checked
-                                            {% endif %}
-                                            name="algo_apply_max_hold" id="algo_apply_max_hold"
-                                            type="checkbox"
-                                            class="form-check-input">
+                                           {%if user_settings.algo_apply_max_hold%}
+                                           checked
+                                           {% endif %}
+                                           name="algo_apply_max_hold" id="algo_apply_max_hold"
+                                           type="checkbox"
+                                           class="form-check-input">
                                     <label for="algo_apply_max_hold" class="form-check-label">Apply</label>
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="position-relative form-group">
-                                    <label for="algo_accepted_fmp_ratings" class="">Maximal holding period (days)</label>
+                                    <label for="algo_accepted_fmp_ratings" class="">Maximal holding period
+                                        (days)</label>
                                     <input title="Maximal days" value="{{user_settings.algo_max_hold_days}}"
                                            name="algo_max_hold_days" id="algo_max_hold_days" type="text"
                                            class="form-control"></div>
@@ -168,11 +175,11 @@
                             <div class="col-md-1">
                                 <div class="position-relative form-check">
                                     <input title="Use minimal Rank or transmit All"
-                                            {%if user_settings.algo_apply_min_rank%}
-                                            checked
-                                            {% endif %}
-                                            name="algo_apply_min_rank" id="algo_apply_min_rank" type="checkbox"
-                                            class="form-check-input">
+                                           {%if user_settings.algo_apply_min_rank%}
+                                           checked
+                                           {% endif %}
+                                           name="algo_apply_min_rank" id="algo_apply_min_rank" type="checkbox"
+                                           class="form-check-input">
                                     <label for="algo_apply_min_rank" class="form-check-label">Apply</label>
                                 </div>
                             </div>
@@ -180,7 +187,8 @@
                                 <div class="position-relative form-group">
                                     <label for="algo_min_rank" class="">Min Tiprank</label>
 
-                                    <input title="Minimal TipRank to transmit to station" value="{{user_settings.algo_min_rank}}" name="algo_min_rank"
+                                    <input title="Minimal TipRank to transmit to station"
+                                           value="{{user_settings.algo_min_rank}}" name="algo_min_rank"
                                            id="algo_min_rank" type="text"
                                            class="form-control"></div>
                             </div>
@@ -190,19 +198,20 @@
                             <div class="col-md-1">
                                 <div class="position-relative form-check">
                                     <input title="Use FMP Ratings or transmit all"
-                                            {%if user_settings.algo_apply_accepted_fmp_ratings%}
-                                            checked
-                                            {% endif %}
-                                            name="algo_apply_accepted_fmp_ratings" id="algo_apply_accepted_fmp_ratings"
-                                            type="checkbox"
-                                            class="form-check-input">
+                                           {%if user_settings.algo_apply_accepted_fmp_ratings%}
+                                           checked
+                                           {% endif %}
+                                           name="algo_apply_accepted_fmp_ratings" id="algo_apply_accepted_fmp_ratings"
+                                           type="checkbox"
+                                           class="form-check-input">
                                     <label for="algo_apply_accepted_fmp_ratings" class="form-check-label">Apply</label>
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="position-relative form-group">
                                     <label for="algo_accepted_fmp_ratings" class="">Accepted FMP</label>
-                                    <input title="Ratings to transmit to station. Coma separated" value="{{user_settings.algo_accepted_fmp_ratings}}"
+                                    <input title="Ratings to transmit to station. Coma separated"
+                                           value="{{user_settings.algo_accepted_fmp_ratings}}"
                                            name="algo_accepted_fmp_ratings" id="algo_accepted_fmp_ratings" type="text"
                                            class="form-control"></div>
                             </div>
@@ -212,12 +221,12 @@
                             <div class="col-md-1">
                                 <div class="position-relative form-check">
                                     <input title="Maximum Yahoo rank: 1-Strong buy, 2-Buy,3-Hold,4-Underperform, 5-Sell"
-                                            {%if user_settings.algo_apply_max_yahoo_rank%}
-                                            checked
-                                            {% endif %}
-                                            name="algo_apply_max_yahoo_rank" id="algo_apply_max_yahoo_rank"
-                                            type="checkbox"
-                                            class="form-check-input">
+                                           {%if user_settings.algo_apply_max_yahoo_rank%}
+                                           checked
+                                           {% endif %}
+                                           name="algo_apply_max_yahoo_rank" id="algo_apply_max_yahoo_rank"
+                                           type="checkbox"
+                                           class="form-check-input">
                                     <label for="algo_apply_max_yahoo_rank" class="form-check-label">Apply</label>
                                 </div>
                             </div>
@@ -234,19 +243,20 @@
                             <div class="col-md-1">
                                 <div class="position-relative form-check">
                                     <input title="Apply minimal Stock Invest Rank"
-                                            {%if user_settings.algo_apply_min_stock_invest_rank%}
-                                            checked
-                                            {% endif %}
-                                            name="algo_apply_min_stock_invest_rank" id="algo_apply_min_stock_invest_rank"
-                                            type="checkbox"
-                                            class="form-check-input">
+                                           {%if user_settings.algo_apply_min_stock_invest_rank%}
+                                           checked
+                                           {% endif %}
+                                           name="algo_apply_min_stock_invest_rank" id="algo_apply_min_stock_invest_rank"
+                                           type="checkbox"
+                                           class="form-check-input">
                                     <label for="algo_apply_min_stock_invest_rank" class="form-check-label">Apply</label>
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="position-relative form-group">
                                     <label for="algo_min_stock_invest_rank" class="">Minimal Stock Invest rank</label>
-                                    <input title="Minimal accepted rating" value="{{user_settings.algo_min_stock_invest_rank}}"
+                                    <input title="Minimal accepted rating"
+                                           value="{{user_settings.algo_min_stock_invest_rank}}"
                                            name="algo_min_stock_invest_rank" id="algo_min_stock_invest_rank" type="text"
                                            class="form-control"></div>
                             </div>
@@ -257,19 +267,20 @@
                             <div class="col-md-1">
                                 <div class="position-relative form-check">
                                     <input title="Minimal Underprice- current price is lower than Yahoo analyst estimate in %"
-                                            {%if user_settings.algo_apply_min_underprice%}
-                                            checked
-                                            {% endif %}
-                                            name="algo_apply_min_underprice" id="algo_apply_min_underprice"
-                                            type="checkbox"
-                                            class="form-check-input">
+                                           {%if user_settings.algo_apply_min_underprice%}
+                                           checked
+                                           {% endif %}
+                                           name="algo_apply_min_underprice" id="algo_apply_min_underprice"
+                                           type="checkbox"
+                                           class="form-check-input">
                                     <label for="algo_apply_min_underprice" class="form-check-label">Apply</label>
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="position-relative form-group">
                                     <label for="algo_min_underprice" class="">Minimal underprice level %</label>
-                                    <input title="Minimal allowed underprice: use negative for overpriced" value="{{user_settings.algo_min_underprice}}"
+                                    <input title="Minimal allowed underprice: use negative for overpriced"
+                                           value="{{user_settings.algo_min_underprice}}"
                                            name="algo_min_underprice" id="algo_min_underprice" type="text"
                                            class="form-control"></div>
                             </div>
@@ -279,19 +290,20 @@
                             <div class="col-md-1">
                                 <div class="position-relative form-check">
                                     <input title="Last 12 Month momentum: stock got more expensive than 1Y ago in %"
-                                            {%if user_settings.algo_apply_min_momentum%}
-                                            checked
-                                            {% endif %}
-                                            name="algo_apply_min_momentum" id="algo_apply_min_momentum"
-                                            type="checkbox"
-                                            class="form-check-input">
+                                           {%if user_settings.algo_apply_min_momentum%}
+                                           checked
+                                           {% endif %}
+                                           name="algo_apply_min_momentum" id="algo_apply_min_momentum"
+                                           type="checkbox"
+                                           class="form-check-input">
                                     <label for="algo_apply_min_momentum" class="form-check-label">Apply</label>
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="position-relative form-group">
                                     <label for="algo_min_momentum" class="">Minimal Momentum % </label>
-                                    <input title="Minimal allowed Momentum use negative for descending graph" value="{{user_settings.algo_min_momentum}}"
+                                    <input title="Minimal allowed Momentum use negative for descending graph"
+                                           value="{{user_settings.algo_min_momentum}}"
                                            name="algo_min_momentum" id="algo_min_momentum" type="text"
                                            class="form-control"></div>
                             </div>
@@ -309,14 +321,16 @@
                             <div class="col-md-6">
                                 <div class="position-relative form-group">
                                     <label for="connection_port" class="">TWS port</label>
-                                    <input title="Connect to TWS via that port- configured in TWS settings" value="{{user_settings.connection_port}}" name="connection_port"
+                                    <input title="Connect to TWS via that port- configured in TWS settings"
+                                           value="{{user_settings.connection_port}}" name="connection_port"
                                            id="connection_port" type="text" class="form-control">
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="position-relative form-group">
                                     <label for="connection_account_name" class="">IBKR account</label>
-                                    <input title="Account name- can be seen at IBKR.com" value="{{user_settings.connection_account_name}}"
+                                    <input title="Account name- can be seen at IBKR.com"
+                                           value="{{user_settings.connection_account_name}}"
                                            name="connection_account_name" id="connection_account_name" type="text"
                                            class="form-control"></div>
                             </div>
@@ -325,14 +339,16 @@
                             <div class="col-md-6">
                                 <div class="position-relative form-group">
                                     <label for="connection_tws_user" class="">TWS user</label>
-                                    <input title="User name - to login to TWS automatically on restarts" value="{{user_settings.connection_tws_user}}" name="connection_tws_user"
+                                    <input title="User name - to login to TWS automatically on restarts"
+                                           value="{{user_settings.connection_tws_user}}" name="connection_tws_user"
                                            id="connection_tws_user" type="text" class="form-control">
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="position-relative form-group">
                                     <label for="connection_tws_pass" class="">TWS password</label>
-                                    <input title="Password - to login to TWS automatically on restarts" value="{{user_settings.connection_tws_pass}}" name="connection_tws_pass"
+                                    <input title="Password - to login to TWS automatically on restarts"
+                                           value="{{user_settings.connection_tws_pass}}" name="connection_tws_pass"
                                            id="connection_tws_pass" type="password"
                                            class="form-control"></div>
                             </div>
@@ -341,14 +357,16 @@
                             <div class="col-md-6">
                                 <div class="position-relative form-group">
                                     <label for="server_url" class="">Server URL</label>
-                                    <input title="Server to connect"  value="{{user_settings.server_url}}" name="server_url" id="server_url"
+                                    <input title="Server to connect" value="{{user_settings.server_url}}"
+                                           name="server_url" id="server_url"
                                            type="text" class="form-control">
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="position-relative form-group">
                                     <label for="server_report_interval_sec" class="">Server report interval</label>
-                                    <input title="Interval to report to Server" value="{{user_settings.server_report_interval_sec}}"
+                                    <input title="Interval to report to Server"
+                                           value="{{user_settings.server_report_interval_sec}}"
                                            name="server_report_interval_sec" id="server_report_interval_sec" type="text"
                                            class="form-control"></div>
                             </div>
@@ -356,7 +374,8 @@
                         <div class="form-row">
                             <div class="col-md-4">
                                 <div class="position-relative form-check">
-                                    <input title="Use System Candidates or only personal " {%if user_settings.server_use_system_candidates%}
+                                    <input title="Use System Candidates or only personal " {%if
+                                           user_settings.server_use_system_candidates%}
                                            checked
                                            {% endif %} name="server_use_system_candidates"
                                            id="server_use_system_candidates" type="checkbox"
@@ -380,11 +399,11 @@
                             <div class="col-md-4">
                                 <div class="position-relative form-check">
                                     <input title="Notify on opening position"
-                                            {%if user_settings.notify_buy%}
-                                            checked
-                                            {% endif %}
-                                            name="notify_buy" id="notify_buy" type="checkbox"
-                                            class="form-check-input">
+                                           {%if user_settings.notify_buy%}
+                                           checked
+                                           {% endif %}
+                                           name="notify_buy" id="notify_buy" type="checkbox"
+                                           class="form-check-input">
                                     <label for="notify_buy" class="form-check-label">Notify buying</label>
                                 </div>
                             </div>
@@ -392,22 +411,22 @@
 
                                 <div class="position-relative form-check">
                                     <input title="Notify on closed position"
-                                            {%if user_settings.notify_sell%}
-                                            checked
-                                            {% endif %}
-                                            name="notify_sell" id="notify_sell" type="checkbox"
-                                            class="form-check-input">
+                                           {%if user_settings.notify_sell%}
+                                           checked
+                                           {% endif %}
+                                           name="notify_sell" id="notify_sell" type="checkbox"
+                                           class="form-check-input">
                                     <label for="notify_sell" class="form-check-label">Notify selling</label>
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="position-relative form-check">
                                     <input title="Notify on start Trailing"
-                                            {%if user_settings.notify_trail%}
-                                            checked
-                                            {% endif %}
-                                            name="notify_trail" id="notify_trail" type="checkbox"
-                                            class="form-check-input">
+                                           {%if user_settings.notify_trail%}
+                                           checked
+                                           {% endif %}
+                                           name="notify_trail" id="notify_trail" type="checkbox"
+                                           class="form-check-input">
                                     <label for="notify_trail" class="form-check-label">Notify trailing</label>
                                 </div>
                             </div>

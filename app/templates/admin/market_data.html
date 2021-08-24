@@ -44,8 +44,8 @@
                 </tr>
                 </thead>
                 <tbody>
-                {% for m in marketdata  %}
-                <tr >
+                {% for m in marketdata %}
+                <tr>
                     <td>
                         <form action="{{url_for('research.updatemarketdataforcandidate')}}" method="post">
                             <input type="hidden" name="ticker_to_update" value="{{ m.ticker }}">
@@ -54,9 +54,9 @@
                     </td>
                     <td>
                         <a href="{{url_for('candidates.info')}}?ticker_to_show={{ m.ticker }}">
-                                {{ m.ticker }}
-                            </a>
-                        </td>
+                            {{ m.ticker }}
+                        </a>
+                    </td>
                     <td>{{ m.yahoo_avdropP|round(1, 'floor') }}</td>
                     <td>{{ m.yahoo_avspreadP|round(1, 'floor') }}</td>
                     <td>{{ m.tipranks }}
@@ -81,7 +81,7 @@
 {% endblock %}
 
 {% block scripting %}
-    <script type="text/javascript">
+<script type="text/javascript">
         $(document).ready(function () {
             $('#search-users').keyup(function () {
                 var searchText = $(this).val();
@@ -103,5 +103,6 @@
                 }
             });
         });
-    </script>
+
+</script>
 {% endblock %}
