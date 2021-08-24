@@ -18,6 +18,9 @@ triger via Task
 
 Different strategies Risk/Weighted/Safe
 
+Admin Monitor part : User/Value/PNL/SMA/Status/TWSStatus/Restart
+
+
 My performance page : graph for Net, success rate, table with positions, link to IBKR
 Aggregated Users Performance on Admin Page - clicking on each -show them in personal perfomance page .
 
