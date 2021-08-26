@@ -72,22 +72,28 @@
         </div>
         <div class="app-header__content">
             <div class="app-header-left" style="width: 70%;">
-                <ul class="header-menu nav">
-                    <li class="btn-group">
-                        <a href="/" class="nav-link">
-                            <img class="logo-img" style="width: 15%;"
-                                 src="../../static/images/Logos_New/logo_transparent_background.png">
-                        </a>
-                    </li>
-                    {% if current_user.is_admin() %}
-                    <li class="btn-group nav-item">
-                        <a href="/admin/" class="nav-link">
-                            <i class="nav-link-icon fa fa-cogs"></i>
-                            Administrator Dashboard
-                        </a>
-                    </li>
-                    {% endif %}
-                </ul>
+                <div class="header-btn-lg pr-0">
+                    <div class="widget-content p-0">
+                        <div class="widget-content-wrapper">
+                            <ul class="header-menu nav">
+                            <li class="btn-group" style="width: 20%">
+                                <a href="/" class="nav-link">
+                                    <img class="logo-img" style="width: 93%;"
+                                         src="../../static/images/Logos_New/logo_transparent_background.png">
+                                </a>
+                            </li>
+                            {% if current_user.is_admin() %}
+                            <li class="btn-group nav-item">
+                                <a href="/admin/" class="nav-link">
+                                    <i class="nav-link-icon fa fa-cogs"></i>
+                                    Administrator Dashboard
+                                </a>
+                            </li>
+                            {% endif %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="app-header-right">
                 <div class="header-btn-lg pr-0">
@@ -98,7 +104,7 @@
                                 <li class="btn-group nav-item">
                                     <a href="/account/manage/info" class="nav-link">
                                         <i class="nav-link-icon fa fa-user-circle"></i>
-                                        Your Account
+                                        {{current_user.first_name}} {{current_user.last_name}}
                                     </a>
                                 </li>
                                 <li class="btn-group nav-item">

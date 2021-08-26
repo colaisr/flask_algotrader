@@ -2,17 +2,18 @@ GENERAL NEXTs LIST
 
 The Nexts
 -------------
-Admin Dashboard - to correct place
 
-Admin Monitor part : User/Status/TWSStatus/RestartBtn/Value/PNL/SMA
+DONE - overall Fund value- remove decimal
+DONE - "Your Account" replace by "FirstName LastName"
+DONE - Admin Dashboard - to correct place
+DONE - Admin Monitor part : User/Status/TWSStatus/RestartBtn/Value/PNL/SMA
+DONE - spiders status to put on Trader Station
+
+-------------
+
+
 
 New logo: Emails.
-
-overall Fund value- remove decimal
-
-spiders status to put on Trader Station
-
-"Your Account" replace by "FirstName LastName"
 
 Different strategies Risk/Weighted/Safe
 

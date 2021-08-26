@@ -35,17 +35,17 @@
                     <td>{{ u.first_name }}</td>
                     <td>{{ u.last_name }}</td>
                     <td>{{ u.email }}</td>
-                    <td style="text-align: center;">
+                    <td class="text-center">
                         {% if u.confirmed %}
                         <i class="check icon green"></i>
                         {%endif%}
                     </td>
-                    <td style="text-align: center;">
+                    <td  class="text-center">
                         {% if u.tws_requirements %}
                         <i class="check icon green"></i>
                         {%endif%}
                     </td>
-                    <td style="text-align: center;">
+                    <td  class="text-center">
                         <form action="{{url_for('admin.userapprove')}}" method="post">
                             <input type="hidden" name="user_to_approve" value="{{ u.id }}">
                             <button type="submit" class="btn_approve" {% if not u.confirmed or not u.tws_requirements%}

@@ -17,6 +17,7 @@
                 <div style="    margin-right: 10px;">
                     <form action="/connections/logrestartrequest/" method="post">
                         <input type="hidden" name="usersemail" value={{user.email}}>
+                        <input type="hidden" name="fromadmin" value="0">
                         <button title="Restart station" type="submit"><i class="fa fa-retweet"></i></button>
                     </form>
                 </div>
@@ -56,11 +57,14 @@
             </div>
             <div class="page-title-actions">
                 <div>
-                    <div class="mb-2 mr-2 badge badge-info">EST : {{ current_est_time }}</div>
+                    <div class="mb-2 mr-2 badge badge-info">EST:  {{ current_est_time }}</div>
                 </div>
 
                 <div>
-                    <div class="mb-2 mr-2 badge badge-info">US market : {{ trading_session_state }}</div>
+                    <div class="mb-2 mr-2 badge badge-info">US market:  {{ trading_session_state }}</div>
+                </div>
+                <div>
+                    <div class="mb-2 mr-2 badge {{ bg_upd_color }}"  data-toggle="tooltip" data-placement="bottom" title="Last update market data">Upd:  {{ last_update_date }}</div>
                 </div>
             </div>
         </div>
