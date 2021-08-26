@@ -16,7 +16,9 @@ spiders status to put on Trader Station
 
 Different strategies Risk/Weighted/Safe
 
+Client version: to variable -> transmit to report ->show on admins control page
 
+Logs for client...needs exploration ...ideally stream to server...
 
 My performance page : graph for Net, success rate, table with positions, link to IBKR
 Aggregated Users Performance on Admin Page - clicking on each -show them in personal perfomance page .
