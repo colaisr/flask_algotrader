@@ -1,3 +1,4 @@
+import app.generalutils as general
 from flask import (
     Blueprint,
     abort,
@@ -20,7 +21,7 @@ from app.admin.forms import (
 )
 from app.decorators import admin_required
 from app.email import send_email
-from app.models import EditableHTML, Role, User, TickerData, UserSetting, ClientCommand
+from app.models import EditableHTML, Role, User, TickerData, UserSetting, ClientCommand, Report
 
 admin = Blueprint('admin', __name__)
 
@@ -81,14 +82,6 @@ def invite_user():
             user=user,
             invite_link=invite_link,
         )
-        # get_queue().enqueue(
-        #     send_email,
-        #     recipient=user.email,
-        #     subject='You Are Invited To Join',
-        #     template='account/email/invite',
-        #     user=user,
-        #     invite_link=invite_link,
-        # )
         flash('User {} successfully invited'.format(user.full_name()),
               'form-success')
     return render_template('admin/new_user.html', form=form)
@@ -105,13 +98,41 @@ def registered_users():
         'admin/registered_users.html', users=users, roles=roles)
 
 
+@admin.route('/users_monitor')
+@login_required
+@admin_required
+def users_monitor():
+    # users = User.query.filter_by(admin_confirmed=0).all()
+    reports = Report.query.all()
+    all_users_settings = UserSetting.query.all()
+    users = []
+    for report in reports:
+        settings = [x for x in all_users_settings if x.email == report.email][0]
+        user_status = general.user_online_status(report.report_time, settings.station_interval_worker_sec)
+        user_status_str = "on" if user_status else "off"
+        user_status_class = "text-success" if user_status else "text-danger"
+        sma = report.remaining_sma_with_safety if settings.algo_allow_margin else report.excess_liquidity
+        user = {
+            "email": report.email,
+            "online_status": user_status_str,
+            "user_status_class": user_status_class,
+            "market_data_status": report.market_data_error,
+            "margin": settings.algo_allow_margin,
+            "sma": sma,
+            "pnl": report.dailyPnl,
+            "net": report.net_liquidation
+        }
+        users.append(user)
+    return render_template(
+        'admin/users_monitor.html', users=users)
+
+
 @admin.route('/pendingapproval')
 @login_required
 @admin_required
 def pending_approval():
     """View all registered users."""
     users = User.query.filter_by(admin_confirmed=0).all()
-    # roles = Role.query.all()
     return render_template(
         'admin/pending_approval.html', users=users)
 
@@ -224,19 +245,15 @@ def delete_user(user_id):
 @admin_required
 def update_editor_contents():
     """Update the contents of an editor."""
-
     edit_data = request.form.get('edit_data')
     editor_name = request.form.get('editor_name')
-
     editor_contents = EditableHTML.query.filter_by(
         editor_name=editor_name).first()
     if editor_contents is None:
         editor_contents = EditableHTML(editor_name=editor_name)
     editor_contents.value = edit_data
-
     db.session.add(editor_contents)
     db.session.commit()
-
     return 'OK', 200
 
 

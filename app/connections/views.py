@@ -217,10 +217,12 @@ def get_command():
 @connections.route('logrestartrequest/', methods=['POST'])
 def log_restart_request():
     logged_user = request.form['usersemail']
+    from_admin = request.form['fromadmin']
+    url_redirect = 'admin.users_monitor' if from_admin == "1" else 'userview.traderstationstate'
     client_command = ClientCommand.query.filter_by(email=logged_user).first()
     client_command.set_restart()
     flash('Restart request logged', 'success')
-    return redirect(url_for('userview.traderstationstate'))
+    return redirect(url_for(url_redirect))
 
 
 @csrf.exempt

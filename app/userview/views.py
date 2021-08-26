@@ -1,8 +1,8 @@
 import json
 import ssl
+import app.generalutils as general
 from datetime import datetime
 from urllib.request import urlopen
-from pytz import timezone
 
 from flask import (
     Blueprint,
@@ -14,7 +14,7 @@ from flask_login import (
     current_user,
     login_required
 )
-from app.models import Position, Report, Candidate, UserSetting
+from app.models import Position, Report, Candidate, UserSetting, LastUpdateSpyderData
 
 userview = Blueprint('userview', __name__)
 
@@ -46,6 +46,8 @@ def traderstationstate():
     report = Report.query.filter_by(email=current_user.email).first()
     settings = UserSetting.query.filter_by(email=current_user.email).first()
 
+    last_update_date = LastUpdateSpyderData.query.first().last_update_date
+    bg_upd_color = "badge-success" if datetime.now().day == last_update_date.day else "badge-danger"
     use_margin = settings.algo_allow_margin
     report_interval = settings.server_report_interval_sec
     if report is None:
@@ -61,9 +63,7 @@ def traderstationstate():
         report.last_worker_execution_text = report.last_worker_execution.strftime("%H:%M:%S")
         report.market_time_text = report.market_time.strftime("%H:%M")
         report.dailyPnl = round(report.dailyPnl, 2)
-        pnl_bg_box_color = 'bg-grow-early'
-        if report.dailyPnl < 0:
-            pnl_bg_box_color = 'bg-love-kiss'
+        pnl_bg_box_color = 'bg-love-kiss' if report.dailyPnl < 0 else 'bg-grow-early'
         report.remaining_sma_with_safety = round(report.remaining_sma_with_safety, 2)
 
         open_positions = json.loads(report.open_positions_json)
@@ -78,10 +78,7 @@ def traderstationstate():
             else:
                 v['days_open'] = "many"
 
-            if v['Value'] != 0:
-                profit = v['UnrealizedPnL'] / v['Value'] * 100
-            else:
-                profit = 0
+            profit = v['UnrealizedPnL'] / v['Value'] * 100 if v['Value'] != 0 else 0
             v['profit_in_percents'] = profit
             if v['stocks'] != 0:
                 report.all_positions_value += int(v['Value'])
@@ -96,10 +93,8 @@ def traderstationstate():
                 v['profit_progress_percent'] = abs(profit / 10 * 100)
 
             candidate = Candidate.query.filter_by(ticker=k).first()
-            if candidate.sector in sectors_dict.keys():
-                sectors_dict[candidate.sector] = sectors_dict[candidate.sector] + int(v['Value'])
-            else:
-                sectors_dict[candidate.sector] = int(v['Value'])
+            sectors_dict[candidate.sector] = sectors_dict[candidate.sector] + int(v['Value']) if candidate.sector in sectors_dict.keys() else int(v['Value'])
+
         graph_sectors = []
         graph_sectors_values = []
         for sec, val in sectors_dict.items():
@@ -114,23 +109,11 @@ def traderstationstate():
             if 'target_price' not in v.keys():
                 v['target_price'] = 0
 
-        report_time = report.report_time
-        current = datetime.utcnow()
-        delta = (current - report_time).seconds
-        refresh_rate = settings.station_interval_worker_sec * 2  # takes time to process
-        if delta < refresh_rate:
-            online = True
-        else:
-            online = False
-
-        if report.api_connected:
-            api_error = False
-        else:
-            api_error = True
+        online = general.user_online_status(report.report_time, settings.station_interval_worker_sec)
+        api_error = False if report.api_connected else True
 
     trading_session_state = is_market_open()
-    tz = timezone('US/Eastern')
-    current_est_time = datetime.now(tz).time().strftime("%H:%M")
+    current_est_time = general.get_by_timezone('US/Eastern').time().strftime("%H:%M")
 
     if report is None:
         return redirect(url_for('candidates.usercandidates'))
@@ -143,7 +126,7 @@ def traderstationstate():
                                api_error=api_error,
                                trading_session_state=trading_session_state,
                                report_interval=report_interval,
-                               report_time=report_time,
+                               report_time=report.report_time,
                                candidates_live=candidates_live,
                                open_positions=open_positions,
                                open_orders=open_orders,
@@ -151,6 +134,8 @@ def traderstationstate():
                                report=report,
                                margin_used=use_margin,
                                pnl_bg_box_color=pnl_bg_box_color,
+                               last_update_date=last_update_date.strftime("%m-%d %H:%M"),
+                               bg_upd_color=bg_upd_color,
                                form=None)
 
 

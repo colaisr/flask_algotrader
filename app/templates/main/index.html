@@ -74,7 +74,7 @@
                             <div class="widget-subheading">All users portfolio value</div>
                         </div>
                         <div class="widget-content-right">
-                            <div class="widget-numbers text-warning">{{system_status['funds']}} $</div>
+                            <div class="widget-numbers text-warning">{{system_status['funds'] | round |int}} $</div>
                         </div>
                     </div>
                 </div>
