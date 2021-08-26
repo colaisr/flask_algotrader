@@ -112,6 +112,7 @@ def users_monitor():
         user_status_str = "on" if user_status else "off"
         user_status_class = "text-success" if user_status else "text-danger"
         sma = report.remaining_sma_with_safety if settings.algo_allow_margin else report.excess_liquidity
+        pnl_class = "text-success" if report.dailyPnl > 0 else "text-danger"
         user = {
             "email": report.email,
             "online_status": user_status_str,
@@ -120,6 +121,7 @@ def users_monitor():
             "margin": settings.algo_allow_margin,
             "sma": sma,
             "pnl": report.dailyPnl,
+            "pnl_class": pnl_class,
             "net": report.net_liquidation
         }
         users.append(user)

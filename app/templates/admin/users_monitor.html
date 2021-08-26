@@ -35,7 +35,7 @@
                     <th>Market data status</th>
                     <th>Margin</th>
                     <th>SMA</th>
-                    <th>PNL</th>
+                    <th>PnL</th>
                     <th>NET</th>
                 </tr>
                 </thead>
@@ -63,9 +63,9 @@
                         <i class="check icon green"></i>
                         {%endif%}
                     </td>
-                    <td>{{ u["sma"] |round |int}}</td>
-                    <td>{{ u["pnl"] |round |int }}</td>
-                    <td>{{ u["net"] |round |int }}</td>
+                    <td>$ {{ u["sma"] |round |int}}</td>
+                    <td class="{{u['pnl_class']}}">$ {{ u["pnl"] |round |int }}</td>
+                    <td>$ {{ u["net"] |round |int }}</td>
                 </tr>
                 {% endfor %}
                 </tbody>
