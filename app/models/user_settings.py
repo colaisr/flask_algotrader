@@ -59,6 +59,46 @@ class UserSetting(db.Model):
     notify_sell = db.Column('notify_sell', db.Boolean)
     notify_trail = db.Column('notify_trail', db.Boolean)
 
+
+    def __init__(self, email):
+        self.email = email
+        self.algo_max_loss = -10
+        self.algo_take_profit = 6
+        self.algo_bulk_amount_usd = 1000
+        self.algo_trailing_percent = 1
+        self.algo_allow_buy = False
+        self.algo_allow_sell = False
+        self.algo_allow_margin = True
+        self.algo_apply_min_rank = True
+        self.algo_min_rank = 8
+        self.algo_apply_accepted_fmp_ratings = True
+        self.algo_accepted_fmp_ratings = 'S-,S,S+'
+        self.algo_apply_max_yahoo_rank = True
+        self.algo_max_yahoo_rank = 2
+        self.algo_sell_on_swan = True
+        self.algo_positions_for_swan = 3
+        self.algo_apply_max_hold = True
+        self.algo_max_hold_days = 31
+        self.algo_apply_min_underprice = True
+        self.algo_min_underprice = 0
+        self.algo_apply_min_momentum = True
+        self.algo_min_momentum = 0
+        self.algo_apply_min_stock_invest_rank = True
+        self.algo_min_stock_invest_rank = 0
+        self.connection_account_name = 'U0000000'
+        self.connection_port = 7498
+        self.connection_tws_user = 'your_tws_user_name'
+        self.connection_tws_pass = 'your_tws_user_password'
+        self.station_interval_ui_sec = 1
+        self.station_interval_worker_sec = 60
+        self.station_autorestart = True
+        self.server_url = 'https://www.algotrader.company'
+        self.server_report_interval_sec = 30
+        self.server_use_system_candidates = True
+        self.notify_buy = True
+        self.notify_sell = True
+        self.notify_trail = True
+
     def update_user_settings(self):
         settings = UserSetting.query.filter((UserSetting.email == self.email)).first()
 
