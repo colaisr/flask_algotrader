@@ -167,4 +167,5 @@ class UserSetting(db.Model):
         d['notify_buy'] = self.notify_buy
         d['notify_sell'] = self.notify_sell
         d['notify_trail'] = self.notify_trail
+        d['strategy_id'] = self.strategy_id
         return d

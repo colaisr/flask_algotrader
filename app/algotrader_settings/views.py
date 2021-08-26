@@ -12,7 +12,7 @@ from flask_login import login_required, current_user
 from werkzeug.utils import redirect
 
 from app import csrf
-from app.models import UserSetting
+from app.models import UserSetting, Strategy, UserStrategySettingsDefault
 from app.email import send_email
 
 algotradersettings = Blueprint('algotradersettings', __name__)
@@ -25,14 +25,22 @@ def json_serial(obj):
         return obj.isoformat()
     raise TypeError("Type %s not serializable" % type(obj))
 
-
-@algotradersettings.route('/usersettings', methods=['GET'])
+@algotradersettings.route('/usersettings/', defaults={'strategy_id': None}, methods=['GET'])
+@algotradersettings.route('/usersettings/<int:strategy_id>', methods=['GET'])
 @login_required
-def usersettings():
+def usersettings(strategy_id=None):
     if not current_user.admin_confirmed:
         return redirect(url_for('station.download'))
     user_settings = UserSetting.query.filter_by(email=current_user.email).first()
-    return render_template('userview/algotraderSettings.html', user_settings=user_settings)
+    default_strategy_id = user_settings.strategy_id
+    if strategy_id is not None:
+        default_strategy_id = strategy_id
+    default_settings = UserStrategySettingsDefault.query.filter_by(id=default_strategy_id).first()
+    strategies = Strategy.query.all()
+    return render_template('userview/algotraderSettings.html',
+                           user_settings=user_settings,
+                           strategies=strategies,
+                           default_settings=default_settings)
 
 
 @algotradersettings.route('/savesettings', methods=['POST'])
@@ -137,6 +145,8 @@ def savesettings():
         user_settings.server_use_system_candidates = True
     else:
         user_settings.server_use_system_candidates = False
+
+    user_settings.strategy_id = request.form['strategy_id']
 
     user_settings.update_user_settings()
     return redirect(url_for('algotradersettings.usersettings'))

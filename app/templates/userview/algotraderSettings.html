@@ -42,7 +42,22 @@
                 <div class="main-card mb-3 card">
                     <div class="card-body">
                         <h2 style="font-size: large;" class="card-title">Trading settings </h2>
-                        <h5 style="font-size: medium;" class="card-title">Strategy </h5>
+                        <div class="page-title-wrapper">
+                            <div style="display: inline-flex;">
+                                <h5 style="font-size: medium;" class="card-title">Strategy </h5>
+                            </div>
+                            <div style="display: inline-flex;" class="pl-5">
+                                <div role="group" class="btn-group btn-group-toggle form-group" data-toggle="buttons">
+                                    {% for s in strategies %}
+                                    <label class="btn btn-info {% if s.id == default_settings.id %} active {% endif %}">
+                                        <input onchange="window.location.href='{{ url_for( 'algotradersettings.usersettings',strategy_id = s.id) }}';" type="radio" name="options" id="options{{s.id}}" value="{{s.id}}" autocomplete="off">
+                                        {{s.strategy}}
+                                    </label>
+                                    {% endfor %}
+                                </div>
+                                <input type="hidden" name="strategy_id" value="{{default_settings.id}}">
+                            </div>
+                        </div>
                         <div class="form-row">
                             <div class="col-md-6">
                                 <div class="position-relative form-group">
@@ -58,7 +73,8 @@
                                     <input title="Profit taker. At this profit trailing sell will be triggered with setted %"
                                            value="{{user_settings.algo_take_profit}}" name="algo_take_profit"
                                            id="algo_take_profit" type="text"
-                                           class="form-control"></div>
+                                           class="form-control">
+                                </div>
                             </div>
                         </div>
                         <div class="form-row">
@@ -188,7 +204,7 @@
                                     <label for="algo_min_rank" class="">Min Tiprank</label>
 
                                     <input title="Minimal TipRank to transmit to station"
-                                           value="{{user_settings.algo_min_rank}}" name="algo_min_rank"
+                                           value="{{default_settings.algo_min_rank}}" name="algo_min_rank"
                                            id="algo_min_rank" type="text"
                                            class="form-control"></div>
                             </div>
@@ -211,7 +227,7 @@
                                 <div class="position-relative form-group">
                                     <label for="algo_accepted_fmp_ratings" class="">Accepted FMP</label>
                                     <input title="Ratings to transmit to station. Coma separated"
-                                           value="{{user_settings.algo_accepted_fmp_ratings}}"
+                                           value="{{default_settings.algo_accepted_fmp_ratings}}"
                                            name="algo_accepted_fmp_ratings" id="algo_accepted_fmp_ratings" type="text"
                                            class="form-control"></div>
                             </div>
@@ -233,7 +249,7 @@
                             <div class="col-md-4">
                                 <div class="position-relative form-group">
                                     <label for="algo_accepted_fmp_ratings" class="">Maximal Yahoo rating</label>
-                                    <input title="Maximal accepted rating" value="{{user_settings.algo_max_yahoo_rank}}"
+                                    <input title="Maximal accepted rating" value="{{default_settings.algo_max_yahoo_rank}}"
                                            name="algo_max_yahoo_rank" id="algo_max_yahoo_rank" type="text"
                                            class="form-control"></div>
                             </div>
@@ -256,7 +272,7 @@
                                 <div class="position-relative form-group">
                                     <label for="algo_min_stock_invest_rank" class="">Minimal Stock Invest rank</label>
                                     <input title="Minimal accepted rating"
-                                           value="{{user_settings.algo_min_stock_invest_rank}}"
+                                           value="{{default_settings.algo_min_stock_invest_rank}}"
                                            name="algo_min_stock_invest_rank" id="algo_min_stock_invest_rank" type="text"
                                            class="form-control"></div>
                             </div>
@@ -280,7 +296,7 @@
                                 <div class="position-relative form-group">
                                     <label for="algo_min_underprice" class="">Minimal underprice level %</label>
                                     <input title="Minimal allowed underprice: use negative for overpriced"
-                                           value="{{user_settings.algo_min_underprice}}"
+                                           value="{{default_settings.algo_min_underprice}}"
                                            name="algo_min_underprice" id="algo_min_underprice" type="text"
                                            class="form-control"></div>
                             </div>
@@ -303,7 +319,7 @@
                                 <div class="position-relative form-group">
                                     <label for="algo_min_momentum" class="">Minimal Momentum % </label>
                                     <input title="Minimal allowed Momentum use negative for descending graph"
-                                           value="{{user_settings.algo_min_momentum}}"
+                                           value="{{default_settings.algo_min_momentum}}"
                                            name="algo_min_momentum" id="algo_min_momentum" type="text"
                                            class="form-control"></div>
                             </div>
