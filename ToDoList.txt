@@ -10,6 +10,7 @@ behavior : if today- green
 
 2)Admin Monitor part : PnL - green /red (positive- negative)
 
+3)Admin Monitor: refresh every 15 sec
 
 -------------
 
