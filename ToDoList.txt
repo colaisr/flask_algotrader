@@ -2,23 +2,20 @@ GENERAL NEXTs LIST
 
 The Nexts
 -------------
+Admin Dashboard - to correct place
+
+Admin Monitor part : User/Status/TWSStatus/RestartBtn/Value/PNL/SMA
+
 New logo: Emails.
 
-DONE - show success/fail factor in general- all poritions- all users
-DONE - overall Fund value
+overall Fund value- remove decimal
 
-DONE - spiders - put two spiders together
-DONE - spider - report on finish via API
-DONE - spiders status to put on Index and Trader Station
-
-DONE -add daily snapshoting for users : before trading: Net assets,open positions,positions value
-triger via Task
+spiders status to put on Trader Station
 
 "Your Account" replace by "FirstName LastName"
 
 Different strategies Risk/Weighted/Safe
 
-Admin Monitor part : User/Value/PNL/SMA/Status/TWSStatus/Restart
 
 
 My performance page : graph for Net, success rate, table with positions, link to IBKR
