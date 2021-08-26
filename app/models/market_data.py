@@ -53,7 +53,8 @@ class TickerData(db.Model):
 
 class LastUpdateSpyderData(db.Model):
     __tablename__ = 'LastUpdateSpyderData'
-    process_date_time = db.Column('process_date_time', db.DateTime, primary_key=True)
+    id = db.Column('id', db.Integer, primary_key=True)
+    process_date_time = db.Column('process_date_time', db.DateTime)
     last_update_date = db.Column('last_update_date', db.DateTime)
     error_status = db.Column('error_status', db.Boolean)
     error_message = db.Column('error_message', db.String)

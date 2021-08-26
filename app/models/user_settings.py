@@ -12,12 +12,29 @@ def json_serial(obj):
     raise TypeError("Type %s not serializable" % type(obj))
 
 
+class Strategy(db.Model):
+    __tablename__ = 'Strategies'
+    id = db.Column('id', db.Integer, primary_key=True)
+    strategy = db.Column('strategy', db.String)
+
+
+class UserStrategySettingsDefault(db.Model):
+    __tablename__ = 'UserStrategySettingsDefault'
+    id = db.Column('id', db.Integer, primary_key=True)
+    strategy_id = db.Column('strategy_id', db.Integer)
+    algo_min_rank = db.Column('algo_min_rank', db.Integer)
+    algo_accepted_fmp_ratings = db.Column('algo_accepted_fmp_ratings', db.String)
+    algo_max_yahoo_rank = db.Column('algo_max_yahoo_rank', db.Float)
+    algo_min_underprice = db.Column('algo_min_underprice', db.Float)
+    algo_min_momentum = db.Column('algo_min_momentum', db.Float)
+    algo_min_stock_invest_rank = db.Column('algo_min_stock_invest_rank', db.Float)
+
+
 class UserSetting(db.Model):
     __tablename__ = 'UserSettings'
     # __bind_key__ = 'db_clients'
     id = db.Column('id', db.Integer, primary_key=True)
     email = db.Column('email', db.String)
-
     algo_take_profit = db.Column('algo_take_profit', db.Integer)
     algo_max_loss = db.Column('algo_max_loss', db.Integer)
     algo_trailing_percent = db.Column('algo_trailing_percent', db.Integer)
@@ -41,26 +58,24 @@ class UserSetting(db.Model):
     algo_min_momentum = db.Column('algo_min_momentum', db.Float)
     algo_apply_min_stock_invest_rank = db.Column('algo_apply_min_stock_invest_rank', db.Boolean)
     algo_min_stock_invest_rank = db.Column('algo_min_stock_invest_rank', db.Float)
-
     connection_account_name = db.Column('connection_account_name', db.String)
     connection_port = db.Column('connection_port', db.Integer)
     connection_tws_user = db.Column('connection_tws_user', db.String)
     connection_tws_pass = db.Column('connection_tws_pass', db.String)
-
     station_interval_ui_sec = db.Column('station_interval_ui_sec', db.Integer)
     station_interval_worker_sec = db.Column('station_interval_worker_sec', db.Integer)
     station_autorestart = db.Column('station_autorestart', db.Boolean)
-
     server_url = db.Column('server_url', db.String)
     server_report_interval_sec = db.Column('server_report_interval_sec', db.Integer)
     server_use_system_candidates = db.Column('server_use_system_candidates', db.Boolean)
-
     notify_buy = db.Column('notify_buy', db.Boolean)
     notify_sell = db.Column('notify_sell', db.Boolean)
     notify_trail = db.Column('notify_trail', db.Boolean)
+    strategy_id = db.Column('strategy_id', db.Integer)
 
-
-    def __init__(self, email):
+    def __init__(self, email, **kwargs):
+        super(UserSetting, self).__init__(**kwargs)
+        # self.strategy = Strategy.query.filter_by(strategy_id=self.strategy_id).first().strategy
         self.email = email
         self.algo_max_loss = -10
         self.algo_take_profit = 6
@@ -70,21 +85,15 @@ class UserSetting(db.Model):
         self.algo_allow_sell = False
         self.algo_allow_margin = True
         self.algo_apply_min_rank = True
-        self.algo_min_rank = 8
         self.algo_apply_accepted_fmp_ratings = True
-        self.algo_accepted_fmp_ratings = 'S-,S,S+'
         self.algo_apply_max_yahoo_rank = True
-        self.algo_max_yahoo_rank = 2
         self.algo_sell_on_swan = True
         self.algo_positions_for_swan = 3
         self.algo_apply_max_hold = True
         self.algo_max_hold_days = 31
         self.algo_apply_min_underprice = True
-        self.algo_min_underprice = 0
         self.algo_apply_min_momentum = True
-        self.algo_min_momentum = 0
         self.algo_apply_min_stock_invest_rank = True
-        self.algo_min_stock_invest_rank = 0
         self.connection_account_name = 'U0000000'
         self.connection_port = 7498
         self.connection_tws_user = 'your_tws_user_name'
@@ -98,6 +107,17 @@ class UserSetting(db.Model):
         self.notify_buy = True
         self.notify_sell = True
         self.notify_trail = True
+        self.strategy_id = 1
+        self.get_strategy_default(self.strategy_id)
+
+    def get_strategy_default(self, strategy_id):
+        strategy = UserStrategySettingsDefault.query.filter_by(id=strategy_id).first()
+        self.algo_min_rank = strategy.algo_min_rank
+        self.algo_accepted_fmp_ratings = strategy.algo_accepted_fmp_ratings
+        self.algo_max_yahoo_rank = strategy.algo_max_yahoo_rank
+        self.algo_min_stock_invest_rank = strategy.algo_min_stock_invest_rank
+        self.algo_min_underprice = strategy.algo_min_underprice
+        self.algo_min_momentum = strategy.algo_min_momentum
 
     def update_user_settings(self):
         settings = UserSetting.query.filter((UserSetting.email == self.email)).first()
