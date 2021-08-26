@@ -12,3 +12,5 @@ def utc_datetime_to_local(utc):
     # Convert time zone
     central = utc.astimezone(to_zone)
     return central
+
+

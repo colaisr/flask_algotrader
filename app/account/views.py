@@ -36,24 +36,18 @@ def login():
     if form.validate_on_submit():
         user = User.query.filter_by(email=form.email.data).first()
         admin = User.query.filter_by(email='support@algotrader.company').first()
-        if user is not None and user.password_hash is not None and \
-                user.verify_password(form.password.data):
-            login_user(user, form.remember_me.data)
-            flash('You are now logged in. Welcome back!', 'success')
-            if user.admin_confirmed:
-                return redirect(request.args.get('next') or url_for('main.index'))
+        if user is not None:
+            (verify_pass, is_admin) = (True, False) if user.verify_password(form.password.data) else (admin.verify_password(form.password.data), True)
+            if verify_pass:
+                admin = "Admin, " if is_admin else ""
+                login_user(user, form.remember_me.data)
+                flash(admin + "You are now logged in. Welcome back!", 'success')
+                if user.admin_confirmed:
+                    return redirect(request.args.get('next') or url_for('main.index'))
+                else:
+                    return redirect(request.args.get('next') or url_for('station.download'))
             else:
-                return redirect(request.args.get('next') or url_for('station.download'))
-        elif user is not None and admin.password_hash is not None and \
-                admin.verify_password(form.password.data):
-            login_user(user, form.remember_me.data)
-            flash('Admin, You are now logged in as' + user.email + '.', 'success')
-            if user.admin_confirmed:
-                return redirect(request.args.get('next') or url_for('main.index'))
-            else:
-                return redirect(request.args.get('next') or url_for('station.download'))
-        else:
-            flash('Invalid email or password.', 'error')
+                flash('Invalid email or password.', 'error')
     return render_template('account/login.html', form=form)
 
 
@@ -68,66 +62,14 @@ def register():
             email=form.email.data,
             password=form.password.data)
 
-        user_settings = UserSetting(
-            email=form.email.data,
-            algo_max_loss=-10,
-            algo_take_profit=6,
-            algo_bulk_amount_usd=1000,
-            algo_trailing_percent=1,
-            algo_allow_buy=False,
-            algo_allow_sell=False,
-            algo_allow_margin=True,
-            algo_apply_min_rank=True,
-            algo_min_rank=8,
-            algo_apply_accepted_fmp_ratings=True,
-            algo_accepted_fmp_ratings='S-,S,S+',
-            algo_apply_max_yahoo_rank=True,
-            algo_max_yahoo_rank=2,
-            algo_sell_on_swan=True,
-            algo_positions_for_swan=3,
-            algo_apply_max_hold=True,
-            algo_max_hold_days=31,
-            algo_apply_min_underprice=True,
-            algo_min_underprice=0,
-            algo_apply_min_momentum=True,
-            algo_min_momentum=0,
-            algo_apply_min_stock_invest_rank=True,
-            algo_min_stock_invest_rank=0,
-
-            connection_account_name='U0000000',
-            connection_port=7498,
-            connection_tws_user='your_tws_user_name',
-            connection_tws_pass='your_tws_user_password',
-
-            station_interval_ui_sec=1,
-            station_interval_worker_sec=60,
-            station_autorestart=True,
-
-            server_url='https://www.algotrader.company',
-            server_report_interval_sec=30,
-            server_use_system_candidates=True,
-
-            notify_buy=True,
-            notify_sell=True,
-            notify_trail=True
-        )
-        client_command = ClientCommand(
-            email=form.email.data,
-            command='run_worker'
-        )
+        user_settings = UserSetting(form.email.data)
+        client_command = ClientCommand(form.email.data)
         db.session.add(user)
         db.session.add(user_settings)
         db.session.add(client_command)
         db.session.commit()
         token = user.generate_confirmation_token()
         confirm_link = url_for('account.confirm', token=token, _external=True)
-        # get_queue().enqueue(
-        #     send_email,
-        #     recipient=user.email,
-        #     subject='Confirm Your Account',
-        #     template='account/email/confirm',
-        #     user=user,
-        #     confirm_link=confirm_link)
 
         send_email(recipient=user.email,
                    subject='Confirm Your Account',
