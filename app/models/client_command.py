@@ -7,6 +7,10 @@ class ClientCommand(db.Model):
     email = db.Column('email', db.String)
     command = db.Column('command', db.String)
 
+    def __init__(self, email):
+        self.email = email
+        self.command = 'run_worker'
+
     def add_commannd(self):
         db.session.add(self)
         db.session.commit()
