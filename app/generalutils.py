@@ -29,6 +29,7 @@ def get_by_timezone(tz_str):
     date = datetime.now(tz)
     return date
 
+
 def user_online_status(report_time, station_interval_worker_sec):
     current = datetime.utcnow()
     delta = (current - report_time).seconds
