@@ -49,13 +49,13 @@
                             <div style="display: inline-flex;" class="pl-5">
                                 <div role="group" class="btn-group btn-group-toggle form-group" data-toggle="buttons">
                                     {% for s in strategies %}
-                                    <label class="btn btn-info {% if s.id == default_settings.id %} active {% endif %}">
+                                    <label class="btn btn-info {% if s.id == default_settings.strategy_id %} active {% endif %}">
                                         <input onchange="window.location.href='{{ url_for( 'algotradersettings.usersettings',strategy_id = s.id) }}';" type="radio" name="options" id="options{{s.id}}" value="{{s.id}}" autocomplete="off">
                                         {{s.strategy}}
                                     </label>
                                     {% endfor %}
                                 </div>
-                                <input type="hidden" name="strategy_id" value="{{default_settings.id}}">
+                                <input type="hidden" name="strategy_id" id="strategy_id" value="{{default_settings.strategy_id}}">
                             </div>
                         </div>
                         <div class="form-row">
@@ -196,7 +196,7 @@
                                            {% endif %}
                                            name="algo_apply_min_rank" id="algo_apply_min_rank" type="checkbox"
                                            class="form-check-input">
-                                    <label for="algo_apply_min_rank" class="form-check-label">Apply</label>
+                                    <label for="algo_apply_min_rank" class="form-check-label strategy-change">Apply</label>
                                 </div>
                             </div>
                             <div class="col-md-4">
@@ -206,7 +206,7 @@
                                     <input title="Minimal TipRank to transmit to station"
                                            value="{{default_settings.algo_min_rank}}" name="algo_min_rank"
                                            id="algo_min_rank" type="text"
-                                           class="form-control"></div>
+                                           class="form-control strategy-change"></div>
                             </div>
                         </div>
                         <div class="form-row">
@@ -219,7 +219,7 @@
                                            {% endif %}
                                            name="algo_apply_accepted_fmp_ratings" id="algo_apply_accepted_fmp_ratings"
                                            type="checkbox"
-                                           class="form-check-input">
+                                           class="form-check-input strategy-change">
                                     <label for="algo_apply_accepted_fmp_ratings" class="form-check-label">Apply</label>
                                 </div>
                             </div>
@@ -229,7 +229,7 @@
                                     <input title="Ratings to transmit to station. Coma separated"
                                            value="{{default_settings.algo_accepted_fmp_ratings}}"
                                            name="algo_accepted_fmp_ratings" id="algo_accepted_fmp_ratings" type="text"
-                                           class="form-control"></div>
+                                           class="form-control strategy-change"></div>
                             </div>
                         </div>
                         <div class="form-row">
@@ -242,7 +242,7 @@
                                            {% endif %}
                                            name="algo_apply_max_yahoo_rank" id="algo_apply_max_yahoo_rank"
                                            type="checkbox"
-                                           class="form-check-input">
+                                           class="form-check-input strategy-change">
                                     <label for="algo_apply_max_yahoo_rank" class="form-check-label">Apply</label>
                                 </div>
                             </div>
@@ -251,7 +251,7 @@
                                     <label for="algo_accepted_fmp_ratings" class="">Maximal Yahoo rating</label>
                                     <input title="Maximal accepted rating" value="{{default_settings.algo_max_yahoo_rank}}"
                                            name="algo_max_yahoo_rank" id="algo_max_yahoo_rank" type="text"
-                                           class="form-control"></div>
+                                           class="form-control strategy-change"></div>
                             </div>
                         </div>
                         <div class="form-row">
@@ -264,7 +264,7 @@
                                            {% endif %}
                                            name="algo_apply_min_stock_invest_rank" id="algo_apply_min_stock_invest_rank"
                                            type="checkbox"
-                                           class="form-check-input">
+                                           class="form-check-input strategy-change">
                                     <label for="algo_apply_min_stock_invest_rank" class="form-check-label">Apply</label>
                                 </div>
                             </div>
@@ -274,7 +274,7 @@
                                     <input title="Minimal accepted rating"
                                            value="{{default_settings.algo_min_stock_invest_rank}}"
                                            name="algo_min_stock_invest_rank" id="algo_min_stock_invest_rank" type="text"
-                                           class="form-control"></div>
+                                           class="form-control strategy-change"></div>
                             </div>
                         </div>
 
@@ -288,7 +288,7 @@
                                            {% endif %}
                                            name="algo_apply_min_underprice" id="algo_apply_min_underprice"
                                            type="checkbox"
-                                           class="form-check-input">
+                                           class="form-check-input strategy-change">
                                     <label for="algo_apply_min_underprice" class="form-check-label">Apply</label>
                                 </div>
                             </div>
@@ -298,7 +298,7 @@
                                     <input title="Minimal allowed underprice: use negative for overpriced"
                                            value="{{default_settings.algo_min_underprice}}"
                                            name="algo_min_underprice" id="algo_min_underprice" type="text"
-                                           class="form-control"></div>
+                                           class="form-control strategy-change"></div>
                             </div>
                         </div>
                         <div class="form-row">
@@ -311,7 +311,7 @@
                                            {% endif %}
                                            name="algo_apply_min_momentum" id="algo_apply_min_momentum"
                                            type="checkbox"
-                                           class="form-check-input">
+                                           class="form-check-input strategy-change">
                                     <label for="algo_apply_min_momentum" class="form-check-label">Apply</label>
                                 </div>
                             </div>
@@ -321,7 +321,7 @@
                                     <input title="Minimal allowed Momentum use negative for descending graph"
                                            value="{{default_settings.algo_min_momentum}}"
                                            name="algo_min_momentum" id="algo_min_momentum" type="text"
-                                           class="form-control"></div>
+                                           class="form-control strategy-change"></div>
                             </div>
                         </div>
                     </div>

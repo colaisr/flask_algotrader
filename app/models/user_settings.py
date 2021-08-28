@@ -28,6 +28,12 @@ class UserStrategySettingsDefault(db.Model):
     algo_min_underprice = db.Column('algo_min_underprice', db.Float)
     algo_min_momentum = db.Column('algo_min_momentum', db.Float)
     algo_min_stock_invest_rank = db.Column('algo_min_stock_invest_rank', db.Float)
+    algo_apply_min_rank = db.Column('algo_apply_min_rank', db.Boolean)
+    algo_apply_accepted_fmp_ratings = db.Column('algo_apply_accepted_fmp_ratings', db.Boolean)
+    algo_apply_max_yahoo_rank = db.Column('algo_apply_max_yahoo_rank', db.Boolean)
+    algo_apply_min_stock_invest_rank = db.Column('algo_apply_min_stock_invest_rank', db.Boolean)
+    algo_apply_min_underprice = db.Column('algo_apply_min_underprice', db.Boolean)
+    algo_apply_min_momentum = db.Column('algo_apply_min_momentum', db.Boolean)
 
 
 class UserSetting(db.Model):
@@ -84,16 +90,10 @@ class UserSetting(db.Model):
         self.algo_allow_buy = False
         self.algo_allow_sell = False
         self.algo_allow_margin = True
-        self.algo_apply_min_rank = True
-        self.algo_apply_accepted_fmp_ratings = True
-        self.algo_apply_max_yahoo_rank = True
         self.algo_sell_on_swan = True
         self.algo_positions_for_swan = 3
         self.algo_apply_max_hold = True
         self.algo_max_hold_days = 31
-        self.algo_apply_min_underprice = True
-        self.algo_apply_min_momentum = True
-        self.algo_apply_min_stock_invest_rank = True
         self.connection_account_name = 'U0000000'
         self.connection_port = 7498
         self.connection_tws_user = 'your_tws_user_name'
@@ -118,6 +118,12 @@ class UserSetting(db.Model):
         self.algo_min_stock_invest_rank = strategy.algo_min_stock_invest_rank
         self.algo_min_underprice = strategy.algo_min_underprice
         self.algo_min_momentum = strategy.algo_min_momentum
+        self.algo_apply_min_rank = strategy.algo_apply_min_rank
+        self.algo_apply_accepted_fmp_ratings = strategy.algo_apply_accepted_fmp_ratings
+        self.algo_apply_max_yahoo_rank = strategy.algo_apply_max_yahoo_rank
+        self.algo_apply_min_stock_invest_rank = strategy.algo_apply_min_stock_invest_rank
+        self.algo_apply_min_underprice = strategy.algo_apply_min_underprice
+        self.algo_apply_min_momentum = strategy.algo_apply_min_momentum
 
     def update_user_settings(self):
         settings = UserSetting.query.filter((UserSetting.email == self.email)).first()
