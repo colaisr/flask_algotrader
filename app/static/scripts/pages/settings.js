@@ -1,7 +1,6 @@
-/*$('#savebtn').on('click', function() {
-    $("form").submit()
-})*/
+ $(document).ready(function () {
 
-$('.strategy-change').change(function() {
-    $('#strategy_id').val('4')
-})
+    $('.strategy-change').change(function() {
+        $('#strategy_id').val('4')
+    })
+ })
