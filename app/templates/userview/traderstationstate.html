@@ -165,7 +165,7 @@
                         </div>
                         <div class="progress-sub-label">
                             <div class="sub-label-left"> {{value['stocks']}} x {{value['last_bid']|round(1)}}</div>
-                            <div class="sub-label-right">{{value['days_open']+1}} Days</div>
+                            <div class="sub-label-right">{{int(value['days_open'])+1}} Days</div>
                             <div class="sub-label-right">{{value['Value']|round(1)}}</div>
                         </div>
                     </div>
