@@ -15,6 +15,8 @@ main = Blueprint('main', __name__)
 @main.route('/')
 def index():
     if current_user.is_authenticated:
+        if current_user.is_admin():
+            return redirect(url_for('admin.users_monitor'))
         return redirect(url_for('userview.traderstationstate'))
     else:
         system_status = {}
