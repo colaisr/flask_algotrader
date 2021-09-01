@@ -13,7 +13,7 @@ from sqlalchemy import text
 from app import db, csrf
 from app.email import send_email
 from app.models import User, Connection, Report, Position, ClientCommand, UserSetting, TickerData, \
-    Candidate
+    Candidate, TelegramSignal
 
 connections = Blueprint('connections', __name__)
 
@@ -134,6 +134,16 @@ def sort_by_tiprank(e):
     return e.tipranks
 
 
+def check_for_signals(candidates_live_json):
+    candidates_live = json.loads(candidates_live_json)
+    for k, v in candidates_live.items():
+        if v['Ask']<v['target_price']:
+            signal=TelegramSignal()
+            signal.ticker=v['Stock']
+            signal.received= datetime.today().date()
+            signal.add_signal()
+
+
 @csrf.exempt
 @connections.route('/postreport', methods=['POST'])
 def logreport():
@@ -161,6 +171,7 @@ def logreport():
         report.started_time = datetime.fromisoformat(request_data["started_time"])
         report.market_data_error = request_data["market_data_error"]
         report.update_report()
+        check_for_signals(report.candidates_live_json)
 
         return "Report snapshot stored at server"
     else:

@@ -12,3 +12,4 @@ from .candidates import *
 from .user_settings import *
 from .user_settings import *
 from .client_command import *
+from .telegram_signal import *
