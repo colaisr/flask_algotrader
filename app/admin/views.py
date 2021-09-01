@@ -109,21 +109,20 @@ def users_monitor():
     for report in reports:
         settings = [x for x in all_users_settings if x.email == report.email][0]
         user_status = general.user_online_status(report.report_time, settings.station_interval_worker_sec)
-        user_status_str = "on" if user_status else "off"
-        user_status_class = "text-success" if user_status else "text-danger"
         sma = report.remaining_sma_with_safety if settings.algo_allow_margin else report.excess_liquidity
         pnl_class = "text-success" if int(round(report.dailyPnl)) > 0 else "" if int(round(report.dailyPnl)) == 0 else "text-danger"
+        started_time = report.started_time.strftime("%m-%d %H:%M:%S")
 
         user = {
             "email": report.email,
-            "online_status": user_status_str,
-            "user_status_class": user_status_class,
+            "user_status": user_status,
             "market_data_status": report.market_data_error,
             "margin": settings.algo_allow_margin,
             "sma": sma,
             "pnl": report.dailyPnl,
             "pnl_class": pnl_class,
-            "net": report.net_liquidation
+            "net": report.net_liquidation,
+            "started_time": started_time
         }
         users.append(user)
     return render_template(

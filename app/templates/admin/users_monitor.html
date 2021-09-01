@@ -37,6 +37,8 @@
                     <th>SMA</th>
                     <th>PnL</th>
                     <th>NET</th>
+                    <th>Started time</th>
+                    <th>Client version</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -52,7 +54,13 @@
                     <td>
                         {{u["email"]}}
                     </td>
-                    <td class="text-center {{u['user_status_class']}}">{{ u["online_status"] }}</td>
+                    <td class="text-center">
+                        {% if u["user_status"] %}
+                        <i class="check icon green"></i>
+                        {%else%}
+                        <i class="times icon red"></i>
+                        {%endif%}
+                    </td>
                     <td class="text-center text-danger">
                         {% if u["market_data_status"]%}
                         error
@@ -60,12 +68,14 @@
                     </td>
                     <td class="text-center">
                         {% if u["margin"] %}
-                        <i class="check icon green"></i>
+                        <i class="check icon text-secondary"></i>
                         {%endif%}
                     </td>
                     <td>$ {{ u["sma"] |round |int}}</td>
                     <td class="{{u['pnl_class']}}">$ {{ u["pnl"] |round |int }}</td>
                     <td>$ {{ u["net"] |round |int }}</td>
+                    <td>{{u["started_time"]}}</td>
+                    <td>****</td>
                 </tr>
                 {% endfor %}
                 </tbody>

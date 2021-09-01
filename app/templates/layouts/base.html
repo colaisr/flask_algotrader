@@ -71,25 +71,25 @@
                 </span>
         </div>
         <div class="app-header__content">
-            <div class="app-header-left" style="width: 70%;">
+            <div class="app-header-left" style="width: 40%;">
                 <div class="header-btn-lg pr-0">
                     <div class="widget-content p-0">
                         <div class="widget-content-wrapper">
                             <ul class="header-menu nav">
-                            <li class="btn-group" style="width: 20%">
+                            <li class="btn-group" style="width: 35%">
                                 <a href="/" class="nav-link">
                                     <img class="logo-img" style="width: 93%;"
                                          src="../../static/images/Logos_New/logo_transparent_background.png">
                                 </a>
                             </li>
-                            {% if current_user.is_admin() %}
-                            <li class="btn-group nav-item">
-                                <a href="/admin/" class="nav-link">
-                                    <i class="nav-link-icon fa fa-cogs"></i>
-                                    Administrator Dashboard
-                                </a>
-                            </li>
-                            {% endif %}
+<!--                            {% if current_user.is_admin() %}-->
+<!--                            <li class="btn-group nav-item">-->
+<!--                                <a href="/admin/" class="nav-link">-->
+<!--                                    <i class="nav-link-icon fa fa-cogs"></i>-->
+<!--                                    Administrator Dashboard-->
+<!--                                </a>-->
+<!--                            </li>-->
+<!--                            {% endif %}-->
                             </ul>
                         </div>
                     </div>
@@ -100,6 +100,14 @@
                     <div class="widget-content p-0">
                         <div class="widget-content-wrapper">
                             <ul class="header-menu nav">
+                                {% if current_user.is_admin() %}
+                                <li class="btn-group nav-item">
+                                <a href="/admin/" class="nav-link">
+                                    <i class="nav-link-icon fa fa-cogs"></i>
+                                    Administrator Dashboard
+                                </a>
+                            </li>
+                                {% endif %}
                                 {% if current_user.is_authenticated %}
                                 <li class="btn-group nav-item">
                                     <a href="/account/manage/info" class="nav-link">
@@ -219,7 +227,7 @@
             </div>
         </div>
         {% endif %}
-        <div class="app-main__outer">
+        <div class="app-main__outer mt-5">
             {% macro render_flashes(class) %}
             {% with msgs = get_flashed_messages(category_filter=[class]) %}
             {% for msg in msgs %}
