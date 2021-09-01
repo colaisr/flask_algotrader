@@ -25,37 +25,38 @@ def json_serial(obj):
         return obj.isoformat()
     raise TypeError("Type %s not serializable" % type(obj))
 
-@algotradersettings.route('/usersettings/', defaults={'strategy_id': None}, methods=['GET'])
-@algotradersettings.route('/usersettings/<int:strategy_id>', methods=['GET'])
+
+# @algotradersettings.route('/usersettings/', defaults={'strategy_id': None}, methods=['GET', 'POST'])
+@algotradersettings.route('/usersettings/', methods=['GET'])
 @login_required
-def usersettings(strategy_id=None):
+def usersettings():
     if not current_user.admin_confirmed:
         return redirect(url_for('station.download'))
     user_settings = UserSetting.query.filter_by(email=current_user.email).first()
-    if strategy_id is not None:
-        default_settings = UserStrategySettingsDefault.query.filter_by(id=strategy_id).first()
-    else:
-        default_settings = UserStrategySettingsDefault(
-            strategy_id=user_settings.strategy_id,
-            algo_min_rank=user_settings.algo_min_rank,
-            algo_accepted_fmp_ratings=user_settings.algo_accepted_fmp_ratings,
-            algo_max_yahoo_rank=user_settings.algo_max_yahoo_rank,
-            algo_min_stock_invest_rank=user_settings.algo_min_stock_invest_rank,
-            algo_min_underprice=user_settings.algo_min_underprice,
-            algo_min_momentum=user_settings.algo_min_momentum,
-            algo_apply_min_rank=user_settings.algo_apply_min_rank,
-            algo_apply_accepted_fmp_ratings=user_settings.algo_apply_accepted_fmp_ratings,
-            algo_apply_max_yahoo_rank=user_settings.algo_apply_max_yahoo_rank,
-            algo_apply_min_stock_invest_rank=user_settings.algo_apply_min_stock_invest_rank,
-            algo_apply_min_underprice=user_settings.algo_apply_min_underprice,
-            algo_apply_min_momentum=user_settings.algo_apply_min_momentum
-        )
+    # if strategy_id is not None:
+    #     default_settings = UserStrategySettingsDefault.query.filter_by(id=strategy_id).first()
+    # else:
+    #     default_settings = UserStrategySettingsDefault(
+    #         strategy_id=user_settings.strategy_id,
+    #         algo_min_rank=user_settings.algo_min_rank,
+    #         algo_accepted_fmp_ratings=user_settings.algo_accepted_fmp_ratings,
+    #         algo_max_yahoo_rank=user_settings.algo_max_yahoo_rank,
+    #         algo_min_stock_invest_rank=user_settings.algo_min_stock_invest_rank,
+    #         algo_min_underprice=user_settings.algo_min_underprice,
+    #         algo_min_momentum=user_settings.algo_min_momentum,
+    #         algo_apply_min_rank=user_settings.algo_apply_min_rank,
+    #         algo_apply_accepted_fmp_ratings=user_settings.algo_apply_accepted_fmp_ratings,
+    #         algo_apply_max_yahoo_rank=user_settings.algo_apply_max_yahoo_rank,
+    #         algo_apply_min_stock_invest_rank=user_settings.algo_apply_min_stock_invest_rank,
+    #         algo_apply_min_underprice=user_settings.algo_apply_min_underprice,
+    #         algo_apply_min_momentum=user_settings.algo_apply_min_momentum
+    #     )
 
-    strategies = Strategy.query.filter(Strategy.id != 4).all()
+    # strategies = Strategy.query.filter(Strategy.id != 4).all()
     return render_template('userview/algotraderSettings.html',
-                           user_settings=user_settings,
-                           strategies=strategies,
-                           default_settings=default_settings)
+                           user_settings=user_settings)
+                           # strategies=strategies,
+                           # default_settings=default_settings)
 
 
 @algotradersettings.route('/savesettings', methods=['POST'])
@@ -161,7 +162,7 @@ def savesettings():
     else:
         user_settings.server_use_system_candidates = False
 
-    user_settings.strategy_id = request.form['strategy_id']
+    # user_settings.strategy_id = request.form['strategy_id']
 
     user_settings.update_user_settings()
     return redirect(url_for('algotradersettings.usersettings'))
