@@ -76,7 +76,7 @@ def traderstationstate():
                 delta = datetime.today() - position.opened
                 v['days_open'] = delta.days
             else:
-                v['days_open'] = "many"
+                v['days_open'] = 0
 
             profit = v['UnrealizedPnL'] / v['Value'] * 100 if v['Value'] != 0 else 0
             v['profit_in_percents'] = profit
