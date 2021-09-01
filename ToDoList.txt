@@ -2,12 +2,15 @@ GENERAL NEXTs LIST
 
 The Nexts
 -------------
+1)spiders status to put on Trader Station
+text for tooltip :
+Market Data last update
+behavior : if today- green
+           if not- red (same as with online)
 
-DONE - overall Fund value- remove decimal
-DONE - "Your Account" replace by "FirstName LastName"
-DONE - Admin Dashboard - to correct place
-DONE - Admin Monitor part : User/Status/TWSStatus/RestartBtn/Value/PNL/SMA
-DONE - spiders status to put on Trader Station
+2)Admin Monitor part : PnL - green /red (positive- negative)
+
+3)Admin Monitor: refresh every 15 sec
 
 -------------
 
