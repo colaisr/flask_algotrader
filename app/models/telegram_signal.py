@@ -9,10 +9,9 @@ class TelegramSignal(db.Model):
     received = db.Column('received', db.DateTime)
 
     def add_signal(self):
-        # signal = TelegramSignal.query.filter((TelegramSignal.ticker == self.ticker) & (TelegramSignal.received == self.received)).first()
-        signal = TelegramSignal.query.filter((TelegramSignal.ticker == self.ticker)).first()
+        signal = TelegramSignal.query.filter((TelegramSignal.ticker == self.ticker) & (TelegramSignal.received == self.received)).first()
+        # signal = TelegramSignal.query.filter((TelegramSignal.ticker == self.ticker)).first()
 
         if signal is None:
             db.session.add(self)
-        db.session.add(self)
-        db.session.commit()
+            db.session.commit()
