@@ -112,7 +112,7 @@ def users_monitor():
         user_status_str = "on" if user_status else "off"
         user_status_class = "text-success" if user_status else "text-danger"
         sma = report.remaining_sma_with_safety if settings.algo_allow_margin else report.excess_liquidity
-        pnl_class = "text-success" if report.dailyPnl > 0 else "" if report.dailyPnl == 0 else "text-danger"
+        pnl_class = "text-success" if int(round(report.dailyPnl)) > 0 else "" if int(round(report.dailyPnl)) == 0 else "text-danger"
 
         user = {
             "email": report.email,
