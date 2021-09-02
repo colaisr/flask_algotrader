@@ -145,7 +145,7 @@ def check_for_signals(candidates_live_json):
             signal.transmitted=True
             added=signal.add_signal()
             if added:
-                send_telegram_signal_message("Signal   for : " + signal.ticker)
+                send_telegram_signal_message("Signal %0A for : " + signal.ticker)
 
 
 @csrf.exempt
@@ -175,7 +175,7 @@ def logreport():
         report.started_time = datetime.fromisoformat(request_data["started_time"])
         report.market_data_error = request_data["market_data_error"]
         report.update_report()
-        if report.market_state=="Open":
+        if report.market_state!="Open":
             check_for_signals(report.candidates_live_json)
 
         return "Report snapshot stored at server"
