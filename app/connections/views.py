@@ -145,7 +145,7 @@ def check_for_signals(candidates_live_json):
             signal.transmitted=True
             added=signal.add_signal()
             if added:
-                send_telegram_signal_message("Signal </br>for : " + signal.ticker)
+                send_telegram_signal_message("Signal %0A for : " + signal.ticker)
 
 
 @csrf.exempt
