@@ -14,6 +14,7 @@ from app import db, csrf
 from app.email import send_email
 from app.models import User, Connection, Report, Position, ClientCommand, UserSetting, TickerData, \
     Candidate, TelegramSignal
+from app.telegram.signal_notify import send_telegram_signal_message
 
 connections = Blueprint('connections', __name__)
 
@@ -141,7 +142,11 @@ def check_for_signals(candidates_live_json):
             signal=TelegramSignal()
             signal.ticker=v['Stock']
             signal.received= datetime.today().date()
-            signal.add_signal()
+            signal.transmitted=True
+            if v['Open']!=0:
+                added=signal.add_signal()
+                if added:
+                    send_telegram_signal_message("Signal for : " + signal.ticker)
 
 
 @csrf.exempt

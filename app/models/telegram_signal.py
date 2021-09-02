@@ -15,3 +15,6 @@ class TelegramSignal(db.Model):
         if signal is None:
             db.session.add(self)
             db.session.commit()
+            return True
+        else:
+            return False
