@@ -143,10 +143,9 @@ def check_for_signals(candidates_live_json):
             signal.ticker=v['Stock']
             signal.received= datetime.today().date()
             signal.transmitted=True
-            if v['Open']!=0:
-                added=signal.add_signal()
-                if added:
-                    send_telegram_signal_message("Signal for : " + signal.ticker)
+            added=signal.add_signal()
+            if added:
+                send_telegram_signal_message("Signal /nfor : " + signal.ticker)
 
 
 @csrf.exempt
@@ -176,7 +175,8 @@ def logreport():
         report.started_time = datetime.fromisoformat(request_data["started_time"])
         report.market_data_error = request_data["market_data_error"]
         report.update_report()
-        check_for_signals(report.candidates_live_json)
+        if report.market_state!="Open":
+            check_for_signals(report.candidates_live_json)
 
         return "Report snapshot stored at server"
     else:
