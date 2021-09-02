@@ -145,7 +145,15 @@ def check_for_signals(candidates_live_json):
             signal.transmitted=True
             added=signal.add_signal()
             if added:
-                send_telegram_signal_message("Signal %0A for : " + signal.ticker)
+                ticker_data = TickerData.query.filter_by(ticker=signal.ticker).order_by(TickerData.updated_server_time.desc()).first()
+                ticker_data
+                send_telegram_signal_message("Time to buy "+signal.ticker+"%0A" +
+                                             "it crossed the target of "+v['target_price']+"%0A"+
+                                             "TR: "+ticker_data.tipranks+"%0A"+
+                                             "YR: " + ticker_data.yahoo_rank + "%0A" +
+                                             "SR: " + ticker_data.stock_invest_rank + "%0A" +
+                                             "targets are TBD"
+                                             )
 
 
 @csrf.exempt
