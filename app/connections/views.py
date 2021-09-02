@@ -143,9 +143,10 @@ def check_for_signals(candidates_live_json):
             signal.ticker=v['Stock']
             signal.received= datetime.today().date()
             signal.transmitted=True
-            added=signal.add_signal()
-            if added:
-                send_telegram_signal_message("Signal for : " + signal.ticker)
+            if v['Open']!=0:
+                added=signal.add_signal()
+                if added:
+                    send_telegram_signal_message("Signal for : " + signal.ticker)
 
 
 @csrf.exempt
