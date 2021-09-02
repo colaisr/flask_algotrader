@@ -303,8 +303,8 @@ def postexecution():
     reported_time = json.loads(request_data['time'])
     time = datetime.fromisoformat(reported_time)
 
-    users = User.query.all()
-    if any(x.email == logged_user for x in users):
+    user = User.query.filter_by(email=logged_user).first()
+    if user is not None:
         position = Position()
         if side == 'BOT':
             position.ticker = symbol
