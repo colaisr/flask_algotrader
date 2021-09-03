@@ -114,6 +114,10 @@ def research_ticker(ticker):
         marketdata.yahoo_avdropP = 0
     if math.isnan(marketdata.yahoo_avspreadP):
         marketdata.yahoo_avspreadP = 0
+    if math.isnan(marketdata.target_mean_price):
+        marketdata.target_mean_price = 0
+    if math.isnan(marketdata.beta):
+        marketdata.beta = 0
     ct = datetime.utcnow()
 
     marketdata.updated_server_time = ct
