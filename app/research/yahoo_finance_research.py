@@ -21,18 +21,18 @@ def get_yahoo_rank_for_ticker(ticker):
             result = r.json()['quoteSummary']['result'][0]
             recommendation = result['financialData']['recommendationMean']['raw']
 
-            target_price = result['financialData']['targetMeanPrice']['raw']
+            targetMeanPrice = result['financialData']['targetMeanPrice']['raw']
             current_price = result['financialData']['currentPrice']['raw']
-            difference = target_price - current_price
-            under_priced_percents = round(difference / target_price * 100, 1)
+            difference = targetMeanPrice - current_price
+            under_priced_percents = round(difference / targetMeanPrice * 100, 1)
         except:
             recommendation = 6
             under_priced_percents = 0
     except:
         recommendation = 6
         under_priced_percents = 0
-    return recommendation, under_priced_percents
+    return recommendation, under_priced_percents,targetMeanPrice
 
 
 if __name__ == '__main__':
-    get_yahoo_rank_for_ticker('tals')
+    get_yahoo_rank_for_ticker('msft')

@@ -11,5 +11,10 @@ def get_yahoo_stats_for_ticker(s):
 
     avdropP = df["dropP"].mean()
     avChange = df["diffP"].mean()
+    beta = yf.Ticker(s).info['beta']
 
-    return avdropP, avChange
+    return avdropP, avChange,beta
+
+if __name__ == '__main__':
+    msft = yf.Ticker("MSFT").info['beta']
+    s=3

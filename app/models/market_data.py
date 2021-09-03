@@ -24,6 +24,8 @@ class TickerData(db.Model):
     stock_invest_rank = db.Column('stock_invest_rank', db.Float)
     under_priced_pnt = db.Column('under_priced_pnt', db.Float)
     twelve_month_momentum = db.Column('twelve_month_momentum', db.Float)
+    target_mean_price = db.Column('target_mean_price', db.Float)
+    beta = db.Column('beta', db.Float)
     fmp_rating = db.Column('fmp_rating', db.String)
     fmp_score = db.Column('fmp_score', db.Integer)
     updated_server_time = db.Column('updated_server_time', db.DateTime)
@@ -44,6 +46,8 @@ class TickerData(db.Model):
         d['yahoo_rank'] = self.yahoo_rank
         d['under_priced_pnt'] = self.under_priced_pnt
         d['twelve_month_momentum'] = self.twelve_month_momentum
+        d['target_mean_price'] = self.target_mean_price
+        d['beta'] = self.beta
         d['fmp_rating'] = self.fmp_rating
         d['fmp_score'] = self.fmp_score
         d['stock_invest_rank'] = self.stock_invest_rank
