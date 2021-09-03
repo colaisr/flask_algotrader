@@ -138,7 +138,7 @@ def sort_by_tiprank(e):
 def check_for_signals(candidates_live_json):
     candidates_live = json.loads(candidates_live_json)
     for k, v in candidates_live.items():
-        if v['Ask']<v['target_price']:
+        if v['Ask']<v['target_price'] and v['Ask']!=-1:
             signal=TelegramSignal()
             signal.ticker=v['Stock']
             signal.received= datetime.today().date()
