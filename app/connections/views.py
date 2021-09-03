@@ -152,7 +152,7 @@ def check_for_signals(candidates_live_json):
                                              "TR: "+str(ticker_data.tipranks)+"%0A"+
                                              "YR: " +str(ticker_data.yahoo_rank) + "%0A" +
                                              "SR: " + str(ticker_data.stock_invest_rank) + "%0A" +
-                                             "targets are TBD"
+                                             "Expected target price: "+str(ticker_data.target_mean_price)
                                              )
 
 
