@@ -12,6 +12,8 @@ def get_yahoo_stats_for_ticker(s):
     avdropP = df["dropP"].mean()
     avChange = df["diffP"].mean()
     beta = yf.Ticker(s).info['beta']
+    if beta is None:
+        beta=0
 
     return avdropP, avChange,beta
 
