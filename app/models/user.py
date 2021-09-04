@@ -61,6 +61,7 @@ class User(UserMixin, db.Model):
 
     def __init__(self, **kwargs):
         super(User, self).__init__(**kwargs)
+        self.admin_as = False
         if self.role is None:
             if self.email == current_app.config['ADMIN_EMAIL']:
                 self.role = Role.query.filter_by(
@@ -85,6 +86,9 @@ class User(UserMixin, db.Model):
 
     def is_admin(self):
         return self.can(Permission.ADMINISTER)
+
+    # def set_admin_as(self):
+    #     self.admin_as = True
 
     @property
     def password(self):
