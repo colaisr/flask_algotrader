@@ -1,4 +1,6 @@
+import json
 import app.generalutils as general
+from functools import reduce
 from flask import (
     Blueprint,
     abort,
@@ -109,9 +111,18 @@ def users_monitor():
     for report in reports:
         settings = [x for x in all_users_settings if x.email == report.email][0]
         user_status = general.user_online_status(report.report_time, settings.station_interval_worker_sec)
-        sma = report.remaining_sma_with_safety if settings.algo_allow_margin else report.excess_liquidity
-        pnl_class = "text-success" if int(round(report.dailyPnl)) > 0 else "" if int(round(report.dailyPnl)) == 0 else "text-danger"
+
+        open_positions = json.loads(report.open_positions_json)
+
+        all_positions = list(filter(lambda x: x["stocks"] != 0, open_positions.values()))
+        all_positions_value = reduce(lambda x, y: x + y, list(map(lambda z: int(z["Value"]), all_positions)))
+
+        sma = report.remaining_sma_with_safety if settings.algo_allow_margin else round(
+            report.net_liquidation - all_positions_value, 1)
+        pnl_class = "text-success" if int(round(report.dailyPnl)) > 0 else "" if int(
+            round(report.dailyPnl)) == 0 else "text-danger"
         started_time = report.started_time.strftime("%m-%d %H:%M:%S")
+        client_version = report.client_version
 
         user = {
             "email": report.email,
@@ -122,7 +133,8 @@ def users_monitor():
             "pnl": report.dailyPnl,
             "pnl_class": pnl_class,
             "net": report.net_liquidation,
-            "started_time": started_time
+            "started_time": started_time,
+            "client_version": client_version
         }
         users.append(user)
     return render_template(
