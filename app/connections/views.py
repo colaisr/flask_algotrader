@@ -24,8 +24,8 @@ connections = Blueprint('connections', __name__)
 def logconnection():
     request_data = request.get_json()
     logged_user = request_data["user"]
-    users = User.query.all()
-    if any(x.email == logged_user for x in users):
+    user = User.query.filter_by(email=logged_user).first()
+    if user is not None:
         c = Connection()
         c.email = logged_user
         now = datetime.utcnow()
@@ -161,8 +161,8 @@ def check_for_signals(candidates_live_json):
 def logreport():
     request_data = request.get_json()
     logged_user = request_data["user"]
-    users = User.query.all()
-    if any(x.email == logged_user for x in users):
+    user = User.query.filter_by(email=logged_user).first()
+    if user is not None:
         report = Report()
         report.email = logged_user
         report.report_time = datetime.fromisoformat(request_data["report_time"])
@@ -182,8 +182,9 @@ def logreport():
         report.market_state = request_data["market_state"]
         report.started_time = datetime.fromisoformat(request_data["started_time"])
         report.market_data_error = request_data["market_data_error"]
+        report.client_version = request_data["client_version"]
         report.update_report()
-        if report.market_state=="Open":
+        if report.market_state == "Open":
             check_for_signals(report.candidates_live_json)
 
         return "Report snapshot stored at server"
@@ -204,8 +205,8 @@ def retrieve_user_positions(logged_user):
 def get_command():
     request_data = request.get_json()
     logged_user = request_data["user"]
-    users = User.query.all()
-    if any(x.email == logged_user for x in users):
+    user = User.query.filter_by(email=logged_user).first()
+    if user is not None:
         response = {}
         client_command = ClientCommand.query.filter_by(email=logged_user).first()
         response['command'] = client_command.command

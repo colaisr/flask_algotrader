@@ -34,6 +34,7 @@ class Report(db.Model):
     market_state = db.Column('market_state', db.String)
     api_connected = db.Column('api_connected', db.Boolean)
     market_data_error = db.Column('market_data_error', db.Boolean)
+    client_version = db.Column('client_version', db.String)
 
     def update_report(self):
         report = Report.query.filter_by(email=self.email).first()
@@ -57,6 +58,7 @@ class Report(db.Model):
                 report.last_worker_execution = self.last_worker_execution
                 report.market_time = self.market_time
                 report.market_data_error = self.market_data_error
+                report.client_version = self.client_version
 
         db.session.commit()
 

@@ -75,7 +75,7 @@
                     <td class="{{u['pnl_class']}}">$ {{ u["pnl"] |round |int }}</td>
                     <td>$ {{ u["net"] |round |int }}</td>
                     <td>{{u["started_time"]}}</td>
-                    <td>****</td>
+                    <td>{{u["client_version"]}}</td>
                 </tr>
                 {% endfor %}
                 </tbody>
