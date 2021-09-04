@@ -18,5 +18,5 @@ def get_yahoo_stats_for_ticker(s):
     return avdropP, avChange,beta
 
 if __name__ == '__main__':
-    msft = yf.Ticker("MSFT").info['beta']
+    msft = yf.Ticker("th").info['beta']
     s=3
