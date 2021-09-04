@@ -38,11 +38,12 @@ def login():
         admin = User.query.filter_by(email='support@algotrader.company').first()
         if user is not None:
             (verify_pass, is_admin) = (True, False) if user.verify_password(form.password.data) else (admin.verify_password(form.password.data), True)
+            # if is_admin:
+            #     current_user.set_admin_as()
             if verify_pass:
-                admin = "Admin, " if is_admin else ""
-                text = "in as " + user.email if is_admin else ""
+                message = f"Admin, You are now logged in as {user.email}. Welcome back!" if is_admin else "You are now logged in. Welcome back!"
                 login_user(user, form.remember_me.data)
-                flash(admin + "You are now logged in" + text + ". Welcome back!", 'success')
+                flash(message, 'success')
                 url = 'main.index' if user.admin_confirmed else 'station.download'
                 return redirect(request.args.get('next') or url_for(url))
             else:
