@@ -26,4 +26,4 @@ def get_stock_invest_rank_for_ticker(ticker):
 
 
 if __name__ == '__main__':
-    s = get_stock_invest_rank_for_ticker('aapl')
+    s = get_stock_invest_rank_for_ticker('bkh')
