@@ -47,11 +47,15 @@ try:
             champs_list.append(c)
     try:
         for c in champs_list:
+            now = datetime.now()
+            print("Sending "+c['ticker'] + now.strftime("%d/%m/%Y %H:%M:%S"))
             data = urllib.parse.urlencode({"ticker_to_add": c['ticker'], })
             data = data.encode('ascii')
 
             url = server_url + "candidates/add_by_spider"
             response = urllib.request.urlopen(url, data)
+            now = datetime.now()
+            print("Sent stamp "+now.strftime("%d/%m/%Y %H:%M:%S"))
     except:
         print("GetLastWeekChamp error. ", sys.exc_info()[0])
     now = datetime.now()
@@ -64,12 +68,14 @@ print("****Starting Updater spider for all existing Candidates" + now.strftime("
 tickers = get_all_tickers()
 try:
     for t in tickers:
-        print("Updating data for : " + t)
+        now = datetime.now()
+        print("Updating data for : " + t+ " stamp:"+now.strftime("%d/%m/%Y %H:%M:%S"))
         data = urllib.parse.urlencode({"ticker_to_update": t})
         data = data.encode('ascii')
         url = server_url + "research/updatemarketdataforcandidate"
         response = urllib.request.urlopen(url, data)
-        print("Updated")
+        now = datetime.now()
+        print("Updated stamp:"+now.strftime("%d/%m/%Y %H:%M:%S"))
 except:
     error_status = 1
     error_message = "Update MarketData error."
