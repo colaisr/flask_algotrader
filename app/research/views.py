@@ -15,7 +15,7 @@ from app.research.fmp_research import get_fmp_ratings_score_for_ticker
 from app.research.stock_invest_research import get_stock_invest_rank_for_ticker
 from app.research.tipranks_research import get_tiprank_for_ticker
 from app.research.yahoo_finance_research import get_yahoo_rank_for_ticker
-from app.research.yahoo_research import get_yahoo_stats_for_ticker
+from app.research.yahoo_research import get_yahoo_stats_for_ticker, get_beta_for_ticker
 
 research = Blueprint('research', __name__)
 
@@ -111,7 +111,7 @@ def research_ticker(ticker):
     except:
         print("ERROR in MarketDataResearch for "+ticker+" section: yahooRank")
         send_email(recipient='cola.isr@gmail.com',
-                   subject='Algotrader research Stock Invest problem with ' + ticker,
+                   subject='Algotrader research Yahoo Rank problem with ' + ticker,
                    template='account/email/research_issue',
                    ticker=ticker)
     try:
@@ -119,7 +119,7 @@ def research_ticker(ticker):
     except:
         print("ERROR in MarketDataResearch for "+ticker+" section: fmpRating")
         send_email(recipient='cola.isr@gmail.com',
-                   subject='Algotrader research Stock Invest problem with ' + ticker,
+                   subject='Algotrader research FMP Score problem with ' + ticker,
                    template='account/email/research_issue',
                    ticker=ticker)
     try:
@@ -127,9 +127,18 @@ def research_ticker(ticker):
     except:
         print("ERROR in MarketDataResearch for "+ticker+" section: yahooStats")
         send_email(recipient='cola.isr@gmail.com',
-                   subject='Algotrader research Stock Invest problem with ' + ticker,
+                   subject='Algotrader research Yahoo Stats problem with ' + ticker,
                    template='account/email/research_issue',
                    ticker=ticker)
+    try:
+        marketdata.beta = get_beta_for_ticker(ticker)
+    except:
+        print("ERROR in Beta research for "+ticker+" section: yahooStats")
+        send_email(recipient='cola.isr@gmail.com',
+                   subject='Algotrader research Beta problem with ' + ticker,
+                   template='account/email/research_issue',
+                   ticker=ticker)
+    #defaults for exceptions
     if math.isnan(marketdata.yahoo_avdropP):
         marketdata.yahoo_avdropP = 0
     if math.isnan(marketdata.yahoo_avspreadP):
