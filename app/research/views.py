@@ -25,7 +25,11 @@ research = Blueprint('research', __name__)
 def updatemarketdataforcandidate():
     ticker = request.form['ticker_to_update']
     try:
-        research_ticker(ticker)
+        m_data = TickerData.query.filter_by(ticker=ticker).order_by(TickerData.updated_server_time.desc()).first()
+        updated=m_data.updated_server_time.date()
+        today = datetime.now().date()
+        if updated!=today:
+            research_ticker(ticker)
     except:
         print('problem with research')
     return redirect(url_for('admin.market_data'))
