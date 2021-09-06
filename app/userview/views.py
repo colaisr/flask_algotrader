@@ -3,18 +3,22 @@ import ssl
 import app.generalutils as general
 from datetime import datetime
 from urllib.request import urlopen
+from functools import reduce
 
 from flask import (
     Blueprint,
     redirect,
     render_template,
     url_for,
+    request
 )
 from flask_login import (
     current_user,
     login_required
 )
 from app.models import Position, Report, Candidate, UserSetting, LastUpdateSpyderData
+from sqlalchemy import func
+from app import db
 
 userview = Blueprint('userview', __name__)
 
@@ -155,11 +159,47 @@ def closedpositions():
     if not current_user.admin_confirmed:
         return redirect(url_for('station.download'))
 
-    closed_positions = Position.query.filter_by(email=current_user.email, last_exec_side='SLD').all()
+    filter_radio = '1'
+    max_date = datetime.now()
+    min_date = db.session.query(db.func.min(Position.closed)).filter(Position.email == current_user.email, Position.last_exec_side == 'SLD').scalar()
+        # Position.query(Position.email, Position.last_exec_side, func.min(Position.closed))\
+        #                .filter(Position.email == current_user.email,Position.last_exec_side == 'SLD')
+    from_date = min_date
+    to_date = datetime.now()
+
+    if request.method == 'POST':
+        from_date = request.form['from_date']
+        to_date = request.form['to_date']
+        filter_radio = request.form['filter_radio']
+
+    closed_positions = Position.query.filter(Position.email == current_user.email,
+                                             Position.last_exec_side == 'SLD',
+                                             Position.closed.between(from_date, to_date)).all()
+
+    profit_usd = reduce(lambda x, y: x + y, list(map(lambda z: z.profit, closed_positions)))
+    denominator = reduce(lambda x, y: x + y, list(map(lambda z: z.open_price*z.stocks, closed_positions)))
+    profit_procent = profit_usd/denominator*100
+    succeed_positions = [p for p in closed_positions if p.profit > 0]
+    failed_positions = [p for p in closed_positions if p.profit < 0]
+    profit_class = "text-success" if profit_usd > 0 else "text-danger"
     for c in closed_positions:
         delta = c.closed - c.opened
         c.days_in_action = delta.days
-    return render_template('userview/closedpositions.html', positions=closed_positions, user=current_user.email, form=None)
+    return render_template('userview/closedpositions.html',
+                           positions=closed_positions,
+                           user=current_user.email,
+                           filter_radio=filter_radio,
+                           min_date=min_date.strftime("%Y-%m-%d"),
+                           max_date=max_date.strftime("%Y-%m-%d"),
+                           from_date=from_date,
+                           to_date=to_date,
+                           profit_usd=profit_usd,
+                           profit_procent=profit_procent,
+                           count_positions=len(closed_positions),
+                           succeed_positions=len(succeed_positions),
+                           failed_positions=len(failed_positions),
+                           profit_class=profit_class,
+                           form=None)
 
 
 @userview.route('portfoliostatistics', methods=['GET', 'POST'])

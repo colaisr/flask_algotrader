@@ -1,0 +1,48 @@
+#net-report{
+    width:100%;
+    height:400px;
+}
+
+.closed-positions-tbl{
+    overflow-x: scroll;
+}
+
+.filter-items{
+    display: flex;
+    flex-direction: column;
+    width: 12em;
+    padding: .92857143em 1.14285714em;
+}
+
+#closed-position-form, .filter-title{
+    margin-bottom: 10px;
+}
+
+.position-items {
+    display: inherit;
+}
+
+.ui.menu .last-item:before {
+    height: 0 !important;
+}
+
+.ibkr-div{
+    margin-left: 55% !important;
+}
+.ibkr-btn{
+    width: 200px;
+}
+
+@media (max-width: 1000px){
+    .ibkr-div{
+        margin: 0 auto !important;
+    }
+    .ibkr-btn{
+        width: 150px;
+    }
+}
+
+
+
+
+

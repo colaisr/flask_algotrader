@@ -179,7 +179,7 @@
                                     {% for s in strategies %}
                                     <label class="strategy-btn btn btn-info {% if s.id == default_settings.strategy_id %} active {% endif %}">
                                         <!--                                        <input onchange="window.location.href='{{ url_for( 'algotradersettings.usersettings',strategy_id = s.id) }}';" type="radio" name="options" id="options{{s.id}}" value="{{s.id}}" autocomplete="off">-->
-                                        <input onchange="Test(this)" class="strategy-option" type="radio" name="options"
+                                        <input onchange="UpdateDefaultStrategy(this)" class="strategy-option" type="radio" name="options"
                                                id="options{{s.id}}" value="{{s.id}}" autocomplete="off">
                                         {{s.strategy}}
                                     </label>
@@ -467,14 +467,4 @@
 {% endblock %}
 {% block scripting %}
 <script type="text/javascript" src="{{ url_for('static', filename='scripts/pages/settings.js') }}"></script>
-<!--<script type="text/javascript">-->
-<!--        $(document).ready(function () {-->
-<!--            function Test(){                -->
-<!--                alert('Radio Box has been changed!');-->
-<!--            });-->
-<!--              -->
-<!--        });-->
-
-<!--</script>-->
-
 {% endblock %}

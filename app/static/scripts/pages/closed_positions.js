@@ -29,6 +29,20 @@
         });
     });
 
+    $('.filter-btn').on('click', function(e) {
+        filter_val = $(this).find(".filter-option").val();
+        $('#filter_radio').val(filter_val)
+        GetTimeInterval(filter_val);
+    })
+
+    $('.filter-option').on('change', function(e) {
+        from_date = new Date($("#from_date").val());
+        to_date = new Date($("#to_date").val());
+        if(from_date < to_date){
+            $( "#closed-position-form" ).submit();
+        }
+    })
+
     $('#search-users').keyup(function () {
         var searchText = $(this).val();
         if (searchText.length > 0) {
@@ -41,4 +55,25 @@
             $('tr.hidden').removeClass('hidden').show();
         }
     });
+
+    function GetTimeInterval(filter_val){
+        var date = new Date();
+        $("#to_date").val(date.toISOString().split('T')[0]);
+
+        if(filter_val=="2"){
+            date.setDate(date.getDate() - 7);
+        }
+        else if(filter_val=="3"){
+            date.setMonth(date.getMonth() - 1);
+        }
+        else if(filter_val=="4"){
+            date.setYear(date.getFullYear() - 1);
+        }
+        else{
+            date = new Date($("#from_date").prop("min"));
+        }
+
+        $("#from_date").val(date.toISOString().split('T')[0]);
+        $('.filter-option').change();
+    }
 })

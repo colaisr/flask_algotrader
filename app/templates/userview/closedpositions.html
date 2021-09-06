@@ -6,32 +6,113 @@
         <div class="page-title-wrapper">
             <div class="page-title-heading">
                 <div class="page-title-icon">
-                    <i class="pe-7s-albums icon-gradient bg-mean-fruit">
-                    </i>
+                    <i class="pe-7s-albums icon-gradient bg-mean-fruit"></i>
                 </div>
-                <div>Closed positions
+                <div>
+                    Closed positions
                     <div class="page-title-subheading">Deals executed by Algotrader.
                     </div>
                 </div>
             </div>
-
-        </div>
-    </div>
-    <div class="column">
-        <div id="net-report" style="width:100%; height:400px;"></div>
-        <input type="hidden" id="user" value="{{ user }}">
-        <div class="ui menu">
-            <div class="ui left search item">
-                <div class="ui transparent icon input">
-                    <input id="search-users" type="text" placeholder="Search positions…">
-                    <i class="search icon"></i>
+            <div class="page-title-heading ibkr-div">
+                <div>
+                    <a target="_blank"
+                       href="https://www.interactivebrokers.co.uk/portal/?action=ACCT_MGMT_MAIN&loginType=1&clt=0&RL=1#/portfolio/performance"
+                       class="ibkr-btn mb-2 mr-2 btn-transition btn btn-outline-info">
+                        Go to IBKR
+                    </a>
                 </div>
             </div>
         </div>
+    </div>
+    <div class="column">
+        <div id="net-report"></div>
+        <input type="hidden" id="user" value="{{ user }}">
+        <form id="closed-position-form" action="/userview/closedpositions" method="post">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+            <div class="ui menu">
+                <div class="ui search item">
+                    <div class="ui transparent icon input">
+                        <input id="search-users" type="text" placeholder="Search positions…">
+                        <i class="search icon"></i>
+                    </div>
+                </div>
+                <div class="filter-items">
+                    <div class="filter-title">
+                        <h5>Filter by close date:</h5>
+                    </div>
+                    <div>
+                        <div role="group" class="btn-group btn-group-toggle form-group" data-toggle="buttons">
+                            <label class="filter-btn btn btn-info {% if filter_radio == '1'%} active {%endif%}">
+                                <input class="filter-option" type="radio" name="options"
+                                       id="options1" value="1" autocomplete="off">
+                                All
+                            </label>
+                            <label class="filter-btn btn btn-info {% if filter_radio == '2'%} active {%endif%}">
+                                <input class="filter-option" type="radio" name="options"
+                                       id="options2" value="2" autocomplete="off">
+                                W
+                            </label>
+                            <label class="filter-btn btn btn-info {% if filter_radio == '3'%} active {%endif%}">
+                                <input class="filter-option" type="radio" name="options"
+                                       id="options3" value="3" autocomplete="off">
+                                M
+                            </label>
+                            <label class="filter-btn btn btn-info {% if filter_radio == '4'%} active {%endif%}">
+                                <input class="filter-option" type="radio" name="options"
+                                       id="options4" value="4" autocomplete="off">
+                                Y
+                            </label>
+                        </div>
+                        <input type="hidden" name="filter_radio" id="filter_radio"
+                                           value="{{filter_radio}}">
+                    </div>
+                </div>
+                <div class="filter-items">
+                    <div class="filter-title">
+                        <h5>From:</h5>
+                    </div>
+                    <div>
+                        <input class="filter-option form-control" type="date" id="from_date" name="from_date"
+                           value={{from_date}}
+                           min={{min_date}} max={{max_date}}>
+                    </div>
+                </div>
+                <div class="filter-items">
+                    <div class="filter-title">
+                        <h5>To:</h5>
+                    </div>
+                    <div>
+                        <input class="filter-option form-control" type="date" id="to_date" name="to_date"
+                               value={{to_date}}
+                               min={{min_date}} max={{max_date}}>
+                    </div>
+                </div>
+                <div class="positions-value item right filter-items">
+                    <div class="filter-title">
+                        <h4>Positions:</h4>
+                    </div>
+                    <div class="position-items">
+                        <div class="item">{{count_positions}}</div>
+                        <div class="item text-success">{{succeed_positions}}</div>
+                        <div class="item last-item text-danger">{{failed_positions}}</div>
+                    </div>
+                </div>
+                <div class="profit-value item right filter-items" style="margin-left: 0 !important;">
+                    <div class="filter-title">
+                        <h4>Profit:</h4>
+                    </div>
+                    <div class="position-items">
+                        <div class="item {{profit_class}}">{{"%.1f"|format(profit_usd)}} $</div>
+                        <div class="item last-item {{profit_class}}">{{"%.1f"|format(profit_procent)}}%</div>
+                    </div>
+                </div>
+            </div>
+        </form>
 
         {# Use overflow-x: scroll so that mobile views don't freak out
         # when the table is too wide #}
-        <div style="overflow-x: scroll;">
+        <div class="closed-positions-tbl">
             <table class="ui searchable sortable unstackable selectable celled table">
                 <thead>
                 <tr>
