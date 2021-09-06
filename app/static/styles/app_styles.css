@@ -33,6 +33,10 @@
     width: 200px;
 }
 
+.datepicker-item{
+    width:150px;
+}
+
 @media (max-width: 1000px){
     .ibkr-div{
         margin: 0 auto !important;
