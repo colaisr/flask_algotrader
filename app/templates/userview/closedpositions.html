@@ -18,7 +18,8 @@
         </div>
     </div>
     <div class="column">
-
+        <div id="net-report" style="width:100%; height:400px;"></div>
+        <input type="hidden" id="user" value="{{ user }}">
         <div class="ui menu">
             <div class="ui left search item">
                 <div class="ui transparent icon input">
@@ -97,5 +98,9 @@
 {% endblock %}
 
 {% block scripting %}
+<script src="https://code.highcharts.com/stock/highstock.js"></script>
+<script src="https://code.highcharts.com/stock/modules/data.js"></script>
+<script src="https://code.highcharts.com/stock/modules/exporting.js"></script>
+<script src="https://code.highcharts.com/stock/modules/export-data.js"></script>
 <script type="text/javascript" src="{{ url_for('static', filename='scripts/pages/closed_positions.js') }}"></script>
 {% endblock %}

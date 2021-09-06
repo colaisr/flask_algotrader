@@ -10,7 +10,7 @@ from flask import (
 from datetime import datetime, date
 
 from app import csrf
-from app.models import TickerData, Position
+from app.models import TickerData, Position, ReportStatistic, JsonEncoder
 
 closed_position_info = Blueprint('closed_position_info', __name__)
 apikey = 'f6003a61d13c32709e458a1e6c7df0b0'
@@ -63,16 +63,10 @@ def view():
     return render_template('userview/closed_position_info.html', position=position, rank_array=rank_array,
                            tip_rank_on_buy=tip_rank_on_buy, fmp_rating_on_buy=fmp_rating_on_buy)
 
-# def get_stock_rank(s):
-#     pass
-#     df=yf.download(s,interval = "1m", period = "1y")
-#
-#     s=df["Close"]
-#     list_of_dates=s.index.to_list()
-#     conv=[]
-#     for d in list_of_dates:
-#         ts=datetime.timestamp(d)
-#         conv.append([ts,s[d]])
-#         dt_object = datetime.fromtimestamp(ts)
-#         i=3
-#     return conv
+
+@csrf.exempt
+@closed_position_info.route('/user_reports_history', methods=['POST'])
+def user_reports_history():
+    user = request.form.get('user')
+    history = ReportStatistic.query.filter_by(email=user).all()
+    return json.dumps(history, cls=JsonEncoder)

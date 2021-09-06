@@ -157,7 +157,7 @@ def closedpositions():
     for c in closed_positions:
         delta = c.closed - c.opened
         c.days_in_action = delta.days
-    return render_template('userview/closedpositions.html', positions=closed_positions, form=None)
+    return render_template('userview/closedpositions.html', positions=closed_positions, user=current_user.email, form=None)
 
 
 @userview.route('portfoliostatistics', methods=['GET', 'POST'])
