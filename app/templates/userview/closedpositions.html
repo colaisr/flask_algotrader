@@ -93,9 +93,18 @@
                         <h4>Positions:</h4>
                     </div>
                     <div class="position-items">
-                        <div class="item">{{count_positions}}</div>
-                        <div class="item text-success">{{succeed_positions}}</div>
-                        <div class="item last-item text-danger">{{failed_positions}}</div>
+                        <div class="item info-items">
+                            <div>{{count_positions}}</div>
+                            <div class="label-info pt-2">All</div>
+                        </div>
+                        <div class="item info-items">
+                            <div class="text-success">{{succeed_positions}}</div>
+                            <div class="label-info pt-2">Success</div>
+                        </div>
+                        <div class="item last-item info-items">
+                            <div class="text-danger">{{failed_positions}}</div>
+                            <div class="label-info pt-2">Fail</div>
+                        </div>
                     </div>
                 </div>
                 <div class="profit-value item right filter-items" style="margin-left: 0 !important;">
@@ -103,7 +112,10 @@
                         <h4>Profit:</h4>
                     </div>
                     <div class="position-items">
-                        <div class="item {{profit_class}}">{{"%.1f"|format(profit_usd)}} $</div>
+                        <div class="item {{profit_class}}">
+                            <div class=""></div>
+                            {{"%.1f"|format(profit_usd)}} $
+                        </div>
                         <div class="item last-item {{profit_class}}">{{"%.1f"|format(profit_procent)}}%</div>
                     </div>
                 </div>

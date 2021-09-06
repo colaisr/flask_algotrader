@@ -4,6 +4,7 @@ import app.generalutils as general
 from datetime import datetime
 from urllib.request import urlopen
 from functools import reduce
+from dateutil.relativedelta import relativedelta
 
 from flask import (
     Blueprint,
@@ -162,8 +163,7 @@ def closedpositions():
     filter_radio = '1'
     max_date = datetime.now()
     min_date = db.session.query(db.func.min(Position.closed)).filter(Position.email == current_user.email, Position.last_exec_side == 'SLD').scalar()
-        # Position.query(Position.email, Position.last_exec_side, func.min(Position.closed))\
-        #                .filter(Position.email == current_user.email,Position.last_exec_side == 'SLD')
+    min_date = min_date if min_date is not None else datetime.now() + relativedelta(years=-1)
     from_date = min_date
     to_date = datetime.now()
 
@@ -175,13 +175,19 @@ def closedpositions():
     closed_positions = Position.query.filter(Position.email == current_user.email,
                                              Position.last_exec_side == 'SLD',
                                              Position.closed.between(from_date, to_date)).all()
-
-    profit_usd = reduce(lambda x, y: x + y, list(map(lambda z: z.profit, closed_positions)))
-    denominator = reduce(lambda x, y: x + y, list(map(lambda z: z.open_price*z.stocks, closed_positions)))
-    profit_procent = profit_usd/denominator*100
-    succeed_positions = [p for p in closed_positions if p.profit > 0]
-    failed_positions = [p for p in closed_positions if p.profit < 0]
-    profit_class = "text-success" if profit_usd > 0 else "text-danger"
+    if closed_positions is not None and len(closed_positions)>0:
+        profit_usd = reduce(lambda x, y: x + y, list(map(lambda z: z.profit, closed_positions)))
+        denominator = reduce(lambda x, y: x + y, list(map(lambda z: z.open_price*z.stocks, closed_positions)))
+        profit_procent = profit_usd/denominator*100
+        succeed_positions = [p for p in closed_positions if p.profit > 0]
+        failed_positions = [p for p in closed_positions if p.profit < 0]
+        profit_class = "text-success" if profit_usd > 0 else "text-danger"
+    else:
+        profit_usd = 0
+        profit_procent = 0
+        succeed_positions = []
+        failed_positions = []
+        profit_class = ""
     for c in closed_positions:
         delta = c.closed - c.opened
         c.days_in_action = delta.days
