@@ -200,21 +200,22 @@
                             </a>
                         </li>
                         <li class="app-sidebar__heading">Analytics</li>
+                        {% if current_user.is_admin()%}
+                        <li>
+                            <a target="_blank"
+                               href="https://www.interactivebrokers.co.uk/portal/?action=ACCT_MGMT_MAIN&loginType=1&clt=0&RL=1#/portfolio/performance">
+                                <i class="metismenu-icon pe-7s-graph2"></i>
+                                Portfolio performance
+                            </a>
+                        </li>
+                        {%else%}
                         <li>
                             <a href="/userview/closedpositions">
                                 <i class="metismenu-icon pe-7s-wallet"></i>
                                 My Performance
                             </a>
                         </li>
-<!--                        <li>-->
-<!--                            &lt;!&ndash;                            <a href="/userview/portfoliostatistics" >&ndash;&gt;-->
-<!--                            <a target="_blank"-->
-<!--                               href="https://www.interactivebrokers.co.uk/portal/?action=ACCT_MGMT_MAIN&loginType=1&clt=0&RL=1#/portfolio/performance">-->
-
-<!--                                <i class="metismenu-icon pe-7s-graph2"></i>-->
-<!--                                Portfolio performance-->
-<!--                            </a>-->
-<!--                        </li>-->
+                        {%endif%}
                         <li>
                             <a href="/station/requirements">
                                 <i class="metismenu-icon pe-7s-box1"></i>
