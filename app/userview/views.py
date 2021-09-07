@@ -163,13 +163,14 @@ def closedpositions():
     filter_radio = '1'
     max_date = datetime.now()
     min_date = db.session.query(db.func.min(Position.closed)).filter(Position.email == current_user.email, Position.last_exec_side == 'SLD').scalar()
-    min_date = min_date if min_date is not None else datetime.now() + relativedelta(years=-1)
+    min_date = min_date if min_date is not None else datetime.now() + relativedelta(years=1)
     from_date = min_date
-    to_date = datetime.now()
+    to_date = datetime.now() + relativedelta(days=1)
 
     if request.method == 'POST':
         from_date = request.form['from_date']
-        to_date = request.form['to_date']
+        to_date_str = request.form['to_date']
+        to_date = datetime.strptime(to_date_str, '%Y-%m-%d') + relativedelta(days=1)
         filter_radio = request.form['filter_radio']
 
     closed_positions = Position.query.filter(Position.email == current_user.email,
@@ -210,7 +211,7 @@ def closedpositions():
                            min_date=min_date.strftime("%Y-%m-%d"),
                            max_date=max_date.strftime("%Y-%m-%d"),
                            from_date=from_date,
-                           to_date=to_date,
+                           to_date=to_date + relativedelta(days=-1),
                            profit_usd=profit_usd,
                            profit_procent=profit_procent,
                            count_positions=len(closed_positions),
