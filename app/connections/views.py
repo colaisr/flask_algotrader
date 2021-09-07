@@ -148,7 +148,7 @@ def check_for_signals(candidates_live_json):
             signal.signal_price=v['Ask']
             try:
                 if ticker_data.target_mean_price is None:
-                    ticker_data.target_mean_price=0
+                    signal.target_price=0
                 else:
                     signal.target_price=ticker_data.target_mean_price
                 added=signal.add_signal()
@@ -163,6 +163,7 @@ def check_for_signals(candidates_live_json):
                                                  )
             except:
                 print("Error in signal for : "+signal.ticker)
+                print(ticker_data)
 
 
 
