@@ -60,13 +60,21 @@ class TickerData(db.Model):
 class LastUpdateSpyderData(db.Model):
     __tablename__ = 'LastUpdateSpyderData'
     id = db.Column('id', db.Integer, primary_key=True)
-    process_date_time = db.Column('process_date_time', db.DateTime)
+    start_process_time = db.Column('start_process_time', db.DateTime)
+    end_process_time = db.Column('end_process_time', db.DateTime)
     last_update_date = db.Column('last_update_date', db.DateTime)
+    avg_time_by_position = db.Column('avg_time_by_position', db.Float)
+    num_of_positions = db.Column('num_of_positions', db.BigInteger)
     error_status = db.Column('error_status', db.Boolean)
-    error_message = db.Column('error_message', db.String)
+    error_tickers = db.Column('error_tickers', db.String)
+    research_error_tickers = db.Column('research_error_tickers', db.String)
+    already_updated_tickers = db.Column('already_updated_tickers', db.BigInteger)
+    updated_tickers = db.Column('updated_tickers', db.BigInteger)
+    error_tickers_num = db.Column('error_tickers_num', db.BigInteger)
 
     def update_data(self):
-        settings = LastUpdateSpyderData.query.first()
-        if settings is None:
+        data = LastUpdateSpyderData.query.filter(LastUpdateSpyderData.start_process_time == self.start_process_time,
+                                                 LastUpdateSpyderData.end_process_time == self.end_process_time).first()
+        if data is None:
             db.session.add(self)
         db.session.commit()

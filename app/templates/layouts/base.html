@@ -22,6 +22,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='styles/arch_ui.css') }}">
     <link href="{{ url_for('static', filename='styles/base_app.scss') }}">
 
+<!--    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.1/css/bootstrap.min.css" />-->
     <link rel="stylesheet" href="{{ url_for('static', filename='styles/semantic.min.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='font-icons/css/pe-icon-7-stroke.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='font-icons/css/helper.css') }}">
@@ -265,6 +266,10 @@
 {% endif %}
 
 <script type="text/javascript" src="{{ url_for('static', filename='scripts/packages/jquery.min.js') }}"></script>
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.1/js/bootstrap.min.js"></script>
+<script type="text/javascript">
+            $.fn.bsModal = $.fn.modal.noConflict();
+</script>
 <script type="text/javascript" src="{{ url_for('static', filename='scripts/packages/arch_ui.js') }}"></script>
 <script type="text/javascript" src="{{ url_for('static', filename='scripts/packages/base_app.js') }}"></script>
 <script type="text/javascript" src="{{ url_for('static', filename='scripts/packages/semantic.min.js') }}"></script>

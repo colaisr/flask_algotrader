@@ -10,8 +10,11 @@
 .filter-items{
     display: flex;
     flex-direction: column;
-    width: 12em;
     padding: .92857143em 1.14285714em;
+}
+
+.menu .filter-items{
+    width: 12em;
 }
 
 .info-items{
@@ -44,6 +47,11 @@
 .datepicker-item{
     width:150px;
 }
+.error-tickers-modal{
+    margin-top: 8% !important;
+}
+
+
 
 @media (max-width: 1000px){
     .ibkr-div{

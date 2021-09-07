@@ -1,31 +1,29 @@
 import json
-import sys
 import ssl
 import urllib
 from urllib.request import urlopen
 from datetime import datetime
+import time
 
 # server_url = "http://127.0.0.1:5000/"
 server_url = "https://www.algotrader.company/"
-error_message = "None"
 error_status = 0
 
 
 def get_all_tickers():
-    print("Getting all necessary tickets from Algotrader server")
-    _url = (server_url + "research/alltickers")
+    print("Getting all necessary tickers from Algotrader server")
+    _url = (f"{server_url}research/alltickers")
     _context = ssl._create_unverified_context()
     _response = urlopen(_url, context=_context)
     _data = _response.read().decode("utf-8")
     _parsed = json.loads(_data)
-    print("Got all " + str(len(_parsed)) + " tickers from server- starting to update...")
+    print(f"Got all {str(len(_parsed))} tickers from server- starting to update...")
     return _parsed
 
 
 now = datetime.now()
 print("*************************************************")
-print("****Starting spider for last week champs  " + now.strftime("%d/%m/%Y %H:%M:%S") + "****")
-
+print(f"****Starting spider for last week champs {now.strftime('%d/%m/%Y %H:%M:%S')} ****")
 try:
     url = (
         "https://www.tipranks.com/api/Screener/GetStocks/?break=1111111111111&country=US&page=1&scoreChangeDate=2&sortBy=1&sortDir=2&tipranksScore=5")
@@ -48,47 +46,77 @@ try:
     try:
         for c in champs_list:
             now = datetime.now()
-            print("Sending "+c['ticker'] + now.strftime("%d/%m/%Y %H:%M:%S"))
+            print(f"Sending {c['ticker']} {now.strftime('%d/%m/%Y %H:%M:%S')}")
             data = urllib.parse.urlencode({"ticker_to_add": c['ticker'], })
             data = data.encode('ascii')
 
             url = server_url + "candidates/add_by_spider"
             response = urllib.request.urlopen(url, data)
             now = datetime.now()
-            print("Sent stamp "+now.strftime("%d/%m/%Y %H:%M:%S"))
-    except:
-        print("GetLastWeekChamp error. ", sys.exc_info()[0])
+            print(f"Sent stamp {now.strftime('%d/%m/%Y %H:%M:%S')}")
+    except Exception as e:
+        print(f"GetLastWeekChamp error. {e}")
     now = datetime.now()
-    print("****End spider for last week champs  " + now.strftime("%d/%m/%Y %H:%M:%S") + "****")
-except:
-    print("GetLastWeekChamp error. ", sys.exc_info()[0])
+    print(f"****End spider for last week champs {now.strftime('%d/%m/%Y %H:%M:%S')} ****")
+except Exception as e:
+    print("GetLastWeekChamp error. ", str(e))
 
-now = datetime.now()
-print("****Starting Updater spider for all existing Candidates" + now.strftime("%d/%m/%Y %H:%M:%S"))
+start_time = datetime.now()
+print(f'****Starting Updater spider for all existing Candidates {start_time.strftime("%d/%m/%Y %H:%M:%S")}')
 tickers = get_all_tickers()
-try:
-    for t in tickers:
-        now = datetime.now()
-        print("Updating data for : " + t+ " stamp:"+now.strftime("%d/%m/%Y %H:%M:%S"))
+already_updated_tickers = 0
+error_tickers = []
+research_error_tickers = []
+update_times = []
+
+test_tickers = tickers[:3]
+
+for t in test_tickers:
+    try:
+        start_update_time = time()
+        print(f'Updating data for : {t} stamp: {datetime.now().strftime("%d/%m/%Y %H:%M:%S")}')
         data = urllib.parse.urlencode({"ticker_to_update": t})
         data = data.encode('ascii')
         url = server_url + "research/updatemarketdataforcandidate"
         response = urllib.request.urlopen(url, data)
-        now = datetime.now()
-        print("Updated stamp:"+now.strftime("%d/%m/%Y %H:%M:%S"))
-except:
-    error_status = 1
-    error_message = "Update MarketData error."
-    print("Update MarketData for " + t + " error: ", sys.exc_info()[0])
-now = datetime.now()
-print("***All tickers successfully updated" + now.strftime("%d/%m/%Y %H:%M:%S"))
+        end_update_time = time()
+        print(f"Updated stamp: {datetime.now().strftime('%d/%m/%Y %H:%M:%S')}")
+        response_message = json.loads(response.read())["message"]
+        if response_message == "Ok":
+            delta = end_update_time - start_update_time
+            update_times.append(delta)
+        elif response_message == "No":
+            already_updated_tickers += 1
+        else:
+            research_error_tickers.append(t)
+    except Exception as e:
+        error_status = 1
+        error_tickers.append(t)
+
+if error_status == 1:
+    print(f"Update MarketData error. Tickers: {json.dumps(error_tickers)}")
+avg = sum(update_times)/len(update_times) if len(update_times) != 0 else 0
+end_time = datetime.now()
+print(f"***All tickers successfully updated {end_time.strftime('%d/%m/%Y %H:%M:%S')}")
 print("***Save last time update***")
-data = urllib.parse.urlencode({"error_status": error_status, "error_message": error_message})
+
+data = urllib.parse.urlencode({
+                                "error_status": error_status,
+                                "start_time": start_time,
+                                "end_time": end_time,
+                                "num_of_positions": len(tickers),
+                                "error_tickers": json.dumps(error_tickers),
+                                "research_error_tickers": json.dumps(research_error_tickers),
+                                "updated_tickers": len(update_times),
+                                "already_updated_tickers": already_updated_tickers,
+                                "avg_update_times": avg,
+                                "error_tickers_num": len(research_error_tickers) + len(error_tickers)
+                              })
 data = data.encode('ascii')
 url = server_url + "research/savelasttimeforupdatedata"
 try:
     response = urllib.request.urlopen(url, data)
     print("***Date updated***")
-except:
-    print("Saving time update data failed. ", sys.exc_info()[0])
+except Exception as e:
+    print("Saving time update data failed. ", e)
 print("*************************************************")

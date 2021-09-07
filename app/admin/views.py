@@ -1,4 +1,5 @@
 import json
+import time
 import app.generalutils as general
 from functools import reduce
 from flask import (
@@ -23,7 +24,16 @@ from app.admin.forms import (
 )
 from app.decorators import admin_required
 from app.email import send_email
-from app.models import EditableHTML, Role, User, TickerData, UserSetting, ClientCommand, Report
+from app.models import (
+    EditableHTML,
+    Role,
+    User,
+    TickerData,
+    UserSetting,
+    ClientCommand,
+    Report,
+    LastUpdateSpyderData
+)
 
 admin = Blueprint('admin', __name__)
 
@@ -139,6 +149,34 @@ def users_monitor():
         users.append(user)
     return render_template(
         'admin/users_monitor.html', users=users)
+
+
+@admin.route('/spider_statistic')
+@login_required
+@admin_required
+def spider_statistic():
+    statistics = LastUpdateSpyderData.query.order_by(LastUpdateSpyderData.start_process_time.desc()).all()
+    data = []
+    for s in statistics:
+        delta = s.end_process_time-s.start_process_time
+        statistic = {
+            "id": s.id,
+            "start_process_time": s.start_process_time.strftime("%d-%m-%y %H:%M:%S"),
+            "error_status": int(s.error_status == True),
+            "last_update_date": s.last_update_date.strftime("%d-%m-%y %H:%M:%S"),
+            "process_time": time.strftime("%H:%M:%S", time.gmtime(delta.total_seconds())),
+            "avg_time": s.avg_time_by_position,
+            "num_tickers": s.num_of_positions,
+            "all_upd": s.updated_tickers + s.already_updated_tickers,
+            "today_upd": s.updated_tickers,
+            "error_tickers_num": s.error_tickers_num,
+            "error_tickers": json.loads(s.error_tickers),
+            "research_error_tickers": json.loads(s.research_error_tickers)
+        }
+        data.append(statistic)
+
+    return render_template(
+        'admin/spider_statistic.html', statistics=data)
 
 
 @admin.route('/pendingapproval')
