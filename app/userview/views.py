@@ -17,8 +17,8 @@ from flask_login import (
     current_user,
     login_required
 )
-from app.models import Position, Report, Candidate, UserSetting, LastUpdateSpyderData
-from sqlalchemy import func
+from app.models import Position, Report, ReportStatistic, Candidate, UserSetting, LastUpdateSpyderData
+from sqlalchemy import or_
 from app import db
 
 userview = Blueprint('userview', __name__)
@@ -175,19 +175,31 @@ def closedpositions():
     closed_positions = Position.query.filter(Position.email == current_user.email,
                                              Position.last_exec_side == 'SLD',
                                              Position.closed.between(from_date, to_date)).all()
-    if closed_positions is not None and len(closed_positions)>0:
-        profit_usd = reduce(lambda x, y: x + y, list(map(lambda z: z.profit, closed_positions)))
-        denominator = reduce(lambda x, y: x + y, list(map(lambda z: z.open_price*z.stocks, closed_positions)))
-        profit_procent = profit_usd/denominator*100
-        succeed_positions = [p for p in closed_positions if p.profit > 0]
-        failed_positions = [p for p in closed_positions if p.profit < 0]
+
+    reports_min_max = db.session.query(db.func.min(ReportStatistic.report_time), db.func.max(ReportStatistic.report_time))\
+        .filter(ReportStatistic.email == current_user.email,
+                ReportStatistic.report_time.between(from_date, to_date),
+                ReportStatistic.net_liquidation > 0).first()
+
+    if reports_min_max is not None and len(reports_min_max)>0:
+        reports = ReportStatistic.query.filter(ReportStatistic.email == current_user.email) \
+            .filter(or_(ReportStatistic.report_time == reports_min_max[0],
+                        ReportStatistic.report_time == reports_min_max[1])).all()
+        profit_usd = reduce(lambda x, y: y - x, list(map(lambda z: z.net_liquidation, reports)))
+        profit_procent = profit_usd / reports[0].net_liquidation * 100
         profit_class = "text-success" if profit_usd > 0 else "text-danger"
     else:
         profit_usd = 0
         profit_procent = 0
+        profit_class = ""
+
+    if closed_positions is not None and len(closed_positions)>0:
+        succeed_positions = [p for p in closed_positions if p.profit > 0]
+        failed_positions = [p for p in closed_positions if p.profit < 0]
+    else:
         succeed_positions = []
         failed_positions = []
-        profit_class = ""
+
     for c in closed_positions:
         delta = c.closed - c.opened
         c.days_in_action = delta.days
