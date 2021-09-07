@@ -146,20 +146,24 @@ def check_for_signals(candidates_live_json):
             signal.received= datetime.today().date()
             signal.transmitted=True
             signal.signal_price=v['Ask']
-            if ticker_data.target_mean_price is None:
-                ticker_data.target_mean_price=0
-            else:
-                signal.target_price=ticker_data.target_mean_price
-            added=signal.add_signal()
-            if added:
-                send_telegram_signal_message(str(signal.id)+"%0A"+
-                                             "Time to buy: "+signal.ticker+"%0A" +
-                                             "it crossed the target of "+str(round(v['target_price'], 2))+" USD %0A"+
-                                             "TR: "+str(ticker_data.tipranks)+"%0A"+
-                                             "YR: " +str(ticker_data.yahoo_rank) + "%0A" +
-                                             "SR: " + str(ticker_data.stock_invest_rank) + "%0A" +
-                                             "Expected to reach the target of: "+str(ticker_data.target_mean_price)+" USD"
-                                             )
+            try:
+                if ticker_data.target_mean_price is None:
+                    ticker_data.target_mean_price=0
+                else:
+                    signal.target_price=ticker_data.target_mean_price
+                added=signal.add_signal()
+                if added:
+                    send_telegram_signal_message(str(signal.id)+"%0A"+
+                                                 "Time to buy: "+signal.ticker+"%0A" +
+                                                 "it crossed the target of "+str(round(v['target_price'], 2))+" USD %0A"+
+                                                 "TR: "+str(ticker_data.tipranks)+"%0A"+
+                                                 "YR: " +str(ticker_data.yahoo_rank) + "%0A" +
+                                                 "SR: " + str(ticker_data.stock_invest_rank) + "%0A" +
+                                                 "Expected to reach the target of: "+str(ticker_data.target_mean_price)+" USD"
+                                                 )
+            except:
+                print("Error in signal for : "+signal.ticker)
+
 
 
 @csrf.exempt
