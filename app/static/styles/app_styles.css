@@ -44,6 +44,9 @@
 .datepicker-item{
     width:150px;
 }
+.error-tickers-modal{
+    margin-top: 8% !important;
+}
 
 @media (max-width: 1000px){
     .ibkr-div{

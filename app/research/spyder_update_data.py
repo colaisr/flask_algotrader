@@ -3,6 +3,7 @@ import ssl
 import urllib
 from urllib.request import urlopen
 from datetime import datetime
+import time
 
 # server_url = "http://127.0.0.1:5000/"
 server_url = "https://www.algotrader.company/"
@@ -72,18 +73,18 @@ test_tickers = tickers[:3]
 
 for t in test_tickers:
     try:
-        start_update_time = datetime.now()
-        print(f'Updating data for : {t} stamp: {start_update_time.strftime("%d/%m/%Y %H:%M:%S")}')
+        start_update_time = time()
+        print(f'Updating data for : {t} stamp: {datetime.now().strftime("%d/%m/%Y %H:%M:%S")}')
         data = urllib.parse.urlencode({"ticker_to_update": t})
         data = data.encode('ascii')
         url = server_url + "research/updatemarketdataforcandidate"
         response = urllib.request.urlopen(url, data)
-        end_update_time = datetime.now()
-        print(f"Updated stamp: {end_update_time.strftime('%d/%m/%Y %H:%M:%S')}")
+        end_update_time = time()
+        print(f"Updated stamp: {datetime.now().strftime('%d/%m/%Y %H:%M:%S')}")
         response_message = json.loads(response.read())["message"]
         if response_message == "Ok":
             delta = end_update_time - start_update_time
-            update_times.append(delta.total_seconds())
+            update_times.append(delta)
         elif response_message == "No":
             already_updated_tickers += 1
         else:
@@ -104,8 +105,8 @@ data = urllib.parse.urlencode({
                                 "start_time": start_time,
                                 "end_time": end_time,
                                 "num_of_positions": len(tickers),
-                                "error_tickers": json.dumps(error_tickers) if len(error_tickers) > 0 else "",
-                                "research_error_tickers": json.dumps(research_error_tickers) if len(research_error_tickers) > 0 else "",
+                                "error_tickers": json.dumps(error_tickers),
+                                "research_error_tickers": json.dumps(research_error_tickers),
                                 "updated_tickers": len(update_times),
                                 "already_updated_tickers": already_updated_tickers,
                                 "avg_update_times": avg,

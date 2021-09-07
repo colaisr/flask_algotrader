@@ -41,29 +41,47 @@
                 </tr>
                 </thead>
                 <tbody>
-<!--                {% for u in users %}-->
+                {% for s in statistics %}
                 <tr>
                     <td class="text-center">
-                        2021-09-07
+                        {{s["start_process_time"]}}
                     </td>
-                    <td class="text-success text-center">
+                    <td class="text-center">
+                        {%if not s["error_status"]%}
                         <i class="check icon green"></i>
+                        {%else%}
+                        <i class="times icon red"></i>
+                        {%endif%}
                     </td>
                     <td class="text-center">
-                        2021-09-07
+                        {{s["last_update_date"]}}
                     </td>
                     <td class="text-center">
-                        68.3
+                        {{s["process_time"]}}
                     </td>
                     <td class="text-center">
-                        18.2 sec
+                        {{s["avg_time"]|round(2)}}
                     </td>
-                    <td class="text-center">1277</td>
-                    <td class="text-center">1267</td>
-                    <td class="text-center">1200</td>
-                    <td class="text-center">10</td>
+                    <td class="text-center">
+                        {{s["num_tickers"]}}
+                    </td>
+                    <td class="text-center">
+                        {{s["all_upd"]}}
+                    </td>
+                    <td class="text-center">
+                        {{s["today_upd"]}}
+                    </td>
+                    {%if s["error_tickers_num"] > 0%}
+                    <td class='text-center text-danger'>
+                        <button data-data="{{s}}" type="button" class="mb-2 mr-2 btn-transition btn btn-outline-danger modal-btn">{{s["error_tickers_num"]}}</button>
+                    </td>
+                    {%else%}
+                    <td class='text-center'>
+                        {{s["error_tickers_num"]}}
+                    </td>
+                    {%endif%}
                 </tr>
-<!--                {% endfor %}-->
+                {% endfor %}
                 </tbody>
             </table>
         </div>
@@ -74,10 +92,15 @@
 
 {% block scripting %}
 
-<script type="text/javascript" src="{{ url_for('static', filename='scripts/pages/usersmonitor.js') }}"></script>
-
 <script type="text/javascript">
         $(document).ready(function () {
+            $(".modal-btn").on("click", function(){
+                $(".error-tickers-modal").modal("show");
+                var data = $(this).data("data");
+                $(".error-tickers-modal").find('.modal-title').text('New message to lili')
+
+            })
+
             $('#search-users').keyup(function () {
                 var searchText = $(this).val();
                 if (searchText.length > 0) {
@@ -94,3 +117,24 @@
 </script>
 
 {% endblock %}
+{% block modal %}
+<div class="modal error-tickers-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+

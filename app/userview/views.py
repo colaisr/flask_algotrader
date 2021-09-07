@@ -51,7 +51,7 @@ def traderstationstate():
     report = Report.query.filter_by(email=current_user.email).first()
     settings = UserSetting.query.filter_by(email=current_user.email).first()
 
-    last_update = db.session.query(LastUpdateSpyderData.last_update_date).order_by(LastUpdateSpyderData.start_process_time.desc()).first()
+    last_update = db.session.query(LastUpdateSpyderData).order_by(LastUpdateSpyderData.start_process_time.desc()).first()
     bg_upd_color = "badge-success" if datetime.now().date() == last_update.last_update_date.date() and not last_update.error_status else "badge-danger"
     use_margin = settings.algo_allow_margin
     report_interval = settings.server_report_interval_sec
