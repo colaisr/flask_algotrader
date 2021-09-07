@@ -193,12 +193,14 @@
                                 Candidates
                             </a>
                         </li>
+                        {% if not current_user.is_admin()%}
                         <li>
                             <a href="/algotradersettings/usersettings">
                                 <i class="metismenu-icon pe-7s-tools"></i>
                                 Algotrader Settings
                             </a>
                         </li>
+                        {%endif%}
                         <li class="app-sidebar__heading">Analytics</li>
                         {% if current_user.is_admin()%}
                         <li>
