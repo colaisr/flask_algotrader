@@ -127,7 +127,7 @@ def research_ticker(ticker):
                    template='account/email/research_issue',
                    ticker=ticker)
     try:
-        marketdata.yahoo_avdropP, marketdata.yahoo_avspreadP,marketdata.beta = get_yahoo_stats_for_ticker(ticker)
+        marketdata.yahoo_avdropP, marketdata.yahoo_avspreadP,marketdata.beta,marketdata.max_intraday_drop_percent = get_yahoo_stats_for_ticker(ticker)
     except:
         print("ERROR in MarketDataResearch for "+ticker+" section: yahooStats")
         send_email(recipient='cola.isr@gmail.com',
