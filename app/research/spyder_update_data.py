@@ -4,8 +4,8 @@ import urllib
 from urllib.request import urlopen
 from datetime import datetime
 
-server_url = "http://127.0.0.1:5000/"
-# server_url = "https://www.algotrader.company/"
+# server_url = "http://127.0.0.1:5000/"
+server_url = "https://www.algotrader.company/"
 error_status = 0
 
 
@@ -20,45 +20,45 @@ def get_all_tickers():
     return _parsed
 
 
-# now = datetime.now()
-# print("*************************************************")
-# print(f"****Starting spider for last week champs {now.strftime('%d/%m/%Y %H:%M:%S')} ****")
-# try:
-#     url = (
-#         "https://www.tipranks.com/api/Screener/GetStocks/?break=1111111111111&country=US&page=1&scoreChangeDate=2&sortBy=1&sortDir=2&tipranksScore=5")
-#     context = ssl._create_unverified_context()
-#     response = urlopen(url, context=context)
-#     data = response.read().decode("utf-8")
-#     parsed = json.loads(data)
-#     pages = (parsed['count'] / 20)
-#     champs_list = []
-#     for p in range(int(pages)):
-#         url = ("https://www.tipranks.com/api/Screener/GetStocks/?break=1111111111111&country=US&page=" + \
-#                str(p + 1) + "&scoreChangeDate=2&sortBy=1&sortDir=2&tipranksScore=5")
-#         context = ssl._create_unverified_context()
-#         response = urlopen(url, context=context)
-#         data = response.read().decode("utf-8")
-#         parsed = json.loads(data)
-#         for c in parsed['data']:
-#             ticker = c['ticker']
-#             champs_list.append(c)
-#     try:
-#         for c in champs_list:
-#             now = datetime.now()
-#             print(f"Sending {c['ticker']} {now.strftime('%d/%m/%Y %H:%M:%S')}")
-#             data = urllib.parse.urlencode({"ticker_to_add": c['ticker'], })
-#             data = data.encode('ascii')
-#
-#             url = server_url + "candidates/add_by_spider"
-#             response = urllib.request.urlopen(url, data)
-#             now = datetime.now()
-#             print(f"Sent stamp {now.strftime('%d/%m/%Y %H:%M:%S')}")
-#     except Exception as e:
-#         print(f"GetLastWeekChamp error. {e}")
-#     now = datetime.now()
-#     print(f"****End spider for last week champs {now.strftime('%d/%m/%Y %H:%M:%S')} ****")
-# except Exception as e:
-#     print("GetLastWeekChamp error. ", str(e))
+now = datetime.now()
+print("*************************************************")
+print(f"****Starting spider for last week champs {now.strftime('%d/%m/%Y %H:%M:%S')} ****")
+try:
+    url = (
+        "https://www.tipranks.com/api/Screener/GetStocks/?break=1111111111111&country=US&page=1&scoreChangeDate=2&sortBy=1&sortDir=2&tipranksScore=5")
+    context = ssl._create_unverified_context()
+    response = urlopen(url, context=context)
+    data = response.read().decode("utf-8")
+    parsed = json.loads(data)
+    pages = (parsed['count'] / 20)
+    champs_list = []
+    for p in range(int(pages)):
+        url = ("https://www.tipranks.com/api/Screener/GetStocks/?break=1111111111111&country=US&page=" + \
+               str(p + 1) + "&scoreChangeDate=2&sortBy=1&sortDir=2&tipranksScore=5")
+        context = ssl._create_unverified_context()
+        response = urlopen(url, context=context)
+        data = response.read().decode("utf-8")
+        parsed = json.loads(data)
+        for c in parsed['data']:
+            ticker = c['ticker']
+            champs_list.append(c)
+    try:
+        for c in champs_list:
+            now = datetime.now()
+            print(f"Sending {c['ticker']} {now.strftime('%d/%m/%Y %H:%M:%S')}")
+            data = urllib.parse.urlencode({"ticker_to_add": c['ticker'], })
+            data = data.encode('ascii')
+
+            url = server_url + "candidates/add_by_spider"
+            response = urllib.request.urlopen(url, data)
+            now = datetime.now()
+            print(f"Sent stamp {now.strftime('%d/%m/%Y %H:%M:%S')}")
+    except Exception as e:
+        print(f"GetLastWeekChamp error. {e}")
+    now = datetime.now()
+    print(f"****End spider for last week champs {now.strftime('%d/%m/%Y %H:%M:%S')} ****")
+except Exception as e:
+    print("GetLastWeekChamp error. ", str(e))
 
 start_time = datetime.now()
 print(f'****Starting Updater spider for all existing Candidates {start_time.strftime("%d/%m/%Y %H:%M:%S")}')
@@ -104,8 +104,8 @@ data = urllib.parse.urlencode({
                                 "start_time": start_time,
                                 "end_time": end_time,
                                 "num_of_positions": len(tickers),
-                                "error_tickers": json.dumps(error_tickers) if len(error_tickers)>0 else "",
-                                "research_error_tickers": json.dumps(research_error_tickers) if len(research_error_tickers)>0 else "",
+                                "error_tickers": json.dumps(error_tickers) if len(error_tickers) > 0 else "",
+                                "research_error_tickers": json.dumps(research_error_tickers) if len(research_error_tickers) > 0 else "",
                                 "updated_tickers": len(update_times),
                                 "already_updated_tickers": already_updated_tickers,
                                 "avg_update_times": avg,

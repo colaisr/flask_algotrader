@@ -141,6 +141,10 @@ def users_monitor():
         'admin/users_monitor.html', users=users)
 
 
+def spider_statistic():
+    pass
+
+
 @admin.route('/pendingapproval')
 @login_required
 @admin_required
