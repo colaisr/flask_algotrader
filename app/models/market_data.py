@@ -58,10 +58,16 @@ class TickerData(db.Model):
 class LastUpdateSpyderData(db.Model):
     __tablename__ = 'LastUpdateSpyderData'
     id = db.Column('id', db.Integer, primary_key=True)
-    process_date_time = db.Column('process_date_time', db.DateTime)
+    start_process_time = db.Column('start_process_time', db.DateTime)
+    end_process_time = db.Column('end_process_time', db.DateTime)
     last_update_date = db.Column('last_update_date', db.DateTime)
+    avg_time_by_position = db.Column('avg_time_by_position', db.DateTime)
+    num_of_positions = db.Column('num_of_positions', db.BigInteger)
     error_status = db.Column('error_status', db.Boolean)
-    error_message = db.Column('error_message', db.String)
+    error_tickets = db.Column('error_tickets', db.String)
+    already_updated_tickets = db.Column('already_updated_tickets', db.BigInteger)
+    updated_tickets = db.Column('updated_tickets', db.BigInteger)
+    error_tickets_num = db.Column('error_tickets_num', db.BigInteger)
 
     def update_data(self):
         settings = LastUpdateSpyderData.query.first()

@@ -28,11 +28,12 @@ def updatemarketdataforcandidate():
         m_data = TickerData.query.filter_by(ticker=ticker).order_by(TickerData.updated_server_time.desc()).first()
         updated=m_data.updated_server_time.date()
         today = datetime.now().date()
-        if updated!=today:
-            research_ticker(ticker)
+        if updated != today:
+            # research_ticker(ticker)
+            return True
     except:
         print('problem with research')
-    return redirect(url_for('admin.market_data'))
+    return False
 
 
 @csrf.exempt
