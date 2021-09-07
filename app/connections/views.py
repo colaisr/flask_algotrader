@@ -140,8 +140,7 @@ def check_for_signals(candidates_live_json):
     for k, v in candidates_live.items():
         if v['Ask']<v['target_price'] and v['Ask']!=-1:
             signal=TelegramSignal()
-            ticker_data = TickerData.query.filter_by(ticker=signal.ticker).order_by(
-                TickerData.updated_server_time.desc()).first()
+            ticker_data = TickerData.query.filter_by(ticker=signal.ticker).order_by(TickerData.updated_server_time.desc()).first()
             signal.ticker=v['Stock']
             signal.received= datetime.today().date()
             signal.transmitted=True
