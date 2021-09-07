@@ -182,10 +182,11 @@ def closedpositions():
                 ReportStatistic.report_time.between(from_date, to_date),
                 ReportStatistic.net_liquidation > 0).first()
 
-    if reports_min_max is not None and len(reports_min_max)>0:
-        reports = ReportStatistic.query.filter(ReportStatistic.email == current_user.email) \
-            .filter(or_(ReportStatistic.report_time == reports_min_max[0],
-                        ReportStatistic.report_time == reports_min_max[1])).all()
+    reports = ReportStatistic.query.filter(ReportStatistic.email == current_user.email) \
+        .filter(or_(ReportStatistic.report_time == reports_min_max[0],
+                    ReportStatistic.report_time == reports_min_max[1])).all()
+
+    if reports is not None and len(reports)>0:
         profit_usd = reduce(lambda x, y: y - x, list(map(lambda z: z.net_liquidation, reports)))
         profit_procent = profit_usd / reports[0].net_liquidation * 100
         profit_class = "text-success" if profit_usd > 0 else "text-danger"
@@ -194,7 +195,7 @@ def closedpositions():
         profit_procent = 0
         profit_class = ""
 
-    if closed_positions is not None and len(closed_positions)>0:
+    if closed_positions is not None and len(closed_positions) > 0:
         succeed_positions = [p for p in closed_positions if p.profit > 0]
         failed_positions = [p for p in closed_positions if p.profit < 0]
     else:
