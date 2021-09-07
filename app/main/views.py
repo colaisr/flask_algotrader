@@ -25,7 +25,7 @@ def index():
         uniq_tickers_data = db.session.query(TickerData).from_statement(text(query_text)).all()
         system_status['tickers_tracked'] = len(uniq_tickers_data)
 
-        last_update_date = db.session.query(LastUpdateSpyderData.last_update_date).scalar()
+        last_update_date = db.session.query(LastUpdateSpyderData.last_update_date).order_by(LastUpdateSpyderData.start_process_time.desc()).first().last_update_date
         central = general.utc_datetime_to_local(last_update_date)
         system_status['last_update_date'] = central.strftime("%d-%b-%Y %H:%M")
 

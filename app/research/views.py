@@ -26,38 +26,56 @@ def updatemarketdataforcandidate():
     ticker = request.form['ticker_to_update']
     try:
         m_data = TickerData.query.filter_by(ticker=ticker).order_by(TickerData.updated_server_time.desc()).first()
-        updated=m_data.updated_server_time.date()
+        updated = m_data.updated_server_time.date()
         today = datetime.now().date()
         if updated != today:
             # research_ticker(ticker)
-            return True
+            return json.dumps({"message": "Ok"})
+        else:
+            return json.dumps({"message": "No"})
     except:
         print('problem with research')
-    return False
+        return json.dumps({"message": "Error"})
 
 
 @csrf.exempt
 @research.route('/savelasttimeforupdatedata', methods=['POST'])
 def savelasttimeforupdatedata():
     error_status = request.form['error_status']
-    error_message = request.form['error_message']
+    start_time = request.form['start_time']
+    end_time = request.form['end_time']
+    num_of_positions = request.form['num_of_positions']
+    error_tickers = request.form['error_tickers']
+    research_error_tickers = request.form['research_error_tickers']
+    updated_tickers = request.form['updated_tickers']
+    already_updated_tickers = request.form['already_updated_tickers']
+    avg_update_times = request.form['avg_update_times']
+    error_tickers_num = request.form['error_tickers_num']
+
     now = datetime.utcnow()
     try:
-        last_update_data = LastUpdateSpyderData.query.first()
-        if last_update_data is None:
-            last_update_data = LastUpdateSpyderData()
-        last_update_data.process_date_time = now
+        last_update_data = LastUpdateSpyderData.query.order_by(LastUpdateSpyderData.start_process_time.desc()).first()
+        update_data = LastUpdateSpyderData()
         if error_status == '1':
-            last_update_data.error_status = True
-            last_update_data.error_message = error_message
+            update_data.error_status = True
+            update_data.error_tickers = error_tickers
+            update_data.last_update_date = last_update_data.last_update_date if last_update_data is not None else now
         else:
-            last_update_data.last_update_date = now
-            last_update_data.error_status = False
-            last_update_data.error_message = ''
-        last_update_data.update_data()
+            update_data.last_update_date = end_time
+            update_data.error_status = False
+            update_data.error_tickers = ''
+        update_data.start_process_time = start_time
+        update_data.end_process_time = end_time
+        update_data.avg_time_by_position = avg_update_times
+        update_data.num_of_positions = num_of_positions
+        update_data.research_error_tickers = research_error_tickers
+        update_data.already_updated_tickers = already_updated_tickers
+        update_data.updated_tickers = updated_tickers
+        update_data.error_tickers_num = error_tickers_num
+        update_data.update_data()
         return "successfully update date"
-    except:
-        print('problem with update last date')
+    except Exception as e:
+        print('problem with update last date. ', e)
         return "failed to update date"
 
 
