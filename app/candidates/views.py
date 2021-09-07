@@ -84,32 +84,36 @@ def updatecandidate():
 def add_by_spider():
     ticker_to_add = request.form['ticker_to_add']
     try:
-        print('adding ' + ticker_to_add)
-        c = Candidate()
-        c.ticker = ticker_to_add
-        c.reason = "added automatically"
-        c.email = 'support@algotrader.company'
-        c.enabled = True
-        candidate_data = get_fmp_ticker_data(c.ticker)
-        if candidate_data is not None:
-            if not candidate_data['isEtf']:
-                c.company_name = candidate_data['company_name']
-                c.full_description = candidate_data['full_description']
-                c.exchange = candidate_data['exchange']
-                c.industry = candidate_data['industry']
-                c.sector = candidate_data['sector']
-                c.logo = candidate_data['logo']
+        candidate = Candidate.query.filter_by(email='support@algotrader.company', ticker=ticker_to_add).first()
+        if candidate is not None:
+            print('adding ' + ticker_to_add)
+            c = Candidate()
+            c.ticker = ticker_to_add
+            c.reason = "added automatically"
+            c.email = 'support@algotrader.company'
+            c.enabled = True
+            candidate_data = get_fmp_ticker_data(c.ticker)
+            if candidate_data is not None:
+                if not candidate_data['isEtf']:
+                    c.company_name = candidate_data['company_name']
+                    c.full_description = candidate_data['full_description']
+                    c.exchange = candidate_data['exchange']
+                    c.industry = candidate_data['industry']
+                    c.sector = candidate_data['sector']
+                    c.logo = candidate_data['logo']
 
-                c.update_candidate()
-                research_ticker(c.ticker)
-                print('successfully added candidate')
-                return "successfully added candidate"
+                    c.update_candidate()
+                    research_ticker(c.ticker)
+                    print('successfully added candidate')
+                    return "successfully added candidate"
+                else:
+                    print(ticker_to_add + " skept - it is ETF- not supported...")
+                    return "skept candidate"
             else:
-                print(ticker_to_add + " skept - it is ETF- not supported...")
+                print(ticker_to_add + " skept no FMP data...")
                 return "skept candidate"
         else:
-            print(ticker_to_add + " skept no FMP data...")
-            return "skept candidate"
+            return "candidate exist"
     except:
         send_email(recipient='cola.isr@gmail.com',
                    subject='Algotrader adding candidate problem with ' + ticker_to_add,
