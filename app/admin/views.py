@@ -162,7 +162,7 @@ def spider_statistic():
         statistic = {
             "id": s.id,
             "start_process_time": s.start_process_time.strftime("%d-%m-%y %H:%M:%S"),
-            "error_status": s.error_status,
+            "error_status": int(s.error_status == True),
             "last_update_date": s.last_update_date.strftime("%d-%m-%y %H:%M:%S"),
             "process_time": time.strftime("%H:%M:%S", time.gmtime(delta.total_seconds())),
             "avg_time": s.avg_time_by_position,
