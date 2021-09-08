@@ -69,15 +69,16 @@ error_tickers = []
 research_error_tickers = []
 update_times = []
 
+# test_tickers=tickers[:3]
 for t in tickers:
     try:
-        start_update_time = time()
+        start_update_time = time.time()
         print(f'Updating data for : {t} stamp: {datetime.now().strftime("%d/%m/%Y %H:%M:%S")}')
         data = urllib.parse.urlencode({"ticker_to_update": t})
         data = data.encode('ascii')
         url = server_url + "research/updatemarketdataforcandidate"
         response = urllib.request.urlopen(url, data)
-        end_update_time = time()
+        end_update_time = time.time()
         print(f"Updated stamp: {datetime.now().strftime('%d/%m/%Y %H:%M:%S')}")
         response_message = json.loads(response.read())["message"]
         if response_message == "Ok":
@@ -88,11 +89,13 @@ for t in tickers:
         else:
             research_error_tickers.append(t)
     except Exception as e:
+        print(f"Error in for cycle: {e}")
         error_status = 1
         error_tickers.append(t)
 
 if error_status == 1:
     print(f"Update MarketData error. Tickers: {json.dumps(error_tickers)}")
+
 avg = sum(update_times)/len(update_times) if len(update_times) != 0 else 0
 end_time = datetime.now()
 print(f"***All tickers successfully updated {end_time.strftime('%d/%m/%Y %H:%M:%S')}")

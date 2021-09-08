@@ -29,7 +29,7 @@ def updatemarketdataforcandidate():
         updated = m_data.updated_server_time.date()
         today = datetime.now().date()
         if updated != today:
-            # research_ticker(ticker)
+            research_ticker(ticker)
             return json.dumps({"message": "Ok"})
         else:
             return json.dumps({"message": "No"})
