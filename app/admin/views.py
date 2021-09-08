@@ -155,7 +155,7 @@ def users_monitor():
 @login_required
 @admin_required
 def spider_statistic():
-    statistics = LastUpdateSpyderData.query.order_by(LastUpdateSpyderData.start_process_time.desc()).all()
+    statistics = LastUpdateSpyderData.query.order_by(LastUpdateSpyderData.start_process_time.desc()).limit(10).all()
     data = []
     for s in statistics:
         delta = s.end_process_time-s.start_process_time

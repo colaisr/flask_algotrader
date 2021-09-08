@@ -28,14 +28,15 @@ def updatemarketdataforcandidate():
         m_data = TickerData.query.filter_by(ticker=ticker).order_by(TickerData.updated_server_time.desc()).first()
         updated = m_data.updated_server_time.date()
         today = datetime.now().date()
+
         if updated != today:
-            research_ticker(ticker)
-            return json.dumps({"message": "Ok"})
+            result = research_ticker(ticker)
+            return result
         else:
-            return json.dumps({"message": "No"})
-    except:
-        print('problem with research')
-        return json.dumps({"message": "Error"})
+            return json.dumps({"status": 0, "sections": []})
+    except Exception as e:
+        print('problem with research', e)
+        return json.dumps({"status": 2, "sections": []})
 
 
 @csrf.exempt
@@ -63,7 +64,7 @@ def savelasttimeforupdatedata():
         else:
             update_data.last_update_date = end_time
             update_data.error_status = False
-            update_data.error_tickers = ''
+            update_data.error_tickers = '[]'
         update_data.start_process_time = start_time
         update_data.end_process_time = end_time
         update_data.avg_time_by_position = avg_update_times
@@ -113,54 +114,50 @@ def update_reports_statistic():
 def research_ticker(ticker):
     marketdata = TickerData()
     marketdata.ticker = ticker
+    sections = []
     try:
         marketdata.tipranks, marketdata.twelve_month_momentum = get_tiprank_for_ticker(ticker)
     except:
-        print("ERROR in MarketDataResearch for "+ticker+" section: tiprank")
-        send_email(recipient='cola.isr@gmail.com',
-                   subject='Algotrader research Tipranks problem with ' + ticker,
-                   template='account/email/research_issue',
-                   ticker=ticker)
+        sections.append("tiprank")
+        print("ERROR in MarketDataResearch for "+ticker+". Section: tiprank")
+
     try:
         marketdata.stock_invest_rank = get_stock_invest_rank_for_ticker(ticker)
     except:
+        sections.append("stockinvest")
         print("ERROR in MarketDataResearch for "+ticker+" section: stockinvest")
-        send_email(recipient='cola.isr@gmail.com',
-                   subject='Algotrader research Stock Invest problem with ' + ticker,
-                   template='account/email/research_issue',
-                   ticker=ticker)
+
     try:
         marketdata.yahoo_rank, marketdata.under_priced_pnt,marketdata.target_mean_price = get_yahoo_rank_for_ticker(ticker)
     except:
+        sections.append("yahooRank")
         print("ERROR in MarketDataResearch for "+ticker+" section: yahooRank")
-        send_email(recipient='cola.isr@gmail.com',
-                   subject='Algotrader research Yahoo Rank problem with ' + ticker,
-                   template='account/email/research_issue',
-                   ticker=ticker)
+
     try:
         marketdata.fmp_rating, marketdata.fmp_score = get_fmp_ratings_score_for_ticker(ticker)
     except:
+        sections.append("fmpRating")
         print("ERROR in MarketDataResearch for "+ticker+" section: fmpRating")
-        send_email(recipient='cola.isr@gmail.com',
-                   subject='Algotrader research FMP Score problem with ' + ticker,
-                   template='account/email/research_issue',
-                   ticker=ticker)
+
     try:
-        marketdata.yahoo_avdropP, marketdata.yahoo_avspreadP,marketdata.beta,marketdata.max_intraday_drop_percent = get_yahoo_stats_for_ticker(ticker)
+        marketdata.yahoo_avdropP, marketdata.yahoo_avspreadP, marketdata.beta, marketdata.max_intraday_drop_percent = get_yahoo_stats_for_ticker(ticker)
     except:
+        sections.append("yahooStats")
         print("ERROR in MarketDataResearch for "+ticker+" section: yahooStats")
-        send_email(recipient='cola.isr@gmail.com',
-                   subject='Algotrader research Yahoo Stats problem with ' + ticker,
-                   template='account/email/research_issue',
-                   ticker=ticker)
+
     try:
         marketdata.beta = get_beta_for_ticker(ticker)
     except:
+        sections.append("Beta yahooStats")
         print("ERROR in Beta research for "+ticker+" section: yahooStats")
-        send_email(recipient='cola.isr@gmail.com',
-                   subject='Algotrader research Beta problem with ' + ticker,
+
+    if len(sections) > 0:
+        send_email(recipient='support@algotrader.company',
+                   subject='TEST!!! Algotrader research problem with ' + ticker,
                    template='account/email/research_issue',
-                   ticker=ticker)
+                   ticker=ticker,
+                   sections=", ".join(sections))
+
     #defaults for exceptions
     if math.isnan(marketdata.yahoo_avdropP):
         marketdata.yahoo_avdropP = 0
@@ -174,6 +171,8 @@ def research_ticker(ticker):
 
     marketdata.updated_server_time = ct
     marketdata.add_ticker_data()
+    error_status = 1 if len(sections) > 0 else 0
+    return json.dumps({"status": error_status, "sections": sections})
 
 
 @csrf.exempt

@@ -69,7 +69,7 @@ error_tickers = []
 research_error_tickers = []
 update_times = []
 
-# test_tickers=tickers[:3]
+# test_tickers = tickers[:3]
 for t in tickers:
     try:
         start_update_time = time.time()
@@ -80,16 +80,17 @@ for t in tickers:
         response = urllib.request.urlopen(url, data)
         end_update_time = time.time()
         print(f"Updated stamp: {datetime.now().strftime('%d/%m/%Y %H:%M:%S')}")
-        response_message = json.loads(response.read())["message"]
-        if response_message == "Ok":
+        responseJSON = json.loads(response.read())
+        if responseJSON["status"] == 0:
             delta = end_update_time - start_update_time
             update_times.append(delta)
-        elif response_message == "No":
+        elif responseJSON["status"] == 1:
             already_updated_tickers += 1
+            research_error_tickers.append({t: responseJSON["sections"]})
         else:
-            research_error_tickers.append(t)
+            research_error_tickers.append({t: ["problem with research"]})
     except Exception as e:
-        print(f"Error in for cycle: {e}")
+        # print(f"Error in for cycle: {e}")
         error_status = 1
         error_tickers.append(t)
 
