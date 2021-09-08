@@ -60,9 +60,9 @@ def traderstationstate():
         open_orders = {}
         candidates_live = {}
     else:
-        report.reported_text = report.report_time.strftime("%m-%d %H:%M:%S")
+        report.reported_text = report.report_time.strftime("%d %b %H:%M:%S")
         if report.started_time is not None:
-            report.started_time_text = report.started_time.strftime("%m-%d %H:%M:%S")
+            report.started_time_text = report.started_time.strftime("%d %b %H:%M:%S")
         else:
             report.started_time_text = '---------------------'
         report.last_worker_execution_text = report.last_worker_execution.strftime("%H:%M:%S")
@@ -139,7 +139,7 @@ def traderstationstate():
                                report=report,
                                margin_used=use_margin,
                                pnl_bg_box_color=pnl_bg_box_color,
-                               last_update_date=last_update.last_update_date.strftime("%m-%d %H:%M"),
+                               last_update_date=last_update.last_update_date.strftime("%d %b %H:%M"),
                                bg_upd_color=bg_upd_color,
                                form=None)
 
@@ -184,7 +184,7 @@ def closedpositions():
         .filter(or_(ReportStatistic.report_time == reports_min_max[0],
                     ReportStatistic.report_time == reports_min_max[1])).all()
 
-    if reports is not None and len(reports)>0:
+    if reports is not None and len(reports) > 0:
         profit_usd = reduce(lambda x, y: y - x, list(map(lambda z: z.net_liquidation, reports)))
         profit_procent = profit_usd / reports[0].net_liquidation * 100
         profit_class = "text-success" if profit_usd > 0 else "text-danger"

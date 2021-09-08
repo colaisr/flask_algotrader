@@ -5,6 +5,12 @@ from urllib.request import urlopen
 from datetime import datetime
 import time
 
+#***************************************
+#***************************************
+# RUN IN UTC FORMAT
+#***************************************
+#***************************************
+
 # server_url = "http://127.0.0.1:5000/"
 server_url = "https://www.algotrader.company/"
 error_status = 0

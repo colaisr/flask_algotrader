@@ -166,7 +166,7 @@ def info():
     hist_yahoo_rank = []
     stock_invest_rank = []
     for td in td_history:
-        hist_dates.append(td.updated_server_time.strftime("%m/%d/%Y"))
+        hist_dates.append(td.updated_server_time.strftime("%d %b, %Y"))
         hist_tr_ranks.append(td.tipranks)
         hist_fmp_score.append(td.fmp_score)
         hist_yahoo_rank.append(td.yahoo_rank)

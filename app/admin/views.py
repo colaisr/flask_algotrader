@@ -131,7 +131,7 @@ def users_monitor():
             report.net_liquidation - all_positions_value, 1)
         pnl_class = "text-success" if int(round(report.dailyPnl)) > 0 else "" if int(
             round(report.dailyPnl)) == 0 else "text-danger"
-        started_time = report.started_time.strftime("%m-%d %H:%M:%S")
+        started_time = report.started_time.strftime("%d %b %H:%M:%S")
         client_version = report.client_version
 
         user = {
@@ -161,9 +161,9 @@ def spider_statistic():
         delta = s.end_process_time-s.start_process_time
         statistic = {
             "id": s.id,
-            "start_process_time": s.start_process_time.strftime("%d-%m-%y %H:%M:%S"),
+            "start_process_time": s.start_process_time.strftime("%d %b, %Y %H:%M:%S"),
             "error_status": int(s.error_status == True),
-            "last_update_date": s.last_update_date.strftime("%d-%m-%y %H:%M:%S"),
+            "last_update_date": s.last_update_date.strftime("%d %b, %Y %H:%M:%S"),
             "process_time": time.strftime("%H:%M:%S", time.gmtime(delta.total_seconds())),
             "avg_time": s.avg_time_by_position,
             "num_tickers": s.num_of_positions,
