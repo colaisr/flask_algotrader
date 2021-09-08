@@ -186,6 +186,7 @@ def check_for_signals(candidates_live_json):
                                                  "SR: " + str(ticker_data.stock_invest_rank) + "%0A" +
                                                  "Expected to reach the target of: "+str(ticker_data.target_mean_price)+" USD"
                                                  )
+                break
             except:
                 print("Error in signal for : "+signal.ticker)
                 print(ticker_data)
