@@ -159,7 +159,7 @@ def closedpositions():
         return redirect(url_for('station.download'))
 
     filter_radio = '1'
-    max_date = general.utc_datetime_to_local(datetime.utcnow())
+    max_date = datetime.now().date()
     min_date = db.session.query(db.func.min(Position.closed)).filter(Position.email == current_user.email, Position.last_exec_side == 'SLD').scalar()
     min_date = min_date if min_date is not None else datetime.now() + relativedelta(years=1)
     from_date = min_date
