@@ -23,3 +23,6 @@ class TelegramSignal(db.Model):
             return True
         else:
             return False
+
+    def update_signal(self):
+        db.session.commit()
