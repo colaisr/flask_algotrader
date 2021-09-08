@@ -69,9 +69,7 @@ error_tickers = []
 research_error_tickers = []
 update_times = []
 
-test_tickers = tickers[:3]
-
-for t in test_tickers:
+for t in tickers:
     try:
         start_update_time = time()
         print(f'Updating data for : {t} stamp: {datetime.now().strftime("%d/%m/%Y %H:%M:%S")}')

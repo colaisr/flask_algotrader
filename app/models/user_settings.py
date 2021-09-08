@@ -35,7 +35,6 @@ class UserStrategySettingsDefault(db.Model):
     algo_apply_min_underprice = db.Column('algo_apply_min_underprice', db.Boolean)
     algo_apply_min_momentum = db.Column('algo_apply_min_momentum', db.Boolean)
 
-
 class UserSetting(db.Model):
     __tablename__ = 'UserSettings'
     # __bind_key__ = 'db_clients'
