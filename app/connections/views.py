@@ -135,6 +135,32 @@ def sort_by_tiprank(e):
     return e.tipranks
 
 
+def check_signal_for_target_riched(s, bid_price):
+    if bid_price>=s.target_price:
+        s.target_met=True
+        s.update_signal()
+    r=2
+    pass
+
+
+@connections.route('signals_check', methods=['GET'])
+@csrf.exempt
+def signals_check():
+    signals = TelegramSignal.query.filter_by(target_met=None).all()
+    all_reports=Report.query.all()
+    all_prices_reported={}
+    for r in all_reports:
+        candidates_live = json.loads(r.candidates_live_json)
+        for k,c in candidates_live.items():
+            all_prices_reported[c['Stock']]=c['Bid']
+        v=2
+    for s in signals:
+        if s.ticker in all_prices_reported:
+            if s.target_price is not None:
+                check_signal_for_target_riched(s,all_prices_reported[s.ticker])
+
+    return "Signals checked"
+
 def check_for_signals(candidates_live_json):
     candidates_live = json.loads(candidates_live_json)
     for k, v in candidates_live.items():
@@ -154,12 +180,13 @@ def check_for_signals(candidates_live_json):
                 if added:
                     send_telegram_signal_message(str(signal.id)+"%0A"+
                                                  "Time to buy: "+signal.ticker+"%0A" +
-                                                 "it crossed the target of "+str(round(v['target_price'], 2))+" USD %0A"+
+                                                 "it crossed the trigger of "+str(round(v['target_price'], 2))+" USD %0A"+
                                                  "TR: "+str(ticker_data.tipranks)+"%0A"+
                                                  "YR: " +str(ticker_data.yahoo_rank) + "%0A" +
                                                  "SR: " + str(ticker_data.stock_invest_rank) + "%0A" +
                                                  "Expected to reach the target of: "+str(ticker_data.target_mean_price)+" USD"
                                                  )
+                break
             except:
                 print("Error in signal for : "+signal.ticker)
                 print(ticker_data)
