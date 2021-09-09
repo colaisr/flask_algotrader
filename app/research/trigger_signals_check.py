@@ -5,8 +5,8 @@ from urllib.request import urlopen
 from datetime import datetime
 import time
 
-server_url = "http://127.0.0.1:5000/"
-#server_url = "https://www.algotrader.company/"
+#server_url = "http://127.0.0.1:5000/"
+server_url = "https://www.algotrader.company/"
 
 
 url = server_url + "connections/signals_check"
