@@ -109,7 +109,13 @@
                     $(".process-error").hide();
                 }
                 if(research_error_tickers.length > 0){
-                    $(".research-error").find(".item-content").html(research_error_tickers.join(", "))
+                    var str="";
+                    $.each(research_error_tickers, function( key, value ) {
+                        $.each(value, function(key, value){
+                            str +=key + ": " + value.join(", ") + "; ";
+                        });
+                    });
+                    $(".research-error").find(".item-content").html(str);
                     $(".research-error").show();
                 }
                 else{
@@ -136,7 +142,7 @@
 {% endblock %}
 {% block modal %}
 <div class="modal error-tickers-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-sm">
+    <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLongTitle">Error tickers</h5>
