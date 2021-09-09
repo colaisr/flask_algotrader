@@ -156,8 +156,8 @@
 
                     </td>
                     <td>{{ m.stocks }}</td>
-                    <td>{{ m.opened }}</td>
-                    <td>{{ m.closed }}</td>
+                    <td>{{ m.opened.strftime("%d %b, %Y %H:%M:%S") }}</td>
+                    <td>{{ m.closed.strftime("%d %b, %Y %H:%M:%S") }}</td>
                     <td>{{ m.open_price }}</td>
                     <td>{{ m.close_price }}</td>
                     <td>{{ m.days_in_action }}</td>

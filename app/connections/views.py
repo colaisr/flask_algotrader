@@ -136,10 +136,9 @@ def sort_by_tiprank(e):
 
 
 def check_signal_for_target_riched(s, bid_price):
-    if bid_price>=s.target_price:
+    if bid_price >= s.target_price:
         s.target_met=True
         s.update_signal()
-    r=2
     pass
 
 
@@ -147,13 +146,12 @@ def check_signal_for_target_riched(s, bid_price):
 @csrf.exempt
 def signals_check():
     signals = TelegramSignal.query.filter_by(target_met=None).all()
-    all_reports=Report.query.all()
-    all_prices_reported={}
+    all_reports = Report.query.all()
+    all_prices_reported = {}
     for r in all_reports:
         candidates_live = json.loads(r.candidates_live_json)
-        for k,c in candidates_live.items():
-            all_prices_reported[c['Stock']]=c['Bid']
-        v=2
+        for k, c in candidates_live.items():
+            all_prices_reported[c['Stock']] = c['Bid']
     for s in signals:
         if s.ticker in all_prices_reported:
             if s.target_price is not None:
@@ -161,30 +159,31 @@ def signals_check():
 
     return "Signals checked"
 
+
 def check_for_signals(candidates_live_json):
     candidates_live = json.loads(candidates_live_json)
     for k, v in candidates_live.items():
-        if v['Ask']<v['target_price'] and v['Ask']!=-1:
+        if v['Ask'] < v['target_price'] and v['Ask'] != -1:
             signal=TelegramSignal()
             ticker_data = TickerData.query.filter_by(ticker=v['Stock']).order_by(TickerData.updated_server_time.desc()).first()
-            signal.ticker=v['Stock']
-            signal.received= datetime.today().date()
-            signal.transmitted=True
-            signal.signal_price=v['Ask']
+            signal.ticker = v['Stock']
+            signal.received = datetime.today().date()
+            signal.transmitted = True
+            signal.signal_price = v['Ask']
             try:
                 if ticker_data.target_mean_price is None:
-                    signal.target_price=0
+                    signal.target_price = 0
                 else:
-                    signal.target_price=ticker_data.target_mean_price
-                added=signal.add_signal()
+                    signal.target_price = ticker_data.target_mean_price
+                added = signal.add_signal()
                 if added:
-                    send_telegram_signal_message(str(signal.id)+"%0A"+
-                                                 "Time to buy: "+signal.ticker+"%0A" +
-                                                 "it crossed the trigger of "+str(round(v['target_price'], 2))+" USD %0A"+
-                                                 "TR: "+str(ticker_data.tipranks)+"%0A"+
-                                                 "YR: " +str(ticker_data.yahoo_rank) + "%0A" +
+                    send_telegram_signal_message(str(signal.id) + "%0A" +
+                                                 "Time to buy: " + signal.ticker + "%0A" +
+                                                 "it crossed the trigger of " + str(round(v['target_price'], 2)) + " USD %0A" +
+                                                 "TR: " + str(ticker_data.tipranks) + "%0A" +
+                                                 "YR: " + str(ticker_data.yahoo_rank) + "%0A" +
                                                  "SR: " + str(ticker_data.stock_invest_rank) + "%0A" +
-                                                 "Expected to reach the target of: "+str(ticker_data.target_mean_price)+" USD"
+                                                 "Expected to reach the target of: " + str(ticker_data.target_mean_price) + " USD"
                                                  )
                 break
             except:
@@ -257,23 +256,6 @@ def get_command():
     else:
         return "The user configured for Get Command is not found on Server"
 
-
-# @csrf.exempt
-# @connections.route('/getopenpositions', methods=['POST'])
-# def get_open_positions():
-#     request_data = request.get_json()
-#     logged_user = request_data["user"]
-#     users = User.query.all()
-#     if any(x.email == logged_user for x in users):
-#         response={}
-#         open_positions=Position.query.filter_by(last_exec_side='BOT')
-#         open_positions_dictionaries = []
-#         for c in open_positions:
-#             open_positions_dictionaries.append(c.toDictionary())
-#         response['open_positions'] =open_positions_dictionaries
-#         return response
-#     else:
-#         return "The user configured is not found on Server the report is not logged"
 
 @csrf.exempt
 @connections.route('logrestartrequest/', methods=['POST'])

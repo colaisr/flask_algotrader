@@ -59,7 +59,7 @@ def view():
     hist = TickerData.query.filter_by(ticker=position.ticker).order_by(TickerData.updated_server_time.asc()).all()
     rank_array = []
     for h in hist:
-        rank_array.append([str(h.updated_server_time.strftime("%Y-%m-%d %H:%M:%S")), h.tipranks])
+        rank_array.append([str(h.updated_server_time.strftime("%d %b, %Y %H:%M:%S")), h.tipranks])
     return render_template('userview/closed_position_info.html', position=position, rank_array=rank_array,
                            tip_rank_on_buy=tip_rank_on_buy, fmp_rating_on_buy=fmp_rating_on_buy)
 
