@@ -3,9 +3,7 @@ import math
 
 from flask import (
     Blueprint,
-    redirect,
-    request,
-    url_for
+    request
 )
 from datetime import datetime
 from app import csrf
@@ -36,7 +34,7 @@ def updatemarketdataforcandidate():
             return json.dumps({"status": 0, "sections": []})
     except Exception as e:
         print('problem with research', e)
-        return json.dumps({"status": 2, "sections": []})
+        return json.dumps({"status": 2, "error": e})
 
 
 @csrf.exempt
