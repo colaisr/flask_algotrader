@@ -178,7 +178,7 @@ def closedpositions():
     reports_min_max = db.session.query(db.func.min(ReportStatistic.report_time), db.func.max(ReportStatistic.report_time))\
         .filter(ReportStatistic.email == current_user.email,
                 ReportStatistic.report_time.between(from_date, to_date),
-                ReportStatistic.net_liquidation > 0).first()
+                ReportStatistic.net_liquidation != 0).first()
 
     reports = ReportStatistic.query.filter(ReportStatistic.email == current_user.email) \
         .filter(or_(ReportStatistic.report_time == reports_min_max[0],

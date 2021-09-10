@@ -8,6 +8,7 @@ from flask import (
     request
 )
 from datetime import datetime, date
+from dateutil.relativedelta import relativedelta
 
 from app import csrf
 from app.models import TickerData, Position, ReportStatistic, JsonEncoder
@@ -68,5 +69,10 @@ def view():
 @closed_position_info.route('/user_reports_history', methods=['POST'])
 def user_reports_history():
     user = request.form.get('user')
-    history = ReportStatistic.query.filter_by(email=user).all()
+    from_date_str = request.form.get('from_date')
+    to_date_str = request.form['to_date']
+    from_date = datetime.strptime(from_date_str.split(' GMT')[0], '%a %b %d %Y %X')
+    to_date = datetime.strptime(to_date_str.split(' GMT')[0], '%a %b %d %Y %X') + relativedelta(days=1)
+    history = ReportStatistic.query.filter(ReportStatistic.email == user,
+                                           ReportStatistic.report_time.between(from_date, to_date)).all()
     return json.dumps(history, cls=JsonEncoder)

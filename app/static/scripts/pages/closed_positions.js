@@ -1,6 +1,8 @@
  $(document).ready(function () {
-    user = $("#user").val()
-    $.post("/closed_position_info/user_reports_history",{user: user}, function(data) {
+    var user = $("#user").val()
+    var from_date = new Date($("#from_date").val());
+    var to_date = new Date($("#to_date").val());
+    $.post("/closed_position_info/user_reports_history",{user: user, from_date: from_date, to_date: to_date}, function(data) {
         var arr = [];
         var data_parsed = jQuery.parseJSON(data);
         var start_net = data_parsed[0].net_liquidation;
@@ -45,8 +47,8 @@
     })
 
     $('.filter-option').on('change', function(e) {
-        from_date = new Date($("#from_date").val());
-        to_date = new Date($("#to_date").val());
+//        from_date = new Date($("#from_date").val());
+//        to_date = new Date($("#to_date").val());
         if(from_date < to_date){
             $( "#closed-position-form" ).submit();
         }
