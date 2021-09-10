@@ -159,8 +159,8 @@ def closedpositions():
         return redirect(url_for('station.download'))
 
     filter_radio = '1'
-    max_date = datetime.now().date() #datetime.now(pytz.timezone('America/Lima'))
-    min_date = db.session.query(db.func.min(Position.closed)).filter(Position.email == current_user.email, Position.last_exec_side == 'SLD').scalar()
+    max_date = datetime.now().date() #datetime.now(pytz.timezone('America/Lima')) ##from tzlocal import get_localzone # $ pip install tzlocal
+    min_date = db.session.query(ReportStatistic).filter(ReportStatistic.email == current_user.email).order_by(ReportStatistic.report_time).first().report_time
     min_date = min_date if min_date is not None else datetime.now() + relativedelta(years=1)
     from_date = min_date
     to_date = datetime.now() + relativedelta(days=1)
@@ -178,7 +178,7 @@ def closedpositions():
     reports_min_max = db.session.query(db.func.min(ReportStatistic.report_time), db.func.max(ReportStatistic.report_time))\
         .filter(ReportStatistic.email == current_user.email,
                 ReportStatistic.report_time.between(from_date, to_date),
-                ReportStatistic.net_liquidation > 0).first()
+                ReportStatistic.net_liquidation != 0).first()
 
     reports = ReportStatistic.query.filter(ReportStatistic.email == current_user.email) \
         .filter(or_(ReportStatistic.report_time == reports_min_max[0],

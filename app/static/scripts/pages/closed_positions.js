@@ -1,13 +1,23 @@
  $(document).ready(function () {
-    user = $("#user").val()
-    $.post("/closed_position_info/user_reports_history",{user: user}, function(data) {
+    var user = $("#user").val()
+    var from_date = new Date($("#from_date").val());
+    var to_date = new Date($("#to_date").val());
+    $.post("/closed_position_info/user_reports_history",{user: user, from_date: from_date, to_date: to_date}, function(data) {
         var arr = [];
-        data_parsed = jQuery.parseJSON(data);
+        var data_parsed = jQuery.parseJSON(data);
+        var start_net = data_parsed[0].net_liquidation;
+        var end_net = data_parsed[data_parsed.length-1].net_liquidation;
+        if(end_net>start_net){
+            position_colour='#00c36f'
+        }
+        else{
+            position_colour='#FF0000'
+        }
         for (d of data_parsed) {
             parsed_d=Date.parse(d["report_time"])
             arr.push( [parsed_d , d["net_liquidation"] ]);
         }
-        rev_main=arr.reverse()
+        var rev_main=arr.reverse()
 
         Highcharts.stockChart('net-report', {
             rangeSelector: {
@@ -20,6 +30,7 @@
                 {
                   name: 'NET',
                   data: rev_main,
+                  color: position_colour,
                   id: 'dataseries',
                   tooltip: {
                     valueDecimals: 2
@@ -36,8 +47,8 @@
     })
 
     $('.filter-option').on('change', function(e) {
-        from_date = new Date($("#from_date").val());
-        to_date = new Date($("#to_date").val());
+//        from_date = new Date($("#from_date").val());
+//        to_date = new Date($("#to_date").val());
         if(from_date < to_date){
             $( "#closed-position-form" ).submit();
         }
