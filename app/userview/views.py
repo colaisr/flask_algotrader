@@ -119,6 +119,7 @@ def traderstationstate():
 
     trading_session_state = is_market_open()
     current_est_time = general.get_by_timezone('US/Eastern').time().strftime("%H:%M")
+    report.pnl_percent=round(report.dailyPnl/report.net_liquidation*100,2)
 
     if report is None:
         return redirect(url_for('candidates.usercandidates'))
