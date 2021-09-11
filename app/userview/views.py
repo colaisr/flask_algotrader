@@ -45,7 +45,7 @@ def is_market_open():
 @userview.route('traderstationstate', methods=['GET', 'POST'])
 @login_required
 def traderstationstate():
-    if not current_user.admin_confirmed:
+    if not current_user.admin_confirmed or not current_user.signature:
         return redirect(url_for('station.download'))
 
     report = Report.query.filter_by(email=current_user.email).first()
@@ -157,7 +157,7 @@ def time_in_range(start, end, x):
 @userview.route('closedpositions', methods=['GET', 'POST'])
 @login_required
 def closedpositions():
-    if not current_user.admin_confirmed:
+    if not current_user.admin_confirmed or not current_user.signature:
         return redirect(url_for('station.download'))
 
     filter_radio = '1'

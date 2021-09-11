@@ -1,4 +1,5 @@
 import json
+import app.generalutils as general
 from flask import (
     Blueprint,
     flash,
@@ -30,7 +31,7 @@ def json_serial(obj):
 @algotradersettings.route('/usersettings', methods=['GET', 'POST'])
 @login_required
 def usersettings():
-    if not current_user.admin_confirmed:
+    if not current_user.admin_confirmed or not current_user.signature:
         return redirect(url_for('station.download'))
     user_settings = UserSetting.query.filter_by(email=current_user.email).first()
     strategies = Strategy.query.filter(Strategy.id != 4).all()
@@ -214,3 +215,26 @@ def retrieve_user_settings():
     tdj = json.dumps(user_settings.toDictionary())
     parsed_response = json.dumps(tdj)
     return parsed_response
+
+
+@algotradersettings.route('/save_signature', methods=['POST'])
+@login_required
+def save_signature():
+    first_name_signature = request.form['first_name_signature']
+    last_name_signature = request.form['last_name_signature']
+    signature = False
+
+    if "signature" in request.form.keys():
+        signature = True
+
+    if general.check_for_blanks(first_name_signature) \
+            or general.check_for_blanks(last_name_signature) \
+            or not signature:
+        flash('Need to agree to accept the terms', 'error')
+    else:
+
+        current_user.signature_fname = first_name_signature
+        current_user.signature_lname = last_name_signature
+        current_user.signature = signature
+        current_user.update_user()
+    return redirect(request.args.get('next') or url_for('main.index'))
