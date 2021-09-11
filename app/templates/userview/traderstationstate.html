@@ -26,6 +26,25 @@
                         Last state of Algotrader station reported.
                     </div>
                 </div>
+                <!-- TradingView Widget BEGIN -->
+<div class="tradingview-widget-container">
+  <div class="tradingview-widget-container__widget"></div>
+  <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-tickers.js" async>
+  {
+  "symbols": [
+    {
+      "proName": "FOREXCOM:SPXUSD",
+      "title": "S&P 500"
+    }
+  ],
+  "colorTheme": "light",
+  "isTransparent": true,
+  "showSymbolLogo": true,
+  "locale": "en"
+}
+  </script>
+</div>
+<!-- TradingView Widget END -->
             </div>
             <div class="page-title-actions">
                 <div>
@@ -107,8 +126,11 @@
                         <div class="widget-subheading">Daily PnL for all positions</div>
                     </div>
                     <div class="widget-content-right">
-                        <div class="widget-numbers text-white "><span
+                        <div class="widget-numbers text-white ">
+                            <span
                                 class="val_pnl">$ {{ report.dailyPnl|round |int }}</span>
+                                                        <span
+                                class="val_pnl" style="    font-size: small;">({{ report.pnl_percent }}%)</span>
                         </div>
                     </div>
                 </div>
