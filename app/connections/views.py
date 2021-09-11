@@ -381,3 +381,6 @@ def postmarketdataerror():
         user_report.invalid_market_data_reported = normalized_time
         user_report.update_report()
         return "Market Data Error registered on server"
+
+
+

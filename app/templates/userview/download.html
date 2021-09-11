@@ -13,11 +13,80 @@
                     <div class="page-title-subheading">All You need to Know to use the platform.
                     </div>
                 </div>
-                <div><a href="/station/downloadzip" download><i class="nav-link-icon fa fa-download pl-5"> </i>AlgoTrader Package</a></div>
+                {%if user.signature%}
+                <div>
+                    <a href="/station/downloadzip" download>
+                        <i class="nav-link-icon fa fa-download pl-5"> </i>
+                        AlgoTrader Package
+                    </a>
+                </div>
+                {%endif%}
             </div>
 
         </div>
     </div>
+    {% if not user.signature %}
+    <div class="tab-content">
+        <div class="tab-pane tabs-animation fade active show">
+            <form action="/algotradersettings/save_signature" method="post">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                <div class="main-card mb-3 card">
+                    <div class="card-body">
+                        <h5 style="font-size: large;" class="card-title">Terms and conditions for accessing or otherwise using Algotrader service </h5>
+                        <div class="form-row">
+                            <div class="col-md-12">
+                                <div class="position-relative form-group">
+<!--                                    <iframe src="{{ url_for('static', filename='files/contract_ru.pdf') }}" width="100%" height="500px"> </iframe>-->
+                                    <embed src="{{ url_for('static', filename='files/contract_ru.pdf') }}" width="100%" height="500px"><embed>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="col-md-6">
+                                <div class="position-relative form-group">
+                                    <label for="first_name_signature" class="">First name</label>
+                                    <input title="First Name" value="{{user.signature_fname}}"
+                                           name="first_name_signature" id="first_name_signature"
+                                           type="text" class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="position-relative form-group">
+                                    <label for="last_name_signature" class="">Last name</label>
+                                    <input title="Last Name"
+                                           value="{{user.signature_lname}}"
+                                           name="last_name_signature" id="last_name_signature" type="text"
+                                           class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="col-md-4">
+                                <div class="custom-checkbox custom-control">
+                                    <input title="Agreement with the terms of a contract"
+                                           type="checkbox"
+                                           id="signature"
+                                           name="signature"
+                                           disabled=""
+                                           class="custom-control-input form-check-input">
+                                    <label class="custom-control-label font-weight-bold" for="signature">I'm agree</label>
+                                </div>
+<!--                                <div class="position-relative form-check">-->
+<!--                                    <input title="Agreement with the terms of a contract"-->
+<!--                                           name="signature"-->
+<!--                                           id="signature" type="checkbox"-->
+<!--                                           class="form-check-input" disabled>-->
+<!--                                    <label for="signature" class="form-check-label">I'm agree</label>-->
+<!--                                </div>-->
+                            </div>
+                        </div>
+                    </div>
+                    <button type="submit" id="signature-submit" class="mt-2 btn btn-primary" disabled>Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    {%else%}
     {% if not user.admin_confirmed %}
     <div class="tab-content">
         <div class="tab-pane tabs-animation fade active show">
@@ -81,7 +150,6 @@
             </form>
 
         </div>
-
     </div>
     {% endif %}
     <div class="column">
@@ -193,6 +261,7 @@
 
 
     </div>
+    {% endif %}
 </div>
 
 {% endblock %}
