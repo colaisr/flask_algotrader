@@ -34,6 +34,10 @@ class UserStrategySettingsDefault(db.Model):
     algo_apply_min_stock_invest_rank = db.Column('algo_apply_min_stock_invest_rank', db.Boolean)
     algo_apply_min_underprice = db.Column('algo_apply_min_underprice', db.Boolean)
     algo_apply_min_momentum = db.Column('algo_apply_min_momentum', db.Boolean)
+    algo_min_beta = db.Column('algo_min_beta', db.Float)
+    algo_apply_min_beta = db.Column('algo_apply_min_beta', db.Boolean)
+    algo_max_intraday_drop_percent = db.Column('algo_max_intraday_drop_percent', db.Float)
+    algo_apply_max_intraday_drop_percent = db.Column('algo_apply_max_intraday_drop_percent', db.Boolean)
 
 class UserSetting(db.Model):
     __tablename__ = 'UserSettings'
@@ -76,6 +80,10 @@ class UserSetting(db.Model):
     notify_buy = db.Column('notify_buy', db.Boolean)
     notify_sell = db.Column('notify_sell', db.Boolean)
     notify_trail = db.Column('notify_trail', db.Boolean)
+    algo_min_beta = db.Column('algo_min_beta', db.Float)
+    algo_apply_min_beta = db.Column('algo_apply_min_beta', db.Boolean)
+    algo_max_intraday_drop_percent = db.Column('algo_max_intraday_drop_percent', db.Float)
+    algo_apply_max_intraday_drop_percent = db.Column('algo_apply_max_intraday_drop_percent', db.Boolean)
     strategy_id = db.Column('strategy_id', db.Integer)
 
     def __init__(self, email, **kwargs):
@@ -123,6 +131,10 @@ class UserSetting(db.Model):
         self.algo_apply_min_stock_invest_rank = strategy.algo_apply_min_stock_invest_rank
         self.algo_apply_min_underprice = strategy.algo_apply_min_underprice
         self.algo_apply_min_momentum = strategy.algo_apply_min_momentum
+        self.algo_min_beta = strategy.algo_min_beta
+        self.algo_apply_min_beta = strategy.algo_apply_min_beta
+        self.algo_max_intraday_drop_percent = strategy.algo_max_intraday_drop_percent
+        self.algo_apply_max_intraday_drop_percent = strategy.algo_apply_max_intraday_drop_percent
 
     def update_user_settings(self):
         settings = UserSetting.query.filter((UserSetting.email == self.email)).first()

@@ -13,7 +13,7 @@ from flask_login import login_required, current_user
 from werkzeug.utils import redirect
 
 from app import csrf
-from app.models import UserSetting, Strategy, UserStrategySettingsDefault
+from app.models import UserSetting, Strategy, UserStrategySettingsDefault, JsonEncoder
 from app.email import send_email
 
 algotradersettings = Blueprint('algotradersettings', __name__)
@@ -28,7 +28,7 @@ def json_serial(obj):
 
 
 @csrf.exempt
-@algotradersettings.route('/usersettings', methods=['GET', 'POST'])
+@algotradersettings.route('/usersettings', methods=['GET'])
 @login_required
 def usersettings():
     if not current_user.admin_confirmed or not current_user.signature:
@@ -36,30 +36,18 @@ def usersettings():
     user_settings = UserSetting.query.filter_by(email=current_user.email).first()
     strategies = Strategy.query.filter(Strategy.id != 4).all()
 
-    if request.method == 'POST':
-        strategy_id = request.form['strategy_id']
-        default_settings = UserStrategySettingsDefault.query.filter_by(id=strategy_id).first()
-    else:
-        default_settings = UserStrategySettingsDefault(
-                strategy_id=user_settings.strategy_id,
-                algo_min_rank=user_settings.algo_min_rank,
-                algo_accepted_fmp_ratings=user_settings.algo_accepted_fmp_ratings,
-                algo_max_yahoo_rank=user_settings.algo_max_yahoo_rank,
-                algo_min_stock_invest_rank=user_settings.algo_min_stock_invest_rank,
-                algo_min_underprice=user_settings.algo_min_underprice,
-                algo_min_momentum=user_settings.algo_min_momentum,
-                algo_apply_min_rank=user_settings.algo_apply_min_rank,
-                algo_apply_accepted_fmp_ratings=user_settings.algo_apply_accepted_fmp_ratings,
-                algo_apply_max_yahoo_rank=user_settings.algo_apply_max_yahoo_rank,
-                algo_apply_min_stock_invest_rank=user_settings.algo_apply_min_stock_invest_rank,
-                algo_apply_min_underprice=user_settings.algo_apply_min_underprice,
-                algo_apply_min_momentum=user_settings.algo_apply_min_momentum
-            )
     return render_template('userview/algotraderSettings.html',
                            user_settings=user_settings,
-                           strategies=strategies,
-                           default_settings=default_settings
-                           )
+                           strategies=strategies)
+
+
+@csrf.exempt
+@algotradersettings.route('/get_default_strategy_settings', methods=['POST'])
+@login_required
+def get_default_strategy_settings():
+    strategy_id = request.form['strategy_id']
+    default_settings = UserStrategySettingsDefault.query.filter_by(id=strategy_id).first()
+    return json.dumps(default_settings, cls=JsonEncoder)
 
 
 @algotradersettings.route('/savesettings', methods=['POST'])
@@ -152,6 +140,18 @@ def savesettings():
     else:
         user_settings.algo_apply_min_stock_invest_rank = False
     user_settings.algo_min_stock_invest_rank = request.form['algo_min_stock_invest_rank']
+
+    if "algo_apply_min_beta" in request.form.keys():
+        user_settings.algo_apply_min_beta = True
+    else:
+        user_settings.algo_apply_min_beta = False
+    user_settings.algo_min_beta = request.form['algo_min_beta']
+
+    if "algo_apply_max_intraday_drop_percent" in request.form.keys():
+        user_settings.algo_apply_max_intraday_drop_percent = True
+    else:
+        user_settings.algo_apply_max_intraday_drop_percent = False
+    user_settings.algo_max_intraday_drop_percent = request.form['algo_max_intraday_drop_percent']
 
     user_settings.connection_port = request.form['connection_port']
     user_settings.connection_account_name = request.form['connection_account_name']
