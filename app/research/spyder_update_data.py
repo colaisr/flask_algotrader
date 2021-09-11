@@ -114,7 +114,7 @@ if len(error_tickers) > 0 or len(research_error_tickers) > 0:
     error_tickers = []
     if len(research_error_tickers) > 0:
         for item in research_error_tickers:
-            for k, v in item:
+            for k, v in item.items():
                 tickers.append(k)
         research_error_tickers = []
     already_updated_tickers, error_status = update_market_data(tickers, update_times, research_error_tickers, error_tickers)
