@@ -62,11 +62,7 @@ def register():
             email=form.email.data,
             password=form.password.data)
 
-        user_settings = UserSetting(form.email.data)
-        client_command = ClientCommand(form.email.data)
         db.session.add(user)
-        db.session.add(user_settings)
-        db.session.add(client_command)
         db.session.commit()
         token = user.generate_confirmation_token()
         confirm_link = url_for('account.confirm', token=token, _external=True)

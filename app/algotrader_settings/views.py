@@ -12,8 +12,8 @@ from flask_login import login_required, current_user
 
 from werkzeug.utils import redirect
 
-from app import csrf
-from app.models import UserSetting, Strategy, UserStrategySettingsDefault, JsonEncoder
+from app import csrf, db
+from app.models import UserSetting, Strategy, UserStrategySettingsDefault, JsonEncoder, ClientCommand
 from app.email import send_email
 
 algotradersettings = Blueprint('algotradersettings', __name__)
@@ -237,4 +237,11 @@ def save_signature():
         current_user.signature_lname = last_name_signature
         current_user.signature = signature
         current_user.update_user()
+
+    user_settings = UserSetting(current_user.email)
+    client_command = ClientCommand(current_user.email)
+    db.session.add(user_settings)
+    db.session.add(client_command)
+    db.session.commit()
+
     return redirect(request.args.get('next') or url_for('main.index'))
