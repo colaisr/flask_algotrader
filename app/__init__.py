@@ -126,6 +126,9 @@ def create_app(config):
     from .candidates import candidates as candidates_blueprint
     app.register_blueprint(candidates_blueprint, url_prefix='/candidates')
 
+    from .test import test as test_blueprint
+    app.register_blueprint(test_blueprint, url_prefix='/test')
+
     return app
 
 

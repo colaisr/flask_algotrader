@@ -11,9 +11,9 @@ import time
 #***************************************
 #***************************************
 
-# server_url = "http://127.0.0.1:5000/"
-server_url = "https://www.algotrader.company/"
-
+server_url = "http://127.0.0.1:5000/"
+# server_url = "https://www.algotrader.company/"
+num = 5
 
 def get_all_tickers():
     print("Getting all necessary tickers from Algotrader server")
@@ -27,7 +27,7 @@ def get_all_tickers():
 
 
 def update_market_data(_tickers, _update_times, _research_error_tickers, _error_tickers):
-    # test_tickers = tickers[:3]
+    # test_tickers = _tickers[:num]
     _already_updated_tickers = 0
     _error_status = 0
     for t in _tickers:
@@ -36,7 +36,7 @@ def update_market_data(_tickers, _update_times, _research_error_tickers, _error_
             print(f'Updating data for : {t} stamp: {datetime.now().strftime("%d/%m/%Y %H:%M:%S")}')
             _data = urllib.parse.urlencode({"ticker_to_update": t})
             _data = _data.encode('ascii')
-            _url = server_url + "research/updatemarketdataforcandidate"
+            _url = server_url + "test/updatemarketdataforcandidate_test"
             _response = urllib.request.urlopen(_url, _data)
             end_update_time = time.time()
             print(f"Updated stamp: {datetime.now().strftime('%d/%m/%Y %H:%M:%S')}")
@@ -50,51 +50,11 @@ def update_market_data(_tickers, _update_times, _research_error_tickers, _error_
             else:
                 _research_error_tickers.append({t: [_responseJSON["error"]]})
         except Exception as e:
-            # print(f"Error in for cycle: {e}")
+            print(f"Error in for cycle: {e}")
             _error_status = 1
             _error_tickers.append(t)
     return _already_updated_tickers, _error_status
 
-
-now = datetime.now()
-print("*************************************************")
-print(f"****Starting spider for last week champs {now.strftime('%d/%m/%Y %H:%M:%S')} ****")
-try:
-    url = (
-        "https://www.tipranks.com/api/Screener/GetStocks/?break=1111111111111&country=US&page=1&scoreChangeDate=2&sortBy=1&sortDir=2&tipranksScore=5")
-    context = ssl._create_unverified_context()
-    response = urlopen(url, context=context)
-    data = response.read().decode("utf-8")
-    parsed = json.loads(data)
-    pages = (parsed['count'] / 20)
-    champs_list = []
-    for p in range(int(pages)):
-        url = ("https://www.tipranks.com/api/Screener/GetStocks/?break=1111111111111&country=US&page=" + \
-               str(p + 1) + "&scoreChangeDate=2&sortBy=1&sortDir=2&tipranksScore=5")
-        context = ssl._create_unverified_context()
-        response = urlopen(url, context=context)
-        data = response.read().decode("utf-8")
-        parsed = json.loads(data)
-        for c in parsed['data']:
-            ticker = c['ticker']
-            champs_list.append(c)
-    try:
-        for c in champs_list:
-            now = datetime.now()
-            print(f"Sending {c['ticker']} {now.strftime('%d/%m/%Y %H:%M:%S')}")
-            data = urllib.parse.urlencode({"ticker_to_add": c['ticker'], })
-            data = data.encode('ascii')
-
-            url = server_url + "candidates/add_by_spider"
-            response = urllib.request.urlopen(url, data)
-            now = datetime.now()
-            print(f"Sent stamp {now.strftime('%d/%m/%Y %H:%M:%S')}")
-    except Exception as e:
-        print(f"GetLastWeekChamp error. {e}")
-    now = datetime.now()
-    print(f"****End spider for last week champs {now.strftime('%d/%m/%Y %H:%M:%S')} ****")
-except Exception as e:
-    print("GetLastWeekChamp error. ", str(e))
 
 start_time = datetime.now()
 print(f'****Starting Updater spider for all existing Candidates {start_time.strftime("%d/%m/%Y %H:%M:%S")}')
@@ -104,6 +64,7 @@ error_tickers = []
 research_error_tickers = []
 update_times = []
 
+tickers = tickers[:num]
 already_updated_tickers, error_status = update_market_data(tickers, update_times, research_error_tickers, error_tickers)
 
 num_of_tickers = len(tickers)
@@ -140,7 +101,7 @@ data = urllib.parse.urlencode({
                                 "error_tickers_num": len(research_error_tickers) + len(error_tickers)
                               })
 data = data.encode('ascii')
-url = server_url + "research/savelasttimeforupdatedata"
+url = server_url + "test/savelasttimeforupdatedata_test"
 try:
     response = urllib.request.urlopen(url, data)
     print("***Date updated***")

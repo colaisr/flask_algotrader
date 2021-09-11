@@ -151,7 +151,7 @@ def research_ticker(ticker):
 
     if len(sections) > 0:
         send_email(recipient='support@algotrader.company',
-                   subject='TEST!!! Algotrader research problem with ' + ticker,
+                   subject='Algotrader research problem with ' + ticker,
                    template='account/email/research_issue',
                    ticker=ticker,
                    sections=", ".join(sections))
@@ -181,3 +181,6 @@ def alltickers():
     for c in cands:
         resp.append(c.ticker)
     return json.dumps(resp)
+
+
+
