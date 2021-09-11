@@ -87,7 +87,19 @@ def filter_add_data(requested_candidates, logged_user):
     else:
         filtered_momentum = filtered_underprice
 
-    return filtered_momentum
+    if user_settings.algo_apply_min_beta:
+        filtered_beta = list(
+            filter(lambda td: td.beta >= user_settings.algo_min_beta, filtered_momentum))
+    else:
+        filtered_beta = filtered_momentum
+
+    if user_settings.algo_apply_max_intraday_drop_percent:
+        filtered_max_intraday_drop = list(
+            filter(lambda td: td.max_intraday_drop_percent < user_settings.algo_max_intraday_drop_percent, filtered_beta))
+    else:
+        filtered_max_intraday_drop = filtered_beta
+
+    return filtered_max_intraday_drop
 
 
 def sort_by_parameter_desc(obj, prop):
