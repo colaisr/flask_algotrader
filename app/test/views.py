@@ -16,6 +16,7 @@ from app.research.yahoo_research import get_yahoo_stats_for_ticker, get_beta_for
 
 test = Blueprint('test', __name__)
 
+
 @csrf.exempt
 @test.route('/updatemarketdataforcandidate_test', methods=['POST'])
 def updatemarketdataforcandidate_test():
@@ -124,3 +125,5 @@ def savelasttimeforupdatedata_test():
     except Exception as e:
         print('problem with update last date. ', e)
         return "failed to update date"
+
+

@@ -24,13 +24,15 @@ from app.account.forms import (
     ResetPasswordForm,
 )
 from app.email import send_email
-from app.models import User, UserSetting, ClientCommand
+from app.models import User
+import app.test_utils as t
 
 account = Blueprint('account', __name__)
 
 
 @account.route('/login', methods=['GET', 'POST'])
 def login():
+    t.slack_invite_users()
     """Log in an existing user."""
     form = LoginForm()
     if form.validate_on_submit():
