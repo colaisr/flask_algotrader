@@ -86,3 +86,11 @@ def request_zip():
         directory='static/ready_package',
         filename='algotrader' + uid + '.zip'
     )
+
+
+@station.route('/download_contract', methods=['GET'])
+def download_contract():
+    return send_from_directory(
+        directory='static/files',
+        filename='contract_ru.pdf'
+    )
