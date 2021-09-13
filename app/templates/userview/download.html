@@ -36,33 +36,21 @@
                         <div class="form-row">
                             <div class="col-md-12">
                                 <div class="position-relative form-group">
-<!--                                    <iframe src="{{ url_for('static', filename='files/contract_ru.pdf') }}" width="100%" height="500px"> </iframe>-->
-                                    <embed src="{{ url_for('static', filename='files/contract_ru.pdf') }}" width="100%" height="500px"><embed>
+                                    <textarea id="contract" disabled class="form-control">{{contract_txt}}</textarea>
                                 </div>
                             </div>
                         </div>
                         <div class="form-row">
                             <div class="col-md-6">
                                 <div class="position-relative form-group">
-                                    <label for="first_name_signature" class="">First name</label>
-                                    <input title="First Name" value="{{user.signature_fname}}"
-                                           name="first_name_signature" id="first_name_signature"
+                                    <label for="signature_full_name" class="font-weight-bold">Signature <span class="text-danger">[Full name]</span></label>
+                                    <input title="Full Name" value="{{user.signature_full_name}}"
+                                           name="signature_full_name" id="signature_full_name"
                                            type="text" class="form-control">
                                 </div>
                             </div>
                             <div class="col-md-6">
-                                <div class="position-relative form-group">
-                                    <label for="last_name_signature" class="">Last name</label>
-                                    <input title="Last Name"
-                                           value="{{user.signature_lname}}"
-                                           name="last_name_signature" id="last_name_signature" type="text"
-                                           class="form-control">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="col-md-4">
-                                <div class="custom-checkbox custom-control">
+                                <div class="custom-checkbox custom-control pl-5 pt-5">
                                     <input title="Agreement with the terms of a contract"
                                            type="checkbox"
                                            id="signature"
@@ -71,13 +59,6 @@
                                            class="custom-control-input form-check-input">
                                     <label class="custom-control-label font-weight-bold" for="signature">I'm agree</label>
                                 </div>
-<!--                                <div class="position-relative form-check">-->
-<!--                                    <input title="Agreement with the terms of a contract"-->
-<!--                                           name="signature"-->
-<!--                                           id="signature" type="checkbox"-->
-<!--                                           class="form-check-input" disabled>-->
-<!--                                    <label for="signature" class="form-check-label">I'm agree</label>-->
-<!--                                </div>-->
                             </div>
                         </div>
                     </div>

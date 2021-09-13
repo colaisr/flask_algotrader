@@ -59,15 +59,13 @@ class User(UserMixin, db.Model):
     role_id = db.Column(db.Integer, db.ForeignKey('roles.id'))
     tws_requirements = db.Column(db.Boolean, default=False)
     signature = db.Column(db.Boolean, default=False)
-    signature_fname = db.Column(db.String(50))
-    signature_lname = db.Column(db.String(50))
+    signature_full_name = db.Column(db.String(100))
 
     def __init__(self, **kwargs):
         super(User, self).__init__(**kwargs)
         self.admin_as = False
         self.signature = False
-        self.signature_fname = ''
-        self.signature_lname = ''
+        self.signature_full_name = ''
         if self.role is None:
             if self.email == current_app.config['ADMIN_EMAIL']:
                 self.role = Role.query.filter_by(

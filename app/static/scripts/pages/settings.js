@@ -5,14 +5,12 @@
         $('.strategy-btn').removeClass( "active" )
     })
 
-     $('#first_name_signature, #last_name_signature').on('keyup keypress blur change', function(e) {
-        var first_name_signature = $('#first_name_signature').val();
-        var last_name_signature = $('#last_name_signature').val();
-        if(first_name_signature.length >0
-            && last_name_signature.length >0
-            && first_name_signature.trim() != ''
-            && last_name_signature.trim() != ''){
-
+     $('#signature_full_name').on('keyup keypress blur change', function(e) {
+        var signature_full_name = $('#signature_full_name').val();
+        if(signature_full_name.length >0
+            && signature_full_name.trim() != ''
+            && signature_full_name.trim().split(' ').length > 1
+            && signature_full_name.trim().split(' ')[signature_full_name.trim().split(' ').length-1].trim() != ''){
            $('#signature').prop("disabled", false)
         }
         else{

@@ -9,14 +9,27 @@ from flask import (
 from flask_login import current_user
 
 from app.models import UserSetting
+import os
+from pathlib import Path
 
 station = Blueprint('station', __name__)
 
 
 @station.route('/requirements', methods=['GET'])
 def download():
+    contract_txt = ''
+    if not current_user.signature:
+        try:
+            # f = open('app/static/files/contract_ru.txt', encoding="utf8")
+            # file_contents = f.read()
+            # print(file_contents)
+            # f.close()
+            with open('app/static/files/contract_ru.txt', encoding="utf8") as f:
+                contract_txt = f.read()
+        except Exception as e:
+            print(e)
     user_settings = UserSetting.query.filter_by(email=current_user.email).first()
-    return render_template('userview/download.html', user=current_user, user_settings=user_settings)
+    return render_template('userview/download.html', user=current_user, user_settings=user_settings, contract_txt=contract_txt)
 
 
 def create_script_for_package():

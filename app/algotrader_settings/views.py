@@ -220,21 +220,19 @@ def retrieve_user_settings():
 @algotradersettings.route('/save_signature', methods=['POST'])
 @login_required
 def save_signature():
-    first_name_signature = request.form['first_name_signature']
-    last_name_signature = request.form['last_name_signature']
+    signature_full_name = request.form['signature_full_name']
     signature = False
 
     if "signature" in request.form.keys():
         signature = True
 
-    if general.check_for_blanks(first_name_signature) \
-            or general.check_for_blanks(last_name_signature) \
-            or not signature:
+    if general.check_for_blanks(signature_full_name) or not signature:
         flash('Need to agree to accept the terms', 'error')
+    elif len(signature_full_name.strip().split()) <= 1:
+        flash('Enter full name', 'error')
     else:
 
-        current_user.signature_fname = first_name_signature
-        current_user.signature_lname = last_name_signature
+        current_user.signature_full_name = signature_full_name.strip()
         current_user.signature = signature
         current_user.update_user()
 
