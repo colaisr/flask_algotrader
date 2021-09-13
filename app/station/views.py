@@ -4,7 +4,7 @@ from shutil import copyfile
 from flask import (
     Blueprint,
     render_template,
-    send_from_directory,
+    send_from_directory
 )
 from flask_login import current_user
 

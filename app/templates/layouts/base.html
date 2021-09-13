@@ -110,7 +110,7 @@
                                 <li class="btn-group nav-item">
                                     <a href="/account/manage/info" class="nav-link">
                                         <i class="nav-link-icon fa fa-user-circle"></i>
-                                        {% if current_user.admin_as %}
+                                        {% if session['admin_as'] %}
                                         <span class="text-danger pr-2">Admin as </span>
                                         {% endif %}
                                          {{current_user.first_name}} {{current_user.last_name}}
