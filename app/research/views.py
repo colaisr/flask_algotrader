@@ -121,11 +121,11 @@ def research_ticker(ticker):
         sections.append("tiprank")
         print("ERROR in MarketDataResearch for "+ticker+". Section: tiprank")
 
-    try:
-        marketdata.stock_invest_rank = get_stock_invest_rank_for_ticker(ticker)
-    except:
-        sections.append("stockinvest")
-        print("ERROR in MarketDataResearch for "+ticker+" section: stockinvest")
+    # try:
+    #     marketdata.stock_invest_rank = get_stock_invest_rank_for_ticker(ticker)
+    # except:
+    #     sections.append("stockinvest")
+    #     print("ERROR in MarketDataResearch for "+ticker+" section: stockinvest")
 
     try:
         marketdata.yahoo_rank, marketdata.under_priced_pnt,marketdata.target_mean_price = get_yahoo_rank_for_ticker(ticker)

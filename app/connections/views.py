@@ -69,11 +69,13 @@ def filter_add_data(requested_candidates, logged_user):
     else:
         filtered_yahoo_ranks = filtered_scores
 
-    if user_settings.algo_apply_min_stock_invest_rank:
-        filtered_stock_invest_ranks = list(
-            filter(lambda td: td.stock_invest_rank >= user_settings.algo_min_stock_invest_rank, filtered_yahoo_ranks))
-    else:
-        filtered_stock_invest_ranks = filtered_scores
+    # if user_settings.algo_apply_min_stock_invest_rank:
+    #     filtered_stock_invest_ranks = list(
+    #         filter(lambda td: td.stock_invest_rank >= user_settings.algo_min_stock_invest_rank, filtered_yahoo_ranks))
+    # else:
+    #     filtered_stock_invest_ranks = filtered_scores
+
+    filtered_stock_invest_ranks = filtered_scores
 
     if user_settings.algo_apply_min_underprice:
         filtered_underprice = list(
