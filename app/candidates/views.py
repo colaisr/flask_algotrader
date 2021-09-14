@@ -103,24 +103,24 @@ def add_by_spider():
                     c.logo = candidate_data['logo']
 
                     c.update_candidate()
-                    research_ticker(c.ticker)
+                    r, log = research_ticker(c.ticker)
                     print('successfully added candidate')
-                    return "successfully added candidate"
+                    return json.dumps({"status": "successfully added candidate"}), log
                 else:
                     print(ticker_to_add + " skept - it is ETF- not supported...")
-                    return "skept candidate"
+                    return json.dumps({"status": "skept candidate"}), ""
             else:
                 print(ticker_to_add + " skept no FMP data...")
-                return "skept candidate"
+                return json.dumps({"status": "skept candidate"}), ""
         else:
-            return "candidate exist"
+            return json.dumps({"status": "candidate exist"}), ""
     except:
         send_email(recipient='cola.isr@gmail.com',
                    subject='Algotrader adding candidate problem with ' + ticker_to_add,
                    template='account/email/research_issue',
                    ticker=ticker_to_add)
         print("failed to add candidate")
-        return "exception in candidate " + ticker_to_add
+        return json.dumps({"status": "exception in candidate " + ticker_to_add}), ""
     # else:
     #     print("skept-exist")
     #     return "skept"

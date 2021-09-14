@@ -90,7 +90,10 @@ try:
             data = data.encode('ascii')
 
             url = server_url + "candidates/add_by_spider"
-            response = urllib.request.urlopen(url, data)
+            response, log = urllib.request.urlopen(url, data)
+            print("********** log from stock invest research function **********")
+            print(log)
+            print("********** END log from stock invest research function **********")
             now = datetime.now()
             print(f"Sent stamp {now.strftime('%d/%m/%Y %H:%M:%S')}")
     except Exception as e:
