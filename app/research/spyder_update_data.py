@@ -27,10 +27,10 @@ def get_all_tickers():
 
 
 def update_market_data(_tickers, _update_times, _research_error_tickers, _error_tickers):
-    # test_tickers = tickers[:3]
+    test_tickers = _tickers[:5]
     _already_updated_tickers = 0
     _error_status = 0
-    for t in _tickers:
+    for t in test_tickers:
         try:
             start_update_time = time.time()
             print(f'Updating data for : {t} stamp: {datetime.now().strftime("%d/%m/%Y %H:%M:%S")}')
