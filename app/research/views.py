@@ -27,13 +27,13 @@ def updatemarketdataforcandidate():
         updated = m_data.updated_server_time.date()
         today = datetime.now().date()
 
-        # if updated != today:
-        #     result = research_ticker(ticker)
-        #     return result
-        # else:
-        #     return json.dumps({"status": 0, "sections": []})
-        result, log = research_ticker(ticker)
-        return result, log
+        if updated != today:
+            result, log = research_ticker(ticker)
+            return result, log
+        else:
+            return json.dumps({"status": 0, "sections": []}), ""
+        # result, log = research_ticker(ticker)
+        # return result, log
     except Exception as e:
         print('problem with research', e)
         return json.dumps({"status": 2, "error": e}), ""
