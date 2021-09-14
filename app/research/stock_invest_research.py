@@ -3,12 +3,14 @@ import requests
 
 def get_stock_invest_rank_for_ticker(ticker):
     score = 0
+    print("***** Start stockinvest getting process")
     try:
         url = "https://stockinvest.us/stock/" + ticker
         headers = {
             'User-Agent': "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.107 Safari/537.36"
         }
         r = requests.get(url, headers=headers)
+        print(f"r.ok: {r.ok}")
         if not r.ok:
             score = 0
         try:
@@ -18,9 +20,12 @@ def get_stock_invest_rank_for_ticker(ticker):
             righ_part = response_text.find('<', left_part)
             score = response_text[left_part + 1:righ_part]
             score = float(score)
-        except:
+            print(f"score: {score}")
+        except Exception as e:
+            print(f"error in convert response text: {e}")
             score = 0
-    except:
+    except Exception as e:
+        print(f"error in request: {e}")
         score = 0
     return score
 
