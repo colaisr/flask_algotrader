@@ -40,11 +40,8 @@ def update_market_data(_tickers, _update_times, _research_error_tickers, _error_
             _response = urllib.request.urlopen(_url, _data)
             end_update_time = time.time()
             print(f"Updated stamp: {datetime.now().strftime('%d/%m/%Y %H:%M:%S')}")
-            _responseJSON, log = json.loads(_response.read())
+            _responseJSON = json.loads(_response.read())
 
-            print("********** log from stock invest research function **********")
-            print(log)
-            print("********** END log from stock invest research function **********")
             if _responseJSON["status"] == 0:
                 delta = end_update_time - start_update_time
                 _update_times.append(delta)
@@ -90,10 +87,7 @@ try:
             data = data.encode('ascii')
 
             url = server_url + "candidates/add_by_spider"
-            response, log = urllib.request.urlopen(url, data)
-            print("********** log from stock invest research function **********")
-            print(log)
-            print("********** END log from stock invest research function **********")
+            response = urllib.request.urlopen(url, data)
             now = datetime.now()
             print(f"Sent stamp {now.strftime('%d/%m/%Y %H:%M:%S')}")
     except Exception as e:

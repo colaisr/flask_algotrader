@@ -58,7 +58,7 @@ def create_app(config):
 
         tunnel.start()
         app.config[
-            'SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://{}:{}@127.0.0.1:{}/colak$algotrader_test'.format(
+            'SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://{}:{}@127.0.0.1:{}/colak$algotrader'.format(
             mysql_user,
             mysql_password,
             tunnel.local_bind_port)

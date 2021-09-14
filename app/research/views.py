@@ -122,7 +122,7 @@ def research_ticker(ticker):
         print("ERROR in MarketDataResearch for "+ticker+". Section: tiprank")
 
     try:
-        marketdata.stock_invest_rank, log = get_stock_invest_rank_for_ticker(ticker)
+        marketdata.stock_invest_rank = get_stock_invest_rank_for_ticker(ticker)
     except:
         sections.append("stockinvest")
         print("ERROR in MarketDataResearch for "+ticker+" section: stockinvest")
@@ -172,7 +172,7 @@ def research_ticker(ticker):
     marketdata.updated_server_time = ct
     marketdata.add_ticker_data()
     error_status = 1 if len(sections) > 0 else 0
-    return json.dumps({"status": error_status, "sections": sections}), log
+    return json.dumps({"status": error_status, "sections": sections})
 
 
 @csrf.exempt
