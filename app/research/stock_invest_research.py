@@ -32,7 +32,7 @@ def get_stock_invest_rank_for_ticker(ticker):
         log += f"/n***** error in request: {e} *****"
         print(f"error in request: {e}")
         score = 0
-    return score
+    return score, log
 
 
 if __name__ == '__main__':
