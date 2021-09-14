@@ -15,15 +15,15 @@ def get_stock_invest_rank_for_ticker(ticker):
             score = 0
         try:
             response_text = r.text
-            print(f"response_text: {response_text}")
+            # print(f"response_text: {response_text}")
             sentence_starts = response_text.find('Current score')
-            print(f"sentence_starts: {sentence_starts}")
+            # print(f"sentence_starts: {sentence_starts}")
             left_part = response_text.find('>', sentence_starts)
-            print(f"left_part: {left_part}")
+            # print(f"left_part: {left_part}")
             righ_part = response_text.find('<', left_part)
-            print(f"righ_part: {righ_part}")
+            # print(f"righ_part: {righ_part}")
             score = response_text[left_part + 1:righ_part]
-            print(f"score_str: {score}")
+            # print(f"score_str: {score}")
             score = float(score)
             print(f"score_float: {score}")
         except Exception as e:
