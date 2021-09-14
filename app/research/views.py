@@ -28,15 +28,15 @@ def updatemarketdataforcandidate():
         today = datetime.now().date()
 
         if updated != today:
-            result, log = research_ticker(ticker)
-            return result, log
+            result = research_ticker(ticker)
+            return result
         else:
-            return json.dumps({"status": 0, "sections": []}), ""
+            return json.dumps({"status": 0, "sections": []})
         # result, log = research_ticker(ticker)
         # return result, log
     except Exception as e:
         print('problem with research', e)
-        return json.dumps({"status": 2, "error": e}), ""
+        return json.dumps({"status": 2, "error": e})
 
 
 @csrf.exempt
