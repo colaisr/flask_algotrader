@@ -33,12 +33,10 @@ def updatemarketdataforcandidate():
         # else:
         #     return json.dumps({"status": 0, "sections": []})
         result, log = research_ticker(ticker)
-        print("********** log from stock invest research function **********")
-        print(log)
-        return result
+        return result, log
     except Exception as e:
         print('problem with research', e)
-        return json.dumps({"status": 2, "error": e})
+        return json.dumps({"status": 2, "error": e}), ""
 
 
 @csrf.exempt
