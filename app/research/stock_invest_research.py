@@ -38,4 +38,4 @@ def get_stock_invest_rank_for_ticker(ticker):
 if __name__ == '__main__':
     s = get_stock_invest_rank_for_ticker('bkh')
 
-# get_stock_invest_rank_for_ticker('bkh')
+get_stock_invest_rank_for_ticker('bkh')
