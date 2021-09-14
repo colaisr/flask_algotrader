@@ -16,6 +16,7 @@ def get_stock_invest_rank_for_ticker(ticker):
         try:
             response_text = r.text
             sentence_starts = response_text.find('Current score')
+            print(f"sentence_starts: {sentence_starts}")
             left_part = response_text.find('>', sentence_starts)
             righ_part = response_text.find('<', left_part)
             score = response_text[left_part + 1:righ_part]
