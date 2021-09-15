@@ -81,7 +81,7 @@ def filter_add_data(requested_candidates, logged_user):
         filtered_underprice = list(
             filter(lambda td: td.under_priced_pnt >= user_settings.algo_min_underprice, filtered_stock_invest_ranks))
     else:
-        filtered_underprice = filtered_yahoo_ranks
+        filtered_underprice = filtered_stock_invest_ranks
 
     if user_settings.algo_apply_min_momentum:
         filtered_momentum = list(
