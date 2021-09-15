@@ -75,7 +75,7 @@ def filter_add_data(requested_candidates, logged_user):
     # else:
     #     filtered_stock_invest_ranks = filtered_scores
 
-    filtered_stock_invest_ranks = filtered_scores
+    filtered_stock_invest_ranks = filtered_yahoo_ranks
 
     if user_settings.algo_apply_min_underprice:
         filtered_underprice = list(
