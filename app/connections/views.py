@@ -115,7 +115,7 @@ def sort_by_parameter_asc(obj, prop):
 def sort_candidates(cand_dictionaries):
     sorted_momentum = sort_by_parameter_desc(cand_dictionaries, 'twelve_month_momentum')
     sorted_underprice = sort_by_parameter_desc(sorted_momentum, 'under_priced_pnt')
-    sorted_stockinvest = sort_by_parameter_desc(sorted_underprice, 'stock_invest_rank')
+    sorted_stockinvest = sorted_underprice
     sorted_yahooo = sort_by_parameter_asc(sorted_stockinvest, 'yahoo_rank')
     sorted_tiprank = sort_by_parameter_desc(sorted_yahooo, 'tipranks')
     return sorted_tiprank
