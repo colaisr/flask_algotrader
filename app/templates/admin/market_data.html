@@ -33,13 +33,15 @@
                     <th>Ticker</th>
                     <th>Average drop %</th>
                     <th>Average spread %</th>
-                    <th>TipRank</th>
-                    <th>Yahoo</th>
-                    <th>Stock Invest</th>
-                    <th>FMP rating</th>
-                    <th>FMP score</th>
+                    <th>TipRank(Analytics A)</th>
+                    <th>Yahoo(Analytics B)</th>
+                    <th>FMP rating(Analytics C)</th>
+                    <th>FMP score(Analytics C)</th>
                     <th>Underpriced</th>
                     <th>12M Momentum</th>
+                    <th>Target Mean price</th>
+                    <th>1Y Max inday drop %</th>
+                    <th>Beta</th>
                     <th>Updated</th>
                 </tr>
                 </thead>
@@ -59,14 +61,15 @@
                     </td>
                     <td>{{ m.yahoo_avdropP|round(1, 'floor') }}</td>
                     <td>{{ m.yahoo_avspreadP|round(1, 'floor') }}</td>
-                    <td>{{ m.tipranks }}
-                    </td>
+                    <td>{{ m.tipranks }}</td>
                     <td>{{ m.yahoo_rank }}</td>
-                    <td>{{ m.stock_invest_rank }}</td>
                     <td>{{ m.fmp_rating }}</td>
                     <td>{{ m.fmp_score }}</td>
                     <td>{{ m.under_priced_pnt }}</td>
                     <td>{{ m.twelve_month_momentum }}</td>
+                    <td>{{ m.target_mean_price }}</td>
+                    <td>{{ m.max_intraday_drop_percent }}</td>
+                    <td>{{ m.beta }}</td>
                     <td>{{ m.updated_server_time }}</td>
 
 

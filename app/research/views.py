@@ -24,6 +24,21 @@ def updatemarketdataforcandidate():
     ticker = request.form['ticker_to_update']
     try:
         m_data = TickerData.query.filter_by(ticker=ticker).order_by(TickerData.updated_server_time.desc()).first()
+        result = research_ticker(ticker)
+        return result
+
+        # result, log = research_ticker(ticker)
+        # return result, log
+    except Exception as e:
+        print('problem with research', e)
+        return json.dumps({"status": 2, "error": e})
+
+@csrf.exempt
+@research.route('/updatemarketdataforcandidatespider', methods=['POST'])
+def updatemarketdataforcandidate():
+    ticker = request.form['ticker_to_update']
+    try:
+        m_data = TickerData.query.filter_by(ticker=ticker).order_by(TickerData.updated_server_time.desc()).first()
         updated = m_data.updated_server_time.date()
         today = datetime.now().date()
 
@@ -37,7 +52,6 @@ def updatemarketdataforcandidate():
     except Exception as e:
         print('problem with research', e)
         return json.dumps({"status": 2, "error": e})
-
 
 @csrf.exempt
 @research.route('/savelasttimeforupdatedata', methods=['POST'])

@@ -36,7 +36,7 @@ def update_market_data(_tickers, _update_times, _research_error_tickers, _error_
             print(f'Updating data for : {t} stamp: {datetime.now().strftime("%d/%m/%Y %H:%M:%S")}')
             _data = urllib.parse.urlencode({"ticker_to_update": t})
             _data = _data.encode('ascii')
-            _url = server_url + "research/updatemarketdataforcandidate"
+            _url = server_url + "research/updatemarketdataforcandidatespider"
             _response = urllib.request.urlopen(_url, _data)
             end_update_time = time.time()
             print(f"Updated stamp: {datetime.now().strftime('%d/%m/%Y %H:%M:%S')}")

@@ -24,7 +24,7 @@
                     btn-success
                     {% else %}
                     btn-warning
-                    {% endif %}">Tipranks
+                    {% endif %}">Analytics A
                         <span class="badge badge-pill badge-light">{{market_data.tipranks}}</span>
                     </button>
                     <button class="mb-2 mr-2 btn
@@ -32,17 +32,10 @@
                     btn-success
                     {% else %}
                     btn-warning
-                    {% endif %}">Yahoo Rank
+                    {% endif %}">Analytics B
                         <span class="badge badge-pill badge-light">{{market_data.yahoo_rank}}</span>
                     </button>
-                    <button class="mb-2 mr-2 btn
-                    {% if market_data.stock_invest_rank>=user_settings.algo_min_stock_invest_rank %}
-                    btn-success
-                    {% else %}
-                    btn-warning
-                    {% endif %}">Stock Invest Rank
-                        <span class="badge badge-pill badge-light">{{market_data.stock_invest_rank}}</span>
-                    </button>
+
                     <div class="mb-2 mr-2 badge badge-pill badge-secondary">Last Update(UTC) :
                         {{market_data.updated_server_time}}
                     </div>
@@ -54,7 +47,7 @@
                     btn-success
                     {% else %}
                     btn-warning
-                    {% endif %}">FMP......
+                    {% endif %}">Analytics C
                     <span class="badge badge-pill badge-light">{{market_data.fmp_rating}}</span>
                 </button>
                 <button class="mb-2 mr-2 btn
@@ -104,7 +97,6 @@
                 <script> var hist_tr_ranks = {{ hist_tr_ranks|tojson }}; </script>
                 <script> var hist_fmp_score = {{ hist_fmp_score|tojson }}; </script>
                 <script> var hist_yahoo_rank = {{ hist_yahoo_rank|tojson }}; </script>
-                <script> var stock_invest_rank = {{ stock_invest_rank|tojson }}; </script>
                 <!--                <input type="hidden" id="hist_dates" value="{{ hist_dates }}">-->
                 <!--                <input type="hidden" id="hist_tr_ranks" value="{{ hist_tr_ranks }}">-->
                 <!--                <input type="hidden" id="hist_fmp_score" value="{{ hist_fmp_score }}">-->

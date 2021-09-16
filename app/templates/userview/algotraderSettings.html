@@ -194,7 +194,7 @@
 
                             <div class="col-md-1">
                                 <div class="position-relative form-check">
-                                    <input title="Use minimal Rank or transmit All"
+                                    <input title="Use minimal Analytics A rank or transmit All"
                                            {%if user_settings.algo_apply_min_rank%}
                                            checked
                                            {% endif %}
@@ -206,9 +206,9 @@
                             </div>
                             <div class="col-md-4">
                                 <div class="position-relative form-group">
-                                    <label for="algo_min_rank" class="">Min Tiprank</label>
+                                    <label for="algo_min_rank" class="">Min Analytics A</label>
 
-                                    <input title="Minimal TipRank to transmit to station"
+                                    <input title="Minimal Analytics A rank to transmit to station"
                                            value="{{user_settings.algo_min_rank}}" name="algo_min_rank"
                                            id="algo_min_rank" type="text"
                                            class="form-control strategy-change"></div>
@@ -218,7 +218,7 @@
 
                             <div class="col-md-1">
                                 <div class="position-relative form-check">
-                                    <input title="Use FMP Ratings or transmit all"
+                                    <input title="Use Analytics C or transmit all"
                                            {%if user_settings.algo_apply_accepted_fmp_ratings%}
                                            checked
                                            {% endif %}
@@ -230,7 +230,7 @@
                             </div>
                             <div class="col-md-4">
                                 <div class="position-relative form-group">
-                                    <label for="algo_accepted_fmp_ratings" class="">Accepted FMP</label>
+                                    <label for="algo_accepted_fmp_ratings" class="">Accepted Analytics C rank</label>
                                     <input title="Ratings to transmit to station. Coma separated"
                                            value="{{user_settings.algo_accepted_fmp_ratings}}"
                                            name="algo_accepted_fmp_ratings" id="algo_accepted_fmp_ratings" type="text"
@@ -241,7 +241,7 @@
 
                             <div class="col-md-1">
                                 <div class="position-relative form-check">
-                                    <input title="Maximum Yahoo rank: 1-Strong buy, 2-Buy,3-Hold,4-Underperform, 5-Sell"
+                                    <input title="Maximum Analytics B rank: 1-Strong buy, 2-Buy,3-Hold,4-Underperform, 5-Sell"
                                            {%if user_settings.algo_apply_max_yahoo_rank%}
                                            checked
                                            {% endif %}
@@ -253,7 +253,7 @@
                             </div>
                             <div class="col-md-4">
                                 <div class="position-relative form-group">
-                                    <label for="algo_accepted_fmp_ratings" class="">Maximal Yahoo rating</label>
+                                    <label for="algo_accepted_fmp_ratings" class="">Maximal Analytics B rating</label>
                                     <input title="Maximal accepted rating"
                                            value="{{user_settings.algo_max_yahoo_rank}}"
                                            name="algo_max_yahoo_rank" id="algo_max_yahoo_rank" type="text"
