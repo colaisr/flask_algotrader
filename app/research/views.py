@@ -35,7 +35,7 @@ def updatemarketdataforcandidate():
 
 @csrf.exempt
 @research.route('/updatemarketdataforcandidatespider', methods=['POST'])
-def updatemarketdataforcandidate():
+def updatemarketdataforcandidatespider():
     ticker = request.form['ticker_to_update']
     try:
         m_data = TickerData.query.filter_by(ticker=ticker).order_by(TickerData.updated_server_time.desc()).first()
