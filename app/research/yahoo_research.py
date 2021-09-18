@@ -1,7 +1,10 @@
+import datetime
+
 import yfinance as yf
 
 
 def get_yahoo_stats_for_ticker(s):
+
     df = yf.download(s, period="1y")
     df['drop'] = df['Open'] - df['Low']
     df['dropP'] = df['drop'] / df['Open'] * 100
@@ -10,23 +13,19 @@ def get_yahoo_stats_for_ticker(s):
     df['diffP'] = df['diffD'] / df['Open'] * 100
 
     max_intraday_drop_percent=df['dropP'].max()
-
     avdropP = df["dropP"].mean()
     avChange = df["diffP"].mean()
-    beta = yf.Ticker(s).info['beta']
-    if beta is None:
-        beta=0
 
-    return avdropP, avChange,beta,max_intraday_drop_percent
+    return avdropP, avChange,max_intraday_drop_percent
 
 
-def get_beta_for_ticker(s):
+def get_info_for_ticker(s):
+    # t=yf.Ticker(s)
+    inf=yf.Ticker(s).info
 
-    beta = yf.Ticker(s).info['beta']
-    if beta is None:
-        beta=0
-
-    return beta
+    return inf
 
 if __name__ == '__main__':
-    get_yahoo_stats_for_ticker('aapl')
+    # get_yahoo_stats_for_ticker('aapl')
+    get_info_for_ticker('aapl')
+    r=3

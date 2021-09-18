@@ -12,7 +12,7 @@ from app.research.fmp_research import get_fmp_ratings_score_for_ticker
 from app.research.stock_invest_research import get_stock_invest_rank_for_ticker
 from app.research.tipranks_research import get_tiprank_for_ticker
 from app.research.yahoo_finance_research import get_yahoo_rank_for_ticker
-from app.research.yahoo_research import get_yahoo_stats_for_ticker, get_beta_for_ticker
+from app.research.yahoo_research import get_yahoo_stats_for_ticker, get_info_for_ticker
 
 test = Blueprint('test', __name__)
 
