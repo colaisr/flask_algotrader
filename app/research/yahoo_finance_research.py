@@ -37,4 +37,4 @@ def get_yahoo_rank_for_ticker(ticker):
 
 
 if __name__ == '__main__':
-    get_yahoo_rank_for_ticker('msft')
+    get_yahoo_rank_for_ticker('abcl')

@@ -51,6 +51,7 @@ class UserSetting(db.Model):
     algo_allow_buy = db.Column('algo_allow_buy', db.Boolean)
     algo_allow_sell = db.Column('algo_allow_sell', db.Boolean)
     algo_allow_margin = db.Column('algo_allow_margin', db.Boolean)
+    algo_portfolio_stoploss = db.Column('algo_portfolio_stoploss', db.Integer)
     algo_apply_min_rank = db.Column('algo_apply_min_rank', db.Boolean)
     algo_min_rank = db.Column('algo_min_rank', db.Integer)
     algo_apply_accepted_fmp_ratings = db.Column('algo_apply_accepted_fmp_ratings', db.Boolean)
@@ -97,6 +98,7 @@ class UserSetting(db.Model):
         self.algo_allow_buy = False
         self.algo_allow_sell = False
         self.algo_allow_margin = True
+        self.algo_portfolio_stoploss=0
         self.algo_sell_on_swan = True
         self.algo_positions_for_swan = 3
         self.algo_apply_max_hold = True
@@ -167,6 +169,7 @@ class UserSetting(db.Model):
         d['algo_allow_buy'] = self.algo_allow_buy
         d['algo_allow_sell'] = self.algo_allow_sell
         d['algo_allow_margin'] = self.algo_allow_margin
+        d['algo_portfolio_stoploss'] = self.algo_portfolio_stoploss
         d['algo_min_rank'] = self.algo_min_rank
         d['algo_accepted_fmp_ratings'] = self.algo_accepted_fmp_ratings
         d['algo_apply_min_rank'] = self.algo_apply_min_rank

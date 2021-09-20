@@ -21,4 +21,4 @@ def get_tiprank_for_ticker(ticker):
 
 
 if __name__ == '__main__':
-    r, q = get_tiprank_for_ticker('FGNA')
+    r, q = get_tiprank_for_ticker('ABCL')

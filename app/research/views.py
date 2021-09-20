@@ -182,7 +182,7 @@ def research_ticker(ticker):
         marketdata.yahoo_avspreadP = 0
     if math.isnan(marketdata.target_mean_price):
         marketdata.target_mean_price = 0
-    if math.isnan(marketdata.beta):
+    if marketdata.beta is None:
         marketdata.beta = 0
     ct = datetime.utcnow()
 

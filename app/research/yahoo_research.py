@@ -26,6 +26,6 @@ def get_info_for_ticker(s):
     return inf
 
 if __name__ == '__main__':
-    # get_yahoo_stats_for_ticker('aapl')
-    get_info_for_ticker('aapl')
+    get_yahoo_stats_for_ticker('abcl')
+    get_info_for_ticker('abcl')
     r=3
