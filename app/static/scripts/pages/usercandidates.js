@@ -14,8 +14,7 @@
         });
 // creating a candidate
 $('#btnAddCandidate').on('click', function() {
-m=$('#add_candidate_modal')
-m.show()
+    $("#add_candidate_modal").modal("show");
 })
 
 //editing a candidate
