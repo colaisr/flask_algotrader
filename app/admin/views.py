@@ -125,7 +125,7 @@ def users_monitor():
         open_positions = json.loads(report.open_positions_json)
 
         all_positions = list(filter(lambda x: x["stocks"] != 0, open_positions.values()))
-        all_positions_value = reduce(lambda x, y: x + y, list(map(lambda z: int(z["Value"]), all_positions)))
+        all_positions_value = 0 if len(all_positions) == 0 else reduce(lambda x, y: x + y, list(map(lambda z: int(z["Value"]), all_positions)))
 
         sma = report.remaining_sma_with_safety if settings.algo_allow_margin else round(
             report.net_liquidation - all_positions_value, 1)

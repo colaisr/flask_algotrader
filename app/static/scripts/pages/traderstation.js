@@ -6,9 +6,9 @@ setTimeout(function(){
 
 })
 
-$("#sectors_modal").on('shown', function (e) {
-  alert('rrrrr');
-})
+//$("#sectors_modal").on('shown', function (e) {
+//  alert('rrrrr');
+//})
 
 
 //
@@ -22,6 +22,7 @@ $("#sectors_modal").on('shown', function (e) {
 //}
 //}
 function fill_graph(){
+$("#sectors_modal").modal("show");
 var ctx = document.getElementById('sectorsChart').getContext('2d');
 var myChart = new Chart(ctx, {
     type: 'pie',

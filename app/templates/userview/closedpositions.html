@@ -30,7 +30,9 @@
         <input type="hidden" id="user" value="{{ user }}">
         <form id="closed-position-form" action="/userview/closedpositions" method="post">
             <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
-            <div class="ui menu">
+            {# Use overflow-x: scroll so that mobile views don't freak out
+            # when the table is too wide #}
+            <div class="ui menu closed-positions-filters">
                 <div class="ui search item">
                     <div class="ui transparent icon input">
                         <input id="search-users" type="text" placeholder="Search positions…">

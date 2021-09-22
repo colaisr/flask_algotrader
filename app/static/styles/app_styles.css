@@ -3,7 +3,7 @@
     height:400px;
 }
 
-.closed-positions-tbl{
+.closed-positions-tbl, .closed-positions-filters{
     overflow-x: scroll;
 }
 
