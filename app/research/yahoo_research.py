@@ -25,7 +25,16 @@ def get_info_for_ticker(s):
 
     return inf
 
+def get_current_snp_change_percents():
+    s='^spx'
+    inf=yf.Ticker(s).info
+    current_price=inf['regularMarketPrice']
+    prev_close=inf['previousClose']
+    difference=current_price-prev_close
+    difference_percents=100*difference/prev_close
+    return difference_percents
+
 if __name__ == '__main__':
-    get_yahoo_stats_for_ticker('abcl')
-    get_info_for_ticker('abcl')
+    # get_yahoo_stats_for_ticker('abcl')
+    # get_info_for_ticker('es=f')
     r=3
