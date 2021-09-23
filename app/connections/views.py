@@ -242,10 +242,11 @@ def logreport():
         report.client_version = request_data["client_version"]
         report.update_report()
 
-        if report.market_state == "Open":
-            check_stop_loss(logged_user, report.net_liquidation)
-            check_if_market_fall(logged_user)
-            check_for_signals(report.candidates_live_json)
+        if report.api_connected:
+            if report.market_state == "Open":    #can be none .... in not taken from api...tws not yet connected on first run
+                check_stop_loss(logged_user, report.net_liquidation)
+                check_if_market_fall(logged_user)
+                check_for_signals(report.candidates_live_json)
 
         return "Report snapshot stored at server"
     else:
