@@ -21,11 +21,20 @@ def get_yahoo_stats_for_ticker(s):
 
 def get_info_for_ticker(s):
     # t=yf.Ticker(s)
-    inf=yf.Ticker(s).info
+    inf = yf.Ticker(s).info
 
     return inf
 
+
+def get_current_snp_percents(s):
+    inf = yf.Ticker(s).info
+    current_price = inf['regularMarketPrice']
+    prev_close = inf['previousClose']
+    difference = current_price - prev_close
+    difference_percents = 100*difference/prev_close
+    return difference_percents
+
+
 if __name__ == '__main__':
-    get_yahoo_stats_for_ticker('abcl')
-    get_info_for_ticker('abcl')
-    r=3
+    # get_yahoo_stats_for_ticker('aapl')
+    get_current_snp_percents('ES=F')

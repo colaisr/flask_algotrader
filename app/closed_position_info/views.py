@@ -1,5 +1,6 @@
 import json
 import ssl
+import app.generalutils as general
 from urllib.request import urlopen
 
 from flask import (
@@ -11,7 +12,7 @@ from datetime import datetime, date
 from dateutil.relativedelta import relativedelta
 
 from app import csrf
-from app.models import TickerData, Position, ReportStatistic, JsonEncoder
+from app.models import TickerData, Position, ReportStatistic
 
 closed_position_info = Blueprint('closed_position_info', __name__)
 apikey = 'f6003a61d13c32709e458a1e6c7df0b0'
@@ -75,4 +76,4 @@ def user_reports_history():
     to_date = datetime.strptime(to_date_str.split(' GMT')[0], '%a %b %d %Y %X') + relativedelta(days=1)
     history = ReportStatistic.query.filter(ReportStatistic.email == user,
                                            ReportStatistic.report_time.between(from_date, to_date)).all()
-    return json.dumps(history, cls=JsonEncoder)
+    return json.dumps(history, cls=general.JsonEncoder)

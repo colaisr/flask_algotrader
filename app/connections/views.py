@@ -358,22 +358,19 @@ def postexecution():
     user = User.query.filter_by(email=logged_user).first()
     if user is not None:
         position = Position()
+        position.ticker = symbol
+        position.email = logged_user
+        position.stocks = shares
+        position.last_exec_side = side
         if side == 'BOT':
-            position.ticker = symbol
-            position.email = logged_user
-            position.stocks = shares
-            position.last_exec_side = side
             position.open_price = price
             position.opened = time
-            result, np = position.update_position()
         else:
-            position.ticker = symbol
-            position.email = logged_user
-            position.stocks = shares
-            position.last_exec_side = side
             position.close_price = price
             position.closed = time
-            result, np = position.update_position()
+
+        result, np = position.update_position()
+
         if result == "new_sell":
             check_if_market_fall(logged_user)
             notify_closed(np, logged_user)
