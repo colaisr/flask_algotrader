@@ -242,9 +242,9 @@ def logreport():
         report.client_version = request_data["client_version"]
         report.update_report()
 
-        check_stop_loss(logged_user, report.net_liquidation)
-        check_if_market_fall(logged_user)
         if report.market_state == "Open":
+            check_stop_loss(logged_user, report.net_liquidation)
+            check_if_market_fall(logged_user)
             check_for_signals(report.candidates_live_json)
 
         return "Report snapshot stored at server"
@@ -389,23 +389,6 @@ def postexecution():
     else:
         return "The user configured is not found on Server the execution is not logged"
 
-
-@csrf.exempt
-@connections.route('/postmarketdataerror', methods=['POST'])
-def postmarketdataerror():
-    request_data = request.get_json()
-    logged_user = request_data["user"]
-    reported_time = json.loads(request_data['market_data_error_time'])
-    normalized_time = datetime.fromisoformat(reported_time)
-
-    user_report = Report.query.filter_by(email=logged_user).first()
-    if user_report is not None:
-        user_report.invalid_market_data_reported = normalized_time
-        user_report.update_report()
-
-        check_stop_loss(logged_user, user_report.net_liquidation)
-        check_if_market_fall(logged_user)
-        return "Market Data Error registered on server"
 
 
 
