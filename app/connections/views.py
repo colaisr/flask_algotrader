@@ -312,9 +312,7 @@ def check_stop_loss(logged_user, net_liquidation):
 def check_if_market_fall(logged_user):
     user_settings = UserSetting.query.filter_by(email=logged_user).first()
     user = User.query.filter_by(email=logged_user).first()
-    if not user_settings.algo_sell_on_swan:
-        return
-    else:
+    if user_settings.algo_sell_on_swan:
         snp = yahoo.get_current_snp_change_percents()
         if user_settings.algo_positions_for_swan >= snp:
             # more than 3 positions closed same day on profit negative - stop buying option and notify
