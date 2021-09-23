@@ -50,7 +50,7 @@ def create_app(config):
         ssh_password = os.getenv('SSH_PASSWORD', 'default')
         mysql_user = os.getenv('MYSQL_USER', 'default')
         mysql_password = os.getenv('MYSQL_PASSWORD', 'default')
-        sql_name = 'colak$algotrader' if 'colakamornik' in app.static_folder else 'colak$algotrader_test'
+        sql_name = 'colak$algotrader' if 'colakamornik' in app.static_folder else 'colak$algotrader'
 
         tunnel = sshtunnel.SSHTunnelForwarder(
             (ssh_url), ssh_username=ssh_user, ssh_password=ssh_password,
