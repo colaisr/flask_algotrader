@@ -62,11 +62,11 @@ def research_ticker(ticker):
         sections.append("yahooStats")
         print("ERROR in MarketDataResearch for "+ticker+" section: yahooStats")
 
-    try:
-        marketdata.beta = get_beta_for_ticker(ticker)
-    except:
-        sections.append("Beta yahooStats")
-        print("ERROR in Beta research for "+ticker+" section: yahooStats")
+    # try:
+    #     marketdata.beta = get_beta_for_ticker(ticker)
+    # except:
+    #     sections.append("Beta yahooStats")
+    #     print("ERROR in Beta research for "+ticker+" section: yahooStats")
 
     #defaults for exceptions
     if math.isnan(marketdata.yahoo_avdropP):

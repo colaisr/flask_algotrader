@@ -120,14 +120,13 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="form-row pt-5 pb-4">
-                            <div class="col-md-3">
-                                <div class="position-relative">
+
+                        <div class="form-row pt-5">
+                            <div class="col-md-4 input-group d-block">
+                                <div class="pb-2">
                                     <label for="algo_portfolio_stoploss" class="form-check-label">Minimal NET allowed (Stop Loss):</label>
                                 </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="position-relative">
+                                <div class="d-flex">
                                      <input title="minimal amount  for account - if less, all positions will be closed"
                                            value="{{user_settings.algo_portfolio_stoploss}}"
                                            name="algo_portfolio_stoploss"
@@ -135,56 +134,50 @@
                                            class="form-control">
                                 </div>
                             </div>
-                        </div>
-                        <div style="margin-top: 8px" class="form-row">
-                            <div class="col-md-3">
-                                <div class="position-relative form-check">
-                                    <input title="Close all positions on market fall signal of number of consequentive LOSS closes within a day"
-                                           {%if user_settings.algo_sell_on_swan%}
-                                           checked
-                                           {% endif %}
-                                           name="algo_sell_on_swan" id="algo_sell_on_swan" type="checkbox"
-                                           class="form-check-input">
-                                    <label for="algo_sell_on_swan" class="form-check-label">Close Positions on market
-                                        fall</label>
+                            <div class="col-md-4 input-group d-block">
+                                <div>
+                                    <label for="algo_positions_for_swan" class="">Market fall safety (Black Swan):</label>
+                                </div>
+                                <div class="d-flex">
+                                    <input title="Close Positions on market drop"
+                                               {%if user_settings.algo_sell_on_swan%}
+                                               checked
+                                               {% endif %}
+                                               data-toggle="toggle"
+                                               data-onstyle="info"
+                                               data-offstyle="off"
+                                               name="algo_sell_on_swan" id="algo_sell_on_swan" type="checkbox"
+                                               class="form-check-input">
+                                    <input title="If during a day the S&P500 will fall lower than set - all the positions will be closed"
+                                               value="{{user_settings.algo_positions_for_swan}}"
+                                               name="algo_positions_for_swan"
+                                               id="algo_positions_for_swan" type="text"
+                                               class="form-control">
                                 </div>
                             </div>
-                            <div class="col-md-4">
-                                <div class="position-relative form-group">
-                                    <label for="algo_positions_for_swan" class="">Positions for Fall</label>
-
-                                    <input title="number of positions for market fall signal"
-                                           value="{{user_settings.algo_positions_for_swan}}"
-                                           name="algo_positions_for_swan"
-                                           id="algo_positions_for_swan" type="text"
-                                           class="form-control">
-                                </div>
+                            <div class="col-md-4 input-group d-block">
+                            <div>
+                                <label for="algo_accepted_fmp_ratings" class="">Maximal holding period (days):</label>
                             </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="col-md-3">
-                                <div class="position-relative form-check">
-                                    <input title="Sell if longer then configured perion and profit more than 2%"
+                            <div class="d-flex">
+                                <input title="Sell if longer then configured perion and profit more than 2%"
                                            {%if user_settings.algo_apply_max_hold%}
                                            checked
                                            {% endif %}
                                            name="algo_apply_max_hold" id="algo_apply_max_hold"
+                                           data-toggle="toggle"
+                                           data-onstyle="info"
+                                           data-offstyle="off"
                                            type="checkbox"
                                            class="form-check-input">
-                                    <label for="algo_apply_max_hold" class="form-check-label">Apply</label>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="position-relative form-group">
-                                    <label for="algo_accepted_fmp_ratings" class="">Maximal holding period
-                                        (days)</label>
-                                    <input title="Maximal days" value="{{user_settings.algo_max_hold_days}}"
+                                <input title="Maximal days" value="{{user_settings.algo_max_hold_days}}"
                                            name="algo_max_hold_days" id="algo_max_hold_days" type="text"
-                                           class="form-control"></div>
+                                           class="form-control">
                             </div>
                         </div>
+                        </div>
 
-                        <div class="page-title-wrapper mt-5">
+                        <div class="page-title-wrapper mt-5 pt-5">
                             <div class="d-inline-flex">
                                 <h5 style="font-size: medium;" class="card-title">Filters </h5>
                             </div>
@@ -203,197 +196,166 @@
                                        value="{{user_settings.strategy_id}}">
                             </div>
                         </div>
-                        <div class="form-row">
-
-
-                            <div class="col-md-1">
-                                <div class="position-relative form-check">
-                                    <input title="Use minimal Analytics A rank or transmit All"
-                                           {%if user_settings.algo_apply_min_rank%}
-                                           checked
-                                           {% endif %}
-                                           name="algo_apply_min_rank" id="algo_apply_min_rank" type="checkbox"
-                                           class="form-check-input">
-                                    <label for="algo_apply_min_rank"
-                                           class="form-check-label strategy-change">Apply</label>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="position-relative form-group">
+                        <div class="form-row pt-4">
+                            <div class="col-md-6 input-group d-block">
+                                <div>
                                     <label for="algo_min_rank" class="">Min Analytics A</label>
-
+                                </div>
+                                <div class="d-flex">
+                                    <input title="Use minimal Analytics A rank or transmit All"
+                                               {%if user_settings.algo_apply_min_rank%}
+                                               checked
+                                               {% endif %}
+                                               data-toggle="toggle"
+                                               data-onstyle="info"
+                                               data-offstyle="off"
+                                               name="algo_apply_min_rank" id="algo_apply_min_rank" type="checkbox"
+                                               class="form-check-input">
                                     <input title="Minimal Analytics A rank to transmit to station"
                                            value="{{user_settings.algo_min_rank}}" name="algo_min_rank"
                                            id="algo_min_rank" type="text"
-                                           class="form-control strategy-change"></div>
-                            </div>
-                        </div>
-                        <div class="form-row">
-
-                            <div class="col-md-1">
-                                <div class="position-relative form-check">
-                                    <input title="Use Analytics C or transmit all"
-                                           {%if user_settings.algo_apply_accepted_fmp_ratings%}
-                                           checked
-                                           {% endif %}
-                                           name="algo_apply_accepted_fmp_ratings" id="algo_apply_accepted_fmp_ratings"
-                                           type="checkbox"
-                                           class="form-check-input strategy-change">
-                                    <label for="algo_apply_accepted_fmp_ratings" class="form-check-label">Apply</label>
+                                           class="form-control strategy-change">
                                 </div>
                             </div>
-                            <div class="col-md-4">
-                                <div class="position-relative form-group">
+                            <div class="col-md-6 input-group d-block">
+                                <div>
                                     <label for="algo_accepted_fmp_ratings" class="">Accepted Analytics C rank</label>
+                                </div>
+                                <div class="d-flex">
+                                    <input title="Use Analytics C or transmit all"
+                                               {%if user_settings.algo_apply_accepted_fmp_ratings%}
+                                               checked
+                                               {% endif %}
+                                               data-toggle="toggle"
+                                               data-onstyle="info"
+                                               data-offstyle="off"
+                                               name="algo_apply_accepted_fmp_ratings" id="algo_apply_accepted_fmp_ratings"
+                                               type="checkbox"
+                                               class="form-check-input strategy-change">
                                     <input title="Ratings to transmit to station. Coma separated"
-                                           value="{{user_settings.algo_accepted_fmp_ratings}}"
-                                           name="algo_accepted_fmp_ratings" id="algo_accepted_fmp_ratings" type="text"
-                                           class="form-control strategy-change"></div>
-                            </div>
-                        </div>
-                        <div class="form-row">
-
-                            <div class="col-md-1">
-                                <div class="position-relative form-check">
-                                    <input title="Maximum Analytics B rank: 1-Strong buy, 2-Buy,3-Hold,4-Underperform, 5-Sell"
-                                           {%if user_settings.algo_apply_max_yahoo_rank%}
-                                           checked
-                                           {% endif %}
-                                           name="algo_apply_max_yahoo_rank" id="algo_apply_max_yahoo_rank"
-                                           type="checkbox"
-                                           class="form-check-input strategy-change">
-                                    <label for="algo_apply_max_yahoo_rank" class="form-check-label">Apply</label>
+                                               value="{{user_settings.algo_accepted_fmp_ratings}}"
+                                               name="algo_accepted_fmp_ratings" id="algo_accepted_fmp_ratings" type="text"
+                                               class="form-control strategy-change">
                                 </div>
                             </div>
-                            <div class="col-md-4">
-                                <div class="position-relative form-group">
+                        </div>
+                        <div class="form-row pt-4">
+                            <div class="col-md-6 input-group d-block">
+                                <div>
                                     <label for="algo_accepted_fmp_ratings" class="">Maximal Analytics B rating</label>
+                                </div>
+                                <div class="d-flex">
+                                    <input title="Maximum Analytics B rank: 1-Strong buy, 2-Buy,3-Hold,4-Underperform, 5-Sell"
+                                               {%if user_settings.algo_apply_max_yahoo_rank%}
+                                               checked
+                                               {% endif %}
+                                               data-toggle="toggle"
+                                               data-onstyle="info"
+                                               data-offstyle="off"
+                                               name="algo_apply_max_yahoo_rank" id="algo_apply_max_yahoo_rank"
+                                               type="checkbox"
+                                               class="form-check-input strategy-change">
                                     <input title="Maximal accepted rating"
-                                           value="{{user_settings.algo_max_yahoo_rank}}"
-                                           name="algo_max_yahoo_rank" id="algo_max_yahoo_rank" type="text"
-                                           class="form-control strategy-change"></div>
+                                               value="{{user_settings.algo_max_yahoo_rank}}"
+                                               name="algo_max_yahoo_rank" id="algo_max_yahoo_rank" type="text"
+                                               class="form-control strategy-change">
+                                </div>
+                            </div>
+                            <div class="col-md-6 input-group d-block">
+                                <div>
+                                    <label for="algo_min_underprice" class="">Minimal underprice level %</label>
+                                </div>
+                                <div class="d-flex">
+                                    <input title="Minimal Underprice- current price is lower than Yahoo analyst estimate in %"
+                                               {%if user_settings.algo_apply_min_underprice%}
+                                               checked
+                                               {% endif %}
+                                               data-toggle="toggle"
+                                               data-onstyle="info"
+                                               data-offstyle="off"
+                                               name="algo_apply_min_underprice" id="algo_apply_min_underprice"
+                                               type="checkbox"
+                                               class="form-check-input strategy-change">
+                                    <input title="Minimal allowed underprice: use negative for overpriced"
+                                               value="{{user_settings.algo_min_underprice}}"
+                                               name="algo_min_underprice" id="algo_min_underprice" type="text"
+                                               class="form-control strategy-change">
+                                </div>
                             </div>
                         </div>
-<!--                        <div class="form-row">-->
-<!--                            <div class="col-md-1">-->
-<!--                                <div class="position-relative form-check">-->
-<!--                                    <input title="Apply minimal Stock Invest Rank"-->
-<!--                                           {%if user_settings.algo_apply_min_stock_invest_rank%}-->
-<!--                                           checked-->
-<!--                                           {% endif %}-->
-<!--                                           name="algo_apply_min_stock_invest_rank" id="algo_apply_min_stock_invest_rank"-->
-<!--                                           type="checkbox"-->
-<!--                                           class="form-check-input strategy-change">-->
-<!--                                    <label for="algo_apply_min_stock_invest_rank" class="form-check-label">Apply</label>-->
-<!--                                </div>-->
-<!--                            </div>-->
-<!--                            <div class="col-md-4">-->
-<!--                                <div class="position-relative form-group">-->
-<!--                                    <label for="algo_min_stock_invest_rank" class="">Minimal Stock Invest rank</label>-->
-<!--                                    <input title="Minimal accepted rating"-->
-<!--                                           value="{{user_settings.algo_min_stock_invest_rank}}"-->
-<!--                                           name="algo_min_stock_invest_rank" id="algo_min_stock_invest_rank" type="text"-->
-<!--                                           class="form-control strategy-change"></div>-->
-<!--                            </div>-->
-<!--                        </div>-->
+
                         <input type="hidden" name="algo_apply_min_stock_invest_rank" id="algo_apply_min_stock_invest_rank" value="{{user_settings.algo_apply_min_stock_invest_rank}}">
                         <input type="hidden" name="algo_min_stock_invest_rank" id="algo_min_stock_invest_rank" value="{{user_settings.algo_min_stock_invest_rank}}">
 
-                        <div class="form-row">
-
-                            <div class="col-md-1">
-                                <div class="position-relative form-check">
-                                    <input title="Minimal Underprice- current price is lower than Yahoo analyst estimate in %"
-                                           {%if user_settings.algo_apply_min_underprice%}
-                                           checked
-                                           {% endif %}
-                                           name="algo_apply_min_underprice" id="algo_apply_min_underprice"
-                                           type="checkbox"
-                                           class="form-check-input strategy-change">
-                                    <label for="algo_apply_min_underprice" class="form-check-label">Apply</label>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="position-relative form-group">
-                                    <label for="algo_min_underprice" class="">Minimal underprice level %</label>
-                                    <input title="Minimal allowed underprice: use negative for overpriced"
-                                           value="{{user_settings.algo_min_underprice}}"
-                                           name="algo_min_underprice" id="algo_min_underprice" type="text"
-                                           class="form-control strategy-change"></div>
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="col-md-1">
-                                <div class="position-relative form-check">
-                                    <input title="Last 12 Month momentum: stock got more expensive than 1Y ago in %"
-                                           {%if user_settings.algo_apply_min_momentum%}
-                                           checked
-                                           {% endif %}
-                                           name="algo_apply_min_momentum" id="algo_apply_min_momentum"
-                                           type="checkbox"
-                                           class="form-check-input strategy-change">
-                                    <label for="algo_apply_min_momentum" class="form-check-label">Apply</label>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="position-relative form-group">
+                        <div class="form-row pt-4">
+                            <div class="col-md-6 input-group d-block">
+                                <div>
                                     <label for="algo_min_momentum" class="">Minimal Momentum % </label>
+                                </div>
+                                <div class="d-flex">
+                                    <input title="Last 12 Month momentum: stock got more expensive than 1Y ago in %"
+                                               {%if user_settings.algo_apply_min_momentum%}
+                                               checked
+                                               {% endif %}
+                                               data-toggle="toggle"
+                                               data-onstyle="info"
+                                               data-offstyle="off"
+                                               name="algo_apply_min_momentum" id="algo_apply_min_momentum"
+                                               type="checkbox"
+                                               class="form-check-input strategy-change">
                                     <input title="Minimal allowed Momentum use negative for descending graph"
-                                           value="{{user_settings.algo_min_momentum}}"
-                                           name="algo_min_momentum" id="algo_min_momentum" type="text"
-                                           class="form-control strategy-change"></div>
-                            </div>
-                        </div>
-
-
-                        <div class="form-row">
-                            <div class="col-md-1">
-                                <div class="position-relative form-check">
-                                    <input title="Minimal Betta allowed"
-                                           {%if user_settings.algo_apply_min_beta%}
-                                           checked
-                                           {% endif %}
-                                           name="algo_apply_min_beta" id="algo_apply_min_beta"
-                                           type="checkbox"
-                                           class="form-check-input strategy-change">
-                                    <label for="algo_apply_min_beta" class="form-check-label">Apply</label>
+                                               value="{{user_settings.algo_min_momentum}}"
+                                               name="algo_min_momentum" id="algo_min_momentum" type="text"
+                                               class="form-control strategy-change6">
                                 </div>
                             </div>
-                            <div class="col-md-4">
-                                <div class="position-relative form-group">
+                            <div class="col-md-6 input-group d-block">
+                                <div>
                                     <label for="algo_min_beta" class="">Minimal Betta allowed</label>
+                                </div>
+                                <div class="d-flex">
                                     <input title="Minimal Betta allowed"
-                                           value="{{user_settings.algo_min_beta}}"
-                                           name="algo_min_beta" id="algo_min_beta" type="text"
-                                           class="form-control strategy-change"></div>
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="col-md-1">
-                                <div class="position-relative form-check">
-                                    <input title="Max intraday drop of a last year allowed"
-                                           {%if user_settings.algo_apply_max_intraday_drop_percent%}
-                                           checked
-                                           {% endif %}
-                                           name="algo_apply_max_intraday_drop_percent" id="algo_apply_max_intraday_drop_percent"
-                                           type="checkbox"
-                                           class="form-check-input strategy-change">
-                                    <label for="algo_apply_max_intraday_drop_percent" class="form-check-label">Apply</label>
+                                               {%if user_settings.algo_apply_min_beta%}
+                                               checked
+                                               {% endif %}
+                                               data-toggle="toggle"
+                                               data-onstyle="info"
+                                               data-offstyle="off"
+                                               name="algo_apply_min_beta" id="algo_apply_min_beta"
+                                               type="checkbox"
+                                               class="form-check-input strategy-change">
+                                    <input title="Minimal Betta allowed"
+                                               value="{{user_settings.algo_min_beta}}"
+                                               name="algo_min_beta" id="algo_min_beta" type="text"
+                                               class="form-control strategy-change6">
                                 </div>
                             </div>
-                            <div class="col-md-4">
-                                <div class="position-relative form-group">
+                        </div>
+                        <div class="form-row pt-4">
+                            <div class="col-md-6 input-group d-block">
+                                <div>
                                     <label for="algo_max_intraday_drop_percent" class="">Max intraday drop % </label>
+                                </div>
+                                <div class="d-flex">
                                     <input title="Max intraday drop of a last year allowed"
-                                           value="{{user_settings.algo_max_intraday_drop_percent}}"
-                                           name="algo_max_intraday_drop_percent" id="algo_max_intraday_drop_percent" type="text"
-                                           class="form-control strategy-change"></div>
+                                               {%if user_settings.algo_apply_max_intraday_drop_percent%}
+                                               checked
+                                               {% endif %}
+                                               data-toggle="toggle"
+                                               data-onstyle="info"
+                                               data-offstyle="off"
+                                               name="algo_apply_max_intraday_drop_percent" id="algo_apply_max_intraday_drop_percent"
+                                               type="checkbox"
+                                               class="form-check-input strategy-change">
+                                    <input title="Max intraday drop of a last year allowed"
+                                               value="{{user_settings.algo_max_intraday_drop_percent}}"
+                                               name="algo_max_intraday_drop_percent" id="algo_max_intraday_drop_percent" type="text"
+                                               class="form-control strategy-change">
+                                </div>
                             </div>
                         </div>
                     </div>
-
-                    <button type="submit" class="mt-2 btn btn-primary">Save</button>
-
+                    <button type="submit" class="mt-5 btn btn-primary">Save</button>
                 </div>
                 <div class="main-card mb-3 card">
                     <div class="card-body">

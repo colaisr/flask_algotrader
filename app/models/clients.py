@@ -1,6 +1,5 @@
 import app.models as a
 from .. import db
-# from app.models import TickerData
 
 
 class Connection(db.Model):

@@ -50,6 +50,7 @@ def create_app(config):
         ssh_password = os.getenv('SSH_PASSWORD', 'default')
         mysql_user = os.getenv('MYSQL_USER', 'default')
         mysql_password = os.getenv('MYSQL_PASSWORD', 'default')
+        sql_name = 'colak$algotrader' if 'colakamornik' in app.static_folder else 'colak$algotrader_test'
 
         tunnel = sshtunnel.SSHTunnelForwarder(
             (ssh_url), ssh_username=ssh_user, ssh_password=ssh_password,
@@ -57,11 +58,7 @@ def create_app(config):
         )
 
         tunnel.start()
-        app.config[
-            'SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://{}:{}@127.0.0.1:{}/colak$algotrader_test'.format(
-            mysql_user,
-            mysql_password,
-            tunnel.local_bind_port)
+        app.config['SQLALCHEMY_DATABASE_URI'] = f'mysql+pymysql://{mysql_user}:{mysql_password}@127.0.0.1:{tunnel.local_bind_port}/{sql_name}'
 
     app.config['SQLALCHEMY_POOL_RECYCLE'] = 280
     db.init_app(app)

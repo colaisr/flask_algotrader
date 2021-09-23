@@ -58,7 +58,7 @@ class UserSetting(db.Model):
     algo_apply_accepted_fmp_ratings = db.Column('algo_apply_accepted_fmp_ratings', db.Boolean)
     algo_accepted_fmp_ratings = db.Column('algo_accepted_fmp_ratings', db.String)
     algo_sell_on_swan = db.Column('algo_sell_on_swan', db.Boolean)
-    algo_positions_for_swan = db.Column('algo_positions_for_swan', db.Integer)
+    algo_positions_for_swan = db.Column('algo_positions_for_swan', db.Float)
     algo_apply_max_yahoo_rank = db.Column('algo_apply_max_yahoo_rank', db.Boolean)
     algo_max_yahoo_rank = db.Column('algo_max_yahoo_rank', db.Float)
     algo_apply_max_hold = db.Column('algo_apply_max_hold', db.Boolean)
@@ -101,7 +101,7 @@ class UserSetting(db.Model):
         self.algo_allow_margin = True
         self.algo_portfolio_stoploss = 0
         self.algo_sell_on_swan = True
-        self.algo_positions_for_swan = 3
+        self.algo_positions_for_swan = -3
         self.algo_apply_max_hold = True
         self.algo_max_hold_days = 31
         self.connection_account_name = 'U0000000'

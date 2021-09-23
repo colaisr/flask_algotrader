@@ -18,6 +18,8 @@ from app.models import User, Connection, Report, Position, ClientCommand, UserSe
     Candidate, TelegramSignal
 from app.telegram.signal_notify import send_telegram_signal_message
 
+from app.research import yahoo_research as yahoo
+
 connections = Blueprint('connections', __name__)
 
 
@@ -303,10 +305,11 @@ def check_if_market_fall(logged_user):
     if not user_settings.algo_sell_on_swan:
         return
     else:
-        today = datetime.today().date()
-        today_closings = Position.query.filter(Position.email == logged_user, Position.last_exec_side == 'SLD',
-                                               Position.closed >= today, Position.profit < 0).all()
-        if len(today_closings) > user_settings.algo_positions_for_swan:
+        # today = datetime.today().date()
+        # today_closings = Position.query.filter(Position.email == logged_user, Position.last_exec_side == 'SLD',
+        #                                        Position.closed >= today, Position.profit < 0).all()
+        snp = yahoo.get_current_snp_change_percents()
+        if user_settings.algo_positions_for_swan >= snp:
             # more than 3 positions closed same day on profit negative - stop buying option and notify
             user_settings = UserSetting.query.filter_by(email=logged_user).first()
             user_settings.algo_allow_buy = False

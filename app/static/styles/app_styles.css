@@ -7,6 +7,10 @@
     overflow-x: scroll;
 }
 
+.btn-off{
+    background-color: #e0dede !important;
+}
+
 .filter-items{
     display: flex;
     flex-direction: column;
