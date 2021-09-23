@@ -29,6 +29,8 @@ def updatemarketdataforcandidate_test():
 
 
 def research_ticker(ticker):
+    print('started')
+    print(datetime.now())
     marketdata = TickerData()
     marketdata.ticker = ticker
     sections = []
@@ -38,11 +40,11 @@ def research_ticker(ticker):
         sections.append("tiprank")
         print("ERROR in MarketDataResearch for "+ticker+". Section: tiprank")
 
-    try:
-        marketdata.stock_invest_rank = get_stock_invest_rank_for_ticker(ticker)
-    except:
-        sections.append("stockinvest")
-        print("ERROR in MarketDataResearch for "+ticker+" section: stockinvest")
+    # try:
+    #     marketdata.stock_invest_rank = get_stock_invest_rank_for_ticker(ticker)
+    # except:
+    #     sections.append("stockinvest")
+    #     print("ERROR in MarketDataResearch for "+ticker+" section: stockinvest")
 
     try:
         marketdata.yahoo_rank, marketdata.under_priced_pnt,marketdata.target_mean_price = get_yahoo_rank_for_ticker(ticker)
@@ -57,16 +59,17 @@ def research_ticker(ticker):
         print("ERROR in MarketDataResearch for "+ticker+" section: fmpRating")
 
     try:
-        marketdata.yahoo_avdropP, marketdata.yahoo_avspreadP, marketdata.beta, marketdata.max_intraday_drop_percent = get_yahoo_stats_for_ticker(ticker)
+        marketdata.yahoo_avdropP, marketdata.yahoo_avspreadP, marketdata.max_intraday_drop_percent = get_yahoo_stats_for_ticker(ticker)
     except:
         sections.append("yahooStats")
         print("ERROR in MarketDataResearch for "+ticker+" section: yahooStats")
 
-    # try:
-    #     marketdata.beta = get_beta_for_ticker(ticker)
-    # except:
-    #     sections.append("Beta yahooStats")
-    #     print("ERROR in Beta research for "+ticker+" section: yahooStats")
+    try:
+        info = get_info_for_ticker(ticker)
+        marketdata.beta = info['beta']
+    except:
+        sections.append("Beta yahooStats")
+        print("ERROR in Info research for "+ticker+" section: yahooStats")
 
     #defaults for exceptions
     if math.isnan(marketdata.yahoo_avdropP):
@@ -75,13 +78,14 @@ def research_ticker(ticker):
         marketdata.yahoo_avspreadP = 0
     if math.isnan(marketdata.target_mean_price):
         marketdata.target_mean_price = 0
-    if math.isnan(marketdata.beta):
+    if marketdata.beta is None:
         marketdata.beta = 0
     ct = datetime.utcnow()
 
     marketdata.updated_server_time = ct
-    # marketdata.add_ticker_data()
     error_status = 1 if len(sections) > 0 else 0
+    print('ended')
+    print(datetime.now())
     return json.dumps({"status": error_status, "sections": sections})
 
 

@@ -28,7 +28,7 @@
                         <span class="badge badge-pill badge-light">{{market_data.tipranks}}</span>
                     </button>
                     <button class="mb-2 mr-2 btn
-                    {% if market_data.yahoo_rank<=user_settings.algo_max_yahoo_rank %}
+                    {% if market_data.yahoo_rank <= user_settings.algo_max_yahoo_rank %}
                     btn-success
                     {% else %}
                     btn-warning
