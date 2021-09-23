@@ -21,9 +21,10 @@ def get_yahoo_stats_for_ticker(s):
 
 def get_info_for_ticker(s):
     # t=yf.Ticker(s)
-    inf=yf.Ticker(s).info
+    inf = yf.Ticker(s).info
 
     return inf
+
 
 def get_current_snp_change_percents():
     s='^spx'
@@ -38,3 +39,4 @@ if __name__ == '__main__':
     # get_yahoo_stats_for_ticker('abcl')
     # get_info_for_ticker('es=f')
     r=3
+

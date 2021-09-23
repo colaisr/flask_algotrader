@@ -39,6 +39,7 @@ class UserStrategySettingsDefault(db.Model):
     algo_max_intraday_drop_percent = db.Column('algo_max_intraday_drop_percent', db.Float)
     algo_apply_max_intraday_drop_percent = db.Column('algo_apply_max_intraday_drop_percent', db.Boolean)
 
+
 class UserSetting(db.Model):
     __tablename__ = 'UserSettings'
     # __bind_key__ = 'db_clients'
@@ -98,7 +99,7 @@ class UserSetting(db.Model):
         self.algo_allow_buy = False
         self.algo_allow_sell = False
         self.algo_allow_margin = True
-        self.algo_portfolio_stoploss=0
+        self.algo_portfolio_stoploss = 0
         self.algo_sell_on_swan = True
         self.algo_positions_for_swan = 3
         self.algo_apply_max_hold = True

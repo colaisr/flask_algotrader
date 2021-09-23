@@ -13,7 +13,7 @@ from flask_login import login_required, current_user
 from werkzeug.utils import redirect
 
 from app import csrf, db
-from app.models import UserSetting, Strategy, UserStrategySettingsDefault, JsonEncoder, ClientCommand
+from app.models import UserSetting, Strategy, UserStrategySettingsDefault, ClientCommand
 from app.email import send_email
 
 algotradersettings = Blueprint('algotradersettings', __name__)
@@ -47,7 +47,7 @@ def usersettings():
 def get_default_strategy_settings():
     strategy_id = request.form['strategy_id']
     default_settings = UserStrategySettingsDefault.query.filter_by(id=strategy_id).first()
-    return json.dumps(default_settings, cls=JsonEncoder)
+    return json.dumps(default_settings, cls=general.JsonEncoder)
 
 
 @algotradersettings.route('/savesettings', methods=['POST'])
@@ -158,6 +158,7 @@ def savesettings():
     user_settings.connection_tws_user = request.form['connection_tws_user']
     user_settings.connection_tws_pass = request.form['connection_tws_pass']
     user_settings.server_url = request.form['server_url']
+    user_settings.algo_portfolio_stoploss = request.form['algo_portfolio_stoploss']
     user_settings.server_report_interval_sec = request.form['server_report_interval_sec']
 
     if "server_use_system_candidates" in request.form.keys():

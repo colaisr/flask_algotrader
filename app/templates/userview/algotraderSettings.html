@@ -119,8 +119,22 @@
                                     <label for="algo_allow_margin" class="form-check-label">Use margin for trade</label>
                                 </div>
                             </div>
-
-
+                        </div>
+                        <div class="form-row pt-5 pb-4">
+                            <div class="col-md-3">
+                                <div class="position-relative">
+                                    <label for="algo_portfolio_stoploss" class="form-check-label">Minimal NET allowed (Stop Loss):</label>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="position-relative">
+                                     <input title="minimal amount  for account - if less, all positions will be closed"
+                                           value="{{user_settings.algo_portfolio_stoploss}}"
+                                           name="algo_portfolio_stoploss"
+                                           id="algo_portfolio_stoploss" type="text"
+                                           class="form-control">
+                                </div>
+                            </div>
                         </div>
                         <div style="margin-top: 8px" class="form-row">
                             <div class="col-md-3">
