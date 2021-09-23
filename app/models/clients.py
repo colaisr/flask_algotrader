@@ -1,4 +1,3 @@
-import app.models as a
 from .. import db
 
 
@@ -62,12 +61,6 @@ class Report(db.Model):
                 report.client_version = self.client_version
 
         db.session.commit()
-
-        # check if Net > stop loss data else close all positions
-        stop_loss = a.UserSetting.query.filter_by(email=self.email).first().algo_portfolio_stoploss
-        if report.net_liquidation <= stop_loss:
-            client_command = a.ClientCommand.query.filter_by(email=self.email).first()
-            client_command.set_close_all_positions()
 
 
 class ReportStatistic(db.Model):

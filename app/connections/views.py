@@ -241,6 +241,9 @@ def logreport():
         report.market_data_error = request_data["market_data_error"]
         report.client_version = request_data["client_version"]
         report.update_report()
+
+        check_stop_loss(logged_user, report.net_liquidation)
+        check_if_market_fall(logged_user)
         if report.market_state == "Open":
             check_for_signals(report.candidates_live_json)
 
@@ -299,15 +302,19 @@ def restart_all_stations():
     return "all stations booked to restart"
 
 
+def check_stop_loss(logged_user, net_liquidation):
+    stop_loss = UserSetting.query.filter_by(email=logged_user).first().algo_portfolio_stoploss
+    if net_liquidation <= stop_loss:
+        client_command = ClientCommand.query.filter_by(email=logged_user).first()
+        client_command.set_close_all_positions()
+
+
 def check_if_market_fall(logged_user):
     user_settings = UserSetting.query.filter_by(email=logged_user).first()
     user = User.query.filter_by(email=logged_user).first()
     if not user_settings.algo_sell_on_swan:
         return
     else:
-        # today = datetime.today().date()
-        # today_closings = Position.query.filter(Position.email == logged_user, Position.last_exec_side == 'SLD',
-        #                                        Position.closed >= today, Position.profit < 0).all()
         snp = yahoo.get_current_snp_change_percents()
         if user_settings.algo_positions_for_swan >= snp:
             # more than 3 positions closed same day on profit negative - stop buying option and notify
@@ -375,7 +382,7 @@ def postexecution():
         result, np = position.update_position()
 
         if result == "new_sell":
-            check_if_market_fall(logged_user)
+            # check_if_market_fall(logged_user)
             notify_closed(np, logged_user)
         elif result == "new_buy":
             notify_open(np, logged_user)
@@ -397,6 +404,9 @@ def postmarketdataerror():
     if user_report is not None:
         user_report.invalid_market_data_reported = normalized_time
         user_report.update_report()
+
+        check_stop_loss(logged_user, user_report.net_liquidation)
+        check_if_market_fall(logged_user)
         return "Market Data Error registered on server"
 
 
