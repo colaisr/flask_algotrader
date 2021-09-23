@@ -153,6 +153,12 @@ def savesettings():
         user_settings.algo_apply_max_intraday_drop_percent = False
     user_settings.algo_max_intraday_drop_percent = request.form['algo_max_intraday_drop_percent']
 
+    if "algo_apply_algotrader_rank" in request.form.keys():
+        user_settings.algo_apply_algotrader_rank = True
+    else:
+        user_settings.algo_apply_algotrader_rank = False
+    user_settings.algo_min_algotrader_rank = request.form['algo_min_algotrader_rank']
+
     user_settings.connection_port = request.form['connection_port']
     user_settings.connection_account_name = request.form['connection_account_name']
     user_settings.connection_tws_user = request.form['connection_tws_user']

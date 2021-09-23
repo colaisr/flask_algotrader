@@ -18,54 +18,45 @@
 
             </div>
             <div class="page-title-actions">
-                <div>
-                    <button class="mb-2 mr-2 btn
-                    {% if market_data.tipranks>=user_settings.algo_min_rank %}
-                    btn-success
-                    {% else %}
-                    btn-warning
-                    {% endif %}">Analytics A
-                        <span class="badge badge-pill badge-light">{{market_data.tipranks}}</span>
-                    </button>
-                    <button class="mb-2 mr-2 btn
-                    {% if market_data.yahoo_rank <= user_settings.algo_max_yahoo_rank %}
-                    btn-success
-                    {% else %}
-                    btn-warning
-                    {% endif %}">Analytics B
-                        <span class="badge badge-pill badge-light">{{market_data.yahoo_rank}}</span>
-                    </button>
-
-                    <div class="mb-2 mr-2 badge badge-pill badge-secondary">Last Update(UTC) :
-                        {{market_data.updated_server_time}}
+                <div class="d-flex">
+                    <div class="col-md-6">
+                        <button class="w-100 mb-2 mr-2 btn
+                            {% if market_data.algotrader_rank >= user_settings.algo_min_algotrader_rank %}
+                            btn-success
+                            {% else %}
+                            btn-warning
+                            {% endif %}">Algotrader Analytics
+                            <span class="badge badge-pill badge-light">{{market_data.algotrader_rank}}</span>
+                        </button>
                     </div>
-
-
+                    <div class="col-md-6">
+                        <div class="mt-2 mr-2 badge badge-pill badge-secondary">Last Update(UTC) :
+                            {{market_data.updated_server_time}}
+                        </div>
+                    </div>
                 </div>
-                <button class="mb-2 mr-2 btn
-                                        {% if 'S' in market_data.fmp_rating %}
-                    btn-success
-                    {% else %}
-                    btn-warning
-                    {% endif %}">Analytics C
-                    <span class="badge badge-pill badge-light">{{market_data.fmp_rating}}</span>
-                </button>
-                <button class="mb-2 mr-2 btn
-                    {% if market_data.under_priced_pnt>=user_settings.algo_min_underprice %}
-                    btn-success
-                    {% else %}
-                    btn-warning
-                    {% endif %}">Underpriced
-                    <span class="badge badge-pill badge-light">{{market_data.under_priced_pnt}}</span>
-                </button>
-                <button class="mb-2 mr-2 btn
-                    {% if market_data.twelve_month_momentum>=user_settings.algo_min_momentum %}
-                    btn-success
-                    {% else %}
-                    btn-warning
-                    {% endif %}">12M Momentum (%)
-                    <span class="badge badge-pill badge-light">{{market_data.twelve_month_momentum*100}}</span>
-                </button>
+                <div class="d-flex">
+                    <div class="col-md-6">
+                        <button class="w-100 mb-2 mr-2 btn
+                        {% if market_data.under_priced_pnt>=user_settings.algo_min_underprice %}
+                        btn-success
+                        {% else %}
+                        btn-warning
+                        {% endif %}">Underpriced
+                            <span class="badge badge-pill badge-light">{{market_data.under_priced_pnt}}</span>
+                        </button>
+                    </div>
+                    <div class="col-md-6">
+                        <button class="w-100 mb-2 mr-2 btn
+                        {% if market_data.twelve_month_momentum>=user_settings.algo_min_momentum %}
+                        btn-success
+                        {% else %}
+                        btn-warning
+                        {% endif %}">12M Momentum (%)
+                            <span class="badge badge-pill badge-light">{{market_data.twelve_month_momentum*100}}</span>
+                        </button>
+                    </div>
+                </div>
             </div>
             <div class="page-title-actions">
                 <div>
@@ -94,12 +85,8 @@
                 <input type="hidden" id="ticker" value="{{ candidate.ticker }}">
 
                 <script> var hist_dates = {{ hist_dates|tojson }}; </script>
-                <script> var hist_tr_ranks = {{ hist_tr_ranks|tojson }}; </script>
-                <script> var hist_fmp_score = {{ hist_fmp_score|tojson }}; </script>
-                <script> var hist_yahoo_rank = {{ hist_yahoo_rank|tojson }}; </script>
-                <!--                <input type="hidden" id="hist_dates" value="{{ hist_dates }}">-->
-                <!--                <input type="hidden" id="hist_tr_ranks" value="{{ hist_tr_ranks }}">-->
-                <!--                <input type="hidden" id="hist_fmp_score" value="{{ hist_fmp_score }}">-->
+                <script> var hist_algo_ranks = {{ hist_algo_ranks|tojson }}; </script>
+
             </div>
         </div>
         <div class="row">

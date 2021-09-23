@@ -161,21 +161,24 @@ def info():
     user_settings = UserSetting.query.filter_by(email=current_user.email).first()
     td_history = TickerData.query.filter_by(ticker=ticker).order_by(TickerData.updated_server_time.asc()).all()
     hist_dates = []
-    hist_tr_ranks = []
-    hist_fmp_score = []
-    hist_yahoo_rank = []
-    stock_invest_rank = []
+    hist_algo_ranks = []
+    # hist_tr_ranks = []
+    # hist_fmp_score = []
+    # hist_yahoo_rank = []
+    # stock_invest_rank = []
     for td in td_history:
         hist_dates.append(td.updated_server_time.strftime("%d %b, %Y"))
-        hist_tr_ranks.append(td.tipranks)
-        hist_fmp_score.append(td.fmp_score)
-        hist_yahoo_rank.append(td.yahoo_rank)
-        stock_invest_rank.append(td.stock_invest_rank)
+        hist_algo_ranks.append(td.algotrader_rank)
+        # hist_tr_ranks.append(td.tipranks)
+        # hist_fmp_score.append(td.fmp_score)
+        # hist_yahoo_rank.append(td.yahoo_rank)
+        # stock_invest_rank.append(td.stock_invest_rank)
     return render_template('candidates/ticker_info.html', user_settings=user_settings,
                            candidate=candidate,
                            market_data=m_data,
                            hist_dates=hist_dates,
-                           hist_tr_ranks=hist_tr_ranks,
-                           hist_fmp_score=hist_fmp_score,
-                           hist_yahoo_rank=hist_yahoo_rank,
-                           stock_invest_rank=stock_invest_rank)
+                           hist_algo_ranks=hist_algo_ranks)
+                           # hist_tr_ranks=hist_tr_ranks,
+                           # hist_fmp_score=hist_fmp_score,
+                           # hist_yahoo_rank=hist_yahoo_rank,
+                           # stock_invest_rank=stock_invest_rank)

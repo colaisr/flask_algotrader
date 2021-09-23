@@ -30,6 +30,7 @@ class TickerData(db.Model):
     fmp_rating = db.Column('fmp_rating', db.String)
     fmp_score = db.Column('fmp_score', db.Integer)
     updated_server_time = db.Column('updated_server_time', db.DateTime)
+    algotrader_rank = db.Column('algotrader_rank', db.Float)
 
     def add_ticker_data(self):
         db.session.add(self)
@@ -45,6 +46,7 @@ class TickerData(db.Model):
         d['yahoo_avspreadP'] = self.yahoo_avspreadP
         d['tipranks'] = self.tipranks
         d['yahoo_rank'] = self.yahoo_rank
+        d['algotrader_rank'] = self.algotrader_rank
         d['under_priced_pnt'] = self.under_priced_pnt
         d['twelve_month_momentum'] = self.twelve_month_momentum
         d['target_mean_price'] = self.target_mean_price

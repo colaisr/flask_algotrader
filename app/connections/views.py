@@ -54,22 +54,27 @@ def filter_add_data(requested_candidates, logged_user):
         else:
             related_tds.append(adding[0])
 
-    if user_settings.algo_apply_min_rank:
-        filtered_tipranks = list(filter(lambda td: td.tipranks >= user_settings.algo_min_rank, related_tds))
-    else:
-        filtered_tipranks = related_tds
+        if user_settings.algo_apply_algotrader_rank:
+            algo_ranks = list(filter(lambda td: td.algotrader_rank >= user_settings.algo_min_algotrader_rank, related_tds))
+        else:
+            algo_ranks = related_tds
 
-    if user_settings.algo_apply_accepted_fmp_ratings:
-        allowed = user_settings.algo_accepted_fmp_ratings.split(',')
-        filtered_scores = list(filter(lambda td: td.fmp_rating in allowed, filtered_tipranks))
-    else:
-        filtered_scores = filtered_tipranks
-
-    if user_settings.algo_apply_max_yahoo_rank:
-        filtered_yahoo_ranks = list(
-            filter(lambda td: td.yahoo_rank <= user_settings.algo_max_yahoo_rank, filtered_scores))
-    else:
-        filtered_yahoo_ranks = filtered_scores
+    # if user_settings.algo_apply_min_rank:
+    #     filtered_tipranks = list(filter(lambda td: td.tipranks >= user_settings.algo_min_rank, related_tds))
+    # else:
+    #     filtered_tipranks = related_tds
+    #
+    # if user_settings.algo_apply_accepted_fmp_ratings:
+    #     allowed = user_settings.algo_accepted_fmp_ratings.split(',')
+    #     filtered_scores = list(filter(lambda td: td.fmp_rating in allowed, filtered_tipranks))
+    # else:
+    #     filtered_scores = filtered_tipranks
+    #
+    # if user_settings.algo_apply_max_yahoo_rank:
+    #     filtered_yahoo_ranks = list(
+    #         filter(lambda td: td.yahoo_rank <= user_settings.algo_max_yahoo_rank, filtered_scores))
+    # else:
+    #     filtered_yahoo_ranks = filtered_scores
 
     # if user_settings.algo_apply_min_stock_invest_rank:
     #     filtered_stock_invest_ranks = list(
@@ -77,13 +82,11 @@ def filter_add_data(requested_candidates, logged_user):
     # else:
     #     filtered_stock_invest_ranks = filtered_scores
 
-    filtered_stock_invest_ranks = filtered_yahoo_ranks
-
     if user_settings.algo_apply_min_underprice:
         filtered_underprice = list(
-            filter(lambda td: td.under_priced_pnt >= user_settings.algo_min_underprice, filtered_stock_invest_ranks))
+            filter(lambda td: td.under_priced_pnt >= user_settings.algo_min_underprice, algo_ranks))
     else:
-        filtered_underprice = filtered_stock_invest_ranks
+        filtered_underprice = algo_ranks
 
     if user_settings.algo_apply_min_momentum:
         filtered_momentum = list(

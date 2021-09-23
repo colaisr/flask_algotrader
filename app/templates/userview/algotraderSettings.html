@@ -157,7 +157,7 @@
                             </div>
                             <div class="col-md-4 input-group d-block">
                             <div>
-                                <label for="algo_accepted_fmp_ratings" class="">Maximal holding period (days):</label>
+                                <label for="algo_max_hold_days" class="">Maximal holding period (days):</label>
                             </div>
                             <div class="d-flex">
                                 <input title="Sell if longer then configured perion and profit more than 2%"
@@ -199,66 +199,22 @@
                         <div class="form-row pt-4">
                             <div class="col-md-6 input-group d-block">
                                 <div>
-                                    <label for="algo_min_rank" class="">Min Analytics A</label>
+                                    <label for="algo_min_algotrader_rank" class="">Min Analytics Algotrader</label>
                                 </div>
                                 <div class="d-flex">
-                                    <input title="Use minimal Analytics A rank or transmit All"
-                                               {%if user_settings.algo_apply_min_rank%}
+                                    <input title="Use minimal Analytics Algotrader rank or transmit All"
+                                               {%if user_settings.algo_apply_algotrader_rank%}
                                                checked
                                                {% endif %}
                                                data-toggle="toggle"
                                                data-onstyle="info"
                                                data-offstyle="off"
-                                               name="algo_apply_min_rank" id="algo_apply_min_rank" type="checkbox"
+                                               name="algo_apply_algotrader_rank" id="algo_apply_algotrader_rank" type="checkbox"
                                                class="form-check-input">
-                                    <input title="Minimal Analytics A rank to transmit to station"
-                                           value="{{user_settings.algo_min_rank}}" name="algo_min_rank"
-                                           id="algo_min_rank" type="text"
+                                    <input title="Minimal Analytics Algotrader rank to transmit to station"
+                                           value="{{user_settings.algo_min_algotrader_rank}}" name="algo_min_algotrader_rank"
+                                           id="algo_min_algotrader_rank" type="text"
                                            class="form-control strategy-change">
-                                </div>
-                            </div>
-                            <div class="col-md-6 input-group d-block">
-                                <div>
-                                    <label for="algo_accepted_fmp_ratings" class="">Accepted Analytics C rank</label>
-                                </div>
-                                <div class="d-flex">
-                                    <input title="Use Analytics C or transmit all"
-                                               {%if user_settings.algo_apply_accepted_fmp_ratings%}
-                                               checked
-                                               {% endif %}
-                                               data-toggle="toggle"
-                                               data-onstyle="info"
-                                               data-offstyle="off"
-                                               name="algo_apply_accepted_fmp_ratings" id="algo_apply_accepted_fmp_ratings"
-                                               type="checkbox"
-                                               class="form-check-input strategy-change">
-                                    <input title="Ratings to transmit to station. Coma separated"
-                                               value="{{user_settings.algo_accepted_fmp_ratings}}"
-                                               name="algo_accepted_fmp_ratings" id="algo_accepted_fmp_ratings" type="text"
-                                               class="form-control strategy-change">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-row pt-4">
-                            <div class="col-md-6 input-group d-block">
-                                <div>
-                                    <label for="algo_accepted_fmp_ratings" class="">Maximal Analytics B rating</label>
-                                </div>
-                                <div class="d-flex">
-                                    <input title="Maximum Analytics B rank: 1-Strong buy, 2-Buy,3-Hold,4-Underperform, 5-Sell"
-                                               {%if user_settings.algo_apply_max_yahoo_rank%}
-                                               checked
-                                               {% endif %}
-                                               data-toggle="toggle"
-                                               data-onstyle="info"
-                                               data-offstyle="off"
-                                               name="algo_apply_max_yahoo_rank" id="algo_apply_max_yahoo_rank"
-                                               type="checkbox"
-                                               class="form-check-input strategy-change">
-                                    <input title="Maximal accepted rating"
-                                               value="{{user_settings.algo_max_yahoo_rank}}"
-                                               name="algo_max_yahoo_rank" id="algo_max_yahoo_rank" type="text"
-                                               class="form-control strategy-change">
                                 </div>
                             </div>
                             <div class="col-md-6 input-group d-block">
@@ -286,6 +242,12 @@
 
                         <input type="hidden" name="algo_apply_min_stock_invest_rank" id="algo_apply_min_stock_invest_rank" value="{{user_settings.algo_apply_min_stock_invest_rank}}">
                         <input type="hidden" name="algo_min_stock_invest_rank" id="algo_min_stock_invest_rank" value="{{user_settings.algo_min_stock_invest_rank}}">
+                        <input type="hidden" name="algo_min_rank" id="algo_min_rank" value="{{user_settings.algo_min_rank}}">
+                        <input type="hidden" name="algo_apply_min_rank" id="algo_apply_min_rank" value="{{user_settings.algo_apply_min_rank}}">
+                        <input type="hidden" name="algo_apply_max_yahoo_rank" id="algo_apply_max_yahoo_rank" value="{{user_settings.algo_apply_max_yahoo_rank}}">
+                        <input type="hidden" name="algo_max_yahoo_rank" id="algo_max_yahoo_rank" value="{{user_settings.algo_max_yahoo_rank}}">
+                        <input type="hidden" name="algo_accepted_fmp_ratings" id="algo_accepted_fmp_ratings" value="{{user_settings.algo_accepted_fmp_ratings}}">
+                        <input type="hidden" name="algo_apply_accepted_fmp_ratings" id="algo_apply_accepted_fmp_ratings" value="{{user_settings.algo_apply_accepted_fmp_ratings}}">
 
                         <div class="form-row pt-4">
                             <div class="col-md-6 input-group d-block">

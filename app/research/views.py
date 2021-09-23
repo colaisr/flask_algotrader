@@ -187,6 +187,11 @@ def research_ticker(ticker):
     ct = datetime.utcnow()
 
     marketdata.updated_server_time = ct
+    marketdata.algotrader_rank = 0 if marketdata.tipranks == 0 \
+                                      or marketdata.yahoo_rank is None \
+                                      or marketdata.yahoo_rank == 6 \
+                                   else marketdata.tipranks/2 + 6 - marketdata.yahoo_rank
+
     marketdata.add_ticker_data()
     error_status = 1 if len(sections) > 0 else 0
     print('ended')

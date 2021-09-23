@@ -146,7 +146,7 @@ def users_monitor():
             "started_time": started_time,
             "client_version": client_version,
             "tws_status": report.api_connected,
-            "num_of_open_positions": len(json.loads(report.open_positions_json))
+            "num_of_open_positions": len(all_positions)
         }
         users.append(user)
     return render_template(

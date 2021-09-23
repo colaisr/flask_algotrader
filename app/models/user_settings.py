@@ -38,6 +38,8 @@ class UserStrategySettingsDefault(db.Model):
     algo_apply_min_beta = db.Column('algo_apply_min_beta', db.Boolean)
     algo_max_intraday_drop_percent = db.Column('algo_max_intraday_drop_percent', db.Float)
     algo_apply_max_intraday_drop_percent = db.Column('algo_apply_max_intraday_drop_percent', db.Boolean)
+    algo_apply_algotrader_rank = db.Column('algo_apply_algotrader_rank', db.Boolean)
+    algo_min_algotrader_rank = db.Column('algo_min_algotrader_rank', db.Float)
 
 
 class UserSetting(db.Model):
@@ -87,6 +89,8 @@ class UserSetting(db.Model):
     algo_max_intraday_drop_percent = db.Column('algo_max_intraday_drop_percent', db.Float)
     algo_apply_max_intraday_drop_percent = db.Column('algo_apply_max_intraday_drop_percent', db.Boolean)
     strategy_id = db.Column('strategy_id', db.Integer)
+    algo_apply_algotrader_rank = db.Column('algo_apply_algotrader_rank', db.Boolean)
+    algo_min_algotrader_rank = db.Column('algo_min_algotrader_rank', db.Float)
 
     def __init__(self, email, **kwargs):
         super(UserSetting, self).__init__(**kwargs)
@@ -138,6 +142,8 @@ class UserSetting(db.Model):
         self.algo_apply_min_beta = strategy.algo_apply_min_beta
         self.algo_max_intraday_drop_percent = strategy.algo_max_intraday_drop_percent
         self.algo_apply_max_intraday_drop_percent = strategy.algo_apply_max_intraday_drop_percent
+        self.algo_apply_algotrader_rank = strategy.algo_apply_algotrader_rank
+        self.algo_min_algotrader_rank = strategy.algo_min_algotrader_rank
 
     def update_user_settings(self):
         settings = UserSetting.query.filter((UserSetting.email == self.email)).first()
@@ -189,4 +195,6 @@ class UserSetting(db.Model):
         d['notify_sell'] = self.notify_sell
         d['notify_trail'] = self.notify_trail
         d['strategy_id'] = self.strategy_id
+        d['algo_apply_algotrader_rank'] = self.algo_apply_algotrader_rank
+        d['algo_min_algotrader_rank'] = self.algo_min_algotrader_rank
         return d

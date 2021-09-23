@@ -33,37 +33,24 @@ $.getJSON(url, function(data) {
 
 
 var ctx = document.getElementById('myChart').getContext('2d');
-const labels = hist_dates;
+//const labels = hist_dates;
 const data = {
-labels: labels,
-datasets: [{
-label: 'Analytics A',
-data: hist_tr_ranks,
-fill: false,
-borderColor: 'rgb(75, 192, 192)',
-tension: 0.1
-},
-{
-label: 'Analytics C',
-data: hist_fmp_score,
-fill: false,
-borderColor: 'rgb(255, 99, 132)',
-tension: 0.1
-},  {
-label: 'Analytics B',
-data: hist_yahoo_rank,
-fill: false,
-borderColor: 'rgb(128, 128, 255)',
-tension: 0.1
-}]
+    labels: hist_dates,
+    datasets: [{
+    label: 'Algotrader Analytics',
+    data: hist_algo_ranks,
+    fill: false,
+    borderColor: 'rgb(75, 192, 192)',
+    tension: 0.1
+    }]
 };
 const config = {
-type: 'line',
-data,
-options: {}
+    type: 'line',
+    data,
+    options: {}
 };
 
 var myChart = new Chart(
-document.getElementById('myChart'),
-config
+    document.getElementById('myChart'),
+    config
 );
