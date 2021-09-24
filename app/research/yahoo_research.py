@@ -37,7 +37,24 @@ def get_current_snp_change_percents():
     return difference_percents
 
 
+def get_snp500_fails_intraday_lower_than(min):
+    s = '^GSPC'
+    df = yf.download(s, period="1y")
+    df['drop'] = df['Open'] - df['Low']
+    df['dropP'] = df['drop'] / df['Open'] * 100
+    df['diffD'] = df['Low'] - df['High']
+    df['diffD'] = df['diffD'].abs()
+    df['diffP'] = df['diffD'] / df['Open'] * 100
+
+    max_intraday_drop_percent = df['dropP'].max()
+    avdropP = df["dropP"].mean()
+    avChange = df["diffP"].mean()
+
+    return True
+
+
+
 if __name__ == '__main__':
-    get_current_snp_change_percents()
+    get_snp500_fails_intraday_lower_than(20)
     # get_info_for_ticker('es=f')
     r = 3
