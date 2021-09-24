@@ -53,7 +53,7 @@
                         {% else %}
                         btn-warning
                         {% endif %}">12M Momentum (%)
-                            <span class="badge badge-pill badge-light">{{market_data.twelve_month_momentum*100}}</span>
+                            <span class="badge badge-pill badge-light">{{market_data.twelve_month_momentum*100 |round(1)}}</span>
                         </button>
                     </div>
                 </div>
