@@ -38,6 +38,10 @@ class Config:
     MAIL_PASSWORD: Optional[str] = os.environ.get('MAIL_PASSWORD')
     MAIL_DEFAULT_SENDER = os.environ.get('MAIL_DEFAULT_SENDER')
 
+    # Telegram
+    TELEGRAM_KEY=os.environ.get('TELEGRAM_KEY')
+    TELEGRAM_CHANEL = os.environ.get('TELEGRAM_CHANEL')
+
     # Analytics
     GOOGLE_ANALYTICS_ID = os.environ.get('GOOGLE_ANALYTICS_ID', '')
     SEGMENT_API_KEY = os.environ.get('SEGMENT_API_KEY', '')
