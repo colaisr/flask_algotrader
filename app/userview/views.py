@@ -20,7 +20,6 @@ from flask_login import (
 from app.models import Position, Report, ReportStatistic, Candidate, UserSetting, LastUpdateSpyderData
 from sqlalchemy import or_
 from app import db
-from app.telegram.signal_notify import send_telegram_signal_message
 
 userview = Blueprint('userview', __name__)
 
@@ -46,7 +45,6 @@ def is_market_open():
 @userview.route('traderstationstate', methods=['GET', 'POST'])
 @login_required
 def traderstationstate():
-    send_telegram_signal_message('user logged in')
     if not current_user.admin_confirmed or not current_user.signature:
         return redirect(url_for('station.download'))
 
