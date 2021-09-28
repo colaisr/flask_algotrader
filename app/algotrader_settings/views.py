@@ -15,6 +15,7 @@ from werkzeug.utils import redirect
 from app import csrf, db
 from app.models import UserSetting, Strategy, UserStrategySettingsDefault, ClientCommand
 from app.email import send_email
+from app.research import yahoo_research as yahoo
 
 algotradersettings = Blueprint('algotradersettings', __name__)
 
@@ -35,7 +36,6 @@ def usersettings():
         return redirect(url_for('station.download'))
     user_settings = UserSetting.query.filter_by(email=current_user.email).first()
     strategies = Strategy.query.filter(Strategy.id != 4).all()
-
     return render_template('userview/algotraderSettings.html',
                            user_settings=user_settings,
                            strategies=strategies)
@@ -48,6 +48,15 @@ def get_default_strategy_settings():
     strategy_id = request.form['strategy_id']
     default_settings = UserStrategySettingsDefault.query.filter_by(id=strategy_id).first()
     return json.dumps(default_settings, cls=general.JsonEncoder)
+
+
+@csrf.exempt
+@algotradersettings.route('/get_snp500_data', methods=['POST'])
+@login_required
+def get_snp500_data():
+    min_snp = float(request.form['min_snp'])
+    df = yahoo.get_snp500_fails_intraday_lower_than(min_snp)
+    return df.to_json(orient="index",date_format='iso')
 
 
 @algotradersettings.route('/savesettings', methods=['POST'])

@@ -41,15 +41,12 @@ def get_snp500_fails_intraday_lower_than(min):
     df = yf.download(s, period="5y")
     df['drop'] = df['Low'] - df['Open']
     df['dropP'] = df['drop'] / df['Open'] * 100
-    df=df[df['dropP']<min]
-
-    max_intraday_drop_percent = df['dropP'].min()
-
-    return True
+    df = df[df['dropP'] < min]
+    return df
 
 
 
 if __name__ == '__main__':
-    # get_snp500_fails_intraday_lower_than(-3)
-    get_info_for_ticker('vmd')
+    get_snp500_fails_intraday_lower_than(-4)
+    # get_info_for_ticker('vmd')
     r = 3
