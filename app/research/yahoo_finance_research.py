@@ -33,7 +33,7 @@ def get_yahoo_rank_for_ticker(ticker):
         recommendation = 6
         under_priced_percents = 0
         targetMeanPrice=0
-    return recommendation, under_priced_percents,targetMeanPrice
+    return recommendation, under_priced_percents, targetMeanPrice
 
 
 if __name__ == '__main__':

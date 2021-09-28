@@ -23,7 +23,6 @@ def get_yahoo_stats_for_ticker(s):
 def get_info_for_ticker(s):
     # t=yf.Ticker(s)
     inf = yf.Ticker(s).info
-
     return inf
 
 
@@ -51,6 +50,6 @@ def get_snp500_fails_intraday_lower_than(min):
 
 
 if __name__ == '__main__':
-    get_snp500_fails_intraday_lower_than(-3)
-    # get_info_for_ticker('es=f')
+    # get_snp500_fails_intraday_lower_than(-3)
+    get_info_for_ticker('vmd')
     r = 3
