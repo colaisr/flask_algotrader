@@ -160,7 +160,8 @@ def check_signal_for_target_riched(s, bid_price):
         s.target_met=datetime.now()
         delta = s.target_met - s.received
         s.days_to_get = delta.days
-        s.profit.percent=(bid_price-s.signal_price)/bid_price*100
+        #profit yet to be measured
+        #s.profit.percent=(bid_price-s.signal_price)/bid_price*100
 
         s.update_signal()
     pass
