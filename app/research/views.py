@@ -33,66 +33,6 @@ def updatemarketdataforcandidate():
     finally:
         return redirect(url_for('admin.market_data'))
 
-@csrf.exempt
-@research.route('/updatemarketdataforcandidatespider', methods=['POST'])
-def updatemarketdataforcandidatespider():
-    ticker = request.form['ticker_to_update']
-    try:
-        m_data = TickerData.query.filter_by(ticker=ticker).order_by(TickerData.updated_server_time.desc()).first()
-        updated = m_data.updated_server_time.date()
-        today = datetime.now().date()
-
-        if updated != today:
-            result = research_ticker(ticker)
-            return result
-        else:
-            return json.dumps({"status": 0, "sections": []})
-        # result, log = research_ticker(ticker)
-        # return result, log
-    except Exception as e:
-        print('problem with research', e)
-        return json.dumps({"status": 2, "error": e})
-
-@csrf.exempt
-@research.route('/savelasttimeforupdatedata', methods=['POST'])
-def savelasttimeforupdatedata():
-    error_status = request.form['error_status']
-    start_time = request.form['start_time']
-    end_time = request.form['end_time']
-    num_of_positions = request.form['num_of_positions']
-    error_tickers = request.form['error_tickers']
-    research_error_tickers = request.form['research_error_tickers']
-    updated_tickers = request.form['updated_tickers']
-    already_updated_tickers = request.form['already_updated_tickers']
-    avg_update_times = request.form['avg_update_times']
-    error_tickers_num = request.form['error_tickers_num']
-
-    now = datetime.utcnow()
-    try:
-        last_update_data = LastUpdateSpyderData.query.order_by(LastUpdateSpyderData.start_process_time.desc()).first()
-        update_data = LastUpdateSpyderData()
-        if error_status == '1':
-            update_data.error_status = True
-            update_data.error_tickers = error_tickers
-            update_data.last_update_date = last_update_data.last_update_date if last_update_data is not None else now
-        else:
-            update_data.last_update_date = end_time
-            update_data.error_status = False
-            update_data.error_tickers = '[]'
-        update_data.start_process_time = start_time
-        update_data.end_process_time = end_time
-        update_data.avg_time_by_position = avg_update_times
-        update_data.num_of_positions = num_of_positions
-        update_data.research_error_tickers = research_error_tickers
-        update_data.already_updated_tickers = already_updated_tickers
-        update_data.updated_tickers = updated_tickers
-        update_data.error_tickers_num = error_tickers_num
-        update_data.update_data()
-        return "successfully update date"
-    except Exception as e:
-        print('problem with update last date. ', e)
-        return "failed to update date"
-
 
 @csrf.exempt
 @research.route('/update_reports_statistic', methods=['GET'])
@@ -138,16 +78,10 @@ def research_ticker(ticker):
         print("ERROR in MarketDataResearch for "+ticker+". Section: tiprank")
 
     # try:
-    #     marketdata.stock_invest_rank = get_stock_invest_rank_for_ticker(ticker)
+    #     marketdata.yahoo_rank, marketdata.under_priced_pnt,marketdata.target_mean_price = get_yahoo_rank_for_ticker(ticker)
     # except:
-    #     sections.append("stockinvest")
-    #     print("ERROR in MarketDataResearch for "+ticker+" section: stockinvest")
-
-    try:
-        marketdata.yahoo_rank, marketdata.under_priced_pnt,marketdata.target_mean_price = get_yahoo_rank_for_ticker(ticker)
-    except:
-        sections.append("yahooRank")
-        print("ERROR in MarketDataResearch for "+ticker+" section: yahooRank")
+    #     sections.append("yahooRank")
+    #     print("ERROR in MarketDataResearch for "+ticker+" section: yahooRank")
 
     try:
         marketdata.fmp_rating, marketdata.fmp_score = get_fmp_ratings_score_for_ticker(ticker)
@@ -164,9 +98,18 @@ def research_ticker(ticker):
     try:
         info = get_info_for_ticker(ticker)
         marketdata.beta = info['beta']
+        try:
+            marketdata.target_mean_price = info['targetMeanPrice']
+            difference = marketdata.target_mean_price - info['currentPrice']
+            marketdata.under_priced_pnt = round(difference / marketdata.target_mean_price * 100, 1)
+            marketdata.yahoo_rank = info['recommendationMean']
+        except:
+            marketdata.yahoo_rank = 6
+            marketdata.under_priced_pnt = 0
+            marketdata.target_mean_price = 0
     except:
-        sections.append("Beta yahooStats")
-        print("ERROR in Info research for "+ticker+" section: yahooStats")
+        sections.append("Yahoo info")
+        print("ERROR in Info research for " + ticker + " section: Yahoo info")
 
     if len(sections) > 0:
         send_email(recipient='support@algotrader.company',

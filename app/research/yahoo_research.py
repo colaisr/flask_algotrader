@@ -23,7 +23,6 @@ def get_yahoo_stats_for_ticker(s):
 def get_info_for_ticker(s):
     # t=yf.Ticker(s)
     inf = yf.Ticker(s).info
-
     return inf
 
 
@@ -42,21 +41,12 @@ def get_snp500_fails_intraday_lower_than(min):
     df = yf.download(s, period="5y")
     df['drop'] = df['Low'] - df['Open']
     df['dropP'] = df['drop'] / df['Open'] * 100
-    df=df[df['dropP']<min]
+    df = df[df['dropP'] < min]
+    return df
 
-    max_intraday_drop_percent = df['dropP'].min()
 
-    return True
-
-def get_data_for_ticker():
-    s = '^GSPC'
-    df = yf.download(s)
-    df.to_excel("sp_max.xlsx")
-    e=3
 
 if __name__ == '__main__':
-    #get_snp500_fails_intraday_lower_than(-3)
-    # get_info_for_ticker('es=f')
-    get_data_for_ticker()
-
+    get_snp500_fails_intraday_lower_than(-4)
+    # get_info_for_ticker('vmd')
     r = 3

@@ -7,6 +7,14 @@
     overflow-x: scroll;
 }
 
+.snp-modal{
+    overflow-y: scroll !important;
+}
+
+.link{
+    cursor: pointer;
+}
+
 .btn-off{
     background-color: #e0dede !important;
 }

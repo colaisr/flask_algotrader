@@ -1,8 +1,15 @@
  $(document).ready(function () {
-
+    get_snp_data($('#algo_positions_for_swan').val());
     $('.strategy-change').on('keyup keypress blur change', function(e) {
         $('#strategy_id').val('4')
         $('.strategy-btn').removeClass( "active" )
+    })
+
+    $('.blackswan-change').on('keyup keypress blur change', function(e) {
+        var val = $(this).val();
+        if($.isNumeric(val)){
+            get_snp_data(val);
+        }
     })
 
      $('#signature_full_name').on('keyup keypress blur change', function(e) {
@@ -53,7 +60,33 @@ function UpdateDefaultStrategy(el){
         $('#algo_min_beta').val(data_parsed.algo_min_beta);
         $('#algo_max_intraday_drop_percent').val(data_parsed.algo_max_intraday_drop_percent);
     });
+}
 
+function show_modal_snp(){
+    $(".snp-modal").modal("show");
+}
 
+function get_snp_data(min_snp){
+    $.post("/algotradersettings/get_snp500_data",{min_snp: min_snp}, function(data) {
+            var data_parsed = jQuery.parseJSON(data);
+            $('.blackswan-min').html(min_snp+'%')
+            var tbody = $('.modal-body').find('tbody');
+            tbody.empty();
+            var tr = $("<tr></tr>");
+            var td=$("<td></td>");
+            var count = 0;
+            $.each(data_parsed, function(key, value) {
+                count++;
+                tr = $("<tr></tr>")
+                td = $("<td class='text-center font-weight-bold'></td>").text(key.substring(0,key.indexOf("T")));
+                tr.append(td);
+                $.each(value, function(k, v) {
+                    td = $("<td class='text-center'></td>").text(value[k].toFixed(2));
+                    tr.append(td);
+                });
+                tbody.append(tr);
+            });
+            $('.blackswan-events').html(count.toString())
+        });
 }
 
