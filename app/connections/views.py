@@ -161,7 +161,7 @@ def check_signal_for_target_riched(s, bid_price):
         delta = s.target_met - s.received
         s.days_to_get = delta.days
         #profit yet to be measured
-        #s.profit.percent=(bid_price-s.signal_price)/bid_price*100
+        s.profit.percent=(bid_price-s.signal_price)/bid_price*100
 
         s.update_signal()
     pass
@@ -202,12 +202,12 @@ def check_for_signals(candidates_live_json):
                     signal.target_price = ticker_data.target_mean_price
                 added = signal.add_signal()
                 if added:
-                    send_telegram_signal_message(str(signal.id) + "%0A" +
-                                                 "Time to buy: " + signal.ticker + "%0A" +
-                                                 "it crossed the trigger of " + str(round(v['target_price'], 2)) + " USD %0A" +
-                                                 "TR: " + str(ticker_data.tipranks) + "%0A" +
-                                                 "YR: " + str(ticker_data.yahoo_rank) + "%0A" +
-                                                 "SR: " + str(ticker_data.stock_invest_rank) + "%0A" +
+                    send_telegram_signal_message(str(signal.id) + "\n" +
+                                                 "Time to buy: " + signal.ticker + "\n" +
+                                                 "it crossed the trigger of " + str(round(v['target_price'], 2)) + " USD \n" +
+                                                 "TR: " + str(ticker_data.tipranks) + "\n" +
+                                                 "YR: " + str(ticker_data.yahoo_rank) + "\n" +
+                                                 "SR: " + str(ticker_data.stock_invest_rank) + "\n" +
                                                  "Expected to reach the target of: " + str(ticker_data.target_mean_price) + " USD"
                                                  )
                     time.sleep(2)

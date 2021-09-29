@@ -48,9 +48,15 @@ def get_snp500_fails_intraday_lower_than(min):
 
     return True
 
-
+def get_data_for_ticker():
+    s = '^GSPC'
+    df = yf.download(s)
+    df.to_excel("sp_max.xlsx")
+    e=3
 
 if __name__ == '__main__':
-    get_snp500_fails_intraday_lower_than(-3)
+    #get_snp500_fails_intraday_lower_than(-3)
     # get_info_for_ticker('es=f')
+    get_data_for_ticker()
+
     r = 3
