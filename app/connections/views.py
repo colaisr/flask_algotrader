@@ -55,7 +55,7 @@ def filter_add_data(requested_candidates, logged_user):
             related_tds.append(adding[0])
 
         if user_settings.algo_apply_algotrader_rank:
-            algo_ranks = list(filter(lambda td: td.algotrader_rank >= user_settings.algo_min_algotrader_rank, related_tds))
+            algo_ranks = list(filter(lambda td: td.algotrader_rank!=None and td.algotrader_rank >= user_settings.algo_min_algotrader_rank, related_tds))
         else:
             algo_ranks = related_tds
 
@@ -205,9 +205,7 @@ def check_for_signals(candidates_live_json):
                     send_telegram_signal_message(str(signal.id) + "\n" +
                                                  "Time to buy: " + signal.ticker + "\n" +
                                                  "it crossed the trigger of " + str(round(v['target_price'], 2)) + " USD \n" +
-                                                 "TR: " + str(ticker_data.tipranks) + "\n" +
-                                                 "YR: " + str(ticker_data.yahoo_rank) + "\n" +
-                                                 "SR: " + str(ticker_data.stock_invest_rank) + "\n" +
+                                                 "Algotrader Rank: " + str(ticker_data.algotrader_rank) + "\n" +
                                                  "Expected to reach the target of: " + str(ticker_data.target_mean_price) + " USD"
                                                  )
                     time.sleep(2)
