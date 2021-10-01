@@ -112,8 +112,8 @@ function get_candidates_by_filter(){
             $(".beta-filter").text(data_parsed["filtered_beta"]);
             $(".intraday-filter").text(data_parsed["filtered_max_intraday_drop"]);
             $(".total-filter").text(data_parsed["total"]);
-            $(".fixed-filter-text".text("candidates match");
-            $(".fixed-total-filter-text".text("Candidates match in Total");
+            $(".fixed-filter-text").text("candidates match");
+            $(".fixed-total-filter-text").text("Candidates match in Total");
         });
 }
 
