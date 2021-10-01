@@ -41,41 +41,66 @@ def logconnection():
         return "The user configured is not found on Server the connection is not logged"
 
 
-def filter_add_data(related_tds, logged_user):
-    user_settings = UserSetting.query.filter_by(email=logged_user).first()
+def filter_add_data(related_tds, logged_user, filters=None):
+    if filters is None:
+        user_settings = UserSetting.query.filter_by(email=logged_user).first()
 
-    if user_settings.algo_apply_algotrader_rank:
+        if user_settings.algo_apply_algotrader_rank:
+            algo_ranks = list(filter(
+                lambda td: td.algotrader_rank != None and td.algotrader_rank >= user_settings.algo_min_algotrader_rank,
+                related_tds))
+        else:
+            algo_ranks = related_tds
+
+        if user_settings.algo_apply_min_underprice:
+            filtered_underprice = list(
+                filter(lambda td: td.under_priced_pnt!=None and td.under_priced_pnt >= user_settings.algo_min_underprice, algo_ranks))
+        else:
+            filtered_underprice = algo_ranks
+
+        if user_settings.algo_apply_min_momentum:
+            filtered_momentum = list(
+                filter(lambda td: td.twelve_month_momentum!=None and td.twelve_month_momentum >= user_settings.algo_min_momentum, filtered_underprice))
+        else:
+            filtered_momentum = filtered_underprice
+
+        if user_settings.algo_apply_min_beta:
+            filtered_beta = list(
+                filter(lambda td: td.beta!=None and td.beta >= user_settings.algo_min_beta, filtered_momentum))
+        else:
+            filtered_beta = filtered_momentum
+
+        if user_settings.algo_apply_max_intraday_drop_percent:
+            filtered_max_intraday_drop = list(
+                filter(lambda td: td.max_intraday_drop_percent!=None and td.max_intraday_drop_percent < user_settings.algo_max_intraday_drop_percent, filtered_beta))
+        else:
+            filtered_max_intraday_drop = filtered_beta
+    else:
         algo_ranks = list(filter(
-            lambda td: td.algotrader_rank != None and td.algotrader_rank >= user_settings.algo_min_algotrader_rank,
+            lambda td: td.algotrader_rank != None and td.algotrader_rank >= filters['algo_min_algotrader_rank'],
             related_tds))
-    else:
-        algo_ranks = related_tds
 
-    if user_settings.algo_apply_min_underprice:
         filtered_underprice = list(
-            filter(lambda td: td.under_priced_pnt!=None and td.under_priced_pnt >= user_settings.algo_min_underprice, algo_ranks))
-    else:
-        filtered_underprice = algo_ranks
+            filter(
+                lambda td: td.under_priced_pnt != None and td.under_priced_pnt >= filters['algo_min_underprice'],
+                algo_ranks))
 
-    if user_settings.algo_apply_min_momentum:
         filtered_momentum = list(
-            filter(lambda td: td.twelve_month_momentum!=None and td.twelve_month_momentum >= user_settings.algo_min_momentum, filtered_underprice))
-    else:
-        filtered_momentum = filtered_underprice
+            filter(lambda
+                       td: td.twelve_month_momentum != None and td.twelve_month_momentum >= filters['algo_min_momentum'],
+                   filtered_underprice))
 
-    if user_settings.algo_apply_min_beta:
         filtered_beta = list(
-            filter(lambda td: td.beta!=None and td.beta >= user_settings.algo_min_beta, filtered_momentum))
-    else:
-        filtered_beta = filtered_momentum
+            filter(lambda td: td.beta != None and td.beta >= filters['algo_min_beta'], filtered_momentum))
 
-    if user_settings.algo_apply_max_intraday_drop_percent:
         filtered_max_intraday_drop = list(
-            filter(lambda td: td.max_intraday_drop_percent!=None and td.max_intraday_drop_percent < user_settings.algo_max_intraday_drop_percent, filtered_beta))
-    else:
-        filtered_max_intraday_drop = filtered_beta
+            filter(lambda
+                       td: td.max_intraday_drop_percent != None and td.max_intraday_drop_percent < filters['algo_max_intraday_drop_percent'],
+                   filtered_beta))
 
     return filtered_max_intraday_drop
+
+
 
 
 def sort_by_parameter_desc(obj, prop):
@@ -147,12 +172,20 @@ def filter_candidates_data_ajax():
     algo_min_beta = float(request.form['filtered_beta'])
     algo_max_intraday_drop_percent = float(request.form['filtered_max_intraday_drop'])
 
+    filters = {
+        'algo_min_underprice': algo_min_underprice,
+        'algo_min_algotrader_rank': algo_min_algotrader_rank,
+        'algo_min_momentum': algo_min_momentum,
+        'algo_min_beta': algo_min_beta,
+        'algo_max_intraday_drop_percent': algo_max_intraday_drop_percent
+    }
+
     algo_ranks = list(filter(lambda td: td.algotrader_rank!=None and td.algotrader_rank >= algo_min_algotrader_rank, related_tds))
     filtered_underprice = list(filter(lambda td: td.under_priced_pnt != None and td.under_priced_pnt >= algo_min_underprice, related_tds))
     filtered_momentum = list(filter(lambda td: td.twelve_month_momentum != None and td.twelve_month_momentum >= algo_min_momentum, related_tds))
     filtered_beta = list(filter(lambda td: td.beta != None and td.beta >= algo_min_beta, related_tds))
     filtered_max_intraday_drop = list(filter(lambda td: td.max_intraday_drop_percent != None and td.max_intraday_drop_percent < algo_max_intraday_drop_percent, related_tds))
-    total = filter_add_data(related_tds, current_user.email)
+    total = filter_add_data(related_tds, current_user.email, filters)
     result = {
         'algo_ranks': len(algo_ranks),
         'filtered_underprice': len(filtered_underprice),
