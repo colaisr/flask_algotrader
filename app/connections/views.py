@@ -161,9 +161,15 @@ def check_signal_for_target_riched(s, bid_price):
         delta = s.target_met - s.received
         s.days_to_get = delta.days
         #profit yet to be measured
-        s.profit.percent=(bid_price-s.signal_price)/bid_price*100
-
+        s.profit_percent=(bid_price-s.signal_price)/bid_price*100
         s.update_signal()
+        send_telegram_signal_message("confirmation for : "+str(s.id) + "\n" +
+                                     s.ticker+" reached target of "+ str(s.target_price) + "\n"+
+                                     "in "+str(s.days_to_get)+" days, with profit of "+str(s.profit_percent)+" %"
+
+                                     )
+
+
     pass
 
 
@@ -208,7 +214,6 @@ def check_for_signals(candidates_live_json):
                                                  "Algotrader Rank: " + str(ticker_data.algotrader_rank) + "\n" +
                                                  "Expected to reach the target of: " + str(ticker_data.target_mean_price) + " USD"
                                                  )
-                    time.sleep(2)
             except:
                 print("Error in signal for : "+signal.ticker)
                 print(ticker_data)
