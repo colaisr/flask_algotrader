@@ -41,7 +41,7 @@ def logconnection():
         return "The user configured is not found on Server the connection is not logged"
 
 
-def  filter_add_data(related_tds, logged_user):
+def filter_add_data(related_tds, logged_user):
     user_settings = UserSetting.query.filter_by(email=logged_user).first()
 
     if user_settings.algo_apply_algotrader_rank:
