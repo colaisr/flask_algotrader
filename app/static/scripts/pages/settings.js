@@ -3,20 +3,20 @@
     get_snp_data($('#algo_positions_for_swan').val());
     get_candidates_by_filter();
 
-    $('.strategy-change').on('keyup keypress blur change', function(e) {
+    $('.strategy-change').on('input', function(e) {
         $('#strategy_id').val('4')
         $('.strategy-btn').removeClass( "active" )
         get_candidates_by_filter();
     })
 
-    $('.blackswan-change').on('keyup keypress blur change', function(e) {
+    $('.blackswan-change').on('input', function(e) {
         var val = $(this).val();
         if($.isNumeric(val)){
             get_snp_data(val);
         }
     })
 
-     $('#signature_full_name').on('keyup keypress blur change', function(e) {
+     $('#signature_full_name').on('input', function(e) {
         var signature_full_name = $('#signature_full_name').val();
         if(signature_full_name.length >0
             && signature_full_name.trim() != ''
@@ -103,9 +103,16 @@ function get_candidates_by_filter(){
         filtered_max_intraday_drop: $("#algo_min_algotrader_rank").val(),
         total: $("#algo_max_intraday_drop_percent").val()
     }
-
+    var loading = $(".loading")
+    var spinner = $('<div class="spinner-border text-info" role="status"><span class="sr-only">Loading...</span></div>');
+    loading.empty();
+    $(".num-candidates").empty();
+    $(".fixed-filter-text").empty();
+    $(".fixed-total-filter-text").empty();
+    loading.append(spinner);
     $.post("/connections/filter_candidates_data_ajax", send_data, function(data) {
             var data_parsed = jQuery.parseJSON(data);
+            loading.empty();
             $(".algo-rank-filter").text(data_parsed["algo_ranks"]);
             $(".underprice-filter").text(data_parsed["filtered_underprice"]);
             $(".momentum-filter").text(data_parsed["filtered_momentum"]);
