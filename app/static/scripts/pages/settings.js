@@ -1,8 +1,12 @@
  $(document).ready(function () {
+
     get_snp_data($('#algo_positions_for_swan').val());
+    get_candidates_by_filter();
+
     $('.strategy-change').on('keyup keypress blur change', function(e) {
         $('#strategy_id').val('4')
         $('.strategy-btn').removeClass( "active" )
+        get_candidates_by_filter();
     })
 
     $('.blackswan-change').on('keyup keypress blur change', function(e) {
@@ -87,6 +91,27 @@ function get_snp_data(min_snp){
                 tbody.append(tr);
             });
             $('.blackswan-events').html(count.toString())
+        });
+}
+
+function get_candidates_by_filter(){
+    var send_data={
+        algo_ranks: $("#algo_min_algotrader_rank").val(),
+        filtered_underprice: $("#algo_min_underprice").val(),
+        filtered_momentum: $("#algo_min_momentum").val(),
+        filtered_beta: $("#algo_min_beta").val(),
+        filtered_max_intraday_drop: $("#algo_min_algotrader_rank").val(),
+        total: $("#algo_max_intraday_drop_percent").val()
+    }
+
+    $.post("/connections/filter_candidates_data_ajax", send_data, function(data) {
+            var data_parsed = jQuery.parseJSON(data);
+            $(".algo-rank-filter").text(data_parsed["algo_ranks"]);
+            $(".underprice-filter").text(data_parsed["filtered_underprice"]);
+            $(".momentum-filter").text(data_parsed["filtered_momentum"]);
+            $(".beta-filter").text(data_parsed["filtered_beta"]);
+            $(".intraday-filter").text(data_parsed["filtered_max_intraday_drop"]);
+            $(".total-filter").text(data_parsed["total"]);
         });
 }
 

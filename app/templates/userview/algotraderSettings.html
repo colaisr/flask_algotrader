@@ -155,12 +155,11 @@
                                                class="form-control blackswan-change">
                                 </div>
                                 <div>
-                                    <label class="pt-2 small filter-comment">
+                                    <label class="pt-2 text-muted small filter-comment">
                                         With
                                         <span class="text-primary pr-2 pl-2 blackswan-min">{{user_settings.algo_positions_for_swan}}%</span>
                                         selected there were :
-<!--                                        <a href="javascript:show_modal_snp" onclick="UpdateDefaultStrategy">test</a>-->
-                                        <span class="text-primary pr-1 pl-2 link" onclick="show_modal_snp()"><span class="blackswan-events pr-1"></span> events in last 5 Years</span>
+                                        <span class="text-primary pr-1 pl-2 link font-weight-bold" onclick="show_modal_snp()"><span class="blackswan-events pr-1"></span> events in last 5 Years</span>
                                     </label>
                                 </div>
                             </div>
@@ -194,7 +193,6 @@
                                 <div role="group" class="btn-group btn-group-toggle form-group" data-toggle="buttons">
                                     {% for s in strategies %}
                                     <label class="strategy-btn btn btn-info {% if s.id == user_settings.strategy_id %} active {% endif %}">
-                                        <!--                                        <input onchange="window.location.href='{{ url_for( 'algotradersettings.usersettings',strategy_id = s.id) }}';" type="radio" name="options" id="options{{s.id}}" value="{{s.id}}" autocomplete="off">-->
                                         <input onchange="UpdateDefaultStrategy(this)" class="strategy-option" type="radio" name="options"
                                                id="options{{s.id}}" value="{{s.id}}" autocomplete="off">
                                         {{s.strategy}}
@@ -223,7 +221,11 @@
                                     <input title="Minimal Analytics Algotrader rank to transmit to station"
                                            value="{{user_settings.algo_min_algotrader_rank}}" name="algo_min_algotrader_rank"
                                            id="algo_min_algotrader_rank" type="text"
-                                           class="form-control strategy-change">
+                                           class="form-control strategy-change col-md-6">
+                                    <label class="text-muted small filter-comment col-md-3">
+                                        <span class="text-primary algo-rank-filter">133</span>
+                                        candidates match
+                                    </label>
                                 </div>
                             </div>
                             <div class="col-md-6 input-group d-block">
@@ -244,7 +246,11 @@
                                     <input title="Minimal allowed underprice: use negative for overpriced"
                                                value="{{user_settings.algo_min_underprice}}"
                                                name="algo_min_underprice" id="algo_min_underprice" type="text"
-                                               class="form-control strategy-change">
+                                               class="form-control strategy-change col-md-6">
+                                    <label class="text-muted small filter-comment col-md-3">
+                                        <span class="text-primary underprice-filter">133</span>
+                                        candidates match
+                                    </label>
                                 </div>
                             </div>
                         </div>
@@ -277,7 +283,11 @@
                                     <input title="Minimal allowed Momentum use negative for descending graph"
                                                value="{{user_settings.algo_min_momentum}}"
                                                name="algo_min_momentum" id="algo_min_momentum" type="text"
-                                               class="form-control strategy-change6">
+                                               class="form-control strategy-change col-md-6">
+                                    <label class="text-muted small filter-comment col-md-3">
+                                        <span class="text-primary momentum-filter">133</span>
+                                        candidates match
+                                    </label>
                                 </div>
                             </div>
                             <div class="col-md-6 input-group d-block">
@@ -298,7 +308,11 @@
                                     <input title="Minimal Betta allowed"
                                                value="{{user_settings.algo_min_beta}}"
                                                name="algo_min_beta" id="algo_min_beta" type="text"
-                                               class="form-control strategy-change6">
+                                               class="form-control strategy-change col-md-6">
+                                    <label class="text-muted small filter-comment col-md-3">
+                                        <span class="text-primary beta-filter">133</span>
+                                        candidates match
+                                    </label>
                                 </div>
                             </div>
                         </div>
@@ -321,8 +335,20 @@
                                     <input title="Max intraday drop of a last year allowed"
                                                value="{{user_settings.algo_max_intraday_drop_percent}}"
                                                name="algo_max_intraday_drop_percent" id="algo_max_intraday_drop_percent" type="text"
-                                               class="form-control strategy-change">
+                                               class="form-control strategy-change col-md-6">
+                                    <label class="text-muted small filter-comment col-md-3">
+                                        <span class="text-primary intraday-filter">133</span>
+                                        candidates match
+                                    </label>
                                 </div>
+                            </div>
+                        </div>
+                        <div class="form-row pt-4 d-flex justify-content-center">
+                            <div>
+                                <label class="text-muted h5 filter-comment">
+                                        <span class="text-primary total-filter">70</span>
+                                        Candidates match in Total
+                                </label>
                             </div>
                         </div>
                     </div>

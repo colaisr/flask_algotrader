@@ -6,8 +6,9 @@ from flask import (
     flash,
     redirect,
     request,
-    url_for,
+    url_for
 )
+from flask_login import login_required, current_user
 from datetime import datetime
 
 from sqlalchemy import text
@@ -40,47 +41,15 @@ def logconnection():
         return "The user configured is not found on Server the connection is not logged"
 
 
-def filter_add_data(requested_candidates, logged_user):
+def  filter_add_data(related_tds, logged_user):
     user_settings = UserSetting.query.filter_by(email=logged_user).first()
 
-    query_text = "select a.* from Tickersdata a join (  select Tickersdata.`ticker`, max(Tickersdata.`updated_server_time`) as updated_server_time  from Tickersdata group by Tickersdata.`ticker`) b on b.`ticker`=a.`ticker` and b.`updated_server_time`=a.`updated_server_time`"
-    uniq_tickers_data = db.session.query(TickerData).from_statement(text(query_text)).all()
-
-    related_tds = []
-    for c in requested_candidates:
-        adding = list(filter(lambda td: td.ticker == c.ticker, uniq_tickers_data))
-        if len(adding) == 0:
-            pass
-        else:
-            related_tds.append(adding[0])
-
-        if user_settings.algo_apply_algotrader_rank:
-            algo_ranks = list(filter(lambda td: td.algotrader_rank!=None and td.algotrader_rank >= user_settings.algo_min_algotrader_rank, related_tds))
-        else:
-            algo_ranks = related_tds
-
-    # if user_settings.algo_apply_min_rank:
-    #     filtered_tipranks = list(filter(lambda td: td.tipranks >= user_settings.algo_min_rank, related_tds))
-    # else:
-    #     filtered_tipranks = related_tds
-    #
-    # if user_settings.algo_apply_accepted_fmp_ratings:
-    #     allowed = user_settings.algo_accepted_fmp_ratings.split(',')
-    #     filtered_scores = list(filter(lambda td: td.fmp_rating in allowed, filtered_tipranks))
-    # else:
-    #     filtered_scores = filtered_tipranks
-    #
-    # if user_settings.algo_apply_max_yahoo_rank:
-    #     filtered_yahoo_ranks = list(
-    #         filter(lambda td: td.yahoo_rank <= user_settings.algo_max_yahoo_rank, filtered_scores))
-    # else:
-    #     filtered_yahoo_ranks = filtered_scores
-
-    # if user_settings.algo_apply_min_stock_invest_rank:
-    #     filtered_stock_invest_ranks = list(
-    #         filter(lambda td: td.stock_invest_rank >= user_settings.algo_min_stock_invest_rank, filtered_yahoo_ranks))
-    # else:
-    #     filtered_stock_invest_ranks = filtered_scores
+    if user_settings.algo_apply_algotrader_rank:
+        algo_ranks = list(filter(
+            lambda td: td.algotrader_rank != None and td.algotrader_rank >= user_settings.algo_min_algotrader_rank,
+            related_tds))
+    else:
+        algo_ranks = related_tds
 
     if user_settings.algo_apply_min_underprice:
         filtered_underprice = list(
@@ -127,8 +96,20 @@ def sort_candidates(cand_dictionaries):
 
 def retrieve_user_candidates(user):
     requested_for_user = user
-    user_candidates = Candidate.query.filter_by(email=requested_for_user, enabled=True).all()
-    user_settings = UserSetting.query.filter_by(email=requested_for_user).first()
+    requested_candidates = get_requested_candidates(requested_for_user)
+    requested_candidates = filter_add_data(requested_candidates, requested_for_user)
+    # requested_candidates.sort(key=sort_by_tiprank)
+    # requested_candidates=requested_candidates[:85]    #trader station allow to track only 100
+    cand_dictionaries = []
+    for c in requested_candidates:
+        cand_dictionaries.append(c.toDictionary())
+    sorted_list = sort_candidates(cand_dictionaries)
+    return sorted_list
+
+
+def get_requested_candidates(user):
+    user_candidates = Candidate.query.filter_by(email=user, enabled=True).all()
+    user_settings = UserSetting.query.filter_by(email=user).first()
 
     if user_settings.server_use_system_candidates:
         admin_candidates = Candidate.query.filter_by(email='support@algotrader.company', enabled=True).all()
@@ -141,14 +122,46 @@ def retrieve_user_candidates(user):
         requested_candidates = admin_candidates
     else:
         requested_candidates = user_candidates
-    requested_candidates = filter_add_data(requested_candidates, requested_for_user)
-    # requested_candidates.sort(key=sort_by_tiprank)
-    # requested_candidates=requested_candidates[:85]    #trader station allow to track only 100
-    cand_dictionaries = []
+
+    query_text = "select a.* from Tickersdata a join (  select Tickersdata.`ticker`, max(Tickersdata.`updated_server_time`) as updated_server_time  from Tickersdata group by Tickersdata.`ticker`) b on b.`ticker`=a.`ticker` and b.`updated_server_time`=a.`updated_server_time`"
+    uniq_tickers_data = db.session.query(TickerData).from_statement(text(query_text)).all()
+
+    related_tds = []
     for c in requested_candidates:
-        cand_dictionaries.append(c.toDictionary())
-    sorted_list = sort_candidates(cand_dictionaries)
-    return sorted_list
+        adding = list(filter(lambda td: td.ticker == c.ticker, uniq_tickers_data))
+        if len(adding) == 0:
+            pass
+        else:
+            related_tds.append(adding[0])
+    return related_tds
+
+
+@csrf.exempt
+@connections.route('/filter_candidates_data_ajax', methods=['POST'])
+@login_required
+def filter_candidates_data_ajax():
+    related_tds = get_requested_candidates(current_user.email)
+    algo_min_underprice = float(request.form['filtered_underprice'])
+    algo_min_algotrader_rank = float(request.form['algo_ranks'])
+    algo_min_momentum = float(request.form['filtered_momentum'])
+    algo_min_beta = float(request.form['filtered_beta'])
+    algo_max_intraday_drop_percent = float(request.form['filtered_max_intraday_drop'])
+
+    algo_ranks = list(filter(lambda td: td.algotrader_rank!=None and td.algotrader_rank >= algo_min_algotrader_rank, related_tds))
+    filtered_underprice = list(filter(lambda td: td.under_priced_pnt != None and td.under_priced_pnt >= algo_min_underprice, related_tds))
+    filtered_momentum = list(filter(lambda td: td.twelve_month_momentum != None and td.twelve_month_momentum >= algo_min_momentum, related_tds))
+    filtered_beta = list(filter(lambda td: td.beta != None and td.beta >= algo_min_beta, related_tds))
+    filtered_max_intraday_drop = list(filter(lambda td: td.max_intraday_drop_percent != None and td.max_intraday_drop_percent < algo_max_intraday_drop_percent, related_tds))
+    total = filter_add_data(related_tds, current_user.email)
+    result = {
+        'algo_ranks': len(algo_ranks),
+        'filtered_underprice': len(filtered_underprice),
+        'filtered_momentum': len(filtered_momentum),
+        'filtered_beta': len(filtered_beta),
+        'filtered_max_intraday_drop': len(filtered_max_intraday_drop),
+        'total': len(total)
+    }
+    return json.dumps(result)
 
 
 def sort_by_tiprank(e):
