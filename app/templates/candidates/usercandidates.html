@@ -152,13 +152,14 @@
      aria-labelledby="exampleModalLabel"
      aria-hidden="true">
     <div class="modal-dialog" role="document">
-        <form action="{{url_for('candidates.updatecandidate')}}" method="post">
+        <form>
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel">Candidate</h5>
                 </div>
                 <div class="modal-body">
                     <div>
+                        <input type="hidden" id="user-email" value="{{ user.email }}">
                         <div class="form-group">
                             <label class="form-label" for="txt_ticker">Ticker</label>
                             <input required id="txt_ticker" name="txt_ticker" type="text" class="form-control"
@@ -188,6 +189,11 @@
                                    disabled>
                         </div>
                         <div class="form-group">
+                            <label class="form-label" for="txt_industry">Sector</label>
+                            <input required id="txt_sector" name="txt_sector" type="text" class="form-control"
+                                   disabled>
+                        </div>
+                        <div class="form-group">
                             <label class="form-label" for="txt_industry">Industry</label>
                             <input required id="txt_industry" name="txt_industry" type="text" class="form-control"
                                    disabled>
@@ -201,7 +207,7 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" id="btn-modal-hide">Close
                     </button>
-                    <input type="submit" title="Validate to Submit" class="btn btn-primary" disabled id="btn_submit"
+                    <input type="button" title="Validate to Submit" class="btn btn-primary" disabled id="btn_submit"
                            value="Submit">
                 </div>
             </div>

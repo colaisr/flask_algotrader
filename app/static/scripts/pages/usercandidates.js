@@ -37,23 +37,38 @@
         get_data_for_ticker();
     })
 
+    $( "#btn_submit" ).on('click', function() {
+        ticker = $('#txt_ticker').val();
+        reason = $('#txt_reason').val();
+        email = $('#user-email').val();
+
+//        url = 'http://localhost:8000/candidates/updatecandidate/';
+        url = 'http://colak.eu.pythonanywhere.com/candidates/updatecandidate/';
+        $.post(url,{ticker: ticker, reason: reason, email: email}, function(data) {
+            window.location.reload();
+        })
+    });
+
 })
 
 //getting a data for ticker
 function get_data_for_ticker(){
     ticker=$('#txt_ticker').val();
-    url='https://financialmodelingprep.com/api/v3/profile/'+ticker+'?apikey=f6003a61d13c32709e458a1e6c7df0b0';
+//    url = 'http://localhost:8000/research/get_info_ticker/' + ticker
+    url = 'http://colak.eu.pythonanywhere.com/research/get_info_ticker/' + ticker
     $.getJSON(url, function(data) {
-        if (data.length==0)
+        //var data_parsed = jQuery.parseJSON(data);
+        if (data == 'undefined')
         {
             alert('Wrong ticker');
         }
         else{
-            $('#txt_company_name').val(data[0].companyName);
-            $('#txt_company_description').val(data[0].description);
-            $('#txt_exchange').val(data[0].exchangeShortName);
-            $('#txt_industry').val(data[0].industry);
-            $('#txt_logo').val(data[0].image);
+            $('#txt_company_name').val(data.longName);
+            $('#txt_company_description').val(data.longBusinessSummary);
+            $('#txt_exchange').val(data.exchange);
+            $('#txt_industry').val(data.industry);
+            $('#txt_sector').val(data.sector);
+            $('#txt_logo').val(data.logo_url);
             $('#txt_ticker').val($('#txt_ticker').val().toUpperCase());
 
             $("#btn_submit").prop('disabled', false);

@@ -13,6 +13,8 @@ from flask_wtf import CSRFProtect
 from app.assets import app_css, app_js, vendor_css, vendor_js
 from config import config as Config
 
+from flask_cors import CORS, cross_origin
+
 basedir = os.path.abspath(os.path.dirname(__file__))
 
 mail = Mail()
@@ -30,6 +32,8 @@ login_manager.login_view = 'account.login'
 def create_app(config):
     app = Flask(__name__)
     config_name = config
+    cors = CORS(app, resources={r"/foo": {"origins": "*"}})
+    app.config['CORS_HEADERS'] = 'Content-Type'
 
     if not isinstance(config, str):
         config_name = os.getenv('FLASK_CONFIG', 'default')

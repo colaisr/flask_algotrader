@@ -17,6 +17,9 @@ from app.email import send_email
 from app.models import TickerData, Candidate, UserSetting
 from app.research.views import research_ticker
 
+from flask_cors import CORS, cross_origin
+import yfinance as yf
+
 candidates = Blueprint('candidates', __name__)
 
 
@@ -32,98 +35,6 @@ def usercandidates():
         admin_candidates = Candidate.query.filter_by(email='support@algotrader.company', enabled=True).all()
     return render_template('candidates/usercandidates.html', admin_candidates=admin_candidates, candidates=candidates,
                            user=current_user, form=None)
-
-
-def get_fmp_ticker_data(ticker):
-    fmpkey = 'f6003a61d13c32709e458a1e6c7df0b0'
-    url = ("https://financialmodelingprep.com/api/v3/profile/" + ticker + "?apikey=" + fmpkey)
-    context = ssl._create_unverified_context()
-    response = urlopen(url, context=context)
-    data = response.read().decode("utf-8")
-    parsed = json.loads(data)
-    ticker_data = {}
-    try:
-        ticker_data['company_name'] = parsed[0]['companyName']
-        ticker_data['full_description'] = parsed[0]['description']
-        ticker_data['exchange'] = parsed[0]['exchangeShortName']
-        ticker_data['industry'] = parsed[0]['industry']
-        ticker_data['sector'] = parsed[0]['sector']
-        ticker_data['logo'] = parsed[0]['image']
-        ticker_data['isEtf'] = parsed[0]['isEtf']
-    except:
-        print('failed to extract fmp')
-        ticker_data = None
-    return ticker_data
-
-
-@candidates.route('updatecandidate/', methods=['POST'])
-@csrf.exempt
-def updatecandidate():
-    c = Candidate()
-    c.ticker = request.form['txt_ticker']
-    c.reason = request.form['txt_reason']
-    c.email = current_user.email
-    c.enabled = True
-    candidate_data = get_fmp_ticker_data(c.ticker)
-    if candidate_data is not None:
-        c.company_name = candidate_data['company_name']
-        c.full_description = candidate_data['full_description']
-        c.exchange = candidate_data['exchange']
-        c.industry = candidate_data['industry']
-        c.sector = candidate_data['sector']
-        c.logo = candidate_data['logo']
-
-        c.update_candidate()
-        research_ticker(c.ticker)
-
-    return redirect(url_for('candidates.usercandidates'))
-
-
-@candidates.route('add_by_spider', methods=['POST'])
-@csrf.exempt
-def add_by_spider():
-    ticker_to_add = request.form['ticker_to_add']
-    try:
-        candidate = Candidate.query.filter_by(email='support@algotrader.company', ticker=ticker_to_add).first()
-        if candidate is not None:
-            print('adding ' + ticker_to_add)
-            c = Candidate()
-            c.ticker = ticker_to_add
-            c.reason = "added automatically"
-            c.email = 'support@algotrader.company'
-            c.enabled = True
-            candidate_data = get_fmp_ticker_data(c.ticker)
-            if candidate_data is not None:
-                if not candidate_data['isEtf']:
-                    c.company_name = candidate_data['company_name']
-                    c.full_description = candidate_data['full_description']
-                    c.exchange = candidate_data['exchange']
-                    c.industry = candidate_data['industry']
-                    c.sector = candidate_data['sector']
-                    c.logo = candidate_data['logo']
-
-                    c.update_candidate()
-                    r = research_ticker(c.ticker)
-                    print('successfully added candidate')
-                    return "successfully added candidate"
-                else:
-                    print(ticker_to_add + " skept - it is ETF- not supported...")
-                    return "skept candidate"
-            else:
-                print(ticker_to_add + " skept no FMP data...")
-                return "skept candidate"
-        else:
-            return "candidate exist"
-    except:
-        send_email(recipient='cola.isr@gmail.com',
-                   subject='Algotrader adding candidate problem with ' + ticker_to_add,
-                   template='account/email/research_issue',
-                   ticker=ticker_to_add)
-        print("failed to add candidate")
-        return "exception in candidate " + ticker_to_add
-    # else:
-    #     print("skept-exist")
-    #     return "skept"
 
 
 @candidates.route('removecandidate/', methods=['POST'])
@@ -182,3 +93,28 @@ def info():
                            # hist_fmp_score=hist_fmp_score,
                            # hist_yahoo_rank=hist_yahoo_rank,
                            # stock_invest_rank=stock_invest_rank)
+
+
+@csrf.exempt
+@candidates.route('/get_info_ticker/<ticker>', methods=['GET'])
+@cross_origin(origin='*',headers=['Content-Type', 'Authorization'])
+def get_info_ticker(ticker):
+    info = yf.Ticker(ticker).info
+    return json.dumps(info)
+
+
+def fill_ticker_data_from_yahoo(c):
+    candidate_data = yf.Ticker(c.ticker).info
+    if candidate_data is not None:
+        c.company_name = candidate_data.longName
+        c.full_description = candidate_data.longBusinessSummary
+        c.exchange = candidate_data.exchange
+        c.industry = candidate_data.industry
+        c.sector = candidate_data.sector
+        c.logo = candidate_data.logo_url
+        c.update_candidate()
+        research_ticker(c.ticker)
+        return True
+    return False
+
+
