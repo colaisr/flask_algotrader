@@ -142,9 +142,13 @@
 </div>
 {% endblock %}
 
+{% block scripting %}
+<script type="text/javascript" src="{{ url_for('static', filename='scripts/pages/usercandidates.js') }}"></script>
+{% endblock %}
+
 {% block modal %}
 <!-- Modal -->
-<div class="modal" id="add_candidate_modal" data-backdrop="static" data-keyboard="false" role="dialog"
+<div class="modal" tabindex="-1" id="add_candidate_modal" data-keyboard="false" role="dialog"
      aria-labelledby="exampleModalLabel"
      aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -195,7 +199,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" onclick="m.hide()" data-dismiss="modal">Close
+                    <button type="button" class="btn btn-secondary" id="btn-modal-hide">Close
                     </button>
                     <input type="submit" title="Validate to Submit" class="btn btn-primary" disabled id="btn_submit"
                            value="Submit">
@@ -205,8 +209,4 @@
     </div>
 </div>
 
-{% endblock %}
-
-{% block scripting %}
-<script type="text/javascript" src="{{ url_for('static', filename='scripts/pages/usercandidates.js') }}"></script>
 {% endblock %}

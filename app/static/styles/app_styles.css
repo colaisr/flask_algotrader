@@ -7,7 +7,7 @@
     overflow-x: scroll;
 }
 
-.snp-modal{
+.snp-modal, #add_candidate_modal{
     overflow-y: scroll !important;
 }
 .snp-tbl{
