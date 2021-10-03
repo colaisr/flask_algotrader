@@ -43,7 +43,7 @@
         email = $('#user-email').val();
 
 //        url = 'http://localhost:8000/candidates/updatecandidate/';
-        url = 'http://colak.eu.pythonanywhere.com/candidates/updatecandidate/';
+        url = 'https://colak.eu.pythonanywhere.com/candidates/updatecandidate/';
         $.post(url,{ticker: ticker, reason: reason, email: email}, function(data) {
             window.location.reload();
         })
@@ -55,7 +55,7 @@
 function get_data_for_ticker(){
     ticker=$('#txt_ticker').val();
 //    url = 'http://localhost:8000/research/get_info_ticker/' + ticker
-    url = 'http://colak.eu.pythonanywhere.com/research/get_info_ticker/' + ticker
+    url = 'https://colak.eu.pythonanywhere.com/research/get_info_ticker/' + ticker
     $.getJSON(url, function(data) {
         //var data_parsed = jQuery.parseJSON(data);
         if (data == 'undefined')
