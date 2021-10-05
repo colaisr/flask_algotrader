@@ -17,6 +17,7 @@ from app import db, csrf
 from app.email import send_email
 from app.models import User, Connection, Report, Position, ClientCommand, UserSetting, TickerData, \
     Candidate, TelegramSignal
+from app.models.fgi_score import Fgi_score
 from app.telegram.signal_notify import send_telegram_signal_message
 
 from app.research import yahoo_research as yahoo
@@ -209,7 +210,7 @@ def check_signal_for_target_riched(s, bid_price):
         #profit yet to be measured
         s.profit_percent=(bid_price-s.signal_price)/bid_price*100
         s.update_signal()
-        send_telegram_signal_message("confirmation for : "+str(s.id) + "\n" +
+        send_telegram_signal_message("Confirmation for : "+str(s.id) + "\n" +
                                      s.ticker+" reached target of "+ str(s.target_price) + "\n"+
                                      "in "+str(s.days_to_get)+" days, with profit of "+str(s.profit_percent)+" %"
 
@@ -248,18 +249,19 @@ def check_for_signals(candidates_live_json):
             signal.transmitted = True
             signal.signal_price = v['Ask']
             try:
-                if ticker_data.target_mean_price is None:
-                    signal.target_price = 0
-                else:
-                    signal.target_price = ticker_data.target_mean_price
-                added = signal.add_signal()
-                if added:
-                    send_telegram_signal_message(str(signal.id) + "\n" +
-                                                 "Time to buy: " + signal.ticker + "\n" +
-                                                 "it crossed the trigger of " + str(round(v['target_price'], 2)) + " USD \n" +
-                                                 "Algotrader Rank: " + str(ticker_data.algotrader_rank) + "\n" +
-                                                 "Expected to reach the target of: " + str(ticker_data.target_mean_price) + " USD"
-                                                 )
+                if ticker_data.algotrader_rank>=9:
+                    if ticker_data.target_mean_price is None:
+                        signal.target_price = 0
+                    else:
+                        signal.target_price = ticker_data.target_mean_price
+                    added = signal.add_signal()
+                    if added:
+                        send_telegram_signal_message(str(signal.id) + "\n" +
+                                                     "Time to buy: " + signal.ticker + "\n" +
+                                                     "it crossed the trigger of " + str(round(v['target_price'], 2)) + " USD \n" +
+                                                     "Algotrader Rank: " + str(ticker_data.algotrader_rank) + "\n" +
+                                                     "Expected to reach the target of: " + str(ticker_data.target_mean_price) + " USD"
+                                                     )
             except:
                 print("Error in signal for : "+signal.ticker)
                 print(ticker_data)
@@ -323,9 +325,11 @@ def get_command():
     if user is not None:
         response = {}
         client_command = ClientCommand.query.filter_by(email=logged_user).first()
+        market_emotion=db.session.query(Fgi_score).order_by(Fgi_score.score_time.desc()).first()
         response['command'] = client_command.command
         response['candidates'] = retrieve_user_candidates(logged_user)
         response['open_positions'] = retrieve_user_positions(logged_user)
+        response['market_emotion'] = market_emotion.fgi_value
         if client_command.command == 'restart_worker':
             client_command.set_run_worker()
         elif client_command.command == 'close_all_positions':

@@ -347,6 +347,28 @@
                                     </label>
                                 </div>
                             </div>
+                                                        <div class="col-md-6 input-group d-block">
+                                <div>
+                                    <label for="algo_min_beta" class="">Minimal Emotion allowed</label>
+                                </div>
+                                <div class="d-flex">
+                                    <input title="Minimal Market Emotion allowed"
+                                               {%if user_settings.algo_apply_min_emotion%}
+                                               checked
+                                               {% endif %}
+                                               data-toggle="toggle"
+                                               data-onstyle="info"
+                                               data-offstyle="off"
+                                               name="algo_apply_min_emotion" id="algo_apply_min_emotion"
+                                               type="checkbox"
+                                               class="form-check-input strategy-change">
+                                    <input title="Minimal Emotion allowed"
+                                               value="{{user_settings.algo_min_emotion}}"
+                                               name="algo_min_emotion" id="algo_min_emotion" type="text"
+                                               class="form-control strategy-change6">
+                                </div>
+                            </div>
+
                         </div>
                         <div class="form-row pt-4 d-flex justify-content-center">
                             <div>
@@ -356,6 +378,7 @@
                                     <span class="fixed-total-filter-text"></span>
                                 </label>
                             </div>
+
                         </div>
                     </div>
                     <button type="submit" class="mt-5 btn btn-primary">Save</button>

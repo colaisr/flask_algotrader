@@ -156,6 +156,12 @@ def savesettings():
         user_settings.algo_apply_min_beta = False
     user_settings.algo_min_beta = request.form['algo_min_beta']
 
+    if "algo_apply_min_emotion" in request.form.keys():
+        user_settings.algo_apply_min_emotion = True
+    else:
+        user_settings.algo_apply_min_emotion = False
+    user_settings.algo_min_emotion = request.form['algo_min_emotion']
+
     if "algo_apply_max_intraday_drop_percent" in request.form.keys():
         user_settings.algo_apply_max_intraday_drop_percent = True
     else:

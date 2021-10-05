@@ -36,6 +36,8 @@ class UserStrategySettingsDefault(db.Model):
     algo_apply_min_momentum = db.Column('algo_apply_min_momentum', db.Boolean)
     algo_min_beta = db.Column('algo_min_beta', db.Float)
     algo_apply_min_beta = db.Column('algo_apply_min_beta', db.Boolean)
+    algo_min_emotion = db.Column('algo_min_emotion', db.Integer)
+    algo_apply_min_emotion = db.Column('algo_apply_min_emotion', db.Boolean)
     algo_max_intraday_drop_percent = db.Column('algo_max_intraday_drop_percent', db.Float)
     algo_apply_max_intraday_drop_percent = db.Column('algo_apply_max_intraday_drop_percent', db.Boolean)
     algo_apply_algotrader_rank = db.Column('algo_apply_algotrader_rank', db.Boolean)
@@ -86,6 +88,8 @@ class UserSetting(db.Model):
     notify_trail = db.Column('notify_trail', db.Boolean)
     algo_min_beta = db.Column('algo_min_beta', db.Float)
     algo_apply_min_beta = db.Column('algo_apply_min_beta', db.Boolean)
+    algo_min_emotion = db.Column('algo_min_emotion', db.Integer)
+    algo_apply_min_emotion = db.Column('algo_apply_min_emotion', db.Boolean)
     algo_max_intraday_drop_percent = db.Column('algo_max_intraday_drop_percent', db.Float)
     algo_apply_max_intraday_drop_percent = db.Column('algo_apply_max_intraday_drop_percent', db.Boolean)
     strategy_id = db.Column('strategy_id', db.Integer)
@@ -140,6 +144,8 @@ class UserSetting(db.Model):
         self.algo_apply_min_momentum = strategy.algo_apply_min_momentum
         self.algo_min_beta = strategy.algo_min_beta
         self.algo_apply_min_beta = strategy.algo_apply_min_beta
+        self.algo_min_emotion = strategy.algo_min_emotion
+        self.algo_apply_min_emotion = strategy.algo_apply_min_emotion
         self.algo_max_intraday_drop_percent = strategy.algo_max_intraday_drop_percent
         self.algo_apply_max_intraday_drop_percent = strategy.algo_apply_max_intraday_drop_percent
         self.algo_apply_algotrader_rank = strategy.algo_apply_algotrader_rank
@@ -189,6 +195,8 @@ class UserSetting(db.Model):
         d['algo_max_hold_days'] = self.algo_max_hold_days
         d['algo_apply_min_underprice'] = self.algo_apply_min_underprice
         d['algo_min_underprice'] = self.algo_min_underprice
+        d['algo_apply_min_emotion'] = self.algo_apply_min_emotion
+        d['algo_min_emotion'] = self.algo_min_emotion
         d['algo_apply_min_momentum'] = self.algo_apply_min_momentum
         d['algo_min_momentum'] = self.algo_min_momentum
         d['notify_buy'] = self.notify_buy

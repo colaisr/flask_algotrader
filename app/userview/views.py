@@ -20,6 +20,7 @@ from flask_login import (
 from app.models import Position, Report, ReportStatistic, Candidate, UserSetting, LastUpdateSpyderData
 from sqlalchemy import or_
 from app import db
+from app.models.fgi_score import Fgi_score
 
 userview = Blueprint('userview', __name__)
 
@@ -47,7 +48,7 @@ def is_market_open():
 def traderstationstate():
     if not current_user.admin_confirmed or not current_user.signature:
         return redirect(url_for('station.download'))
-
+    market_emotion=db.session.query(Fgi_score).order_by(Fgi_score.score_time.desc()).first()
     report = Report.query.filter_by(email=current_user.email).first()
     settings = UserSetting.query.filter_by(email=current_user.email).first()
 
