@@ -34,6 +34,7 @@ from app.models import (
     Report,
     LastUpdateSpyderData
 )
+from app.models.fgi_score import Fgi_score
 
 admin = Blueprint('admin', __name__)
 
@@ -115,6 +116,11 @@ def registered_users():
 @admin_required
 def users_monitor():
     # users = User.query.filter_by(admin_confirmed=0).all()
+    market_emotion=db.session.query(Fgi_score).order_by(Fgi_score.score_time.desc()).first()
+    if market_emotion.fgi_value<50:
+        fgi_text_color='text-danger'
+    else:
+        fgi_text_color = 'text-success'
     reports = Report.query.all()
     all_users_settings = UserSetting.query.all()
     users = []
@@ -150,7 +156,7 @@ def users_monitor():
         }
         users.append(user)
     return render_template(
-        'admin/users_monitor.html', users=users)
+        'admin/users_monitor.html', users=users,market_emotion=market_emotion,fgi_text_color=fgi_text_color)
 
 
 @admin.route('/spider_statistic')
