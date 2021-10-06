@@ -49,6 +49,10 @@ def traderstationstate():
     if not current_user.admin_confirmed or not current_user.signature:
         return redirect(url_for('station.download'))
     market_emotion=db.session.query(Fgi_score).order_by(Fgi_score.score_time.desc()).first()
+    if market_emotion.fgi_value<50:
+        fgi_text_color='text-danger'
+    else:
+        fgi_text_color = 'text-success'
     report = Report.query.filter_by(email=current_user.email).first()
     settings = UserSetting.query.filter_by(email=current_user.email).first()
 
@@ -144,6 +148,8 @@ def traderstationstate():
                                pnl_bg_box_color=pnl_bg_box_color,
                                last_update_date=last_update.last_update_date.strftime("%d %b %H:%M"),
                                bg_upd_color=bg_upd_color,
+                               market_emotion=market_emotion,
+                               fgi_text_color=fgi_text_color,
                                form=None)
 
 
