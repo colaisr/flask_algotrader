@@ -43,7 +43,6 @@ class RegistrationForm(FlaskForm):
     password2 = PasswordField('Confirm password', validators=[InputRequired()])
     submit = SubmitField('Register')
 
-
     def validate_email(self, field):
         if User.query.filter_by(email=field.data).first():
             raise ValidationError('Email already registered. (Did you mean to '
@@ -76,7 +75,6 @@ class ResetPasswordForm(FlaskForm):
     new_password2 = PasswordField(
         'Confirm new password', validators=[InputRequired()])
     submit = SubmitField('Reset password')
-
 
     def validate_email(self, field):
         if User.query.filter_by(email=field.data).first() is None:
@@ -115,7 +113,6 @@ class ChangeEmailForm(FlaskForm):
                                  Email()])
     password = PasswordField('Password', validators=[InputRequired()])
     submit = SubmitField('Update email')
-
 
     def validate_email(self, field):
         if User.query.filter_by(email=field.data).first():

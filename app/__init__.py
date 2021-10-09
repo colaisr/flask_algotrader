@@ -13,7 +13,7 @@ from flask_wtf import CSRFProtect
 from app.assets import app_css, app_js, vendor_css, vendor_js
 from config import config as Config
 
-from flask_cors import CORS, cross_origin
+from flask_cors import CORS
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 

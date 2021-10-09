@@ -144,6 +144,7 @@
 
 {% block scripting %}
 <script type="text/javascript" src="{{ url_for('static', filename='scripts/pages/usercandidates.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='scripts/pages/spyder_project.js') }}"></script>
 {% endblock %}
 
 {% block modal %}
@@ -171,7 +172,7 @@
                                       placeholder="Enter a reason ..."></textarea>
                         </div>
                         <div class="form-group">
-                            <button type="button" id="btn_validate" class="btn btn-primary">Validate</button>
+                            <button type="button" onclick="get_data_for_ticker()" id="btn_validate" class="btn btn-primary">Validate</button>
                         </div>
                         <div class="form-group">
                             <label class="form-label" for="txt_company_name">Name</label>
@@ -208,7 +209,7 @@
                     <button type="button" class="btn btn-secondary" id="btn-modal-hide">Close
                     </button>
                     <input type="button" title="Validate to Submit" class="btn btn-primary" disabled id="btn_submit"
-                           value="Submit">
+                           value="Submit" onclick="update_candidate()">
                 </div>
             </div>
         </form>

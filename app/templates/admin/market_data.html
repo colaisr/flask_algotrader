@@ -46,10 +46,7 @@
                 {% for m in marketdata %}
                 <tr>
                     <td>
-                        <form action="{{url_for('research.updatemarketdataforcandidate')}}" method="post">
-                            <input type="hidden" name="ticker_to_update" value="{{ m.ticker }}">
-                            <button type="submit"><i class="fa fa-refresh"></i></button>
-                        </form>
+                        <button type="button" onclick="update_market_data('{{ m.ticker }}')"><i class="fa fa-refresh"></i></button>
                     </td>
                     <td>
                         <a href="{{url_for('candidates.info')}}?ticker_to_show={{ m.ticker }}">
@@ -78,28 +75,6 @@
 {% endblock %}
 
 {% block scripting %}
-<script type="text/javascript">
-        $(document).ready(function () {
-            $('#search-users').keyup(function () {
-                var searchText = $(this).val();
-                if (searchText.length > 0) {
-                    $('tbody td:icontains(' + searchText + ')').addClass('positive');
-                    $('td.positive').not(':icontains(' + searchText + ')').removeClass('positive');
-                    $('tbody td').not(':icontains(' + searchText + ')').closest('tr').addClass('hidden').hide();
-                    $('tr.hidden:icontains(' + searchText + ')').removeClass('hidden').show();
-                } else {
-                    $('td.positive').removeClass('positive');
-                    $('tr.hidden').removeClass('hidden').show();
-                }
-            });
-
-            $('#select-role').dropdown({
-                onChange: function (value, text, $selectedItem) {
-                    $('td.user.role:contains(' + value + ')').closest('tr').removeClass('hidden').show();
-                    $('td.user.role').not(':contains(' + value + ')').closest('tr').addClass('hidden').hide();
-                }
-            });
-        });
-
-</script>
+<script type="text/javascript" src="{{ url_for('static', filename='scripts/pages/market_data.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='scripts/pages/spyder_project.js') }}"></script>
 {% endblock %}

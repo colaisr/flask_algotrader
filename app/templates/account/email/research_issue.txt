@@ -1,1 +1,0 @@
-There was an issue updating info for a ticker above: {{ ticker }}. Problem sections: {{sections}}. Please go to Admin section and investigate - or turn it off.

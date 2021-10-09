@@ -7,6 +7,7 @@ from flask import (
 from datetime import datetime, date
 from app import csrf
 from app.models import TickerData
+import app.generalutils as general
 
 marketdata = Blueprint('marketdata', __name__)
 
@@ -61,7 +62,8 @@ def retrievemarketdata():
                             yahoo_avspreadP=0,
                             tipranks=0)
 
-        tdj = json.dumps(td.toDictionary())
+        # tdj = json.dumps(td.toDictionary())
+        tdj = json.dumps(td, cls=general.JsonEncoder)
         requested_tickers[td.ticker] = tdj
     return requested_tickers
 

@@ -20,18 +20,11 @@ from app.research import yahoo_research as yahoo
 algotradersettings = Blueprint('algotradersettings', __name__)
 
 
-def json_serial(obj):
-    """JSON serializer for objects not serializable by default json code"""
-
-    if isinstance(obj, (datetime, date)):
-        return obj.isoformat()
-    raise TypeError("Type %s not serializable" % type(obj))
-
-
 @csrf.exempt
 @algotradersettings.route('/usersettings', methods=['GET'])
 @login_required
 def usersettings():
+
     if not current_user.admin_confirmed or not current_user.signature:
         return redirect(url_for('station.download'))
     user_settings = UserSetting.query.filter_by(email=current_user.email).first()
@@ -234,7 +227,8 @@ def retrieve_user_settings():
     logged_user = request_data["user"]
 
     user_settings = UserSetting.query.filter_by(email=logged_user).first()
-    tdj = json.dumps(user_settings.toDictionary())
+    # tdj = json.dumps(user_settings.toDictionary())
+    tdj = json.dumps(user_settings, cls=general.JsonEncoder)
     parsed_response = json.dumps(tdj)
     return parsed_response
 

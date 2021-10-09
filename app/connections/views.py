@@ -1,5 +1,4 @@
 import json
-import time
 
 from flask import (
     Blueprint,
@@ -15,12 +14,17 @@ from sqlalchemy import text
 
 from app import db, csrf
 from app.email import send_email
-from app.models import User, Connection, Report, Position, ClientCommand, UserSetting, TickerData, \
-    Candidate, TelegramSignal
+
+from app.models import (
+    User, Connection, Report,
+    Position, ClientCommand, UserSetting,
+    TickerData, Candidate, TelegramSignal
+)
 from app.models.fgi_score import Fgi_score
 from app.telegram.signal_notify import send_telegram_signal_message
 
 from app.research import yahoo_research as yahoo
+import app.generalutils as general
 
 connections = Blueprint('connections', __name__)
 
@@ -48,20 +52,25 @@ def filter_add_data(related_tds, logged_user, filters=None):
 
         if user_settings.algo_apply_algotrader_rank:
             algo_ranks = list(filter(
-                lambda td: td.algotrader_rank is not None and td.algotrader_rank >= user_settings.algo_min_algotrader_rank,
+                lambda
+                    td: td.algotrader_rank is not None and td.algotrader_rank >= user_settings.algo_min_algotrader_rank,
                 related_tds))
         else:
             algo_ranks = related_tds
 
         if user_settings.algo_apply_min_underprice:
             filtered_underprice = list(
-                filter(lambda td: td.under_priced_pnt is not None and td.under_priced_pnt >= user_settings.algo_min_underprice, algo_ranks))
+                filter(lambda
+                           td: td.under_priced_pnt is not None and td.under_priced_pnt >= user_settings.algo_min_underprice,
+                       algo_ranks))
         else:
             filtered_underprice = algo_ranks
 
         if user_settings.algo_apply_min_momentum:
             filtered_momentum = list(
-                filter(lambda td: td.twelve_month_momentum is not None and td.twelve_month_momentum >= user_settings.algo_min_momentum, filtered_underprice))
+                filter(lambda
+                           td: td.twelve_month_momentum is not None and td.twelve_month_momentum >= user_settings.algo_min_momentum,
+                       filtered_underprice))
         else:
             filtered_momentum = filtered_underprice
 
@@ -73,7 +82,9 @@ def filter_add_data(related_tds, logged_user, filters=None):
 
         if user_settings.algo_apply_max_intraday_drop_percent:
             filtered_max_intraday_drop = list(
-                filter(lambda td: td.max_intraday_drop_percent is not None and td.max_intraday_drop_percent < user_settings.algo_max_intraday_drop_percent, filtered_beta))
+                filter(lambda
+                           td: td.max_intraday_drop_percent is not None and td.max_intraday_drop_percent < user_settings.algo_max_intraday_drop_percent,
+                       filtered_beta))
         else:
             filtered_max_intraday_drop = filtered_beta
     else:
@@ -88,7 +99,8 @@ def filter_add_data(related_tds, logged_user, filters=None):
 
         filtered_momentum = list(
             filter(lambda
-                       td: td.twelve_month_momentum is not None and td.twelve_month_momentum >= filters['algo_min_momentum'],
+                       td: td.twelve_month_momentum is not None and td.twelve_month_momentum >= filters[
+                'algo_min_momentum'],
                    filtered_underprice))
 
         filtered_beta = list(
@@ -96,12 +108,11 @@ def filter_add_data(related_tds, logged_user, filters=None):
 
         filtered_max_intraday_drop = list(
             filter(lambda
-                       td: td.max_intraday_drop_percent is not None and td.max_intraday_drop_percent < filters['algo_max_intraday_drop_percent'],
+                       td: td.max_intraday_drop_percent is not None and td.max_intraday_drop_percent < filters[
+                'algo_max_intraday_drop_percent'],
                    filtered_beta))
 
     return filtered_max_intraday_drop
-
-
 
 
 def sort_by_parameter_desc(obj, prop):
@@ -181,11 +192,17 @@ def filter_candidates_data_ajax():
         'algo_max_intraday_drop_percent': algo_max_intraday_drop_percent
     }
 
-    algo_ranks = list(filter(lambda td: td.algotrader_rank!=None and td.algotrader_rank >= algo_min_algotrader_rank, related_tds))
-    filtered_underprice = list(filter(lambda td: td.under_priced_pnt != None and td.under_priced_pnt >= algo_min_underprice, related_tds))
-    filtered_momentum = list(filter(lambda td: td.twelve_month_momentum != None and td.twelve_month_momentum >= algo_min_momentum, related_tds))
+    algo_ranks = list(
+        filter(lambda td: td.algotrader_rank != None and td.algotrader_rank >= algo_min_algotrader_rank, related_tds))
+    filtered_underprice = list(
+        filter(lambda td: td.under_priced_pnt != None and td.under_priced_pnt >= algo_min_underprice, related_tds))
+    filtered_momentum = list(
+        filter(lambda td: td.twelve_month_momentum != None and td.twelve_month_momentum >= algo_min_momentum,
+               related_tds))
     filtered_beta = list(filter(lambda td: td.beta != None and td.beta >= algo_min_beta, related_tds))
-    filtered_max_intraday_drop = list(filter(lambda td: td.max_intraday_drop_percent != None and td.max_intraday_drop_percent < algo_max_intraday_drop_percent, related_tds))
+    filtered_max_intraday_drop = list(filter(lambda
+                                                 td: td.max_intraday_drop_percent != None and td.max_intraday_drop_percent < algo_max_intraday_drop_percent,
+                                             related_tds))
     total = filter_add_data(related_tds, current_user.email, filters)
     result = {
         'algo_ranks': len(algo_ranks),
@@ -204,18 +221,18 @@ def sort_by_tiprank(e):
 
 def check_signal_for_target_riched(s, bid_price):
     if bid_price >= s.target_price:
-        s.target_met=datetime.now()
+        s.target_met = datetime.utcnow()
         delta = s.target_met - s.received
         s.days_to_get = delta.days
-        #profit yet to be measured
-        s.profit_percent=(bid_price-s.signal_price)/bid_price*100
+        # profit yet to be measured
+        s.profit_percent = (bid_price - s.signal_price) / bid_price * 100
         s.update_signal()
-        send_telegram_signal_message("Confirmation for : "+str(s.id) + "\n" +
-                                     s.ticker+" reached target of "+ str(s.target_price) + "\n"+
-                                     "in "+str(s.days_to_get)+" days, with profit of "+str(s.profit_percent)+" %"
+        send_telegram_signal_message("Confirmation for : " + str(s.id) + "\n" +
+                                     s.ticker + " reached target of " + str(s.target_price) + "\n" +
+                                     "in " + str(s.days_to_get) + " days, with profit of " + str(
+            s.profit_percent) + " %"
 
                                      )
-
 
     pass
 
@@ -233,7 +250,7 @@ def signals_check():
     for s in signals:
         if s.ticker in all_prices_reported:
             if s.target_price is not None:
-                check_signal_for_target_riched(s,all_prices_reported[s.ticker])
+                check_signal_for_target_riched(s, all_prices_reported[s.ticker])
 
     return "Signals checked"
 
@@ -242,14 +259,15 @@ def check_for_signals(candidates_live_json):
     candidates_live = json.loads(candidates_live_json)
     for k, v in candidates_live.items():
         if v['Ask'] < v['target_price'] and v['Ask'] != -1:
-            signal=TelegramSignal()
-            ticker_data = TickerData.query.filter_by(ticker=v['Stock']).order_by(TickerData.updated_server_time.desc()).first()
+            signal = TelegramSignal()
+            ticker_data = TickerData.query.filter_by(ticker=v['Stock']).order_by(
+                TickerData.updated_server_time.desc()).first()
             signal.ticker = v['Stock']
             signal.received = datetime.today().date()
             signal.transmitted = True
             signal.signal_price = v['Ask']
             try:
-                if ticker_data.algotrader_rank>=9:
+                if ticker_data.algotrader_rank >= 9:
                     if ticker_data.target_mean_price is None:
                         signal.target_price = 0
                     else:
@@ -258,14 +276,15 @@ def check_for_signals(candidates_live_json):
                     if added:
                         send_telegram_signal_message(str(signal.id) + "\n" +
                                                      "Time to buy: " + signal.ticker + "\n" +
-                                                     "it crossed the trigger of " + str(round(v['target_price'], 2)) + " USD \n" +
+                                                     "it crossed the trigger of " + str(
+                            round(v['target_price'], 2)) + " USD \n" +
                                                      "Algotrader Rank: " + str(ticker_data.algotrader_rank) + "\n" +
-                                                     "Expected to reach the target of: " + str(ticker_data.target_mean_price) + " USD"
+                                                     "Expected to reach the target of: " + str(
+                            ticker_data.target_mean_price) + " USD"
                                                      )
             except:
-                print("Error in signal for : "+signal.ticker)
+                print("Error in signal for : " + signal.ticker)
                 print(ticker_data)
-
 
 
 @csrf.exempt
@@ -298,7 +317,7 @@ def logreport():
         report.update_report()
 
         if report.api_connected:
-            if report.market_state == "Open":    #can be none .... in not taken from api...tws not yet connected on first run
+            if report.market_state == "Open":  # can be none .... in not taken from api...tws not yet connected on first run
                 check_stop_loss(logged_user, report.net_liquidation)
                 check_if_market_fall(logged_user)
                 check_for_signals(report.candidates_live_json)
@@ -325,7 +344,7 @@ def get_command():
     if user is not None:
         response = {}
         client_command = ClientCommand.query.filter_by(email=logged_user).first()
-        market_emotion=db.session.query(Fgi_score).order_by(Fgi_score.score_time.desc()).first()
+        market_emotion = db.session.query(Fgi_score).order_by(Fgi_score.score_time.desc()).first()
         response['command'] = client_command.command
         response['candidates'] = retrieve_user_candidates(logged_user)
         response['open_positions'] = retrieve_user_positions(logged_user)
@@ -446,7 +465,3 @@ def postexecution():
         return "Execution for " + logged_user + " stored at server."
     else:
         return "The user configured is not found on Server the execution is not logged"
-
-
-
-

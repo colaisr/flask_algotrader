@@ -1,28 +1,14 @@
 $(document).ready(function(){
-//paint_pnl()
-setTimeout(function(){
-   window.location.reload(1);
-}, 30000);
+    //paint_pnl()
+    setTimeout(function(){
+       window.location.reload(1);
+    }, 30000);
 
+    $('#emotion_box').click(function(){
+        window.open("https://money.cnn.com/data/fear-and-greed/", "_blank");
+    });
 })
-$('#emotion_box').click(function(){
-    window.open("https://money.cnn.com/data/fear-and-greed/", "_blank");
-});
-//$("#sectors_modal").on('shown', function (e) {
-//  alert('rrrrr');
-//})
 
-
-//
-//function paint_pnl() {
-//box_pnl=$(".box_pnl");
-//val_pnl=$(".val_pnl").html();
-//val_pnl=val_pnl.replace('$ ', '');
-//test=Math.sign(val_pnl);
-//if (test==-1) {
-//box_pnl.toggleClass('bg-grow-early bg-love-kiss');
-//}
-//}
 function fill_graph(){
 $("#sectors_modal").modal("show");
 var ctx = document.getElementById('sectorsChart').getContext('2d');

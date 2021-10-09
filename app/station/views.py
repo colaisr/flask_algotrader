@@ -7,10 +7,7 @@ from flask import (
     send_from_directory
 )
 from flask_login import current_user
-
 from app.models import UserSetting
-import os
-from pathlib import Path
 
 station = Blueprint('station', __name__)
 

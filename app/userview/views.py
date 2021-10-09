@@ -203,11 +203,16 @@ def closedpositions():
         profit_class = ""
 
     if closed_positions is not None and len(closed_positions) > 0:
-        succeed_positions = [p for p in closed_positions if p.profit > 0]
-        failed_positions = [p for p in closed_positions if p.profit < 0]
+        failed_positions = list(
+            filter(lambda p: p.profit <= 0 and (p.profit / (p.open_price * p.stocks) * 100) > -9, closed_positions))
+        succeed_positions = list(
+            filter(lambda p: p.profit > 0 and (p.profit / (p.open_price * p.stocks) * 100) <= 5, closed_positions))
+        technical_positions = list(filter(lambda p: (p.profit / (p.open_price * p.stocks) * 100) > 5 or (
+                    p.profit / (p.open_price * p.stocks) * 100) <= -9, closed_positions))
     else:
         succeed_positions = []
         failed_positions = []
+        technical_positions=[]
 
     for c in closed_positions:
         delta = c.closed - c.opened
@@ -224,6 +229,7 @@ def closedpositions():
                            profit_procent=profit_procent,
                            count_positions=len(closed_positions),
                            succeed_positions=len(succeed_positions),
+                           technical_positions=len(technical_positions),
                            failed_positions=len(failed_positions),
                            profit_class=profit_class,
                            form=None)

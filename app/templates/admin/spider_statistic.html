@@ -91,55 +91,9 @@
 {% endblock %}
 
 {% block scripting %}
-
-<script type="text/javascript">
-        $(document).ready(function () {
-            $(".modal-btn").on("click", function(){
-                $(".error-tickers-modal").modal("show");
-                var data = $(this).attr("data");
-                data = data.replaceAll("'",'"');
-                json_data = JSON.parse(data);
-                error_tickers = json_data["error_tickers"]
-                research_error_tickers = json_data["research_error_tickers"]
-                if(error_tickers.length > 0){
-                    $(".process-error").find(".item-content").html(error_tickers.join(", "))
-                    $(".process-error").show();
-                }
-                else{
-                    $(".process-error").hide();
-                }
-                if(research_error_tickers.length > 0){
-                    var str="";
-                    $.each(research_error_tickers, function( key, value ) {
-                        $.each(value, function(key, value){
-                            str +=key + ": " + value.join(", ") + "; ";
-                        });
-                    });
-                    $(".research-error").find(".item-content").html(str);
-                    $(".research-error").show();
-                }
-                else{
-                    $(".research-error").hide();
-                }
-
-            })
-
-            $('#search-users').keyup(function () {
-                var searchText = $(this).val();
-                if (searchText.length > 0) {
-                    $('tbody td:icontains(' + searchText + ')').addClass('positive');
-                    $('td.positive').not(':icontains(' + searchText + ')').removeClass('positive');
-                    $('tbody td').not(':icontains(' + searchText + ')').closest('tr').addClass('hidden').hide();
-                    $('tr.hidden:icontains(' + searchText + ')').removeClass('hidden').show();
-                } else {
-                    $('td.positive').removeClass('positive');
-                    $('tr.hidden').removeClass('hidden').show();
-                }
-            });
-        });
-</script>
-
+<script type="text/javascript" src="{{ url_for('static', filename='scripts/pages/spider_statistic.js') }}"></script>
 {% endblock %}
+
 {% block modal %}
 <div class="modal error-tickers-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
     <div class="modal-dialog">

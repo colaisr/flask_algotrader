@@ -40,22 +40,8 @@ class TickerData(db.Model):
         return json.dumps(self, default=lambda o: o.__dict__)
 
     def toDictionary(self):
-        d = {}
-        d['ticker'] = self.ticker
-        d['yahoo_avdropP'] = self.yahoo_avdropP
-        d['yahoo_avspreadP'] = self.yahoo_avspreadP
-        d['tipranks'] = self.tipranks
-        d['yahoo_rank'] = self.yahoo_rank
-        d['algotrader_rank'] = self.algotrader_rank
-        d['under_priced_pnt'] = self.under_priced_pnt
-        d['twelve_month_momentum'] = self.twelve_month_momentum
-        d['target_mean_price'] = self.target_mean_price
-        d['max_intraday_drop_percent'] = self.max_intraday_drop_percent
-        d['beta'] = self.beta
-        d['fmp_rating'] = self.fmp_rating
-        d['fmp_score'] = self.fmp_score
-        d['stock_invest_rank'] = self.stock_invest_rank
-        d['updated_server_time'] = datetime.isoformat(self.updated_server_time)
+        d = self.__dict__
+        d.pop('_sa_instance_state', None)
         return d
 
 

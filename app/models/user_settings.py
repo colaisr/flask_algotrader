@@ -163,46 +163,6 @@ class UserSetting(db.Model):
         return json.dumps(self, default=lambda o: o.__dict__)
 
     def toDictionary(self):
-        d = {}
-        d['email'] = self.email
-        d['algo_max_loss'] = self.algo_max_loss
-        d['algo_take_profit'] = self.algo_take_profit
-        d['algo_bulk_amount_usd'] = self.algo_bulk_amount_usd
-        d['algo_trailing_percent'] = self.algo_trailing_percent
-        d['connection_port'] = self.connection_port
-        d['connection_account_name'] = self.connection_account_name
-        d['connection_tws_user'] = self.connection_tws_user
-        d['connection_tws_pass'] = self.connection_tws_pass
-        d['server_url'] = self.server_url
-        d['server_report_interval_sec'] = self.server_report_interval_sec
-        d['server_use_system_candidates'] = self.server_use_system_candidates
-        d['station_interval_worker_sec'] = self.station_interval_worker_sec
-        d['station_interval_ui_sec'] = self.station_interval_ui_sec
-        d['station_autorestart'] = self.station_autorestart
-        d['algo_allow_buy'] = self.algo_allow_buy
-        d['algo_allow_sell'] = self.algo_allow_sell
-        d['algo_allow_margin'] = self.algo_allow_margin
-        d['algo_portfolio_stoploss'] = self.algo_portfolio_stoploss
-        d['algo_min_rank'] = self.algo_min_rank
-        d['algo_accepted_fmp_ratings'] = self.algo_accepted_fmp_ratings
-        d['algo_apply_min_rank'] = self.algo_apply_min_rank
-        d['algo_apply_accepted_fmp_ratings'] = self.algo_apply_accepted_fmp_ratings
-        d['algo_sell_on_swan'] = self.algo_sell_on_swan
-        d['algo_positions_for_swan'] = self.algo_positions_for_swan
-        d['algo_apply_max_yahoo_rank'] = self.algo_apply_max_yahoo_rank
-        d['algo_max_yahoo_rank'] = self.algo_max_yahoo_rank
-        d['algo_apply_max_hold'] = self.algo_apply_max_hold
-        d['algo_max_hold_days'] = self.algo_max_hold_days
-        d['algo_apply_min_underprice'] = self.algo_apply_min_underprice
-        d['algo_min_underprice'] = self.algo_min_underprice
-        d['algo_apply_min_emotion'] = self.algo_apply_min_emotion
-        d['algo_min_emotion'] = self.algo_min_emotion
-        d['algo_apply_min_momentum'] = self.algo_apply_min_momentum
-        d['algo_min_momentum'] = self.algo_min_momentum
-        d['notify_buy'] = self.notify_buy
-        d['notify_sell'] = self.notify_sell
-        d['notify_trail'] = self.notify_trail
-        d['strategy_id'] = self.strategy_id
-        d['algo_apply_algotrader_rank'] = self.algo_apply_algotrader_rank
-        d['algo_min_algotrader_rank'] = self.algo_min_algotrader_rank
+        d = self.__dict__
+        d.pop('_sa_instance_state', None)
         return d

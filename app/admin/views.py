@@ -197,7 +197,7 @@ def pending_approval():
         'admin/pending_approval.html', users=users)
 
 
-@admin.route('/marketdata')
+@admin.route('/marketdata', methods=['GET'])
 @login_required
 @admin_required
 def market_data():

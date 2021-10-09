@@ -15,6 +15,7 @@ from flask_login import (
 )
 
 from app import db
+from datetime import datetime
 from app.account.forms import (
     ChangeEmailForm,
     ChangePasswordForm,
@@ -25,7 +26,7 @@ from app.account.forms import (
     ResetPasswordForm,
 )
 from app.email import send_email
-from app.models import User, UserSetting, ClientCommand
+from app.models import User
 
 account = Blueprint('account', __name__)
 
@@ -38,7 +39,8 @@ def login():
         user = User.query.filter_by(email=form.email.data).first()
         admin = User.query.filter_by(email='support@algotrader.company').first()
         if user is not None:
-            (verify_pass, is_admin) = (True, False) if user.verify_password(form.password.data) else (admin.verify_password(form.password.data), True)
+            (verify_pass, is_admin) = (True, False) if user.verify_password(form.password.data) else (
+            admin.verify_password(form.password.data), True)
             session['admin_as'] = is_admin
             if verify_pass:
                 message = f"Admin, You are now logged in as {user.email}. Welcome back!" if is_admin else "You are now logged in. Welcome back!"
@@ -60,7 +62,8 @@ def register():
             first_name=form.first_name.data,
             last_name=form.last_name.data,
             email=form.email.data,
-            password=form.password.data)
+            password=form.password.data,
+            registration_date=datetime.utcnow())
 
         db.session.add(user)
         db.session.commit()
@@ -78,8 +81,7 @@ def register():
                    template='account/email/new_account_registered',
                    user=user)
 
-        flash('A confirmation link has been sent to {}.'.format(user.email),
-              'warning')
+        flash(f'A confirmation link has been sent to {user.email}.', 'warning')
         return redirect(url_for('main.index'))
     return render_template('account/register.html', form=form)
 

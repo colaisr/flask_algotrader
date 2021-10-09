@@ -86,9 +86,21 @@
                     <div class="widget-content-left">
                         <div class="widget-heading">Success Rate</div>
                     </div>
-                    <div class="widget-content-right">
-                        <div class="widget-heading text-success">{{system_status['profit_positions']}} Success</div>
-                        <div class="widget-subheading text-danger">{{system_status['lost_positions']}} Fail</div>
+                    <div class="widget-content-right filter-items">
+                        <div class="position-items">
+                            <div class="item info-items pr-3" data-toggle="tooltip" data-placement="bottom" title="Positions closed for technical reason">
+                                <div class="text-warning text-center">{{system_status['technical_positions']}}</div>
+                                <div class="label-info text-warning">Technical</div>
+                            </div>
+                            <div class="item info-items pr-3">
+                                <div class="text-success text-center">{{system_status['profit_positions']}}</div>
+                                <div class="label-info text-success">Success</div>
+                            </div>
+                            <div class="item last-item info-items">
+                                <div class="text-danger text-center">{{system_status['lost_positions']}}</div>
+                                <div class="label-info text-danger">Fail</div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

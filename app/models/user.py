@@ -60,6 +60,7 @@ class User(UserMixin, db.Model):
     tws_requirements = db.Column(db.Boolean, default=False)
     signature = db.Column(db.Boolean, default=False)
     signature_full_name = db.Column(db.String(100))
+    registration_date = db.Column(db.DateTime)
 
     def __init__(self, **kwargs):
         super(User, self).__init__(**kwargs)
@@ -73,11 +74,9 @@ class User(UserMixin, db.Model):
                 self.role = Role.query.filter_by(default=True).first()
 
     def update_user(self):
-        settings = User.query.filter((User.email == self.email)).first()
-
-        if settings is None:
+        user = User.query.filter((User.email == self.email)).first()
+        if user is None:
             db.session.add(self)
-
         db.session.commit()
 
     def full_name(self):

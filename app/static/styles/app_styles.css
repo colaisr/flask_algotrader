@@ -27,11 +27,11 @@
 .filter-items{
     display: flex;
     flex-direction: column;
-    padding: .92857143em 1.14285714em;
 }
 
 .menu .filter-items{
-    width: 12em;
+    width: 17em;
+    padding: .92857143em 1.14285714em;
 }
 
 .info-items{

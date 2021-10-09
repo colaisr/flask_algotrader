@@ -64,7 +64,6 @@ class Position(db.Model):
         return updating_result, p
 
     def toDictionary(self):
-        d = {}
-        d['ticker'] = self.ticker
-        d['opened'] = datetime.isoformat(self.opened)
+        d = self.__dict__
+        d.pop('_sa_instance_state', None)
         return d

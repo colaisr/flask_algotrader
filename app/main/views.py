@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, url_for
 from flask_login import current_user
-from sqlalchemy import text
+from sqlalchemy import text, or_
 from werkzeug.utils import redirect
 
 import app.generalutils as general
@@ -30,11 +30,15 @@ def index():
         system_status['last_update_date'] = central.strftime("%d %b, %Y %H:%M")
 
         system_status['users_registered'] = len(Report.query.all())
-        system_status['lost_positions'] = len(
-            Position.query.filter(Position.profit <= 0, Position.last_exec_side == 'SLD').all())
-        system_status['profit_positions'] = len(
-            Position.query.filter(Position.profit >= 0, Position.last_exec_side == 'SLD').all())
-        system_status['all_positions'] = system_status['lost_positions'] + system_status['profit_positions']
+
+        closed_positions = Position.query.filter(Position.last_exec_side == 'SLD').all()
+        lost_positions = list(filter(lambda p: p.profit <= 0 and (p.profit / (p.open_price * p.stocks) * 100) > -9, closed_positions))
+        profit_positions = list(filter(lambda p: p.profit > 0 and (p.profit / (p.open_price * p.stocks) * 100) <= 5, closed_positions))
+        technical_positions = list(filter(lambda p: (p.profit / (p.open_price * p.stocks) * 100) > 5 or (p.profit / (p.open_price * p.stocks) * 100) <= -9, closed_positions))
+        system_status['lost_positions'] = len(lost_positions)
+        system_status['profit_positions'] = len(profit_positions)
+        system_status['technical_positions'] = len(technical_positions)
+        system_status['all_positions'] = len(closed_positions)
         system_status['funds'] = db.session.query(db.func.sum(Report.net_liquidation)).scalar()
         return render_template('main/index.html', system_status=system_status)
 

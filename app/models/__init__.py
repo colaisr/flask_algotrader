@@ -9,7 +9,7 @@ from .clients import *
 from .market_data import *
 from .positions import *
 from .candidates import *
-from .user_settings import *
+from .fgi_score import *
 from .user_settings import *
 from .client_command import *
 from .telegram_signal import *
