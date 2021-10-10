@@ -32,7 +32,7 @@ login_manager.login_view = 'account.login'
 def create_app(config):
     app = Flask(__name__)
     config_name = config
-    cors = CORS(app, resources={r"/*": {"origins": "*"}})
+    cors = CORS(app, resources={r"*": {"origins": "*"}})
     app.config['CORS_HEADERS'] = 'Content-Type'
 
     if not isinstance(config, str):
