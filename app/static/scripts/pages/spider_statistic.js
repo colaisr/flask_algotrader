@@ -1,8 +1,14 @@
 $(document).ready(function () {
-    get_spider_status();
-    setTimeout(function(){
-        get_spider_status();
-    }, 50000);
+    var status = get_spider_status();
+    if(status == 1){
+        var status_refresh = setInterval (function(){
+            status = get_spider_status();
+            if(status==0){
+                clearInterval(status_refresh);
+            }
+        }, 40000);
+    }
+
 
     $(".modal-btn").on("click", function(){
         $(".error-tickers-modal").modal("show");
@@ -35,14 +41,19 @@ $(document).ready(function () {
 });
 
 function get_spider_status(){
-
-    $.get("/admin/spider_status_ajax", function(data) {
-                var data_parsed = jQuery.parseJSON(data);
-
-                $(".spider-status").text(data_parsed.status);
-                $(".spider-percent").text(data_parsed.percent+"%");
-                $(".spider-progress-bar").attr("aria-valuenow", data_parsed.percent);
-                $(".spider-progress-bar").css( "width",data_parsed.percent+"%" )
-            });
-
+    var status=1;
+    $.ajax({
+            url: '/admin/spider_status_ajax',
+            async: false,   // this is the important line that makes the request sincronous
+            type: 'get',
+            dataType: 'json',
+            success: function(data) {
+                    $(".spider-status").text(data.status);
+                    $(".spider-percent").text(data.percent+"%");
+                    $(".spider-progress-bar").attr("aria-valuenow", data.percent);
+                    $(".spider-progress-bar").css( "width",data.percent+"%" )
+                    if(data.status=="spider finished"){ status = 0; }
+                 }
+          });
+    return status;
 }
