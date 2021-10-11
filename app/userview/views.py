@@ -48,11 +48,11 @@ def is_market_open():
 def traderstationstate():
     if not current_user.admin_confirmed or not current_user.signature:
         return redirect(url_for('station.download'))
-    market_emotion=db.session.query(Fgi_score).order_by(Fgi_score.score_time.desc()).first()
+    market_emotion = db.session.query(Fgi_score).order_by(Fgi_score.score_time.desc()).first()
     if market_emotion.fgi_value<50:
-        fgi_text_color='text-danger'
+        fgi_text_color = 'danger'
     else:
-        fgi_text_color = 'text-success'
+        fgi_text_color = 'success'
     report = Report.query.filter_by(email=current_user.email).first()
     settings = UserSetting.query.filter_by(email=current_user.email).first()
 

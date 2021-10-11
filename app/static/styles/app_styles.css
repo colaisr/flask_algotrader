@@ -34,12 +34,36 @@
     padding: .92857143em 1.14285714em;
 }
 
-.spider-status-item{
+.spider-status-item, #emotion_box{
     width: 70%;
 }
 
-.spider-status-item .widget-content{
+.spider-status-item .widget-content,
+#emotion_box  .widget-content-outer
+{
     width: 50%;
+}
+
+#user_emotion_box
+{
+    width: 30%;
+}
+
+#emotion_box .widget-content-outer .widget-content-wrapper,
+#emotion_box .widget-content-outer .market-emotion,
+#user_emotion_box .widget-content-outer .widget-content-wrapper,
+#user_emotion_box .widget-content-outer .market-emotion{
+    display: flex;
+    flex: 1;
+    position: relative;
+    align-items: center;
+}
+.emotion-update-time{
+    margin-left: auto;
+}
+
+.emotion-progress-bar{
+    height: 0.88em !important;
 }
 
 .info-items{
@@ -88,6 +112,10 @@
     }
     .ibkr-btn{
         width: 150px;
+    }
+    #user_emotion_box
+    {
+        width: auto;
     }
 }
 

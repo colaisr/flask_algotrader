@@ -119,9 +119,9 @@ def users_monitor():
     # users = User.query.filter_by(admin_confirmed=0).all()
     market_emotion=db.session.query(Fgi_score).order_by(Fgi_score.score_time.desc()).first()
     if market_emotion.fgi_value<50:
-        fgi_text_color='text-danger'
+        fgi_text_color='danger'
     else:
-        fgi_text_color = 'text-success'
+        fgi_text_color = 'success'
     reports = Report.query.all()
     all_users_settings = UserSetting.query.all()
     users = []
