@@ -4,7 +4,7 @@ $(document).ready(function(){
        window.location.reload(1);
     }, 30000);
 
-    $('#emotion_box').click(function(){
+    $('#user_emotion_box').click(function(){
         window.open("https://money.cnn.com/data/fear-and-greed/", "_blank");
     });
 })
