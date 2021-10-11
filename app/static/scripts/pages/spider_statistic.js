@@ -55,6 +55,9 @@ function get_spider_status(){
                     $(".spider-progress-bar").css( "width",data.percent+"%" )
                     if(data.status=="spider finished"){ status = 0; }
                 }
+                else{
+                    status = 0;
+                }
             }
     });
     return status;
