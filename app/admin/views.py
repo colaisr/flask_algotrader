@@ -20,7 +20,7 @@ from app.admin.forms import (
     ChangeAccountTypeForm,
     ChangeUserEmailForm,
     InviteUserForm,
-    NewUserForm,
+    NewUserForm
 )
 from app.decorators import admin_required
 from app.email import send_email
@@ -32,7 +32,8 @@ from app.models import (
     UserSetting,
     ClientCommand,
     Report,
-    LastUpdateSpyderData
+    LastUpdateSpyderData,
+    SpiderStatus
 )
 from app.models.fgi_score import Fgi_score
 
@@ -185,6 +186,14 @@ def spider_statistic():
 
     return render_template(
         'admin/spider_statistic.html', statistics=data)
+
+
+@admin.route('/spider_status_ajax', methods=['GET'])
+@login_required
+@admin_required
+def spider_status_ajax():
+    spider_status = SpiderStatus.query.first()
+    return json.dumps(spider_status, cls=general.JsonEncoder)
 
 
 @admin.route('/pendingapproval')

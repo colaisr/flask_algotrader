@@ -34,6 +34,14 @@
     padding: .92857143em 1.14285714em;
 }
 
+.spider-status-item{
+    width: 70%;
+}
+
+.spider-status-item .widget-content{
+    width: 50%;
+}
+
 .info-items{
     flex-direction: column;
 }

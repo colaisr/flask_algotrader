@@ -1,4 +1,9 @@
 $(document).ready(function () {
+    get_spider_status();
+    setTimeout(function(){
+        get_spider_status();
+    }, 50000);
+
     $(".modal-btn").on("click", function(){
         $(".error-tickers-modal").modal("show");
         var data = $(this).attr("data");
@@ -28,3 +33,16 @@ $(document).ready(function () {
         }
     })
 });
+
+function get_spider_status(){
+
+    $.get("/admin/spider_status_ajax", function(data) {
+                var data_parsed = jQuery.parseJSON(data);
+
+                $(".spider-status").text(data_parsed.status);
+                $(".spider-percent").text(data_parsed.percent+"%");
+                $(".spider-progress-bar").attr("aria-valuenow", data_parsed.percent);
+                $(".spider-progress-bar").css( "width",data_parsed.percent+"%" )
+            });
+
+}
