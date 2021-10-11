@@ -49,6 +49,11 @@
     width: 30%;
 }
 
+#emotion_box, #user_emotion_box
+{
+    cursor: pointer;
+}
+
 #emotion_box .widget-content-outer .widget-content-wrapper,
 #emotion_box .widget-content-outer .market-emotion,
 #user_emotion_box .widget-content-outer .widget-content-wrapper,
