@@ -48,12 +48,14 @@ function get_spider_status(){
             type: 'get',
             dataType: 'json',
             success: function(data) {
+                if(data != null){
                     $(".spider-status").text(data.status);
                     $(".spider-percent").text(data.percent+"%");
                     $(".spider-progress-bar").attr("aria-valuenow", data.percent);
                     $(".spider-progress-bar").css( "width",data.percent+"%" )
                     if(data.status=="spider finished"){ status = 0; }
-                 }
-          });
+                }
+            }
+    });
     return status;
 }
