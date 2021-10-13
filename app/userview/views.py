@@ -204,11 +204,11 @@ def closedpositions():
 
     if closed_positions is not None and len(closed_positions) > 0:
         failed_positions = list(
-            filter(lambda p: p.profit <= 0 and (p.profit / (p.open_price * p.stocks) * 100) > -9, closed_positions))
+            filter(lambda p: p.profit <= 0 and (p.profit / (p.open_price * p.stocks) * 100) < -9, closed_positions))
         succeed_positions = list(
             filter(lambda p: p.profit > 0 and (p.profit / (p.open_price * p.stocks) * 100) <= 5, closed_positions))
         technical_positions = list(filter(lambda p: (p.profit / (p.open_price * p.stocks) * 100) > 5 or (
-                    p.profit / (p.open_price * p.stocks) * 100) <= -9, closed_positions))
+                    p.profit / (p.open_price * p.stocks) * 100) >= -9, closed_positions))
     else:
         succeed_positions = []
         failed_positions = []

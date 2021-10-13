@@ -32,9 +32,9 @@ def index():
         system_status['users_registered'] = len(Report.query.all())
 
         closed_positions = Position.query.filter(Position.last_exec_side == 'SLD').all()
-        lost_positions = list(filter(lambda p: p.profit <= 0 and (p.profit / (p.open_price * p.stocks) * 100) > -9, closed_positions))
+        lost_positions = list(filter(lambda p: p.profit <= 0 and (p.profit / (p.open_price * p.stocks) * 100) < -9, closed_positions))
         profit_positions = list(filter(lambda p: p.profit > 0 and (p.profit / (p.open_price * p.stocks) * 100) <= 5, closed_positions))
-        technical_positions = list(filter(lambda p: (p.profit / (p.open_price * p.stocks) * 100) > 5 or (p.profit / (p.open_price * p.stocks) * 100) <= -9, closed_positions))
+        technical_positions = list(filter(lambda p: (p.profit / (p.open_price * p.stocks) * 100) > 5 or (p.profit / (p.open_price * p.stocks) * 100) >= -9, closed_positions))
         system_status['lost_positions'] = len(lost_positions)
         system_status['profit_positions'] = len(profit_positions)
         system_status['technical_positions'] = len(technical_positions)
