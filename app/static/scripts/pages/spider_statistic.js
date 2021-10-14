@@ -4,7 +4,8 @@ $(document).ready(function () {
         var status_refresh = setInterval (function(){
             status = get_spider_status();
             if(status==0){
-                clearInterval(status_refresh);
+//                clearInterval(status_refresh);
+                window.location.reload(1);
             }
         }, 40000);
     }
@@ -49,11 +50,24 @@ function get_spider_status(){
             dataType: 'json',
             success: function(data) {
                 if(data != null){
-                    $(".spider-status").text(data.status);
-                    $(".spider-percent").text(data.percent+"%");
-                    $(".spider-progress-bar").attr("aria-valuenow", data.percent);
-                    $(".spider-progress-bar").css( "width",data.percent+"%" )
-                    if(data.status=="spider finished"){ status = 0; }
+                    var dateNow = (new Date()).toDateString();
+                    $(".spider-date-status").text(dateNow);
+                    var percent = data.percent;
+                    var status = data.status;
+                    if(data.status=="spider finished")
+                    {
+                        status = 0;
+                        var date = new Date(data.start_process_date);
+                        if(date.toDateString() != dateNow)
+                        {
+                            percent=0;
+                            status="";
+                        }
+                    }
+                    $(".spider-percent").text(percent+"%");
+                    $(".spider-progress-bar").attr("aria-valuenow", percent);
+                    $(".spider-progress-bar").css( "width",percent+"%" )
+                    $(".spider-status").text(status);
                 }
                 else{
                     status = 0;
