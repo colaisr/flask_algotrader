@@ -49,18 +49,28 @@ url_snp='https://colak.eu.pythonanywhere.com/research/get_complete_graph_for_tic
 $.getJSON(url_snp, function(data) {
     data=data['historical']
     var arr = [];
+    var dateOffset = (24*60*60*1000) * 280; //280 days
+    var days_back = new Date();
+    days_back.setTime(days_back.getTime() - dateOffset);
     for (d of data)
     {
         parsed_d=Date.parse(d["Date"]);
-        arr.push( [parsed_d , d["Close"] ]);
+        if(parsed_d>days_back){
+           arr.push( [parsed_d , d["Close"] ]);
+        }
+
     }
     rev_main=arr
+
     Highcharts.stockChart('container_sp500', {
         rangeSelector: {
             selected: 1
         },
         title: {
             text: ticker+' Stock Price'
+        },
+        rangeSelector: {
+            enabled: false
         },
         series: [
             {
@@ -79,10 +89,15 @@ url_emotion='https://colak.eu.pythonanywhere.com/research/get_all_emotions'
 $.getJSON(url_emotion, function(data) {
     data=data['historical']
     var e_arr = [];
+    var dateOffset = (24*60*60*1000) * 280; //280 days
+    var days_back = new Date();
+    days_back.setTime(days_back.getTime() - dateOffset);
     for (d of data)
     {
         parsed_d=Date.parse(d["score_time"]);
-        arr.push( [parsed_d , d["fgi_value"] ]);
+        if(parsed_d>days_back){
+        e_arr.push( [parsed_d , d["fgi_value"] ]);
+        }
     }
     main_emotion=e_arr
     Highcharts.stockChart('container_emotion', {
@@ -92,9 +107,12 @@ $.getJSON(url_emotion, function(data) {
         title: {
             text: 'Market Emotion'
         },
+        rangeSelector: {
+            enabled: false
+        },
         series: [
             {
-                name: Emotion,
+                name: 'Emotion',
                 data: main_emotion,
                 id: 'dataseries',
                 tooltip: {
