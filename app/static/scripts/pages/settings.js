@@ -67,7 +67,7 @@ function UpdateDefaultStrategy(el){
 }
 
 function show_modal_snp(){
-    $(".snp-modal").modal("show");
+    $(".emotion-modal").modal("show");
 }
 
 function get_snp_data(min_snp){

@@ -352,8 +352,35 @@
     </div>
 </div>
 
+<div class="modal emotion-modal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">S&P with Market Emotion</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="container_sp500" style="width:100%; height:300px;"></div>
+                <div id="container_emotion" style="width:100%; height:300px;"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" onclick="go_to_cnn()" class="btn btn-secondary" >Description</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 {% endblock %}
 {% block scripting %}
+<script src="https://code.highcharts.com/stock/highstock.js"></script>
+<script src="https://code.highcharts.com/stock/modules/data.js"></script>
+<script src="https://code.highcharts.com/stock/modules/exporting.js"></script>
+<script src="https://code.highcharts.com/stock/modules/export-data.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.2.0/chart.min.js"
+        integrity="sha512-VMsZqo0ar06BMtg0tPsdgRADvl0kDHpTbugCBBrL55KmucH6hP9zWdLIWY//OTfMnzz6xWQRxQqsUFefwHuHyg=="
+        crossorigin="anonymous"></script>
 <script type="text/javascript" src="{{ url_for('static', filename='scripts/pages/traderstation.js') }}"></script>
 <script>
 const graph_sectors = {{graph_sectors | tojson}};
