@@ -46,7 +46,6 @@ function fill_emotion_data(){
 
     ticker='SP500';
 
-    //url='https://financialmodelingprep.com/api/v3/historical-price-full/'+ticker+'?serietype=line&apikey=f6003a61d13c32709e458a1e6c7df0b0'
     url_snp = domane + 'research/get_complete_graph_for_ticker/^GSPC'
     $.getJSON(url_snp, function(data) {
         data=data['historical']

@@ -42,6 +42,7 @@ class TickerData(db.Model):
     def toDictionary(self):
         d = self.__dict__
         d.pop('_sa_instance_state', None)
+        d.__setitem__('updated_server_time', datetime.isoformat(self.updated_server_time))
         return d
 
 

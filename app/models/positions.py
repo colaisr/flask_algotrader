@@ -66,4 +66,6 @@ class Position(db.Model):
     def toDictionary(self):
         d = self.__dict__
         d.pop('_sa_instance_state', None)
+        d.__setitem__('opened', datetime.isoformat(self.opened))
+        d.__setitem__('closed', datetime.isoformat(self.closed))
         return d
