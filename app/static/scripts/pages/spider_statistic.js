@@ -53,21 +53,21 @@ function get_spider_status(){
                     var dateNow = (new Date()).toDateString();
                     $(".spider-date-status").text(dateNow);
                     var percent = data.percent;
-                    var status = data.status;
-                    if(data.status=="spider finished")
+                    var spider_status = data.status;
+                    if(spider_status=="spider finished")
                     {
                         status = 0;
                         var date = new Date(data.start_process_date);
                         if(date.toDateString() != dateNow)
                         {
                             percent=0;
-                            status="";
+                            spider_status="";
                         }
                     }
                     $(".spider-percent").text(percent+"%");
                     $(".spider-progress-bar").attr("aria-valuenow", percent);
                     $(".spider-progress-bar").css( "width",percent+"%" )
-                    $(".spider-status").text(status);
+                    $(".spider-status").text(spider_status);
                 }
                 else{
                     status = 0;
