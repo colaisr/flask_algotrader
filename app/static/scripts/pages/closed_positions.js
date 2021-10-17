@@ -1,4 +1,10 @@
  $(document).ready(function () {
+
+    $(window).resize(function() {
+        var width = $(this).width() - 80;
+        $('.closed-position-content').width(width);
+    }).resize();
+
     var user = $("#user").val()
     var from_date = new Date($("#from_date").val());
     var to_date = new Date($("#to_date").val());
