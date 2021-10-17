@@ -16,7 +16,7 @@
         }
     })
 
-     $('#signature_full_name').on('input', function(e) {
+    $('#signature_full_name').on('input', function(e) {
         var signature_full_name = $('#signature_full_name').val();
         if(signature_full_name.length >0
             && signature_full_name.trim() != ''
@@ -39,6 +39,14 @@
             }
         });
     })
+
+    $(".show_modal_snp").on('click', function(e) {
+        $(".snp-modal").show();
+    });
+
+    $(".snp-modal-close").on('click', function(e) {
+        $(".snp-modal").hide();
+    });
 
 })
 
@@ -64,10 +72,6 @@ function UpdateDefaultStrategy(el){
         $('#algo_min_beta').val(data_parsed.algo_min_beta);
         $('#algo_max_intraday_drop_percent').val(data_parsed.algo_max_intraday_drop_percent);
     });
-}
-
-function show_modal_snp(){
-    $(".emotion-modal").modal("show");
 }
 
 function get_snp_data(min_snp){
