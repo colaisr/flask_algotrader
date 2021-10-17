@@ -357,7 +357,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLongTitle">S&P with Market Emotion</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <button type="button" class="emotion-modal-close close" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -371,8 +371,8 @@
         </div>
     </div>
 </div>
-
 {% endblock %}
+
 {% block scripting %}
 <script src="https://code.highcharts.com/stock/highstock.js"></script>
 <script src="https://code.highcharts.com/stock/modules/data.js"></script>
@@ -381,6 +381,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.2.0/chart.min.js"
         integrity="sha512-VMsZqo0ar06BMtg0tPsdgRADvl0kDHpTbugCBBrL55KmucH6hP9zWdLIWY//OTfMnzz6xWQRxQqsUFefwHuHyg=="
         crossorigin="anonymous"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='scripts/pages/spyder_project.js') }}"></script>
 <script type="text/javascript" src="{{ url_for('static', filename='scripts/pages/traderstation.js') }}"></script>
 <script>
 const graph_sectors = {{graph_sectors | tojson}};
