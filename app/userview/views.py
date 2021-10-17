@@ -49,14 +49,17 @@ def traderstationstate():
     if not current_user.admin_confirmed or not current_user.signature:
         return redirect(url_for('station.download'))
     market_emotion = db.session.query(Fgi_score).order_by(Fgi_score.score_time.desc()).first()
-    if market_emotion.fgi_value<50:
+    settings = UserSetting.query.filter_by(email=current_user.email).first()
+    user_fgi = settings.algo_min_emotion
+
+    if market_emotion.fgi_value < user_fgi:
         fgi_text_color = 'danger'
     else:
         fgi_text_color = 'success'
     report = Report.query.filter_by(email=current_user.email).first()
-    settings = UserSetting.query.filter_by(email=current_user.email).first()
 
-    last_update = db.session.query(LastUpdateSpyderData).order_by(LastUpdateSpyderData.start_process_time.desc()).first()
+    last_update = db.session.query(LastUpdateSpyderData).order_by(
+        LastUpdateSpyderData.start_process_time.desc()).first()
     bg_upd_color = "badge-success" if datetime.now().date() == last_update.last_update_date.date() and not last_update.error_status else "badge-danger"
     use_margin = settings.algo_allow_margin
     report_interval = settings.server_report_interval_sec
@@ -103,7 +106,8 @@ def traderstationstate():
                 v['profit_progress_percent'] = abs(profit / 10 * 100)
 
             candidate = Candidate.query.filter_by(ticker=k).first()
-            sectors_dict[candidate.sector] = sectors_dict[candidate.sector] + int(v['Value']) if candidate.sector in sectors_dict.keys() else int(v['Value'])
+            sectors_dict[candidate.sector] = sectors_dict[candidate.sector] + int(
+                v['Value']) if candidate.sector in sectors_dict.keys() else int(v['Value'])
 
         graph_sectors = []
         graph_sectors_values = []
@@ -125,10 +129,10 @@ def traderstationstate():
     trading_session_state = is_market_open()
     current_est_time = general.get_by_timezone('US/Eastern').time().strftime("%H:%M")
     if report is not None:
-        if report.net_liquidation!=0:
-            report.pnl_percent=round(report.dailyPnl/report.net_liquidation*100,2)
+        if report.net_liquidation != 0:
+            report.pnl_percent = round(report.dailyPnl / report.net_liquidation * 100, 2)
         else:
-            report.pnl_percent =0
+            report.pnl_percent = 0
 
     if report is None:
         return redirect(url_for('candidates.usercandidates'))
@@ -171,8 +175,9 @@ def closedpositions():
         return redirect(url_for('station.download'))
 
     filter_radio = '1'
-    max_date = datetime.now().date() #datetime.now(pytz.timezone('America/Lima')) ##from tzlocal import get_localzone # $ pip install tzlocal
-    min_date = db.session.query(ReportStatistic).filter(ReportStatistic.email == current_user.email).order_by(ReportStatistic.report_time).first().report_time
+    max_date = datetime.now().date()  # datetime.now(pytz.timezone('America/Lima')) ##from tzlocal import get_localzone # $ pip install tzlocal
+    min_date = db.session.query(ReportStatistic).filter(ReportStatistic.email == current_user.email).order_by(
+        ReportStatistic.report_time).first().report_time
     min_date = min_date if min_date is not None else datetime.now() + relativedelta(years=1)
     from_date = min_date
     to_date = datetime.now() + relativedelta(days=1)
@@ -187,7 +192,8 @@ def closedpositions():
                                              Position.last_exec_side == 'SLD',
                                              Position.closed.between(from_date, to_date)).all()
 
-    reports_min_max = db.session.query(db.func.min(ReportStatistic.report_time), db.func.max(ReportStatistic.report_time))\
+    reports_min_max = db.session.query(db.func.min(ReportStatistic.report_time),
+                                       db.func.max(ReportStatistic.report_time)) \
         .filter(ReportStatistic.email == current_user.email,
                 ReportStatistic.report_time.between(from_date, to_date),
                 ReportStatistic.net_liquidation != 0).first()
@@ -211,11 +217,11 @@ def closedpositions():
         succeed_positions = list(
             filter(lambda p: p.profit > 0 and (p.profit / (p.open_price * p.stocks) * 100) <= 5, closed_positions))
         technical_positions = list(filter(lambda p: (p.profit / (p.open_price * p.stocks) * 100) > 5 or (
-                    p.profit / (p.open_price * p.stocks) * 100) >= -9, closed_positions))
+                p.profit / (p.open_price * p.stocks) * 100) >= -9, closed_positions))
     else:
         succeed_positions = []
         failed_positions = []
-        technical_positions=[]
+        technical_positions = []
 
     for c in closed_positions:
         delta = c.closed - c.opened

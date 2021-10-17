@@ -5,7 +5,8 @@ $(document).ready(function(){
     }, 30000);
 
     $('#user_emotion_box').click(function(){
-        show_modal_emotion();
+        fill_emotion_data();
+        $(".emotion-modal").show();
     });
 
     $('.emotion-modal-close').click(function(){
@@ -34,11 +35,6 @@ function fill_graph(){
             }]
         },
     });
-}
-
-function show_modal_emotion(){
-    fill_emotion_data();
-    $(".emotion-modal").show();
 }
 
 function go_to_cnn(){

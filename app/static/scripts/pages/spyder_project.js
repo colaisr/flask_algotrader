@@ -124,3 +124,36 @@ function fill_emotion_data(){
         });
     });
 }
+
+function fill_container_ticker_info(ticker){
+
+    url = domane + 'research/get_complete_graph_for_ticker/'+ticker
+    $.getJSON(url, function(data) {
+        data=data['historical']
+        var arr = [];
+        for (d of data)
+        {
+            parsed_d=Date.parse(d["Date"]);
+            arr.push( [parsed_d , d["Close"] ]);
+        }
+        rev_main=arr
+        Highcharts.stockChart('container', {
+            rangeSelector: {
+                selected: 1
+            },
+            title: {
+                text: ticker+' Stock Price'
+            },
+            series: [
+                {
+                    name: ticker,
+                    data: rev_main,
+                    id: 'dataseries',
+                    tooltip: {
+                        valueDecimals: 2
+                    }
+                },
+            ]
+        });
+    });
+}
