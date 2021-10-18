@@ -67,5 +67,8 @@ class Position(db.Model):
         d = self.__dict__
         d.pop('_sa_instance_state', None)
         d.__setitem__('opened', datetime.isoformat(self.opened))
-        d.__setitem__('closed', datetime.isoformat(self.closed))
+        if self.closed is not None:
+            d.__setitem__('closed', datetime.isoformat(self.closed))
+        else:
+            d.__setitem__('closed', '')
         return d
