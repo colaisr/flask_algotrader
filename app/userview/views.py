@@ -157,6 +157,7 @@ def traderstationstate():
                                bg_upd_color=bg_upd_color,
                                market_emotion=market_emotion,
                                fgi_text_color=fgi_text_color,
+                               user_fgi=user_fgi,
                                form=None)
 
 

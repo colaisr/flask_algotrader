@@ -12,7 +12,7 @@
                 </div>
                 <div style="    margin-right: 10px;">
                     <form action="/connections/logrestartrequest/" method="post">
-                        <input type="hidden" name="usersemail" value={{user.email}}>
+                        <input type="hidden" id="usersemail" name="usersemail" value={{user.email}}>
                         <input type="hidden" name="fromadmin" value="0">
                         <button title="Restart station" type="submit"><i class="fa fa-retweet"></i></button>
                     </form>
@@ -42,6 +42,7 @@
                 </div>
                 <!-- TradingView Widget END -->
                 <div id="user_emotion_box" class="ui left last-item item">
+                    <input type="hidden" id="user-emotion" value={{user_fgi}}>
                     <div class="widget-content-outer">
                         <div class="widget-content-wrapper">
                             <div class="widget-content-left pr-2 fsize-1">

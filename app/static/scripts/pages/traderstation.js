@@ -5,7 +5,10 @@ $(document).ready(function(){
     }, 30000);
 
     $('#user_emotion_box').click(function(){
-        fill_emotion_data();
+        var emotion_settings = parseInt($('#user-emotion').val());
+        var main_snp = [];
+        var main_emotion = [];
+        fill_emotion_data(emotion_settings, true, main_snp, main_emotion);
         $(".emotion-modal").show();
     });
 
