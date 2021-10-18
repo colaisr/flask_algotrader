@@ -229,8 +229,8 @@ def check_signal_for_target_riched(s, bid_price):
         s.update_signal()
         send_telegram_signal_message("Confirmation for : " + str(s.id) + "\n" +
                                      s.ticker + " reached target of " + str(s.target_price) + "\n" +
-                                     "in " + str(s.days_to_get) + " days, with profit of " + str(
-            s.profit_percent) + " %"
+                                     "in " + str(s.days_to_get) + " days, with profit of " + str(round(s.profit_percent, 2)) + " %"+ "\n" +
+                                    "by https://www.algotrader.company"
 
                                      )
 
