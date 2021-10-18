@@ -50,7 +50,7 @@ function fill_emotion_data(){
     $.getJSON(url_snp, function(data) {
         data=data['historical']
         var arr = [];
-        var dateOffset = (24*60*60*1000) * 280; //280 days
+        var dateOffset = (24*60*60*1000) * 370; //370 days
         var days_back = new Date();
         days_back.setTime(days_back.getTime() - dateOffset);
         for (d of data)
@@ -69,9 +69,6 @@ function fill_emotion_data(){
             title: {
                 text: ticker+' Stock Price'
             },
-            rangeSelector: {
-                enabled: false
-            },
             series: [
                 {
                     name: ticker,
@@ -89,7 +86,7 @@ function fill_emotion_data(){
     $.getJSON(url_emotion, function(data) {
         data=data['historical']
         var e_arr = [];
-        var dateOffset = (24*60*60*1000) * 280; //280 days
+        var dateOffset = (24*60*60*1000) * 370; //370 days
         var days_back = new Date();
         days_back.setTime(days_back.getTime() - dateOffset);
         for (d of data)
@@ -106,9 +103,6 @@ function fill_emotion_data(){
             },
             title: {
                 text: 'Market Emotion'
-            },
-            rangeSelector: {
-                enabled: false
             },
             series: [
                 {
