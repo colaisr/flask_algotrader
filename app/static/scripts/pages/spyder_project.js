@@ -42,12 +42,100 @@ function update_market_data(ticker){
     })
 }
 
-//function get_days_for_snp_backtesting(emotion_settings, main_emotion){
-//
-//}
+function get_days_for_snp_backtesting(emotion_settings, main_emotion){
+    var days_arr=[];
+    for (e of main_emotion)
+    {
+        if(e[1] >= emotion_settings){
+            var date = new Date(e[0]);
+            days_arr.push(date.toDateString());
+        }
+    }
+    return days_arr;
+}
+
+function draw_snp_graph_by_emotion(main_snp, days_arr, is_draw_emotion_graph){
+    var ticker='SP500';
+    var pos_snp_arr=[];
+
+    var date_index = new Date();
+    var index = 0;
+    for (d of main_snp)
+    {
+        var date_d = new Date(d[0]);
+        if(days_arr.indexOf(date_d.toDateString()) >= 0){
+            date_d.setDate(date_d.getDate() - 1);
+            if(date_d.toDateString() == date_index.toDateString() && index > 0){
+                var pos_snp = $(pos_snp_arr).get(-1);
+                date_d.setDate(date_d.getDate() + 1);
+                pos_snp.push(d);
+            }
+            else
+            {
+                date_d.setDate(date_d.getDate() + 1);
+                var new_pos_snp = [];
+                new_pos_snp.push(d);
+                pos_snp_arr.push(new_pos_snp);
+            }
+            date_index = date_d;
+            index += 1;
+        }
+    }
+
+//        //***** SERIES SNP *****//
+//        var filtered_arr = pos_snp_arr.filter(x => x.length > 1);
+    var series = []
+    var main = {
+        name: ticker,
+        data: main_snp,
+        id: 'dataseries',
+        tooltip: {
+            valueDecimals: 2
+        }
+    };
+    series.push(main);
+    var i =1;
+    var days_num = 0;
+    for (arr of pos_snp_arr){
+        days_num += arr.length;
+        var range = {
+            name: 'position' + i,
+            data: arr,
+            color: '#00c36f',
+            lineWidth:4,
+            id: 'dataseries' + i,
+            tooltip: {
+            valueDecimals: 2
+            }
+        };
+        series.push(range);
+        i += 1;
+    }
+
+    //***** DRAW SNP CHART *****//
+    Highcharts.stockChart('container_sp500', {
+        rangeSelector: {
+            selected: 1
+        },
+        title: {
+            text: ticker+' Stock Price'
+        },
+        series: series
+    });
+
+    //**************************************************************
+    // is_draw_emotion_graph is FALSE then func called from settings
+    // then to set num of emotions days to link row
+    //**************************************************************
+    if(!is_draw_emotion_graph){
+    $(".emotion-fixed-filter-text").empty();
+    $(".emotion-filter").empty();
+    $(".emotion-filter").text(days_num);
+    $(".emotion-fixed-filter-text").text("days in last year");
+    }
+}
 
 function fill_emotion_data(emotion_settings, is_draw_emotion_graph, main_snp, main_emotion){
-    var ticker='SP500';
     var url_emotion = domane + 'research/get_all_emotions'
     var url_snp = domane + 'research/get_complete_graph_for_ticker/^GSPC';
 
@@ -63,7 +151,6 @@ function fill_emotion_data(emotion_settings, is_draw_emotion_graph, main_snp, ma
 
         //***** EMOTIONS DATA *****//
         emotion = emotion.historical;
-//        var main_emotion = [];
         for (e of emotion)
         {
             var parsed_e=Date.parse(e.score_time);
@@ -100,79 +187,15 @@ function fill_emotion_data(emotion_settings, is_draw_emotion_graph, main_snp, ma
 
         //***** SNP DATA *****//
         snp=snp.historical
-//        var main_snp = [];
-        var pos_snp_arr=[];
-
-        var date_index = new Date();
-        var index = 0;
         for (d of snp)
         {
             var parsed_d = Date.parse(d.Date);
-            var date_d = new Date(d.Date);
             if(parsed_d > days_back){
                 main_snp.push([parsed_d , d.Close]);
-                if(days_arr.indexOf(date_d.toDateString()) >= 0){
-                date_d.setDate(date_d.getDate() - 1);
-                if(date_d.toDateString() == date_index.toDateString() && index > 0){
-                    var pos_snp = $(pos_snp_arr).get(-1);
-                    date_d.setDate(date_d.getDate() + 1);
-                    pos_snp.push([parsed_d , d.Close]);
-                }
-                else
-                {
-                    date_d.setDate(date_d.getDate() + 1);
-                    var new_pos_snp = [];
-                    new_pos_snp.push([parsed_d , d.Close]);
-                    pos_snp_arr.push(new_pos_snp);
-                }
-                date_index = date_d;
-                index += 1;
-                }
             }
         }
-
-//        //***** SERIES SNP *****//
-//        var filtered_arr = pos_snp_arr.filter(x => x.length > 1);
-        var series = []
-        var main = {
-            name: ticker,
-            data: main_snp,
-            id: 'dataseries',
-            tooltip: {
-                valueDecimals: 2
-            }
-        };
-        series.push(main);
-        var i =1;
-        for (arr of pos_snp_arr){
-            var range = {
-                name: 'position' + i,
-                data: arr,
-                color: '#00c36f',
-                lineWidth:4,
-                id: 'dataseries' + i,
-                tooltip: {
-                valueDecimals: 2
-                }
-            };
-            series.push(range);
-            i += 1;
-        }
-
-
-        //***** DRAW SNP CHART *****//
-        Highcharts.stockChart('container_sp500', {
-            rangeSelector: {
-                selected: 1
-            },
-            title: {
-                text: ticker+' Stock Price'
-            },
-            series: series
-        });
-
+        draw_snp_graph_by_emotion(main_snp, days_arr, is_draw_emotion_graph);
     });
-
 }
 
 function fill_container_ticker_info(ticker){

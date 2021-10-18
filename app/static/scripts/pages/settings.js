@@ -1,7 +1,16 @@
- $(document).ready(function () {
+var emotion_settings = parseInt($('#algo_min_emotion').val());
+var main_snp = [];
+var main_emotion =[];
+
+$(document).ready(function () {
+//    var emotion_settings = parseInt($('#algo_min_emotion').val());
+//    var main_snp = [];
+//    var main_emotion =[];
 
     get_snp_data($('#algo_positions_for_swan').val());
     get_candidates_by_filter();
+    fill_emotion_data(emotion_settings, false, main_snp, main_emotion);
+    range_set_value();
 
     $('.strategy-change').on('input', function(e) {
         $('#strategy_id').val('4')
@@ -48,7 +57,30 @@
         $(".snp-modal").hide();
     });
 
+    $(".emotion-filter").on('click', function(e) {
+        $(".emotion-modal").show();
+    });
+
+    $(".emotion-modal-close").on('click', function(e) {
+        $(".emotion-modal").hide();
+    });
+
+    $("#range").on('input', function(e) {
+        range_set_value();
+    });
+
+    $("#range").on('change', function(e) {
+        $('#container_sp500').empty();
+        var emotion = $(this).val();
+        var days_arr = get_days_for_snp_backtesting(emotion, main_emotion);
+        draw_snp_graph_by_emotion(main_snp, days_arr, false);
+    });
+
 })
+
+function updateTextInput(val) {
+    $('#textInput').val(val);
+}
 
 function UpdateDefaultStrategy(el){
     $("#strategy_id").val($(el).val());

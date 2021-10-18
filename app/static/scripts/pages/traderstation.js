@@ -1,13 +1,14 @@
 $(document).ready(function(){
     //paint_pnl()
-    setTimeout(function(){
-       window.location.reload(1);
-    }, 30000);
+//    setTimeout(function(){
+//       window.location.reload(1);
+//    }, 30000);
 
     $('#user_emotion_box').click(function(){
         var emotion_settings = parseInt($('#user-emotion').val());
         var main_snp = [];
         var main_emotion = [];
+        var count_days_emotion = 0;
         fill_emotion_data(emotion_settings, true, main_snp, main_emotion);
         $(".emotion-modal").show();
     });

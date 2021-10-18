@@ -367,7 +367,9 @@
                                                name="algo_min_emotion" id="algo_min_emotion" type="text"
                                                class="form-control strategy-change col-md-6">
                                     <label class="text-muted small filter-comment col-md-3">
-                                        <span class="text-primary link emotion-filter">view</span>
+                                        <span class="emotion-loading"></span>
+                                        <span class="text-primary link emotion-filter"></span>
+                                        <span class="emotion-fixed-filter-text pl-2"></span>
                                     </label>
                                 </div>
                             </div>
@@ -513,6 +515,14 @@
 {% endblock %}
 
 {% block scripting %}
+<script src="https://code.highcharts.com/stock/highstock.js"></script>
+<script src="https://code.highcharts.com/stock/modules/data.js"></script>
+<script src="https://code.highcharts.com/stock/modules/exporting.js"></script>
+<script src="https://code.highcharts.com/stock/modules/export-data.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.2.0/chart.min.js"
+        integrity="sha512-VMsZqo0ar06BMtg0tPsdgRADvl0kDHpTbugCBBrL55KmucH6hP9zWdLIWY//OTfMnzz6xWQRxQqsUFefwHuHyg=="
+        crossorigin="anonymous"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='scripts/pages/spyder_project.js') }}"></script>
 <script type="text/javascript" src="{{ url_for('static', filename='scripts/pages/settings.js') }}"></script>
 {% endblock %}
 
@@ -553,23 +563,30 @@
     </div>
 </div>
 
-<!--<div class="modal emotion-settings-modal" tabindex="-1" role="dialog" aria-hidden="true" >-->
-<!--    <div class="modal-dialog modal-lg">-->
-<!--        <div class="modal-content">-->
-<!--            <div class="modal-header">-->
-<!--                <h5 class="modal-title" id="emotionModalTitle">S&P with Market Emotion</h5>-->
-<!--                <button type="button" class="emotion-modal-close close" aria-label="Close">-->
-<!--                    <span aria-hidden="true">&times;</span>-->
-<!--                </button>-->
-<!--            </div>-->
-<!--            <div class="modal-body">-->
-<!--                <div id="container_sp500" style="width:100%; height:300px;"></div>-->
-<!--                <div id="container_emotion" style="width:100%; height:300px;"></div>-->
-<!--            </div>-->
-<!--            <div class="modal-footer">-->
-<!--                <button type="button" onclick="go_to_cnn()" class="btn btn-secondary" >Description</button>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--    </div>-->
-<!--</div>-->
+<div class="modal emotion-modal" tabindex="-1" role="dialog" aria-hidden="true" >
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="emotionModalTitle">S&P with Market Emotion</h5>
+                <button type="button" class="emotion-modal-close close" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="text-muted filter-comment col-md-3">
+                    <span class="text-primary emotion-filter"></span>
+                    <span class="emotion-fixed-filter-text pl-2"></span>
+                </div>
+                <div id="container_sp500" style="width:100%; height:300px;"></div>
+                <div id="emotion-range-div" style="width:100%;">
+                    <label class="form-label" for="range">Emotion</label>
+                    <div class="range-wrap">
+                        <div class="range-value" id="rangeV"></div>
+                        <input style="width:100%;" id="range" type="range" min="0" max="100" value="{{user_settings.algo_min_emotion}}" step="1">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}

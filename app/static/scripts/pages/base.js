@@ -1,4 +1,5 @@
 $(document).ready(function () {
+
     $('.message').each((i, el) => {
         const $el = $(el);
         const $xx = $el.find('.close');
@@ -9,6 +10,7 @@ $(document).ready(function () {
         $xx.one('click', triggerRemove);
         if (sec) $el.T = setTimeout(triggerRemove, sec * 1000);
     });
+
     $('#search-users').keyup(function () {
         var searchText = $(this).val();
         if (searchText.length > 0) {
@@ -28,6 +30,25 @@ $(document).ready(function () {
             $('td.user.role').not(':contains(' + value + ')').closest('tr').addClass('hidden').hide();
         }
     });
+
+
+
+//    document.addEventListener("DOMContentLoaded", setValue);
+//    range.addEventListener('input', setValue);
+//    range_set_value();
 });
+
+function range_set_value(){
+    var range = $('#range');
+    var rangeV = $('#rangeV');
+    var value = parseInt(range.val());
+    var max = parseInt(range.prop('max'));
+    var min = parseInt(range.prop('min'));
+
+    var newValue = (value - min) * 100 / (max - min);
+    var newPosition = 10 - (newValue * 0.2);
+    rangeV.html('<span>' + value + '</span>');
+    rangeV.css('left','calc(' + newValue + '% + (' + newPosition + 'px))');
+}
 
 
