@@ -21,7 +21,7 @@
                 <div class="d-flex">
                     <div class="col-md-6">
                         <button class="w-100 mb-2 mr-2 btn
-                            {% if market_data.algotrader_rank >= user_settings.algo_min_algotrader_rank %}
+                            {% if market_data.algotrader_rank is not none and user_settings.algo_min_algotrader_rank is not none and market_data.algotrader_rank >= user_settings.algo_min_algotrader_rank %}
                             btn-success
                             {% else %}
                             btn-warning
@@ -38,7 +38,7 @@
                 <div class="d-flex">
                     <div class="col-md-6">
                         <button class="w-100 mb-2 mr-2 btn
-                        {% if market_data.under_priced_pnt>=user_settings.algo_min_underprice %}
+                        {% if market_data.under_priced_pnt is not none and user_settings.algo_min_underprice is not none and market_data.under_priced_pnt >= user_settings.algo_min_underprice %}
                         btn-success
                         {% else %}
                         btn-warning
