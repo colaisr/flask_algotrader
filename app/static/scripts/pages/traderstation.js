@@ -1,8 +1,8 @@
 $(document).ready(function(){
     //paint_pnl()
-//    setTimeout(function(){
-//       window.location.reload(1);
-//    }, 30000);
+    setTimeout(function(){
+       window.location.reload(1);
+    }, 30000);
 
     $('#user_emotion_box').click(function(){
         var emotion_settings = parseInt($('#user-emotion').val());
