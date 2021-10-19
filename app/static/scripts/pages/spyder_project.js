@@ -42,19 +42,107 @@ function update_market_data(ticker){
     })
 }
 
-function get_days_for_snp_backtesting(emotion_settings, main_emotion){
+function get_days_for_snp_backtesting(emotion_settings, main_emotion, is_with_emotion_series){
     var days_arr=[];
+    var pos_emotion_arr=[];
+    var pos_emotion_arr_negative = []
+
+    var date_index = new Date();
+    var index = 0;
+
+    var date_index_negative = new Date();
+    var index_negative = 0;
     for (e of main_emotion)
     {
+        var date = new Date(e[0]);
         if(e[1] >= emotion_settings){
-            var date = new Date(e[0]);
             days_arr.push(date.toDateString());
+
+            if(is_with_emotion_series){
+                date.setDate(date.getDate() - 1);
+                if(date.toDateString() == date_index.toDateString() && index > 0){
+                    var pos_emotion = $(pos_emotion_arr).get(-1);
+                    date.setDate(date.getDate() + 1);
+                    pos_emotion.push(e);
+                }
+                else
+                {
+                    date.setDate(date.getDate() + 1);
+                    var new_pos_emotion = [];
+                    new_pos_emotion.push(e);
+                    pos_emotion_arr.push(new_pos_emotion);
+                }
+                date_index = date;
+                index += 1;
+            }
+        }
+        else if(is_with_emotion_series){
+            date.setDate(date.getDate() - 1);
+            if(date.toDateString() == date_index_negative.toDateString() && index_negative > 0){
+                var pos_emotion = $(pos_emotion_arr_negative).get(-1);
+                date.setDate(date.getDate() + 1);
+                pos_emotion.push(e);
+            }
+            else
+            {
+                date.setDate(date.getDate() + 1);
+                var new_pos_emotion = [];
+                new_pos_emotion.push(e);
+                pos_emotion_arr_negative.push(new_pos_emotion);
+            }
+            date_index_negative = date;
+            index_negative += 1;
         }
     }
-    return days_arr;
+
+    var series = []
+    var main = {
+        name: 'Emotion',
+        data: main_emotion,
+        id: 'dataseries',
+        tooltip: {
+            valueDecimals: 2
+        }
+    };
+    series.push(main);
+    if(is_with_emotion_series)
+    {
+        var i =0;
+        for (arr of pos_emotion_arr_negative){
+            var range = {
+                name: 'position_neg' + i,
+                data: arr,
+                color: '#FF0000',
+//                lineWidth:4,
+                id: 'dataseries_neg' + i,
+                tooltip: {
+                valueDecimals: 2
+                }
+            };
+            series.push(range);
+            i += 1;
+        }
+        i =0;
+        for (arr of pos_emotion_arr){
+            var range = {
+                name: 'position' + i,
+                data: arr,
+                color: '#00c36f',
+//                lineWidth:4,
+                id: 'dataseries' + i,
+                tooltip: {
+                valueDecimals: 2
+                }
+            };
+            series.push(range);
+            i += 1;
+        }
+    }
+
+    return {days_arr: days_arr, series: series};
 }
 
-function draw_snp_graph_by_emotion(main_snp, days_arr, is_draw_emotion_graph){
+function get_snp_series_by_emotion(main_snp, days_arr){
     var ticker='SP500';
     var pos_snp_arr=[];
 
@@ -102,7 +190,7 @@ function draw_snp_graph_by_emotion(main_snp, days_arr, is_draw_emotion_graph){
             name: 'position' + i,
             data: arr,
             color: '#00c36f',
-            lineWidth:4,
+            lineWidth:3,
             id: 'dataseries' + i,
             tooltip: {
             valueDecimals: 2
@@ -112,30 +200,36 @@ function draw_snp_graph_by_emotion(main_snp, days_arr, is_draw_emotion_graph){
         i += 1;
     }
 
-    //***** DRAW SNP CHART *****//
-    Highcharts.stockChart('container_sp500', {
+    return {series: series, days_num: days_num};
+}
+
+function draw_snp_graph(series){
+    var chart = Highcharts.stockChart('container_sp500', {
         rangeSelector: {
             selected: 4
         },
         title: {
-            text: ticker+' Stock Price'
+            text: 'S&P 500'
         },
         series: series
     });
-
-    //**************************************************************
-    // is_draw_emotion_graph is FALSE then func called from settings
-    // then to set num of emotions days to link row
-    //**************************************************************
-    if(!is_draw_emotion_graph){
-    $(".emotion-fixed-filter-text").empty();
-    $(".emotion-filter").empty();
-    $(".emotion-filter").text(days_num);
-    $(".emotion-fixed-filter-text").text("days in last year");
-    }
+    return chart;
 }
 
-function fill_emotion_data(emotion_settings, is_draw_emotion_graph, main_snp, main_emotion){
+function draw_emotion_graph(series){
+    var chart = Highcharts.stockChart('container_emotion', {
+                rangeSelector: {
+                    selected: 4
+                },
+                title: {
+                    text: 'Market Emotion'
+                },
+                series: series
+            });
+    return chart;
+}
+
+function fill_emotion_and_snp_graphs(emotion_settings, is_draw_emotion_graph, main_snp, main_emotion){
     var url_emotion = domane + 'research/get_all_emotions'
     var url_snp = domane + 'research/get_complete_graph_for_ticker/^GSPC';
 
@@ -144,45 +238,23 @@ function fill_emotion_data(emotion_settings, is_draw_emotion_graph, main_snp, ma
       $.ajax({ url: url_snp })
     ])
     .then(([emotion, snp]) => {
-        var days_arr=[];
-        var dateOffset = (24*60*60*1000) * 370; //370 days
-        var days_back = new Date();
-        days_back.setTime(days_back.getTime() - dateOffset);
 
         //***** EMOTIONS DATA *****//
         emotion = emotion.historical;
+        var pos_emotion_arr=[];
+        var date_index = new Date();
+        var index = 0;
         for (e of emotion)
         {
             var parsed_e=Date.parse(e.score_time);
             var date_e = new Date(e.score_time);
-            if(parsed_e > days_back){
-                main_emotion.push( [parsed_e , e.fgi_value]);
-                if(e.fgi_value >= emotion_settings){
-                    days_arr.push(date_e.toDateString());
-                }
-            }
+            main_emotion.push( [parsed_e , e.fgi_value]);
         }
+        var emotion_dic = get_days_for_snp_backtesting(emotion_settings, main_emotion, true);
 
         //***** DRAW EMOTION CHART *****//
         if(is_draw_emotion_graph){
-            Highcharts.stockChart('container_emotion', {
-                rangeSelector: {
-                    selected: 4
-                },
-                title: {
-                    text: 'Market Emotion'
-                },
-                series: [
-                    {
-                        name: 'Emotion',
-                        data: main_emotion,
-                        id: 'dataseries',
-                        tooltip: {
-                            valueDecimals: 2
-                        }
-                    },
-                ]
-            });
+            var emotion_chart = draw_emotion_graph(emotion_dic.series);
         }
 
         //***** SNP DATA *****//
@@ -190,11 +262,21 @@ function fill_emotion_data(emotion_settings, is_draw_emotion_graph, main_snp, ma
         for (d of snp)
         {
             var parsed_d = Date.parse(d.Date);
-            if(parsed_d > days_back){
-                main_snp.push([parsed_d , d.Close]);
-            }
+            main_snp.push([parsed_d , d.Close]);
         }
-        draw_snp_graph_by_emotion(main_snp, days_arr, is_draw_emotion_graph);
+        var dic = get_snp_series_by_emotion(main_snp, emotion_dic.days_arr);
+        var snp_chart = draw_snp_graph(dic.series);
+
+        //**************************************************************
+        // is_draw_emotion_graph is FALSE then func called from settings
+        // then to set num of emotions days to link row
+        //**************************************************************
+        if(!is_draw_emotion_graph){
+            $(".emotion-fixed-filter-text").empty();
+            $(".emotion-filter").empty();
+            $(".emotion-filter").text(dic.days_num);
+            $(".emotion-fixed-filter-text").text("days in last year");
+        }
     });
 }
 

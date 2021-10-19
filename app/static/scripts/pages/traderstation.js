@@ -9,7 +9,7 @@ $(document).ready(function(){
         var main_snp = [];
         var main_emotion = [];
         var count_days_emotion = 0;
-        fill_emotion_data(emotion_settings, true, main_snp, main_emotion);
+        fill_emotion_and_snp_graphs(emotion_settings, true, main_snp, main_emotion);
         $(".emotion-modal").show();
     });
 

@@ -9,7 +9,7 @@ $(document).ready(function () {
 
     get_snp_data($('#algo_positions_for_swan').val());
     get_candidates_by_filter();
-    fill_emotion_data(emotion_settings, false, main_snp, main_emotion);
+    fill_emotion_and_snp_graphs(emotion_settings, false, main_snp, main_emotion);
     range_set_value();
 
     $('.strategy-change').on('input', function(e) {
@@ -72,8 +72,14 @@ $(document).ready(function () {
     $("#range").on('change', function(e) {
         $('#container_sp500').empty();
         var emotion = $(this).val();
-        var days_arr = get_days_for_snp_backtesting(emotion, main_emotion);
-        draw_snp_graph_by_emotion(main_snp, days_arr, false);
+        var emotion_dic = get_days_for_snp_backtesting(emotion_settings, main_emotion, false);
+        var dic = get_snp_series_by_emotion(main_snp, emotion_dic.days_arr);
+        var snp_chart = draw_snp_graph(dic.series);
+
+        $(".emotion-fixed-filter-text").empty();
+        $(".emotion-filter").empty();
+        $(".emotion-filter").text(dic.days_num);
+        $(".emotion-fixed-filter-text").text("days in last year");
     });
 
 })
