@@ -115,7 +115,7 @@ function draw_snp_graph_by_emotion(main_snp, days_arr, is_draw_emotion_graph){
     //***** DRAW SNP CHART *****//
     Highcharts.stockChart('container_sp500', {
         rangeSelector: {
-            selected: 1
+            selected: 4
         },
         title: {
             text: ticker+' Stock Price'
@@ -167,7 +167,7 @@ function fill_emotion_data(emotion_settings, is_draw_emotion_graph, main_snp, ma
         if(is_draw_emotion_graph){
             Highcharts.stockChart('container_emotion', {
                 rangeSelector: {
-                    selected: 1
+                    selected: 4
                 },
                 title: {
                     text: 'Market Emotion'

@@ -18,7 +18,7 @@ from flask_login import (
     login_required
 )
 from app.models import Position, Report, ReportStatistic, Candidate, UserSetting, LastUpdateSpyderData,TickerData
-from sqlalchemy import or_
+from sqlalchemy import or_, and_
 from app import db
 from app.models.fgi_score import Fgi_score
 

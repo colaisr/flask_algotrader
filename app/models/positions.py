@@ -2,7 +2,7 @@ from datetime import datetime
 
 from . import TickerData
 from .. import db
-from sqlalchemy import or_
+from sqlalchemy import text
 
 
 class Position(db.Model):
@@ -30,10 +30,12 @@ class Position(db.Model):
     def update_position(self):
         updating_result = "Nothing"
         if self.last_exec_side == 'BOT':
-            p = Position.query.filter(Position.email == self.email, Position.ticker == self.ticker) \
-                .filter(or_(Position.last_exec_side == 'BOT',
-                            Position.last_exec_side == 'SLD' and Position.opened.date() == datetime.now().date())) \
-                .first()
+            # p = Position.query.filter(Position.email == self.email, Position.ticker == self.ticker) \
+            #     .filter(or_(Position.last_exec_side == 'BOT',
+            #                 Position.last_exec_side == 'SLD' and Position.opened.date() == datetime.now().date())) \
+            #     .first()
+            query_text = f"SELECT * FROM Positions WHERE Positions.`email` = {self.email} AND Positions.`ticker` = {self.ticker} AND (Positions.`last_exec_side` = 'BOT' OR (Positions.`last_exec_side` = 'SLD' AND DATE(Positions.`opened`) = DATE(NOW())))"
+            p = db.session.query(Position).from_statement(text(query_text)).first()
             if p is None:
                 # adding market data
                 m_data = TickerData.query.filter_by(ticker=self.ticker).order_by(
