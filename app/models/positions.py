@@ -34,7 +34,7 @@ class Position(db.Model):
             #     .filter(or_(Position.last_exec_side == 'BOT',
             #                 Position.last_exec_side == 'SLD' and Position.opened.date() == datetime.now().date())) \
             #     .first()
-            query_text = f"SELECT * FROM Positions WHERE Positions.`email` = {self.email} AND Positions.`ticker` = {self.ticker} AND (Positions.`last_exec_side` = 'BOT' OR (Positions.`last_exec_side` = 'SLD' AND DATE(Positions.`opened`) = DATE(NOW())))"
+            query_text = f"SELECT * FROM Positions WHERE Positions.`email` = '{self.email}' AND Positions.`ticker` = '{self.ticker}' AND (Positions.`last_exec_side` = 'BOT' OR (Positions.`last_exec_side` = 'SLD' AND DATE(Positions.`opened`) = DATE(NOW())))"
             p = db.session.query(Position).from_statement(text(query_text)).first()
             if p is None:
                 # adding market data
