@@ -1,4 +1,8 @@
 $(document).ready(function () {
+    $(window).resize(function() {
+        var width = $(this).width() - 100;
+        $('.modal-bigger').css('max-width', width);
+    }).resize();
 
     $('.message').each((i, el) => {
         const $el = $(el);
@@ -31,11 +35,6 @@ $(document).ready(function () {
         }
     });
 
-
-
-//    document.addEventListener("DOMContentLoaded", setValue);
-//    range.addEventListener('input', setValue);
-//    range_set_value();
 });
 
 function range_set_value(){
@@ -51,4 +50,7 @@ function range_set_value(){
     rangeV.css('left','calc(' + newValue + '% + (' + newPosition + 'px))');
 }
 
+function isFloat(n){
+    return Number(n) === n && n % 1 !== 0;
+}
 

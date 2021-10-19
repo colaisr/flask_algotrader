@@ -100,9 +100,6 @@ function get_days_for_snp_backtesting(emotion_settings, main_emotion, is_with_em
         name: 'Emotion',
         data: main_emotion,
         id: 'dataseries',
-        tooltip: {
-            valueDecimals: 2
-        }
     };
     series.push(main);
     if(is_with_emotion_series)
@@ -110,14 +107,10 @@ function get_days_for_snp_backtesting(emotion_settings, main_emotion, is_with_em
         var i =0;
         for (arr of pos_emotion_arr_negative){
             var range = {
-                name: 'position_neg' + i,
+                name: 'Emotion',
                 data: arr,
                 color: '#FF0000',
-//                lineWidth:4,
                 id: 'dataseries_neg' + i,
-                tooltip: {
-                valueDecimals: 2
-                }
             };
             series.push(range);
             i += 1;
@@ -125,14 +118,10 @@ function get_days_for_snp_backtesting(emotion_settings, main_emotion, is_with_em
         i =0;
         for (arr of pos_emotion_arr){
             var range = {
-                name: 'position' + i,
+                name: 'Emotion',
                 data: arr,
                 color: '#00c36f',
-//                lineWidth:4,
                 id: 'dataseries' + i,
-                tooltip: {
-                valueDecimals: 2
-                }
             };
             series.push(range);
             i += 1;
@@ -177,9 +166,7 @@ function get_snp_series_by_emotion(main_snp, days_arr){
         name: ticker,
         data: main_snp,
         id: 'dataseries',
-        tooltip: {
-            valueDecimals: 2
-        }
+        enableMouseTracking: false
     };
     series.push(main);
     var i =1;
@@ -187,14 +174,11 @@ function get_snp_series_by_emotion(main_snp, days_arr){
     for (arr of pos_snp_arr){
         days_num += arr.length;
         var range = {
-            name: 'position' + i,
+            name: ticker,
             data: arr,
             color: '#00c36f',
             lineWidth:3,
             id: 'dataseries' + i,
-            tooltip: {
-            valueDecimals: 2
-            }
         };
         series.push(range);
         i += 1;
@@ -203,30 +187,42 @@ function get_snp_series_by_emotion(main_snp, days_arr){
     return {series: series, days_num: days_num};
 }
 
-function draw_snp_graph(series){
-    var chart = Highcharts.stockChart('container_sp500', {
+function draw_graph(container_name, title, series, if_by_last_el){
+    var chart = Highcharts.stockChart(container_name, {
         rangeSelector: {
             selected: 4
         },
         title: {
-            text: 'S&P 500'
+            text: title
+        },
+        tooltip: {
+            useHTML: true,
+            valueDecimals: 2,
+            formatter: function() {
+                var x = this.x;
+                var date = new Date(x);
+                var all_series = this.points[0].series.chart.series;
+                var i = if_by_last_el ? -2 : 0; // -2: last element - navigation
+                var series = $(all_series).get(i);
+                var x_arr = series.processedXData;
+                var index_in_arr = x_arr.indexOf(x);
+                var data = series.processedYData[index_in_arr];
+                if(isFloat(data)){
+                    data = data.toFixed(2);
+                }
+                var html = '<table><tr><th colspan="2">'+date.toDateString()+'</th></tr><tr><td style="color: #00c36f">'+series.name+': </td>' +
+                           '<td style="text-align: right"><b>'+data+'</b></td></tr></table>';
+
+                return html;
+            }
         },
         series: series
     });
     return chart;
 }
 
-function draw_emotion_graph(series){
-    var chart = Highcharts.stockChart('container_emotion', {
-                rangeSelector: {
-                    selected: 4
-                },
-                title: {
-                    text: 'Market Emotion'
-                },
-                series: series
-            });
-    return chart;
+function tooltip_for_snp(){
+
 }
 
 function fill_emotion_and_snp_graphs(emotion_settings, is_draw_emotion_graph, main_snp, main_emotion){
@@ -246,26 +242,31 @@ function fill_emotion_and_snp_graphs(emotion_settings, is_draw_emotion_graph, ma
         var index = 0;
         for (e of emotion)
         {
-            var parsed_e=Date.parse(e.score_time);
             var date_e = new Date(e.score_time);
+            var parsed_e = Date.parse(date_e.toDateString());
             main_emotion.push( [parsed_e , e.fgi_value]);
         }
         var emotion_dic = get_days_for_snp_backtesting(emotion_settings, main_emotion, true);
 
         //***** DRAW EMOTION CHART *****//
         if(is_draw_emotion_graph){
-            var emotion_chart = draw_emotion_graph(emotion_dic.series);
+            var emotion_chart = draw_graph('container_emotion', 'Market Emotion', emotion_dic.series, false);
         }
 
         //***** SNP DATA *****//
         snp=snp.historical
         for (d of snp)
         {
-            var parsed_d = Date.parse(d.Date);
+            var date_d = new Date(d.Date);
+            var parsed_d = Date.parse(date_d.toDateString());
             main_snp.push([parsed_d , d.Close]);
         }
         var dic = get_snp_series_by_emotion(main_snp, emotion_dic.days_arr);
-        var snp_chart = draw_snp_graph(dic.series);
+
+        var new_arr = $.merge(dic.series, [emotion_dic.series[0]])
+        var snp_chart = draw_graph('container_sp500', 'S&P 500', new_arr, true);
+        var hidden_series = snp_chart.series[new_arr.length - 1];
+        hidden_series.hide();
 
         //**************************************************************
         // is_draw_emotion_graph is FALSE then func called from settings
@@ -291,24 +292,16 @@ function fill_container_ticker_info(ticker){
             parsed_d=Date.parse(d["Date"]);
             arr.push( [parsed_d , d["Close"] ]);
         }
-        rev_main=arr
-        Highcharts.stockChart('container', {
-            rangeSelector: {
-                selected: 1
-            },
-            title: {
-                text: ticker+' Stock Price'
-            },
-            series: [
-                {
-                    name: ticker,
-                    data: rev_main,
-                    id: 'dataseries',
-                    tooltip: {
-                        valueDecimals: 2
-                    }
-                },
-            ]
-        });
+        var series = [
+            {
+                name: ticker,
+                data: arr,
+                id: 'dataseries',
+                tooltip: {
+                    valueDecimals: 2
+                }
+            }
+        ];
+        var chart = draw_graph('container', ticker+' Stock Price', series, false);
     });
 }

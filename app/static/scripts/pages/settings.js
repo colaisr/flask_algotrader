@@ -3,10 +3,6 @@ var main_snp = [];
 var main_emotion =[];
 
 $(document).ready(function () {
-//    var emotion_settings = parseInt($('#algo_min_emotion').val());
-//    var main_snp = [];
-//    var main_emotion =[];
-
     get_snp_data($('#algo_positions_for_swan').val());
     get_candidates_by_filter();
     fill_emotion_and_snp_graphs(emotion_settings, false, main_snp, main_emotion);
