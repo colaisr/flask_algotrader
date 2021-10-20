@@ -68,9 +68,12 @@ $(document).ready(function () {
     $("#range").on('change', function(e) {
         $('#container_sp500').empty();
         var emotion = $(this).val();
-        var emotion_dic = get_days_for_snp_backtesting(emotion_settings, main_emotion, false);
+        var emotion_dic = get_days_for_snp_backtesting(emotion, main_emotion, false);
         var dic = get_snp_series_by_emotion(main_snp, emotion_dic.days_arr);
-        var snp_chart = draw_snp_graph(dic.series);
+        var new_arr = $.merge(dic.series, [emotion_dic.series[0]])
+        var snp_chart = draw_graph("container_sp500", 'S&P 500', dic.series, true);
+        var hidden_series = snp_chart.series[new_arr.length - 1];
+        hidden_series.hide();
 
         $(".emotion-fixed-filter-text").empty();
         $(".emotion-filter").empty();
