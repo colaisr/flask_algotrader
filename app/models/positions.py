@@ -26,6 +26,8 @@ class Position(db.Model):
     buying_average_spread = db.Column('buying_average_spread', db.Float)
     buying_fmp_rating = db.Column('buying_fmp_rating', db.String)
     buying_fmp_score = db.Column('buying_fmp_score', db.Integer)
+    exec_id_buy = db.Column('exec_id_buy', db.Integer)
+    exec_id_sld = db.Column('exec_id_sld', db.Integer)
 
     def update_position(self):
         updating_result = "Nothing"
@@ -48,6 +50,7 @@ class Position(db.Model):
                 self.buying_average_spread = m_data.yahoo_avspreadP
                 self.buying_fmp_rating = m_data.fmp_rating
                 self.buying_fmp_score = m_data.fmp_score
+                self.exec_id_buy = m_data.exec_id_buy
 
                 db.session.add(self)
                 updating_result = "new_buy"
@@ -57,6 +60,7 @@ class Position(db.Model):
         else:
             p = Position.query.filter_by(email=self.email, ticker=self.ticker, last_exec_side='BOT').first()
             if p is not None:
+                p.exec_id_sld = self.exec_id_sld
                 p.close_price = self.close_price
                 p.closed = self.closed
                 p.last_exec_side = self.last_exec_side

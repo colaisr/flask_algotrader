@@ -437,6 +437,7 @@ def postexecution():
     shares = request_data["shares"]
     price = request_data["price"]
     side = request_data["side"]
+    exec_id=request_data["exec_id"]
     reported_time = json.loads(request_data['time'])
     time = datetime.fromisoformat(reported_time)
 
@@ -450,9 +451,11 @@ def postexecution():
         if side == 'BOT':
             position.open_price = price
             position.opened = time
+            position.exec_id_buy=exec_id
         else:
             position.close_price = price
             position.closed = time
+            position.exec_id_sld=exec_id
 
         result, np = position.update_position()
 
