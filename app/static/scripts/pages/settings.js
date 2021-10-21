@@ -5,13 +5,32 @@ var main_emotion =[];
 $(document).ready(function () {
     get_snp_data($('#algo_positions_for_swan').val());
     get_candidates_by_filter();
-    fill_emotion_and_snp_graphs(emotion_settings, false, main_snp, main_emotion);
+    fill_emotion_and_snp_graphs(emotion_settings, true, main_snp, main_emotion);
     range_set_value();
 
     $('.strategy-change').on('input', function(e) {
         $('#strategy_id').val('4')
         $('.strategy-btn').removeClass( "active" )
         get_candidates_by_filter();
+    })
+
+    $('.emotion-change').on('input', function(e) {
+        var loading = $(".emotion-loading")
+        var spinner = $('<div class="spinner-border text-info" role="status"><span class="sr-only">Loading...</span></div>');
+        loading.empty();
+        $(".emotion-filter").empty();
+        $(".emotion-fixed-filter-text").empty();
+        loading.append(spinner);
+
+        var emotion = $(this).val();
+
+        $('#range').val(emotion);
+        range_set_value();
+
+        var emotion_dic = update_emotion_days(emotion);
+        var new_graph = draw_snp_chart(main_snp, emotion_dic.days_arr, [emotion_dic.series[0]], true);
+
+        loading.empty();
     })
 
     $('.blackswan-change').on('input', function(e) {
@@ -66,22 +85,33 @@ $(document).ready(function () {
     });
 
     $("#range").on('change', function(e) {
-        $('#container_sp500').empty();
+//        $('#container_sp500').empty();
         var emotion = $(this).val();
-        var emotion_dic = get_days_for_snp_backtesting(emotion, main_emotion, false);
-        var dic = get_snp_series_by_emotion(main_snp, emotion_dic.days_arr);
-        var new_arr = $.merge(dic.series, [emotion_dic.series[0]])
-        var snp_chart = draw_graph("container_sp500", 'S&P 500', dic.series, true);
-        var hidden_series = snp_chart.series[new_arr.length - 1];
-        hidden_series.hide();
-
-        $(".emotion-fixed-filter-text").empty();
-        $(".emotion-filter").empty();
-        $(".emotion-filter").text(dic.days_num);
-        $(".emotion-fixed-filter-text").text("days in last year");
+        var emotion_dic = update_emotion_days(emotion);
+        var new_graph = draw_snp_chart(main_snp, emotion_dic.days_arr, [emotion_dic.series[0]], true);
+        $('.emotion-change').val(emotion);
     });
 
 })
+
+function save_emotion(){
+    var emotion = parseInt($('.emotion-change').val());
+    $.post("/algotradersettings/save_emotion_settings",{emotion: emotion}, function(data) {
+//        var data_parsed = jQuery.parseJSON(data);
+        $('#flash').append(flashMessage("success","Emotion saved"));
+
+    });
+}
+
+function update_emotion_days(emotion){
+    var emotion_dic = get_days_for_snp_backtesting(emotion, main_emotion, false);
+    var dic = get_snp_series_by_emotion(main_snp, emotion_dic.days_arr, [emotion_dic.series[0]]);
+    $(".emotion-fixed-filter-text").empty();
+    $(".emotion-filter").empty();
+    $(".emotion-filter").text(dic.days_num);
+    $(".emotion-fixed-filter-text").text("days in last year");
+    return emotion_dic;
+}
 
 function updateTextInput(val) {
     $('#textInput').val(val);

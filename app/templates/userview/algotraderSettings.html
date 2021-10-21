@@ -349,7 +349,7 @@
                             </div>
                             <div class="col-md-6 input-group d-block">
                                 <div>
-                                    <label for="algo_min_beta" class="">Minimal Emotion allowed</label>
+                                    <label for="algo_min_emotion" class="">Minimal Emotion allowed</label>
                                 </div>
                                 <div class="d-flex">
                                     <input title="Minimal Market Emotion allowed"
@@ -365,7 +365,7 @@
                                     <input title="Minimal Emotion allowed"
                                                value="{{user_settings.algo_min_emotion}}"
                                                name="algo_min_emotion" id="algo_min_emotion" type="text"
-                                               class="form-control strategy-change col-md-6">
+                                               class="form-control emotion-change col-md-6">
                                     <label class="text-muted small filter-comment col-md-3">
                                         <span class="emotion-loading"></span>
                                         <span class="text-primary link emotion-filter font-weight-bold"></span>
@@ -573,11 +573,12 @@
                 </button>
             </div>
             <div class="modal-body">
+                <div id="flash"></div>
                 <div class="text-muted filter-comment col-md-3">
                     <span class="text-primary emotion-filter font-weight-bold"></span>
                     <span class="emotion-fixed-filter-text pl-2"></span>
                 </div>
-                <div id="container_sp500" style="width:100%; height:300px;"></div>
+                <div id="container_sp500" class="height-resize" style="width:100%;"></div>
                 <div id="emotion-range-div" style="width:100%;">
                     <label class="form-label" for="range">Emotion</label>
                     <div class="range-wrap">
@@ -585,6 +586,9 @@
                         <input style="width:100%;" id="range" type="range" min="0" max="100" value="{{user_settings.algo_min_emotion}}" step="1">
                     </div>
                 </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" onclick="save_emotion()" class="btn btn-secondary btn-lg btn-block">Save</button>
             </div>
         </div>
     </div>

@@ -42,9 +42,18 @@ function update_market_data(ticker){
     })
 }
 
-function fill_emotion_and_snp_graphs(emotion_settings, is_draw_emotion_graph, main_snp, main_emotion){
+function fill_emotion_and_snp_graphs(emotion_settings, is_settings_modal, main_snp, main_emotion){
     var url_emotion = domane + 'research/get_all_emotions'
     var url_snp = domane + 'research/get_complete_graph_for_ticker/^GSPC';
+
+    if(is_settings_modal){
+        var loading = $(".emotion-loading")
+        var spinner = $('<div class="spinner-border text-info" role="status"><span class="sr-only">Loading...</span></div>');
+        loading.empty();
+        $(".emotion-filter").empty();
+        $(".emotion-fixed-filter-text").empty();
+        loading.append(spinner);
+    }
 
     Promise.all([
       $.ajax({ url: url_emotion }),
@@ -63,10 +72,11 @@ function fill_emotion_and_snp_graphs(emotion_settings, is_draw_emotion_graph, ma
             var parsed_e = Date.parse(date_e.toDateString());
             main_emotion.push( [parsed_e , e.fgi_value]);
         }
+
         var emotion_dic = get_days_for_snp_backtesting(emotion_settings, main_emotion, true);
 
         //***** DRAW EMOTION CHART *****//
-        if(is_draw_emotion_graph){
+        if(!is_settings_modal){
             var emotion_chart = draw_graph('container_emotion', 'Market Emotion', emotion_dic.series, false);
         }
 
@@ -78,23 +88,8 @@ function fill_emotion_and_snp_graphs(emotion_settings, is_draw_emotion_graph, ma
             var parsed_d = Date.parse(date_d.toDateString());
             main_snp.push([parsed_d , d.Close]);
         }
-        var dic = get_snp_series_by_emotion(main_snp, emotion_dic.days_arr);
 
-        var new_arr = $.merge(dic.series, [emotion_dic.series[0]])
-        var snp_chart = draw_graph('container_sp500', 'S&P 500', new_arr, true);
-        var hidden_series = snp_chart.series[new_arr.length - 1];
-        hidden_series.hide();
-
-        //**************************************************************
-        // is_draw_emotion_graph is FALSE then func called from settings
-        // then to set num of emotions days to link row
-        //**************************************************************
-        if(!is_draw_emotion_graph){
-            $(".emotion-fixed-filter-text").empty();
-            $(".emotion-filter").empty();
-            $(".emotion-filter").text(dic.days_num);
-            $(".emotion-fixed-filter-text").text("days in last year");
-        }
+        var snp_chart = draw_snp_chart(main_snp, emotion_dic.days_arr, [emotion_dic.series[0]], is_settings_modal);
     });
 }
 

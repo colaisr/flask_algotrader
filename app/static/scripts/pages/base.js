@@ -1,7 +1,9 @@
 $(document).ready(function () {
     $(window).resize(function() {
         var width = $(this).width() - 100;
+        var height = $(this).height() - 300;
         $('.modal-bigger').css('max-width', width);
+        $('.height-resize').css('height',height);
     }).resize();
 
     $('.message').each((i, el) => {
@@ -36,6 +38,11 @@ $(document).ready(function () {
     });
 
 });
+
+function flashMessage (type, message){
+  var html = '<div class="alert alert-' + type + ' text-center"><a href="#" class="close" data-dismiss="alert">&times;</a>' + message + '</div>';
+  return html;
+};
 
 function range_set_value(){
     var range = $('#range');
@@ -146,7 +153,7 @@ function get_days_for_snp_backtesting(emotion_settings, main_emotion, is_with_em
 }
 
 function get_snp_series_by_emotion(main_snp, days_arr){
-    var ticker='SP500';
+    var ticker='S&P 500';
     var pos_snp_arr=[];
 
     var date_index = new Date();
@@ -174,15 +181,7 @@ function get_snp_series_by_emotion(main_snp, days_arr){
     }
 
 //        //***** SERIES SNP *****//
-//        var filtered_arr = pos_snp_arr.filter(x => x.length > 1);
     var series = []
-    var main = {
-        name: ticker,
-        data: main_snp,
-        id: 'dataseries',
-        enableMouseTracking: false
-    };
-    series.push(main);
     var i =1;
     var days_num = 0;
     for (arr of pos_snp_arr){
@@ -197,7 +196,6 @@ function get_snp_series_by_emotion(main_snp, days_arr){
         series.push(range);
         i += 1;
     }
-
     return {series: series, days_num: days_num};
 }
 
@@ -242,6 +240,38 @@ function remove_series(chart, seriesname){
             s.remove();
         }
     }
+}
+
+function add_series(chart, series_arr){
+    for (s of series_arr){
+        chart.addSeries(s);
+    }
+}
+
+function draw_snp_chart(main_snp, days_arr, emotion_series, is_settings_modal){
+    var dic = get_snp_series_by_emotion(main_snp, days_arr, emotion_series);
+    var series = []
+    var main = {
+        name: "S&P 500",
+        data: main_snp,
+        id: 'dataseries',
+        enableMouseTracking: false
+    };
+    series.push(main);
+    series = $.merge(series, dic.series);
+    var new_arr = $.merge(series, emotion_series);
+    var snp_chart = draw_graph('container_sp500', 'S&P 500', new_arr, true);
+    var hidden_series = snp_chart.series[new_arr.length - 1];
+    hidden_series.hide();
+
+    if(is_settings_modal){
+        $(".emotion-loading").empty();
+        $(".emotion-fixed-filter-text").empty();
+        $(".emotion-filter").empty();
+        $(".emotion-filter").text(dic.days_num);
+        $(".emotion-fixed-filter-text").text("days in last year");
+    }
+    return snp_chart;
 }
 //END CHARTS
 

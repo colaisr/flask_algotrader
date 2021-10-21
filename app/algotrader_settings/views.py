@@ -4,7 +4,8 @@ from flask import (
     Blueprint,
     flash,
     render_template,
-    request, url_for
+    request, url_for,
+    jsonify
 )
 from datetime import datetime, date
 
@@ -231,6 +232,18 @@ def retrieve_user_settings():
     tdj = json.dumps(user_settings, cls=general.JsonEncoder)
     parsed_response = json.dumps(tdj)
     return parsed_response
+
+
+@csrf.exempt
+@algotradersettings.route('/save_emotion_settings', methods=['POST'])
+@login_required
+def save_emotion_settings():
+    user_settings = UserSetting.query.filter_by(email=current_user.email).first()
+    user_settings.algo_min_emotion = request.form['emotion']
+    user_settings.update_user_settings()
+    flash('Emotion saved', 'success')
+    return jsonify(success=1)
+
 
 
 @algotradersettings.route('/save_signature', methods=['POST'])
