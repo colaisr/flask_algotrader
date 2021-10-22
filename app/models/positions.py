@@ -26,8 +26,8 @@ class Position(db.Model):
     buying_average_spread = db.Column('buying_average_spread', db.Float)
     buying_fmp_rating = db.Column('buying_fmp_rating', db.String)
     buying_fmp_score = db.Column('buying_fmp_score', db.Integer)
-    exec_id_buy = db.Column('exec_id_buy', db.Integer)
-    exec_id_sld = db.Column('exec_id_sld', db.Integer)
+    exec_id_buy = db.Column('exec_id_buy', db.String)
+    exec_id_sld = db.Column('exec_id_sld', db.String)
 
     def update_position(self):
         updating_result = "Nothing"
