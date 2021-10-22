@@ -50,7 +50,6 @@ class Position(db.Model):
                 self.buying_average_spread = m_data.yahoo_avspreadP
                 self.buying_fmp_rating = m_data.fmp_rating
                 self.buying_fmp_score = m_data.fmp_score
-                self.exec_id_buy = m_data.exec_id_buy
 
                 db.session.add(self)
                 updating_result = "new_buy"
