@@ -451,11 +451,11 @@ def postexecution():
         if side == 'BOT':
             position.open_price = price
             position.opened = time
-            position.exec_id_buy=exec_id
+            position.exec_id_buy=str(exec_id)
         else:
             position.close_price = price
             position.closed = time
-            position.exec_id_sld=exec_id
+            position.exec_id_sld=str(exec_id)
 
         result, np = position.update_position()
 
