@@ -77,7 +77,7 @@ function fill_emotion_and_snp_graphs(emotion_settings, is_settings_modal, main_s
 
         //***** DRAW EMOTION CHART *****//
         if(!is_settings_modal){
-            var emotion_chart = draw_graph('container_emotion', 'Market Emotion', emotion_dic.series, false);
+            var emotion_chart = draw_graph('container_emotion', 'Market Emotion', emotion_dic.series, 4, true, false);
         }
 
         //***** SNP DATA *****//
@@ -114,6 +114,55 @@ function fill_container_ticker_info(ticker){
                 }
             }
         ];
-        var chart = draw_graph('container', ticker+' Stock Price', series, false);
+        var chart = draw_graph('container', ticker+' Stock Price', series, 4, true, false);
+    });
+}
+
+function fill_container_closed_position_info(){
+
+    url = domane + 'research/get_complete_graph_for_ticker/'+ticker
+    $.getJSON(url, function(data) {
+        data=data['historical']
+        var arr = [];
+        var pos_arr=[];
+        for (d of data)
+        {
+            parsed_d=Date.parse(d["Date"]);
+            arr.push( [parsed_d , d["Close"] ]);
+            if(parsed_d<point_end && parsed_d>point_start){
+                pos_arr.push([parsed_d , d["Close"]]);
+            }
+        }
+        var series = [
+            {
+                name: ticker,
+                data: arr,
+                id: 'dataseries'
+            },
+            {
+                name: 'position',
+                data: pos_arr,
+                color: '#FF0000',
+//                lineWidth:3,
+                id: 'dataseries2'
+            },
+            {
+                type: 'flags',
+                data: [{
+                        x: Date.parse(stp),
+                        title: ' ',
+                        text: 'Tiprank: ' + tip_rank_on_buy + ' FMP: ' + fmp_rating_on_buy
+                    },
+                    {
+                        x: Date.parse(enp),
+                        title: ' ',
+                        text: 'Position closed'
+                    }],
+                onSeries: 'dataseries',
+                shape: 'circlepin',
+                width: 16
+            }
+        ];
+        var chart = draw_graph('container_position_on_graph', ticker+' Stock Price', series, 1, false, false);
     });
 }

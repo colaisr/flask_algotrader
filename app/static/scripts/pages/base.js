@@ -199,15 +199,8 @@ function get_snp_series_by_emotion(main_snp, days_arr){
     return {series: series, days_num: days_num};
 }
 
-function draw_graph(container_name, title, series, if_by_last_el){
-    var chart = Highcharts.stockChart(container_name, {
-        rangeSelector: {
-            selected: 4
-        },
-        title: {
-            text: title
-        },
-        tooltip: {
+function draw_graph(container_name, title, series, range_selector, with_tooltip_formatter, if_by_last_el){
+    var tooltip = {
             useHTML: true,
             valueDecimals: 2,
             formatter: function() {
@@ -227,7 +220,20 @@ function draw_graph(container_name, title, series, if_by_last_el){
 
                 return html;
             }
+        };
+    if(!with_tooltip_formatter){
+        tooltip = {
+            valueDecimals: 2
+        };
+    }
+    var chart = Highcharts.stockChart(container_name, {
+        rangeSelector: {
+            selected: range_selector
         },
+        title: {
+            text: title
+        },
+        tooltip: tooltip,
         series: series
     });
     return chart;
@@ -260,7 +266,7 @@ function draw_snp_chart(main_snp, days_arr, emotion_series, is_settings_modal){
     series.push(main);
     series = $.merge(series, dic.series);
     var new_arr = $.merge(series, emotion_series);
-    var snp_chart = draw_graph('container_sp500', 'S&P 500', new_arr, true);
+    var snp_chart = draw_graph('container_sp500', 'S&P 500', new_arr, 4, true, true);
     var hidden_series = snp_chart.series[new_arr.length - 1];
     hidden_series.hide();
 
