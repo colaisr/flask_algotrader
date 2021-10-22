@@ -1,6 +1,7 @@
 from datetime import datetime
 
 from . import TickerData
+import app.models.fgi_score
 from .. import db
 from sqlalchemy import text
 
@@ -28,6 +29,8 @@ class Position(db.Model):
     buying_fmp_score = db.Column('buying_fmp_score', db.Integer)
     exec_id_buy = db.Column('exec_id_buy', db.String)
     exec_id_sld = db.Column('exec_id_sld', db.String)
+    buying_algotrader_rank = db.Column('buying_algotrader_rank', db.Float)
+    emotion_on_buy = db.Column('emotion_on_buy', db.Integer)
 
     def update_position(self):
         updating_result = "Nothing"
@@ -42,6 +45,8 @@ class Position(db.Model):
                 # adding market data
                 m_data = TickerData.query.filter_by(ticker=self.ticker).order_by(
                     TickerData.updated_server_time.desc()).first()
+                app.models.fgi_score.Fgi_score
+                fgi = app.models.fgi_score.Fgi_score.query.order_by(app.models.fgi_score.Fgi_score.score_time.desc()).first()
                 self.buying_tiprank = m_data.tipranks
                 self.buying_yahoo_rank = m_data.yahoo_rank
                 self.buying_underprice = m_data.under_priced_pnt
@@ -50,6 +55,8 @@ class Position(db.Model):
                 self.buying_average_spread = m_data.yahoo_avspreadP
                 self.buying_fmp_rating = m_data.fmp_rating
                 self.buying_fmp_score = m_data.fmp_score
+                self.buying_algotrader_rank = m_data.algotrader_rank
+                self.emotion_on_buy = fgi.fgi_value
 
                 db.session.add(self)
                 updating_result = "new_buy"

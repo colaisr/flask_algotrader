@@ -1,12 +1,10 @@
 <p>New position was open for {{ position.ticker }}
     Algotrader bought {{ position.stocks|string}} stocks by {{ position.open_price|string }} each.</p>
 <p>At open :</p>
-<p><b>tiprank:</b> {{ position.buying_tiprank }}</p>
-<p><b>yahoo rank:</b> {{ position.buying_yahoo_rank }}</p>
+<p><b>algotrader rank:</b> {{ position.buying_algotrader_rank }}</p>
 <p><b>underprice:</b> {{ position.buying_underprice }}</p>
 <p><b>12 momentum:</b> {{ position.buying_twelve_month_momentum }}</p>
 <p><b>average drop:</b> {{ position.buying_average_drop }}</p>
 <p><b>average spread:</b> {{ position.buying_average_spread }}</p>
-<p><b>fmp rating:</b> {{ position.buying_fmp_rating }}</p>
-<p><b>fmp score:</b> {{ position.buying_fmp_score }}</p>
+<p><b>current Emotion:</b> {{ position.emotion_on_buy }}</p>
 

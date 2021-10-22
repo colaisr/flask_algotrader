@@ -151,7 +151,7 @@ function fill_container_closed_position_info(){
                 data: [{
                         x: Date.parse(stp),
                         title: ' ',
-                        text: 'Tiprank: ' + tip_rank_on_buy + ' FMP: ' + fmp_rating_on_buy
+                        text: 'Algotrader rank: ' + buying_algotrader_rank + ' Emotion: ' + emotion_on_buy
                     },
                     {
                         x: Date.parse(enp),
