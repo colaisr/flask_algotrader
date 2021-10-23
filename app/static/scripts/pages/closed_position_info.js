@@ -16,6 +16,58 @@ else{
     position_colour='#FF0000'
 }
 
-fill_container_closed_position_info();
+$(document).ready(function () {
+
+    fill_container_closed_position_info();
+})
+
+function fill_container_closed_position_info(){
+
+    url = '/algotradersettings/get_complete_graph_for_ticker/'+ticker
+    $.getJSON(url, function(data) {
+        data=data['historical']
+        var arr = [];
+        var pos_arr=[];
+        for (d of data)
+        {
+            parsed_d=Date.parse(d["Date"]);
+            arr.push( [parsed_d , d["Close"] ]);
+            if(parsed_d<point_end && parsed_d>point_start){
+                pos_arr.push([parsed_d , d["Close"]]);
+            }
+        }
+        var series = [
+            {
+                name: ticker,
+                data: arr,
+                id: 'dataseries'
+            },
+            {
+                name: 'position',
+                data: pos_arr,
+                color: '#FF0000',
+//                lineWidth:3,
+                id: 'dataseries2'
+            },
+            {
+                type: 'flags',
+                data: [{
+                        x: Date.parse(stp),
+                        title: ' ',
+                        text: 'Algotrader rank: ' + buying_algotrader_rank + ' Emotion: ' + emotion_on_buy
+                    },
+                    {
+                        x: Date.parse(enp),
+                        title: ' ',
+                        text: 'Position closed'
+                    }],
+                onSeries: 'dataseries',
+                shape: 'circlepin',
+                width: 16
+            }
+        ];
+        var chart = draw_graph('container_position_on_graph', ticker+' Stock Price', series, 1, false, false);
+    });
+}
 
 

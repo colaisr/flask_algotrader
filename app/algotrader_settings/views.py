@@ -7,14 +7,14 @@ from flask import (
     request, url_for,
     jsonify
 )
-from datetime import datetime, date
+from sqlalchemy import text
 
 from flask_login import login_required, current_user
 
 from werkzeug.utils import redirect
 
 from app import csrf, db
-from app.models import UserSetting, Strategy, UserStrategySettingsDefault, ClientCommand
+from app.models import UserSetting, Strategy, UserStrategySettingsDefault, ClientCommand, Fgi_score
 from app.email import send_email
 from app.research import yahoo_research as yahoo
 
@@ -42,15 +42,6 @@ def get_default_strategy_settings():
     strategy_id = request.form['strategy_id']
     default_settings = UserStrategySettingsDefault.query.filter_by(id=strategy_id).first()
     return json.dumps(default_settings, cls=general.JsonEncoder)
-
-
-@csrf.exempt
-@algotradersettings.route('/get_snp500_data', methods=['POST'])
-@login_required
-def get_snp500_data():
-    min_snp = float(request.form['min_snp'])
-    df = yahoo.get_snp500_fails_intraday_lower_than(min_snp)
-    return df.to_json(orient="index",date_format='iso')
 
 
 @algotradersettings.route('/savesettings', methods=['POST'])
@@ -239,9 +230,21 @@ def retrieve_user_settings():
 @login_required
 def save_emotion_settings():
     user_settings = UserSetting.query.filter_by(email=current_user.email).first()
-    user_settings.algo_min_emotion = request.form['emotion']
+    user_settings.algo_min_emotion = int(request.form['emotion'])
     user_settings.update_user_settings()
     flash('Emotion saved', 'success')
+    return jsonify(success=1)
+
+
+
+@csrf.exempt
+@algotradersettings.route('/save_black_swan', methods=['POST'])
+@login_required
+def save_black_swan():
+    user_settings = UserSetting.query.filter_by(email=current_user.email).first()
+    user_settings.algo_positions_for_swan = float(request.form['bsw'])
+    user_settings.update_user_settings()
+    flash('Market fall safety saved', 'success')
     return jsonify(success=1)
 
 
@@ -272,3 +275,37 @@ def save_signature():
     db.session.commit()
 
     return redirect(request.args.get('next') or url_for('main.index'))
+
+
+
+@csrf.exempt
+@algotradersettings.route('/get_all_emotions', methods=['GET'])
+def get_all_emotions():
+    query_text = "select a.* from Fgi_Scores a JOIN (select DATE(Fgi_Scores.`score_time`) AS score_date, max(Fgi_Scores.`score_time`) as max_score_time, MAX(Fgi_Scores.`fgi_value`) AS max_fgi_value from Fgi_Scores group by DATE(Fgi_Scores.`score_time`)) b on b.`max_score_time`=a.`score_time` AND b.`max_fgi_value`=a.`fgi_value` ORDER BY a.`score_time`"
+    fgi_scores = db.session.query(Fgi_score).from_statement(text(query_text)).all()
+    # fgi_scores = Fgi_score.query.order_by(Fgi_score.score_time.asc()).all()
+    t = json.dumps(fgi_scores, cls=general.JsonEncoder)
+    return jsonify(historical=json.loads(t))
+
+
+
+@csrf.exempt
+@algotradersettings.route('/get_complete_graph_for_ticker/<ticker>', methods=['GET'])
+# @cross_origin(origin='*', headers=['Content-Type', 'Authorization'])
+def get_complete_graph_for_ticker(ticker):
+    info = yahoo.get_complete_graph(ticker,"max")
+    info.reset_index(level=0, inplace=True)
+    jhistory=info.to_dict(orient='records')
+    return jsonify(symbol=ticker, historical=jhistory)
+
+
+@csrf.exempt
+@algotradersettings.route('/get_snp500_data/<min_snp>', methods=['GET'])
+@login_required
+def get_snp500_data(min_snp):
+    # min_snp = float(request.form['min_snp'])
+    df = yahoo.get_snp500_fails_intraday_lower_than(float(min_snp))
+    df.reset_index(level=0, inplace=True)
+    jhistory = df.to_dict(orient='records')
+    return jsonify(symbol='^GSPC', historical=jhistory)
+    # return df.to_json(orient="index",date_format='iso')

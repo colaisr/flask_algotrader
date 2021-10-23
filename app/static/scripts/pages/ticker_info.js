@@ -29,3 +29,28 @@ $(document).ready(function () {
 
 })
 
+function fill_container_ticker_info(ticker){
+
+    url = '/algotradersettings/get_complete_graph_for_ticker/'+ticker
+    $.getJSON(url, function(data) {
+        data=data['historical']
+        var arr = [];
+        for (d of data)
+        {
+            parsed_d=Date.parse(d["Date"]);
+            arr.push( [parsed_d , d["Close"] ]);
+        }
+        var series = [
+            {
+                name: ticker,
+                data: arr,
+                id: 'dataseries',
+                tooltip: {
+                    valueDecimals: 2
+                }
+            }
+        ];
+        var chart = draw_graph('container', ticker+' Stock Price', series, 4, true, false);
+    });
+}
+

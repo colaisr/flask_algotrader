@@ -159,7 +159,7 @@
                                         With
                                         <span class="text-primary pr-2 pl-2 blackswan-min">{{user_settings.algo_positions_for_swan}}%</span>
                                         selected there were :
-                                        <span class="text-primary pr-1 pl-2 link font-weight-bold show_modal_snp"><span class="blackswan-events pr-1"></span> events in last 5 Years</span>
+                                        <span class="text-primary pr-1 pl-2 link font-weight-bold show_modal_snp"><span class="bsw-loading"></span><span class="blackswan-events pr-1"></span> events in last 5 Years</span>
                                     </label>
                                 </div>
                             </div>
@@ -522,42 +522,37 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.2.0/chart.min.js"
         integrity="sha512-VMsZqo0ar06BMtg0tPsdgRADvl0kDHpTbugCBBrL55KmucH6hP9zWdLIWY//OTfMnzz6xWQRxQqsUFefwHuHyg=="
         crossorigin="anonymous"></script>
-<script type="text/javascript" src="{{ url_for('static', filename='scripts/pages/spyder_project.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='scripts/pages/snp_graph.js') }}"></script>
 <script type="text/javascript" src="{{ url_for('static', filename='scripts/pages/settings.js') }}"></script>
 {% endblock %}
 
 {% block modal %}
 <div class="modal snp-modal" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog modal-bigger">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLongTitle">S&P in last 5 years</h5>
-                <button type="button" class="close snp-modal-close" aria-label="Close">
+                <h5 class="modal-title" id="blackswanModalTitle">S&P in last 5 years</h5>
+                <button type="button" class="snp-modal-close close" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <table class="ui searchable sortable unstackable selectable celled table snp-tbl">
-                <thead>
-                <tr>
-                    <th>Date</th>
-                    <th>Open</th>
-                    <th>High</th>
-                    <th>Low</th>
-                    <th>Close</th>
-                    <th>Adj Close</th>
-                    <th>Volume</th>
-                    <th>Drop</th>
-                    <th>DropP</th>
-                </tr>
-                </thead>
-                <tbody>
-
-                </tbody>
-            </table>
+                <div id="snp-flash"></div>
+                <div class="text-muted filter-comment col-md-3">
+                    <span class="text-primary blackswan-filter font-weight-bold"></span>
+                    <span class="blackswan-fixed-filter-text pl-2"></span>
+                </div>
+                <div id="blackswan_sp500" class="height-resize" style="width:100%;"></div>
+                <div id="blackswan-range-div" style="width:100%;">
+                    <label class="form-label" for="range">Market fall safety (Black Swan)</label>
+                    <div class="range-wrap">
+                        <div class="range-value" id="bsw-rangeV"></div>
+                        <input style="width:100%;" id="bsw-range" type="range" min="-8" max="0" value="{{user_settings.algo_positions_for_swan}}" step="0.1">
+                    </div>
+                </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" onclick="save_black_swan()" class="btn btn-secondary btn-lg btn-block">Save</button>
             </div>
         </div>
     </div>

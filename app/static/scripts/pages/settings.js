@@ -1,12 +1,18 @@
 var emotion_settings = parseInt($('#algo_min_emotion').val());
+var min_snp = parseFloat($('#algo_positions_for_swan').val());
 var main_snp = [];
 var main_emotion =[];
+var bsw_snp_main = [];
+var snp_drop_arr = [];
+var bsw_global = [];
 
 $(document).ready(function () {
-    get_snp_data($('#algo_positions_for_swan').val());
+//    get_snp_data($('#algo_positions_for_swan').val());
     get_candidates_by_filter();
     fill_emotion_and_snp_graphs(emotion_settings, true, main_snp, main_emotion);
-    range_set_value();
+    blackswan_modal(bsw_snp_main, snp_drop_arr, min_snp, bsw_global);
+    range_set_value("range","rangeV");
+    range_set_value("bsw-range","bsw-rangeV");
 
     $('.strategy-change').on('input', function(e) {
         $('#strategy_id').val('4')
@@ -25,7 +31,7 @@ $(document).ready(function () {
         var emotion = $(this).val();
 
         $('#range').val(emotion);
-        range_set_value();
+        range_set_value("range","rangeV");
 
         var emotion_dic = update_emotion_days(emotion);
         var new_graph = draw_snp_chart(main_snp, emotion_dic.days_arr, [emotion_dic.series[0]], true);
@@ -34,10 +40,19 @@ $(document).ready(function () {
     })
 
     $('.blackswan-change').on('input', function(e) {
+//        var loading = $(".bsw-loading")
+//        var spinner = $('<div class="spinner-border text-info" role="status"><span class="sr-only">Loading...</span></div>');
+//        loading.empty();
+//        $(".blackswan-events").empty();
+//        loading.append(spinner);
+
         var val = $(this).val();
         if($.isNumeric(val)){
-            get_snp_data(val);
+            change_black_swan(bsw_snp_main, snp_drop_arr, bsw_global, parseFloat(val));
+            $('#bsw-range').val(val);
+            range_set_value("bsw-range","bsw-rangeV");
         }
+//        loading.empty();
     })
 
     $('#signature_full_name').on('input', function(e) {
@@ -81,7 +96,7 @@ $(document).ready(function () {
     });
 
     $("#range").on('input', function(e) {
-        range_set_value();
+        range_set_value("range","rangeV");
     });
 
     $("#range").on('change', function(e) {
@@ -92,13 +107,35 @@ $(document).ready(function () {
         $('.emotion-change').val(emotion);
     });
 
+    $("#bsw-range").on('input', function(e) {
+        range_set_value("bsw-range","bsw-rangeV");
+    });
+
+    $("#bsw-range").on('change', function(e) {
+        var bsw = $(this).val();
+//        var loading = $(".bsw-loading")
+//        var spinner = $('<div class="spinner-border text-info" role="status"><span class="sr-only">Loading...</span></div>');
+//        loading.empty();
+//        $(".blackswan-events").empty();
+//        loading.append(spinner);
+        change_black_swan(bsw_snp_main, snp_drop_arr, bsw_global, parseFloat(bsw));
+        $('.blackswan-change').val(bsw);
+    });
+
 })
 
 function save_emotion(){
     var emotion = parseInt($('.emotion-change').val());
     $.post("/algotradersettings/save_emotion_settings",{emotion: emotion}, function(data) {
-//        var data_parsed = jQuery.parseJSON(data);
         $('#flash').append(flashMessage("success","Emotion saved"));
+
+    });
+}
+
+function save_black_swan(){
+    var bsw = parseFloat($('.blackswan-change').val());
+    $.post("/algotradersettings/save_black_swan",{bsw: bsw}, function(data) {
+        $('#snp-flash').append(flashMessage("success","Market fall safety saved"));
 
     });
 }
@@ -141,29 +178,6 @@ function UpdateDefaultStrategy(el){
     });
 }
 
-function get_snp_data(min_snp){
-    $.post("/algotradersettings/get_snp500_data",{min_snp: min_snp}, function(data) {
-            var data_parsed = jQuery.parseJSON(data);
-            $('.blackswan-min').html(min_snp+'%')
-            var tbody = $('.modal-body').find('tbody');
-            tbody.empty();
-            var tr = $("<tr></tr>");
-            var td=$("<td></td>");
-            var count = 0;
-            $.each(data_parsed, function(key, value) {
-                count++;
-                tr = $("<tr></tr>")
-                td = $("<td class='text-center font-weight-bold'></td>").text(key.substring(0,key.indexOf("T")));
-                tr.append(td);
-                $.each(value, function(k, v) {
-                    td = $("<td class='text-center'></td>").text(value[k].toFixed(2));
-                    tr.append(td);
-                });
-                tbody.append(tr);
-            });
-            $('.blackswan-events').html(count.toString())
-        });
-}
 
 function get_candidates_by_filter(){
     var send_data={
@@ -194,4 +208,6 @@ function get_candidates_by_filter(){
             $(".fixed-total-filter-text").text("Candidates match in Total");
         });
 }
+
+
 
