@@ -1,4 +1,69 @@
 
+function draw_graph(container_name, title, series, range_selector, with_tooltip_formatter, if_by_last_el){
+    var tooltip = {
+            useHTML: true,
+            valueDecimals: 2,
+            formatter: function() {
+                var x = this.x;
+                var date = new Date(x);
+                var all_series = this.points[0].series.chart.series;
+                var i = if_by_last_el ? -2 : 0; // -2: last element - navigation
+                var series = $(all_series).get(i);
+                var x_arr = series.processedXData;
+                var index_in_arr = x_arr.indexOf(x);
+                var data = series.processedYData[index_in_arr];
+                if(isFloat(data)){
+                    data = data.toFixed(2);
+                }
+                var html = '<table><tr><th colspan="2">'+date.toDateString()+'</th></tr><tr><td style="color: #00c36f">'+series.name+': </td>' +
+                           '<td style="text-align: right"><b>'+data+'</b></td></tr></table>';
+
+                return html;
+            }
+        };
+    if(!with_tooltip_formatter){
+        tooltip = {
+            valueDecimals: 2
+        };
+    }
+
+    var chart = Highcharts.stockChart(container_name, {
+//        xAxis: xAxis,
+        rangeSelector: {
+            selected: range_selector
+        },
+        title: {
+            text: title
+        },
+        tooltip: tooltip,
+        series: series
+    });
+    return chart;
+}
+
+function get_range_selector_index(e, range_selector){
+    var btn_index = range_selector;
+    if(typeof(e.rangeSelectorButton)!== 'undefined') {
+        var c = e.rangeSelectorButton.count;
+        var t = e.rangeSelectorButton.type;
+        if(c == 1 && t == "month"){
+          btn_index = 0;
+        } else if(c == 3 && t == "month"){
+          btn_index = 1;
+        } else if(c == 6 && t == "month"){
+          btn_index = 2;
+        } else if(t == "ytd"){
+          btn_index = 3;
+        } else if(c == 1 && t == "year"){
+          btn_index = 4;
+        } else if(t == "all"){
+          btn_index = 5;
+        }
+    }
+    return btn_index;
+}
+
+
 function get_days_for_snp_backtesting(emotion_settings, main_emotion, is_with_emotion_series){
     var days_arr=[];
     var pos_emotion_arr=[];
@@ -212,46 +277,6 @@ function fill_emotion_and_snp_graphs(emotion_settings, is_settings_modal, main_s
     });
 }
 
-function draw_graph(container_name, title, series, range_selector, with_tooltip_formatter, if_by_last_el){
-    var tooltip = {
-            useHTML: true,
-            valueDecimals: 2,
-            formatter: function() {
-                var x = this.x;
-                var date = new Date(x);
-                var all_series = this.points[0].series.chart.series;
-                var i = if_by_last_el ? -2 : 0; // -2: last element - navigation
-                var series = $(all_series).get(i);
-                var x_arr = series.processedXData;
-                var index_in_arr = x_arr.indexOf(x);
-                var data = series.processedYData[index_in_arr];
-                if(isFloat(data)){
-                    data = data.toFixed(2);
-                }
-                var html = '<table><tr><th colspan="2">'+date.toDateString()+'</th></tr><tr><td style="color: #00c36f">'+series.name+': </td>' +
-                           '<td style="text-align: right"><b>'+data+'</b></td></tr></table>';
-
-                return html;
-            }
-        };
-    if(!with_tooltip_formatter){
-        tooltip = {
-            valueDecimals: 2
-        };
-    }
-    var chart = Highcharts.stockChart(container_name, {
-        rangeSelector: {
-            selected: range_selector
-        },
-        title: {
-            text: title
-        },
-        tooltip: tooltip,
-        series: series
-    });
-    return chart;
-}
-
 function remove_series(chart, seriesname){
     var series = chart.series;
     for (s of series){
@@ -267,6 +292,7 @@ function add_series(chart, series_arr){
     }
 }
 
+
 //**** BLACK SWAN ****
 
 function blackswan_modal(bsw_snp_main, snp_drop_arr, min_snp, bsw_global){
@@ -277,71 +303,54 @@ function blackswan_modal(bsw_snp_main, snp_drop_arr, min_snp, bsw_global){
     loading.append(spinner);
 
     var url = '/algotradersettings/get_snp500_data/' + min_snp
-//    var url_complete_graph = '/algotradersettings/get_complete_graph_for_ticker/^GSPC';
     $.getJSON(url, function(data) {
-//        snp = snp['historical'];
         data = data['historical'];
         bsw_global = $.merge(bsw_global, data);
         var pos_snp_arr=[];
         var snp_arr=[];
 
-        var date_index = new Date();
-        var index = 0;
         for (d of bsw_global)
         {
             parsed_d=Date.parse(d["Date"]);
             snp_drop_arr.push( [parsed_d , d["dropP"] ]);
             bsw_snp_main.push( [parsed_d , d["Close"] ]);
 
-            var date_d = new Date(d["Date"]);
-            date_d.setDate(date_d.getDate() - 1);
             if(d["dropP"] < min_snp){
-                if(date_d.toDateString() == date_index.toDateString() && index > 0){
-                var pos_snp = $(pos_snp_arr).get(-1);
-                date_d.setDate(date_d.getDate() + 1);
-                pos_snp.push( [parsed_d , d["Close"]]);
-            }
-                else
-                {
-                    date_d.setDate(date_d.getDate() + 1);
-                    var new_pos_snp = [];
-                    new_pos_snp.push([parsed_d , d["Close"]]);
-                    pos_snp_arr.push(new_pos_snp);
-                }
-                date_index = date_d;
-                index += 1;
+                pos_snp_arr.push([parsed_d , d["dropP"]]);
             }
         }
-
-//        for (d of all_snp)
-//        {
-//            parsed_d=Date.parse(d["Date"]);
-//            bsw_snp_main.push( [parsed_d , d["Close"] ]);
-//        }
 
         var series = []
         var main = {
             name: "S&P 500",
             data: bsw_snp_main,
-            id: 'dataseries'
+            id: 'dataseries_snp_main'
 //            enableMouseTracking: false
         };
         series.push(main);
-
-        var i =1;
-        var days_num = 0;
+        var data_flag = [];
         for (arr of pos_snp_arr){
-            days_num += arr.length;
-            var range = {
-                name: "Color",
-                data: arr,
-                color: '#FF0000',
-                lineWidth:3,
-                id: 'Color' + i,
-            };
-            series.push(range);
-            i += 1;
+            var flag = {
+                x: arr[0],
+                title: ' ',
+                text: 'DropP: ' + arr[1].toFixed(2)
+            }
+            data_flag.push(flag);
         }
+
+        var flags = {
+                type: 'flags',
+                data: data_flag,
+                onSeries: 'dataseries_snp_main',
+                shape: 'circlepin',
+                color: '#FF0000',
+                fillColor: '#FF0000',
+                width: 10
+            }
+
+        series.push(flags);
+
+        var days_num = pos_snp_arr.length;
 
         var dropP = {
             name: 'DropP',
@@ -350,7 +359,7 @@ function blackswan_modal(bsw_snp_main, snp_drop_arr, min_snp, bsw_global){
         };
         series.push(dropP);
 
-        var snp_chart = draw_graph('blackswan_sp500', 'S&P 500', series, 5, true, true);
+        var snp_chart = draw_graph('blackswan_sp500', 'S&P 500', series, 5, false, true);
         var hidden_series = snp_chart.series[series.length - 1];
         hidden_series.hide();
 
@@ -372,27 +381,12 @@ function change_black_swan(bsw_snp_main, snp_drop_arr, bsw_global, min_snp){
 
         var pos_snp_arr=[];
 
-        var date_index = new Date();
-        var index = 0;
         for (d of bsw_global)
         {
-            var parsed_d=Date.parse(d["Date"]);
-            var date_d = new Date(d["Date"]);
+            parsed_d=Date.parse(d["Date"]);
+
             if(d["dropP"] < min_snp){
-                if(date_d.toDateString() == date_index.toDateString() && index > 0){
-                    var pos_snp = $(pos_snp_arr).get(-1);
-                    date_d.setDate(date_d.getDate() + 1);
-                    pos_snp.push( [parsed_d , d["Close"]]);
-                }
-                else
-                {
-                    date_d.setDate(date_d.getDate() + 1);
-                    var new_pos_snp = [];
-                    new_pos_snp.push([parsed_d , d["Close"]]);
-                    pos_snp_arr.push(new_pos_snp);
-                }
-                date_index = date_d;
-                index += 1;
+                pos_snp_arr.push([parsed_d , d["dropP"]]);
             }
         }
 
@@ -405,20 +399,29 @@ function change_black_swan(bsw_snp_main, snp_drop_arr, bsw_global, min_snp){
         };
         series.push(main);
 
-        var i =1;
-        var days_num = 0;
+        var data_flag = [];
         for (arr of pos_snp_arr){
-            days_num += arr.length;
-            var range = {
-                name: "Color",
-                data: arr,
-                color: '#FF0000',
-                lineWidth:3,
-                id: 'Color_snp' + i,
-            };
-            series.push(range);
-            i += 1;
+            var flag = {
+                x: arr[0],
+                title: ' ',
+                text: 'DropP: ' + arr[1].toFixed(2)
+            }
+            data_flag.push(flag);
         }
+
+        var flags = {
+                type: 'flags',
+                data: data_flag,
+                onSeries: 'dataseries_snp_main',
+                shape: 'circlepin',
+                color: '#FF0000',
+                fillColor: '#FF0000',
+                width: 10
+            }
+
+        series.push(flags);
+
+        var days_num = pos_snp_arr.length;
 
         var dropP = {
             name: 'DropP',
@@ -427,7 +430,7 @@ function change_black_swan(bsw_snp_main, snp_drop_arr, bsw_global, min_snp){
         };
         series.push(dropP);
 
-        var snp_chart = draw_graph('blackswan_sp500', 'S&P 500', series, 5, true, true);
+        var snp_chart = draw_graph('blackswan_sp500', 'S&P 500', series, 5, false, true);
         var hidden_series = snp_chart.series[series.length - 1];
         hidden_series.hide();
 
