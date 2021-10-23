@@ -511,6 +511,10 @@
             </form>
         </div>
     </div>
+    <script>
+    var reports = {{ reports|tojson }};
+    var bsw_global = {{ global_snp|tojson }};
+    </script>
 </div>
 {% endblock %}
 
@@ -538,18 +542,36 @@
             </div>
             <div class="modal-body">
                 <div id="snp-flash"></div>
-                <div class="text-muted filter-comment col-md-3">
-                    <span class="text-primary blackswan-filter font-weight-bold"></span>
-                    <span class="blackswan-fixed-filter-text pl-2"></span>
-                </div>
-                <div id="blackswan_sp500" class="height-resize" style="width:100%;"></div>
-                <div id="blackswan-range-div" style="width:100%;">
-                    <label class="form-label" for="range">Market fall safety (Black Swan)</label>
-                    <div class="range-wrap">
-                        <div class="range-value" id="bsw-rangeV"></div>
-                        <input style="width:100%;" id="bsw-range" type="range" min="-8" max="0" value="{{user_settings.algo_positions_for_swan}}" step="0.1">
+                <div class="mb-3 card">
+                    <div class="card-header">
+                        <ul class="nav nav-justified">
+                            <li class="nav-item"><a data-toggle="tab" href="#snp-500-tab" class="nav-link active show">S&P 500</a></li>
+                            <li class="nav-item"><a data-toggle="tab" href="#my-data-tab" class="nav-link">Portfolio Performance</a></li>
+                        </ul>
+                    </div>
+                    <div class="card-body">
+                        <div class="tab-content">
+                            <div class="tab-pane active show" id="snp-500-tab" role="tabpanel">
+                                <div class="text-muted filter-comment col-md-3">
+                                    <span class="text-primary blackswan-filter font-weight-bold"></span>
+                                    <span class="blackswan-fixed-filter-text pl-2"></span>
+                                </div>
+                                <div id="blackswan_sp500" class="height-resize" style="width:100%;"></div>
+                            </div>
+
+                            <div class="tab-pane" id="my-data-tab" role="tabpanel">
+                                <div id="reports_blackswan_sp500" class="height-resize" style="width:100%;"></div>
+                            </div>
+                        </div>
                     </div>
                 </div>
+                <div id="blackswan-range-div" style="width:100%;">
+                                    <label class="form-label" for="range">Market fall safety (Black Swan)</label>
+                                    <div class="range-wrap">
+                                        <div class="range-value" id="bsw-rangeV"></div>
+                                        <input style="width:100%;" id="bsw-range" type="range" min="-8" max="0" value="{{user_settings.algo_positions_for_swan}}" step="0.1">
+                                    </div>
+                                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" onclick="save_black_swan()" class="btn btn-secondary btn-lg btn-block">Save</button>
@@ -569,11 +591,29 @@
             </div>
             <div class="modal-body">
                 <div id="flash"></div>
-                <div class="text-muted filter-comment col-md-3">
+                <div class="mb-3 card">
+                    <div class="card-header">
+                        <ul class="nav nav-justified">
+                            <li class="nav-item"><a data-toggle="tab" href="#emotion-tab" class="nav-link active show">S&P 500</a></li>
+                            <li class="nav-item"><a data-toggle="tab" href="#emotion-reports-tab" class="nav-link">Portfolio Performance</a></li>
+                        </ul>
+                    </div>
+                    <div class="card-body">
+                        <div class="tab-content">
+                            <div class="tab-pane active show" id="emotion-tab" role="tabpanel">
+                                <div class="text-muted filter-comment col-md-3">
                     <span class="text-primary emotion-filter font-weight-bold"></span>
                     <span class="emotion-fixed-filter-text pl-2"></span>
                 </div>
-                <div id="container_sp500" class="height-resize" style="width:100%;"></div>
+                                <div id="container_sp500" class="height-resize" style="width:100%;"></div>
+                            </div>
+
+                            <div class="tab-pane" id="emotion-reports-tab" role="tabpanel">
+                                <div id="reports_emotion" class="height-resize" style="width:100%;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <div id="emotion-range-div" style="width:100%;">
                     <label class="form-label" for="range">Emotion</label>
                     <div class="range-wrap">

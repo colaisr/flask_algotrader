@@ -1,7 +1,7 @@
 $(document).ready(function () {
     $(window).resize(function() {
         var width = $(this).width() - 100;
-        var height = $(this).height() - 300;
+        var height = $(this).height() - 400;
         $('.modal-bigger').css('max-width', width);
         $('.height-resize').css('height',height);
     }).resize();

@@ -1,16 +1,23 @@
 var emotion_settings = parseInt($('#algo_min_emotion').val());
 var min_snp = parseFloat($('#algo_positions_for_swan').val());
 var main_snp = [];
+var main_reports = [];
 var main_emotion =[];
+var main_reports_emotion =[];
 var bsw_snp_main = [];
 var snp_drop_arr = [];
-var bsw_global = [];
+var bsw_reports_main = [];
+var reports_snp_drop_arr = [];
+bsw_global = jQuery.parseJSON(jQuery.parseJSON(bsw_global));
+reports =jQuery.parseJSON(reports);
+var days_num = 0;
 
 $(document).ready(function () {
 //    get_snp_data($('#algo_positions_for_swan').val());
     get_candidates_by_filter();
-    fill_emotion_and_snp_graphs(emotion_settings, true, main_snp, main_emotion);
+    fill_emotion_and_snp_graphs(emotion_settings, true, main_snp, main_emotion, main_reports_emotion, main_reports, reports);
     blackswan_modal(bsw_snp_main, snp_drop_arr, min_snp, bsw_global);
+    blackswan_report_modal(bsw_reports_main, reports_snp_drop_arr, min_snp, reports, bsw_global)
     range_set_value("range","rangeV");
     range_set_value("bsw-range","bsw-rangeV");
 
@@ -35,24 +42,21 @@ $(document).ready(function () {
 
         var emotion_dic = update_emotion_days(emotion);
         var new_graph = draw_snp_chart(main_snp, emotion_dic.days_arr, [emotion_dic.series[0]], true);
+        change_emotion_for_reports(main_reports, emotion_dic.days_arr, [emotion_dic.series[0]]);
 
         loading.empty();
     })
 
     $('.blackswan-change').on('input', function(e) {
-//        var loading = $(".bsw-loading")
-//        var spinner = $('<div class="spinner-border text-info" role="status"><span class="sr-only">Loading...</span></div>');
-//        loading.empty();
-//        $(".blackswan-events").empty();
-//        loading.append(spinner);
 
         var val = $(this).val();
         if($.isNumeric(val)){
-            change_black_swan(bsw_snp_main, snp_drop_arr, bsw_global, parseFloat(val));
+            change_black_swan(bsw_snp_main, snp_drop_arr, bsw_global, parseFloat(val),'blackswan_sp500', 5, 'S&P 500');
+            change_black_swan(bsw_reports_main, reports_snp_drop_arr, bsw_global, parseFloat(val),'reports_blackswan_sp500', 4, 'Reports');
             $('#bsw-range').val(val);
             range_set_value("bsw-range","bsw-rangeV");
         }
-//        loading.empty();
+
     })
 
     $('#signature_full_name').on('input', function(e) {
@@ -103,7 +107,8 @@ $(document).ready(function () {
 //        $('#container_sp500').empty();
         var emotion = $(this).val();
         var emotion_dic = update_emotion_days(emotion);
-        var new_graph = draw_snp_chart(main_snp, emotion_dic.days_arr, [emotion_dic.series[0]], true);
+        var new_graph = draw_snp_chart(main_snp, emotion_dic.days_arr, [emotion_dic.series[0]], true, 'container_sp500');
+        change_emotion_for_reports(main_reports, emotion_dic.days_arr, [emotion_dic.series[0]]);
         $('.emotion-change').val(emotion);
     });
 
@@ -113,16 +118,13 @@ $(document).ready(function () {
 
     $("#bsw-range").on('change', function(e) {
         var bsw = $(this).val();
-//        var loading = $(".bsw-loading")
-//        var spinner = $('<div class="spinner-border text-info" role="status"><span class="sr-only">Loading...</span></div>');
-//        loading.empty();
-//        $(".blackswan-events").empty();
-//        loading.append(spinner);
-        change_black_swan(bsw_snp_main, snp_drop_arr, bsw_global, parseFloat(bsw));
+        change_black_swan(bsw_snp_main, snp_drop_arr, bsw_global, parseFloat(bsw), 'blackswan_sp500', 5, 'S&P 500');
+        change_black_swan(bsw_reports_main, reports_snp_drop_arr, bsw_global, parseFloat(bsw),'reports_blackswan_sp500', 4, 'Reports');
         $('.blackswan-change').val(bsw);
     });
 
 })
+
 
 function save_emotion(){
     var emotion = parseInt($('.emotion-change').val());

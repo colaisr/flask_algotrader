@@ -14,7 +14,7 @@ from flask_login import login_required, current_user
 from werkzeug.utils import redirect
 
 from app import csrf, db
-from app.models import UserSetting, Strategy, UserStrategySettingsDefault, ClientCommand, Fgi_score
+from app.models import UserSetting, Strategy, UserStrategySettingsDefault, ClientCommand, Fgi_score, ReportStatistic
 from app.email import send_email
 from app.research import yahoo_research as yahoo
 
@@ -30,9 +30,19 @@ def usersettings():
         return redirect(url_for('station.download'))
     user_settings = UserSetting.query.filter_by(email=current_user.email).first()
     strategies = Strategy.query.filter(Strategy.id != 4).all()
+    reports = ReportStatistic.query.filter_by(email=current_user.email).all()
+
+    df = yahoo.get_snp500_fails_intraday_lower_than(user_settings.algo_positions_for_swan)
+    df.reset_index(level=0, inplace=True)
+    # jhistory = df.to_dict(orient='records')
+    jhistory = df.to_json(orient="index", date_format='iso')
+    global_snp = jsonify(symbol='^GSPC', historical=jhistory)
+
     return render_template('userview/algotraderSettings.html',
                            user_settings=user_settings,
-                           strategies=strategies)
+                           strategies=strategies,
+                           reports=json.dumps(reports, cls=general.JsonEncoder),
+                           global_snp=json.dumps(jhistory, cls=general.JsonEncoder))
 
 
 @csrf.exempt

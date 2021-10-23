@@ -153,19 +153,19 @@ function get_days_for_snp_backtesting(emotion_settings, main_emotion, is_with_em
     return {days_arr: days_arr, series: series};
 }
 
-function draw_snp_chart(main_snp, days_arr, emotion_series, is_settings_modal){
+function draw_snp_chart(main_snp, days_arr, emotion_series, is_settings_modal, container){
     var dic = get_snp_series_by_emotion(main_snp, days_arr, emotion_series);
     var series = []
     var main = {
         name: "S&P 500",
         data: main_snp,
         id: 'dataseries',
-        enableMouseTracking: false
+//        enableMouseTracking: false
     };
     series.push(main);
     series = $.merge(series, dic.series);
     var new_arr = $.merge(series, emotion_series);
-    var snp_chart = draw_graph('container_sp500', 'S&P 500', new_arr, 4, true, true);
+    var snp_chart = draw_graph(container, 'S&P 500', new_arr, 4, true, true);
     var hidden_series = snp_chart.series[new_arr.length - 1];
     hidden_series.hide();
 
@@ -176,6 +176,24 @@ function draw_snp_chart(main_snp, days_arr, emotion_series, is_settings_modal){
         $(".emotion-filter").text(dic.days_num);
         $(".emotion-fixed-filter-text").text("days in last year");
     }
+    return snp_chart;
+}
+
+function change_emotion_for_reports(main_reports, days_arr, emotion_series){
+    var dic = get_snp_series_by_emotion(main_reports, days_arr, emotion_series);
+    var series = []
+    var main = {
+        name: "Reports",
+        data: main_reports,
+        id: 'dataseries_report',
+//                enableMouseTracking: false
+    };
+    series.push(main);
+    series = $.merge(series, dic.series);
+    var new_arr = $.merge(series, emotion_series);
+    var snp_chart = draw_graph('reports_emotion', 'Reports', new_arr, 4, true, true);
+    var hidden_series = snp_chart.series[new_arr.length - 1];
+    hidden_series.hide();
     return snp_chart;
 }
 
@@ -226,7 +244,7 @@ function get_snp_series_by_emotion(main_snp, days_arr){
     return {series: series, days_num: days_num};
 }
 
-function fill_emotion_and_snp_graphs(emotion_settings, is_settings_modal, main_snp, main_emotion){
+function fill_emotion_and_snp_graphs(emotion_settings, is_settings_modal, main_snp, main_emotion, main_reports_emotion, main_reports, reports){
     var url_emotion = '/algotradersettings/get_all_emotions'
     var url_snp = '/algotradersettings/get_complete_graph_for_ticker/^GSPC';
 
@@ -255,6 +273,9 @@ function fill_emotion_and_snp_graphs(emotion_settings, is_settings_modal, main_s
             var date_e = new Date(e.score_time);
             var parsed_e = Date.parse(date_e.toDateString());
             main_emotion.push( [parsed_e , e.fgi_value]);
+            if(is_settings_modal){
+                main_reports_emotion.push( [parsed_e , e.fgi_value]);
+            }
         }
 
         var emotion_dic = get_days_for_snp_backtesting(emotion_settings, main_emotion, true);
@@ -272,8 +293,34 @@ function fill_emotion_and_snp_graphs(emotion_settings, is_settings_modal, main_s
             var parsed_d = Date.parse(date_d.toDateString());
             main_snp.push([parsed_d , d.Close]);
         }
+        if(is_settings_modal){
+            $.each(reports, function(k,d)
+            {
+                var date_d = new Date(d.report_time);
+                var parsed_d = Date.parse(date_d.toDateString());
+                main_reports.push([parsed_d , d.net_liquidation]);
+            })
+        }
 
-        var snp_chart = draw_snp_chart(main_snp, emotion_dic.days_arr, [emotion_dic.series[0]], is_settings_modal);
+
+        var snp_chart = draw_snp_chart(main_snp, emotion_dic.days_arr, [emotion_dic.series[0]], is_settings_modal,'container_sp500');
+        if(is_settings_modal){
+//            var report_chart = draw_snp_chart(main_reports, emotion_dic.days_arr, [emotion_dic.series[0]], is_settings_modal,'reports_emotion');
+            var dic = get_snp_series_by_emotion(main_reports, emotion_dic.days_arr, [emotion_dic.series[0]]);
+            var series = []
+            var main = {
+                name: "Reports",
+                data: main_reports,
+                id: 'dataseries_report',
+//                enableMouseTracking: false
+            };
+            series.push(main);
+            series = $.merge(series, dic.series);
+            var new_arr = $.merge(series, [emotion_dic.series[0]]);
+            var snp_chart = draw_graph('reports_emotion', 'Reports', new_arr, 4, true, true);
+            var hidden_series = snp_chart.series[new_arr.length - 1];
+            hidden_series.hide();
+        }
     });
 }
 
@@ -296,83 +343,144 @@ function add_series(chart, series_arr){
 //**** BLACK SWAN ****
 
 function blackswan_modal(bsw_snp_main, snp_drop_arr, min_snp, bsw_global){
+
     var loading = $(".bsw-loading")
     var spinner = $('<div class="spinner-border text-info" role="status"><span class="sr-only">Loading...</span></div>');
     loading.empty();
     $(".blackswan-events").empty();
     loading.append(spinner);
 
-    var url = '/algotradersettings/get_snp500_data/' + min_snp
-    $.getJSON(url, function(data) {
-        data = data['historical'];
-        bsw_global = $.merge(bsw_global, data);
-        var pos_snp_arr=[];
-        var snp_arr=[];
+    var pos_snp_arr=[];
+    var snp_arr=[];
 
-        for (d of bsw_global)
-        {
-            parsed_d=Date.parse(d["Date"]);
-            snp_drop_arr.push( [parsed_d , d["dropP"] ]);
-            bsw_snp_main.push( [parsed_d , d["Close"] ]);
+    $.each(bsw_global, function(k,d)
+    {
+        parsed_d=Date.parse(d.Date);
+        snp_drop_arr.push( [parsed_d , d.dropP ]);
+        bsw_snp_main.push( [parsed_d , d.Close ]);
 
-            if(d["dropP"] < min_snp){
-                pos_snp_arr.push([parsed_d , d["dropP"]]);
-            }
+        if(d.dropP < min_snp){
+            pos_snp_arr.push([parsed_d , d.dropP]);
         }
+    })
 
-        var series = []
-        var main = {
-            name: "S&P 500",
-            data: bsw_snp_main,
-            id: 'dataseries_snp_main'
+    var series = []
+    var main = {
+        name: "S&P 500",
+        data: bsw_snp_main,
+        id: 'dataseries_snp_main'
 //            enableMouseTracking: false
-        };
-        series.push(main);
-        var data_flag = [];
-        for (arr of pos_snp_arr){
-            var flag = {
-                x: arr[0],
-                title: ' ',
-                text: 'DropP: ' + arr[1].toFixed(2)
-            }
-            data_flag.push(flag);
+    };
+    series.push(main);
+    var data_flag = [];
+    for (arr of pos_snp_arr){
+        var flag = {
+            x: arr[0],
+            title: ' ',
+            text: 'DropP: ' + arr[1].toFixed(2)
+        }
+        data_flag.push(flag);
+    }
+
+    var flags = {
+            type: 'flags',
+            data: data_flag,
+            onSeries: 'dataseries_snp_main',
+            shape: 'circlepin',
+            color: '#FF0000',
+            fillColor: '#FF0000',
+            width: 10
         }
 
-        var flags = {
-                type: 'flags',
-                data: data_flag,
-                onSeries: 'dataseries_snp_main',
-                shape: 'circlepin',
-                color: '#FF0000',
-                fillColor: '#FF0000',
-                width: 10
-            }
+    series.push(flags);
 
-        series.push(flags);
+    var days_num = pos_snp_arr.length;
 
-        var days_num = pos_snp_arr.length;
+    var dropP = {
+        name: 'DropP',
+        data: snp_drop_arr,
+        id: 'dataseries_drop',
+    };
+    series.push(dropP);
 
-        var dropP = {
-            name: 'DropP',
-            data: snp_drop_arr,
-            id: 'dataseries_drop',
-        };
-        series.push(dropP);
+    var snp_chart = draw_graph('blackswan_sp500', 'S&P 500', series, 5, false, true);
+    var hidden_series = snp_chart.series[series.length - 1];
+    hidden_series.hide();
 
-        var snp_chart = draw_graph('blackswan_sp500', 'S&P 500', series, 5, false, true);
-        var hidden_series = snp_chart.series[series.length - 1];
-        hidden_series.hide();
-
-        $('.blackswan-min').html(min_snp+'%');
-        $('.blackswan-events').html(days_num);
-        $('.blackswan-filter').html(days_num);
-        $('.blackswan-fixed-filter-text').html("events in last 5 Years");
-        loading.empty();
-    });
-
+    $('.blackswan-min').html(min_snp+'%');
+    $('.blackswan-events').html(days_num);
+    $('.blackswan-filter').html(days_num);
+    $('.blackswan-fixed-filter-text').html("events in last 5 Years");
+    loading.empty();
 }
 
-function change_black_swan(bsw_snp_main, snp_drop_arr, bsw_global, min_snp){
+function blackswan_report_modal(bsw_reports_main, reports_snp_drop_arr, min_snp, reports, bsw_global){
+
+//    data = data['historical'];
+//    bsw_global = jQuery.parseJSON(jQuery.parseJSON(bsw_global));
+    var pos_snp_arr=[];
+
+    $.each(bsw_global, function(k,d)
+    {
+        parsed_d=Date.parse(d.Date);
+        reports_snp_drop_arr.push( [parsed_d , d.dropP ]);
+
+        if(d.dropP < min_snp){
+            pos_snp_arr.push([parsed_d , d.dropP]);
+        }
+    })
+
+    $.each(reports, function(k,d)
+    {
+        parsed_d=Date.parse(d.report_time);
+        bsw_reports_main.push( [parsed_d , d.net_liquidation ]);
+    })
+
+    var series = []
+    var main = {
+        name: "Report",
+        data: bsw_reports_main,
+        id: 'dataseries_report_main'
+//            enableMouseTracking: false
+    };
+    series.push(main);
+    var data_flag = [];
+    for (arr of pos_snp_arr){
+        var flag = {
+            x: arr[0],
+            title: ' ',
+            text: 'DropP: ' + arr[1].toFixed(2)
+        }
+        data_flag.push(flag);
+    }
+
+    var flags = {
+            type: 'flags',
+            data: data_flag,
+            onSeries: 'dataseries_report_main',
+            shape: 'circlepin',
+            color: '#FF0000',
+            fillColor: '#FF0000',
+            width: 10
+        }
+
+    series.push(flags);
+
+    days_num = pos_snp_arr.length;
+
+    var dropP = {
+        name: 'DropP',
+        data: reports_snp_drop_arr,
+        id: 'dataseries_drop',
+    };
+    series.push(dropP);
+
+    var snp_chart = draw_graph('reports_blackswan_sp500', 'Reports', series, 4, false, true);
+    var hidden_series = snp_chart.series[series.length - 1];
+    hidden_series.hide();
+}
+
+function change_black_swan(bsw_snp_main, snp_drop_arr, bsw_global, min_snp, container, range_selector, title){
         var loading = $(".bsw-loading")
         var spinner = $('<div class="spinner-border text-info" role="status"><span class="sr-only">Loading...</span></div>');
         loading.empty();
@@ -381,14 +489,14 @@ function change_black_swan(bsw_snp_main, snp_drop_arr, bsw_global, min_snp){
 
         var pos_snp_arr=[];
 
-        for (d of bsw_global)
+        $.each(bsw_global, function(k,d)
         {
-            parsed_d=Date.parse(d["Date"]);
+            parsed_d=Date.parse(d.Date);
 
-            if(d["dropP"] < min_snp){
-                pos_snp_arr.push([parsed_d , d["dropP"]]);
+            if(d.dropP < min_snp){
+                pos_snp_arr.push([parsed_d , d.dropP]);
             }
-        }
+        })
 
         var series = []
         var main = {
@@ -430,7 +538,7 @@ function change_black_swan(bsw_snp_main, snp_drop_arr, bsw_global, min_snp){
         };
         series.push(dropP);
 
-        var snp_chart = draw_graph('blackswan_sp500', 'S&P 500', series, 5, false, true);
+        var snp_chart = draw_graph(container, title, series, range_selector, false, true);
         var hidden_series = snp_chart.series[series.length - 1];
         hidden_series.hide();
 
@@ -439,4 +547,8 @@ function change_black_swan(bsw_snp_main, snp_drop_arr, bsw_global, min_snp){
         $('.blackswan-filter').html(days_num);
         $('.blackswan-fixed-filter-text').html("events in last 5 Years");
         loading.empty();
+}
+
+function draw_reports_chart(reports){
+
 }
