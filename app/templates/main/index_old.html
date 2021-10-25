@@ -1,0 +1,111 @@
+{% extends 'layouts/base.html' %}
+
+{% block content %}
+<div class="app-main__inner">
+    <div class="row">
+        <div class="col-md-6 col-xl-4">
+            <div class="card mb-3 widget-content">
+                <div class="widget-content-outer">
+                    <div class="widget-content-wrapper">
+                        <div class="widget-content-left">
+                            <div class="widget-heading">Users</div>
+                            <div class="widget-subheading">Registered users</div>
+                        </div>
+                        <div class="widget-content-right">
+                            <div class="widget-numbers text-success">{{system_status['users_registered']}}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-xl-4">
+            <div class="card mb-3 widget-content">
+                <div class="widget-content-outer">
+                    <div class="widget-content-wrapper">
+                        <div class="widget-content-left">
+                            <div class="widget-heading">Tickers</div>
+                            <div class="widget-subheading">Candidates tracked daily</div>
+                        </div>
+                        <div class="widget-content-right">
+                            <div class="widget-numbers text-success">{{system_status['tickers_tracked']}}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-xl-4">
+            <div class="card mb-3 widget-content">
+                <div class="widget-content-outer">
+                    <div class="widget-content-wrapper">
+                        <div class="widget-content-left">
+                            <div class="widget-heading">Executions</div>
+                            <div class="widget-subheading">Deals executed</div>
+                        </div>
+                        <div class="widget-content-right">
+                            <div class="widget-numbers text-success">{{system_status['all_positions']}}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6 col-xl-4">
+            <div class="card mb-3 widget-content">
+                <div class="widget-content-outer">
+                    <div class="widget-content-wrapper">
+                        <div class="widget-content-left">
+                            <div class="widget-heading">Funds</div>
+                            <div class="widget-subheading">All users portfolio value</div>
+                        </div>
+                        <div class="widget-content-right">
+                            <div class="widget-numbers text-warning">{{system_status['funds'] | round |int}} $</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-xl-4">
+            <div class="card mb-3 widget-content">
+                <div class="widget-content-outer">
+                    <div class="widget-content-wrapper">
+                        <div class="widget-content-left">
+                            <div class="widget-heading">Last Update</div>
+                            <div class="widget-subheading">Last data update</div>
+                        </div>
+                        <div class="widget-content-right">
+                            <div class="text-primary">{{system_status['last_update_date']}}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-xl-4">
+            <div class="card mb-3 widget-content">
+                <div class="widget-content-wrapper">
+                    <div class="widget-content-left">
+                        <div class="widget-heading">Success Rate</div>
+                    </div>
+                    <div class="widget-content-right filter-items">
+                        <div class="position-items">
+                            <div class="item info-items pr-3" data-toggle="tooltip" data-placement="bottom" title="Positions closed for technical reason">
+                                <div class="text-warning text-center">{{system_status['technical_positions']}}</div>
+                                <div class="label-info text-warning">Technical</div>
+                            </div>
+                            <div class="item info-items pr-3">
+                                <div class="text-success text-center">{{system_status['profit_positions']}}</div>
+                                <div class="label-info text-success">Success</div>
+                            </div>
+                            <div class="item last-item info-items">
+                                <div class="text-danger text-center">{{system_status['lost_positions']}}</div>
+                                <div class="label-info text-danger">Fail</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+

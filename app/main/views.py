@@ -27,7 +27,7 @@ def index():
 
         last_update_date = db.session.query(LastUpdateSpyderData.last_update_date).order_by(LastUpdateSpyderData.start_process_time.desc()).first().last_update_date
         central = general.utc_datetime_to_local(last_update_date)
-        system_status['last_update_date'] = central.strftime("%d %b, %Y %H:%M")
+        system_status['last_update_date'] = central.strftime("%d %b, %Y")
 
         system_status['users_registered'] = len(Report.query.all())
 
@@ -40,6 +40,7 @@ def index():
         system_status['technical_positions'] = len(technical_positions)
         system_status['all_positions'] = len(closed_positions)
         system_status['funds'] = db.session.query(db.func.sum(Report.net_liquidation)).scalar()
+        # return render_template('main/index_old.html', system_status=system_status)
         return render_template('main/index.html', system_status=system_status)
 
 

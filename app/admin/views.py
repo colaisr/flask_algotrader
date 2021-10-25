@@ -45,7 +45,7 @@ admin = Blueprint('admin', __name__)
 @admin_required
 def index():
     """Admin dashboard page."""
-    return render_template('admin/index.html')
+    return render_template('admin/admin_index.html')
 
 
 @admin.route('/new-user', methods=['GET', 'POST'])
