@@ -26,6 +26,8 @@
         <link rel="stylesheet" href="{{ url_for('static', filename='font-icons/css/helper.css') }}">
         <link rel="stylesheet" href="{{ url_for('static', filename='font-awesome/css/font-awesome.min.css') }}">
 
+        <link rel="stylesheet" href="{{ url_for('static', filename='dist/css/animsition.min.css') }}">
+
         <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
         <style>
             .nav-link{
@@ -63,7 +65,6 @@
                 color: #2F327D;
                 font-size: x-large;
                 font-family: 'FontAwesome';
-                width: 25%;
                 text-align: center;
                 padding-top: 4%;
             }
@@ -73,11 +74,13 @@
                 font-family: 'FontAwesome';
                 text-align: center;
                 font-weight: bold;
+                justify-content: center;
             }
 
-            li{
+            .nav-scroll, li{
                 opacity: 0.8;
                 line-height: 2;
+                color: rgba(0,0,0,.87);
             }
 
             .main-card .swatch-holder{
@@ -109,11 +112,24 @@
                 min-height: 347.5px;
             }
 
+            #algotrader-score .section-title{
+                text-align: inherit;
+            }
+
+            #algotrader-score h4{
+                width: 50%;
+                    margin-top: 10%;
+            }
+
+            #algotrader-score .widget-content-wrapper{
+
+            }
+
 
 
         </style>
     </head>
-    <body style="height: 2000px; background-image: url({{ url_for('static', filename='images/main/background.png') }}); background-size: cover;">
+    <body style="height: 2000px; background-image: url({{ url_for('static', filename='images/main/background.png') }}); background-size: initial;">
         <div id="page-top">
             <!-- Navigation-->
             <nav class="navbar navbar-expand-lg fixed-top" id="mainNav">
@@ -163,11 +179,8 @@
             <!-- Header-->
             <header class="bg-gradient">
                 <div class="container px-4">
-<!--                    <h1 class="fw-bolder">Welcome to Scrolling Nav</h1>-->
-<!--                    <p class="lead">A functional Bootstrap 5 boilerplate for one page scrolling websites</p>-->
-<!--                    <a class="btn btn-lg btn-light" href="#contact">Start scrolling!</a>-->
-                    <div class="section-title font-weight-bold">
-                        <p>Analytics driven automated trading</p>
+                    <div class="section-title font-weight-bold" style="width:25%;">
+                        <h2>Analytics driven automated trading</h2>
                     </div>
                     <div class="main-cards">
                         <div class="row">
@@ -285,11 +298,13 @@
                             <div class="card-body">
                                 <h5 class="card-title">Analytics</h5>
                                 <div class="pt-4">
-                                    <ul>
-                                        <li>AI driven Stock analytics</li>
-                                        <li>Daily updated</li>
-                                        <li>Enriched by 3d party data</li>
-                                    </ul>
+                                    <a class="nav-scroll" href="#algotrader-score">
+                                        <ul>
+                                            <li>AI driven Stock analytics</li>
+                                            <li>Daily updated</li>
+                                            <li>Enriched by 3d party data</li>
+                                        </ul>
+                                    </a>
                                     <ul>
                                         <li>AI driven Market analytics</li>
                                         <li>Hourly updated</li>
@@ -337,24 +352,95 @@
                     </div>
                 </div>
             </header>
-            <!-- About section-->
-<!--            <section id="about">-->
-<!--                <div class="container px-4">-->
-<!--                    <div class="row gx-4 justify-content-center">-->
-<!--                        <div class="col-lg-8">-->
-<!--                            <h2>About this page</h2>-->
-<!--                            <p class="lead">This is a great place to talk about your webpage. This template is purposefully unstyled so you can use it as a boilerplate or starting point for you own landing page designs! This template features:</p>-->
-<!--                            <ul>-->
-<!--                                <li>Clickable nav links that smooth scroll to page sections</li>-->
-<!--                                <li>Responsive behavior when clicking nav links perfect for a one page website</li>-->
-<!--                                <li>Bootstrap's scrollspy feature which highlights which section of the page you're on in the navbar</li>-->
-<!--                                <li>Minimal custom CSS so you are free to explore your own unique design options</li>-->
-<!--                            </ul>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--            </section>-->
-<!--            &lt;!&ndash; Services section&ndash;&gt;-->
+            <!-- Analytics section part 1-->
+            <section id="algotrader-score">
+                <div class="container px-4">
+                    <div class="row gx-4">
+
+                            <div style="width: 40%; position: absolute; z-index: 1;" class="animated lightSpeedIn">
+                                <div class="section-title font-weight-bold">
+                                    <h2>Algotrader score</h2>
+                                    <h4>The data is saved in DB in order to validate the analysis quality</h4>
+                                </div>
+                                <div class="row" style="padding-top: 13%;">
+                                    <div class="col-md-6 col-xl-4">
+                                    <div class="card mb-3 widget-content">
+                                        <div class="widget-content-outer">
+                                            <div class="widget-content-wrapper card-title">
+                                                INSIDER ACTIVITIES
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card mb-3 widget-content">
+                                        <div class="widget-content-outer">
+                                            <div class="widget-content-wrapper card-title">
+                                                FUNDAMENT ALS
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card mb-3 widget-content">
+                                        <div class="widget-content-outer">
+                                            <div class="widget-content-wrapper card-title">
+                                                TECHNIC ALS
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                    <div class="col-md-6 col-xl-4">
+                                        <div class="card mb-3 widget-content">
+                                            <div class="widget-content-outer">
+                                                <div class="widget-content-wrapper card-title">
+                                                    HEDGE FUND ACTIVITY
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="card mb-3 widget-content">
+                                            <div class="widget-content-outer">
+                                                <div class="widget-content-wrapper card-title" style="flex-direction: column;">
+                                                    <h3>SMART SCORE</h3>
+                                                    <div class="text-success" style="font-size: 37px;">
+                                                        8
+                                                    </div>
+                                                    <div class="pt-3">
+                                                        <img class="smart-score-img" src="/static/images/main/smart_score.png" style="width: 100%;">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-xl-4">
+                                        <div class="card mb-3 widget-content">
+                                            <div class="widget-content-outer">
+                                                <div class="widget-content-wrapper card-title">
+                                                    NEW SENTIMENT
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="card mb-3 widget-content">
+                                            <div class="widget-content-outer">
+                                                <div class="widget-content-wrapper card-title">
+                                                    ANALYST RATINGS
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="card mb-3 widget-content">
+                                            <div class="widget-content-outer">
+                                                <div class="widget-content-wrapper card-title">
+                                                    BLOGGER OPTIONS
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div style="position: relative; left: 68%; top: 13%;">
+                               <img class="algo-score-img" src="{{ url_for('static', filename='images/main/algotrader_score.png') }}">
+                            </div>
+
+                    </div>
+                </div>
+            </section>
+            <!-- Services section-->
 <!--            <section class="bg-light" id="services">-->
 <!--                <div class="container px-4">-->
 <!--                    <div class="row gx-4 justify-content-center">-->
@@ -386,5 +472,8 @@
         <!-- Core theme JS-->
         <script type="text/javascript" src="{{ url_for('static', filename='scrolling/js/scripts.js') }}"></script>
         <script src="https://kit.fontawesome.com/9e19a61416.js" crossorigin="anonymous"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+        <script type="text/javascript" src="{{ url_for('static', filename='dist/js/animsition.min.js') }}"></script>
+
     </body>
 </html>
