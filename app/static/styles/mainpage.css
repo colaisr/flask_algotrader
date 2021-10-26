@@ -1,0 +1,94 @@
+.nav-link{
+    color: #6c757d;
+}
+.container{
+    display: flex;
+  flex-wrap: inherit;
+  justify-content: space-between;
+}
+
+.widget-content .widget-numbers {
+    font-size: 15px;
+    font-weight: inherit;
+}
+
+.main-cards{
+    width: 70%;
+}
+
+.rate-item{
+    font-size: smaller;
+}
+
+.card{
+    border-radius: 17px;
+}
+
+.section-title{
+    color: #2F327D;
+    font-size: x-large;
+    font-family: 'FontAwesome';
+    text-align: center;
+    padding-top: 4%;
+}
+
+.card-title{
+    color: #2F327D;
+    font-family: 'FontAwesome';
+    text-align: center;
+    font-weight: bold;
+    justify-content: center;
+}
+
+.nav-scroll, li{
+    opacity: 0.8;
+    line-height: 2;
+    color: rgba(0,0,0,.87);
+}
+
+.main-card .swatch-holder{
+    position: absolute;
+    top: -8%;
+    opacity: .9;
+    text-align: center;
+    font-size: x-large;
+}
+
+#TooltipC-0{
+    left: 39%;
+}
+
+#TooltipC-1{
+    left: 44%;
+}
+
+#TooltipC-2{
+    left: 38%;
+    top: -9%;
+}
+
+#mainNav{
+    background-color: #F0F8FF;
+}
+
+.main-card{
+    min-height: 347.5px;
+}
+
+#algotrader-score .section-title{
+    text-align: inherit;
+}
+
+#algotrader-score h4{
+    width: 50%;
+}
+
+@media (min-width: 992px)
+    .container {
+        max-width: 1120px !important;
+    }
+
+@media (min-width: 1500px)
+    .container {
+        max-width: 1500px !important;
+}

@@ -27,113 +27,16 @@
         <link rel="stylesheet" href="{{ url_for('static', filename='font-awesome/css/font-awesome.min.css') }}">
 
         <link rel="stylesheet" href="{{ url_for('static', filename='dist/css/animsition.min.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='styles/mainpage.css') }}">
 
         <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
-        <style>
-            .nav-link{
-                color: #6c757d;
-            }
-            .container{
-                display: flex;
-              flex-wrap: inherit;
-              justify-content: space-between;
-            }
 
-            @media (min-width: 1500px)
-                .container {
-                    max-width: 1500px;
-            }
-
-            .widget-content .widget-numbers {
-                font-size: 15px;
-                font-weight: inherit;
-            }
-
-            .main-cards{
-                width: 70%;
-            }
-
-            .rate-item{
-                font-size: smaller;
-            }
-
-            .card{
-                border-radius: 17px;
-            }
-
-            .section-title{
-                color: #2F327D;
-                font-size: x-large;
-                font-family: 'FontAwesome';
-                text-align: center;
-                padding-top: 4%;
-            }
-
-            .card-title{
-                color: #2F327D;
-                font-family: 'FontAwesome';
-                text-align: center;
-                font-weight: bold;
-                justify-content: center;
-            }
-
-            .nav-scroll, li{
-                opacity: 0.8;
-                line-height: 2;
-                color: rgba(0,0,0,.87);
-            }
-
-            .main-card .swatch-holder{
-                position: absolute;
-                top: -10%;
-                opacity: .9;
-                text-align: center;
-                font-size: x-large;
-            }
-
-            #TooltipC-0{
-                left: 39%;
-            }
-
-            #TooltipC-1{
-                left: 44%;
-            }
-
-            #TooltipC-2{
-                left: 38%;
-                top: -9%;
-            }
-
-            #mainNav{
-                background-color: #F0F8FF;
-            }
-
-            .main-card{
-                min-height: 347.5px;
-            }
-
-            #algotrader-score .section-title{
-                text-align: inherit;
-            }
-
-            #algotrader-score h4{
-                width: 50%;
-                    margin-top: 10%;
-            }
-
-            #algotrader-score .widget-content-wrapper{
-
-            }
-
-
-
-        </style>
     </head>
-    <body style="height: 2000px; background-image: url({{ url_for('static', filename='images/main/background.png') }}); background-size: initial;">
+    <body style="height: 2000px; background-image: url({{ url_for('static', filename='images/main/1.png') }}); background-size: cover;">
         <div id="page-top">
             <!-- Navigation-->
             <nav class="navbar navbar-expand-lg fixed-top" id="mainNav">
-                <div class="container px-4">
+                <div class="container">
 <!--                    TODO: width mobile-->
                     <a class="navbar-brand" href="#page-top" style="width: 50%;">
                         <img class="logo-img" style="width: 30%;" src="{{ url_for('static', filename='images/Logos_New/logo_transparent_background.png') }}">
@@ -178,13 +81,13 @@
             </nav>
             <!-- Header-->
             <header class="bg-gradient">
-                <div class="container px-4">
+                <div class="container">
                     <div class="section-title font-weight-bold" style="width:25%;">
                         <h2>Analytics driven automated trading</h2>
                     </div>
                     <div class="main-cards">
                         <div class="row">
-                            <div class="col-md-6 col-xl-4">
+                            <div class="col-md-4 col-xl-4">
                                 <div class="card mb-3 widget-content">
                                     <div class="widget-content-outer">
                                         <div class="widget-content-wrapper">
@@ -199,7 +102,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-6 col-xl-4">
+                            <div class="col-md-4 col-xl-4">
                                 <div class="card mb-3 widget-content">
                                     <div class="widget-content-outer">
                                         <div class="widget-content-wrapper">
@@ -214,7 +117,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-6 col-xl-4">
+                            <div class="col-md-4 col-xl-4">
                                 <div class="card mb-3 widget-content">
                                     <div class="widget-content-outer">
                                         <div class="widget-content-wrapper">
@@ -231,7 +134,7 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-md-6 col-xl-4">
+                            <div class="col-md-4 col-xl-4">
                                 <div class="card mb-3 widget-content">
                                     <div class="widget-content-outer">
                                         <div class="widget-content-wrapper">
@@ -246,7 +149,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-6 col-xl-4">
+                            <div class="col-md-4 col-xl-4">
                                 <div class="card mb-3 widget-content">
                                     <div class="widget-content-outer">
                                         <div class="widget-content-wrapper">
@@ -261,7 +164,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-6 col-xl-4">
+                            <div class="col-md-4 col-xl-4">
                                 <div class="card mb-3 widget-content">
                                     <div class="widget-content-wrapper">
                                         <div class="widget-content-left">
@@ -289,7 +192,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="container px-4 mt-5">
+                <div class="container mt-5">
                     <div class="col-md-3">
                         <div class="main-card mb-3 pt-4 card">
                             <div class="swatch-holder swatch-holder-lg bg-primary" id="TooltipC-0">
@@ -305,11 +208,13 @@
                                             <li>Enriched by 3d party data</li>
                                         </ul>
                                     </a>
-                                    <ul>
-                                        <li>AI driven Market analytics</li>
-                                        <li>Hourly updated</li>
-                                        <li>Measured by 7 parameters</li>
-                                    </ul>
+                                    <a class="nav-scroll" href="#market-emotion">
+                                        <ul>
+                                            <li>AI driven Market analytics</li>
+                                            <li>Hourly updated</li>
+                                            <li>Measured by 7 parameters</li>
+                                        </ul>
+                                    </a>
                                 </div>
                             </div>
                         </div>
@@ -317,7 +222,7 @@
                     <div class="col-md-6">
                         <div class="main-card mb-3 pt-4 card">
                             <div class="swatch-holder swatch-holder-lg bg-primary" id="TooltipC-1">
-                                <i class="fab fa-creative-commons-sampling text-white"></i>
+                                <i class="fab fa-think-peaks text-white text-white"></i>
                             </div>
                             <div class="card-body">
                                 <h5 class="card-title">Timing</h5>
@@ -352,116 +257,111 @@
                     </div>
                 </div>
             </header>
-            <!-- Analytics section part 1-->
+            <!-- Analytics section - Algotrader Score-->
             <section id="algotrader-score">
                 <div class="container px-4">
-                    <div class="row gx-4">
-
-                            <div style="width: 40%; position: absolute; z-index: 1;" class="animated lightSpeedIn">
-                                <div class="section-title font-weight-bold">
-                                    <h2>Algotrader score</h2>
-                                    <h4>The data is saved in DB in order to validate the analysis quality</h4>
-                                </div>
-                                <div class="row" style="padding-top: 13%;">
-                                    <div class="col-md-6 col-xl-4">
-                                    <div class="card mb-3 widget-content">
-                                        <div class="widget-content-outer">
-                                            <div class="widget-content-wrapper card-title">
-                                                INSIDER ACTIVITIES
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="card mb-3 widget-content">
-                                        <div class="widget-content-outer">
-                                            <div class="widget-content-wrapper card-title">
-                                                FUNDAMENT ALS
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="card mb-3 widget-content">
-                                        <div class="widget-content-outer">
-                                            <div class="widget-content-wrapper card-title">
-                                                TECHNIC ALS
-                                            </div>
+                    <div class="gx-4">
+                        <div style="width: 52%; position: absolute; z-index: 1;" class="animated lightSpeedIn">
+                            <div class="section-title font-weight-bold">
+                                <h2>Algotrader score</h2>
+                                <h4>The data is saved in DB in order to validate the analysis quality</h4>
+                            </div>
+                            <div class="row" style="padding-top: 6%;">
+                                <div class="col-md-4 col-xl-4">
+                                <div class="card mb-3 widget-content">
+                                    <div class="widget-content-outer">
+                                        <div class="widget-content-wrapper card-title">
+                                            INSIDER ACTIVITIES
                                         </div>
                                     </div>
                                 </div>
-                                    <div class="col-md-6 col-xl-4">
-                                        <div class="card mb-3 widget-content">
-                                            <div class="widget-content-outer">
-                                                <div class="widget-content-wrapper card-title">
-                                                    HEDGE FUND ACTIVITY
-                                                </div>
+                                <div class="card mb-3 widget-content">
+                                    <div class="widget-content-outer">
+                                        <div class="widget-content-wrapper card-title">
+                                            FUNDAMENT ALS
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card mb-3 widget-content">
+                                    <div class="widget-content-outer">
+                                        <div class="widget-content-wrapper card-title">
+                                            TECHNIC ALS
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                                <div class="col-md-4 col-xl-4">
+                                    <div class="card mb-3 widget-content">
+                                        <div class="widget-content-outer">
+                                            <div class="widget-content-wrapper card-title">
+                                                HEDGE FUND ACTIVITY
                                             </div>
                                         </div>
-                                        <div class="card mb-3 widget-content">
-                                            <div class="widget-content-outer">
-                                                <div class="widget-content-wrapper card-title" style="flex-direction: column;">
-                                                    <h3>SMART SCORE</h3>
-                                                    <div class="text-success" style="font-size: 37px;">
-                                                        8
-                                                    </div>
-                                                    <div class="pt-3">
-                                                        <img class="smart-score-img" src="/static/images/main/smart_score.png" style="width: 100%;">
-                                                    </div>
+                                    </div>
+                                    <div class="card mb-3 widget-content">
+                                        <div class="widget-content-outer">
+                                            <div class="widget-content-wrapper card-title" style="flex-direction: column;">
+                                                <h3>SMART SCORE</h3>
+                                                <div class="text-success" style="font-size: 32px;">
+                                                    1 - 10
+                                                </div>
+                                                <div class="pt-3">
+                                                    <img class="smart-score-img" src="/static/images/main/smart_score.png" style="width: 100%;">
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-6 col-xl-4">
-                                        <div class="card mb-3 widget-content">
-                                            <div class="widget-content-outer">
-                                                <div class="widget-content-wrapper card-title">
-                                                    NEW SENTIMENT
-                                                </div>
+                                </div>
+                                <div class="col-md-4 col-xl-4">
+                                    <div class="card mb-3 widget-content">
+                                        <div class="widget-content-outer">
+                                            <div class="widget-content-wrapper card-title">
+                                                NEW SENTIMENT
                                             </div>
                                         </div>
-                                        <div class="card mb-3 widget-content">
-                                            <div class="widget-content-outer">
-                                                <div class="widget-content-wrapper card-title">
-                                                    ANALYST RATINGS
-                                                </div>
+                                    </div>
+                                    <div class="card mb-3 widget-content">
+                                        <div class="widget-content-outer">
+                                            <div class="widget-content-wrapper card-title">
+                                                ANALYST RATINGS
                                             </div>
                                         </div>
-                                        <div class="card mb-3 widget-content">
-                                            <div class="widget-content-outer">
-                                                <div class="widget-content-wrapper card-title">
-                                                    BLOGGER OPTIONS
-                                                </div>
+                                    </div>
+                                    <div class="card mb-3 widget-content">
+                                        <div class="widget-content-outer">
+                                            <div class="widget-content-wrapper card-title">
+                                                BLOGGER OPTIONS
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div style="position: relative; left: 68%; top: 13%;">
-                               <img class="algo-score-img" src="{{ url_for('static', filename='images/main/algotrader_score.png') }}">
-                            </div>
-
+                        </div>
+                        <div style="position: relative; left: 66%; top: 9%;">
+                           <img class="algo-score-img" src="{{ url_for('static', filename='images/main/algotrader_score.png') }}" style="width: 80%;">
+                        </div>
                     </div>
                 </div>
             </section>
-            <!-- Services section-->
-<!--            <section class="bg-light" id="services">-->
-<!--                <div class="container px-4">-->
-<!--                    <div class="row gx-4 justify-content-center">-->
-<!--                        <div class="col-lg-8">-->
-<!--                            <h2>Services we offer</h2>-->
-<!--                            <p class="lead">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aut optio velit inventore, expedita quo laboriosam possimus ea consequatur vitae, doloribus consequuntur ex. Nemo assumenda laborum vel, labore ut velit dignissimos.</p>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--            </section>-->
-<!--            &lt;!&ndash; Contact section&ndash;&gt;-->
-<!--            <section id="contact">-->
-<!--                <div class="container px-4">-->
-<!--                    <div class="row gx-4 justify-content-center">-->
-<!--                        <div class="col-lg-8">-->
-<!--                            <h2>Contact us</h2>-->
-<!--                            <p class="lead">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Vero odio fugiat voluptatem dolor, provident officiis, id iusto! Obcaecati incidunt, qui nihil beatae magnam et repudiandae ipsa exercitationem, in, quo totam.</p>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--            </section>-->
+
+            <!-- Analytics section - Market Emotion-->
+            <section id="market-emotion">
+                <div class="container px-4">
+                    <div class="gx-4" style="display: flex; width: 100%;">
+                        <div style="position: absolute;">
+                           <img class="algo-score-img" src="{{ url_for('static', filename='images/main/market_emotion.png') }}" style="width: 525px;height: 390px;">
+                        </div>
+                        <div class="animated lightSpeedIn" style="margin-top: 8%; position: relative; margin-left: 56%;">
+                            <div class="section-title font-weight-bold">
+                                <h2>Market Emotion</h2>
+                                <h4></h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+
 <!--            &lt;!&ndash; Footer&ndash;&gt;-->
 <!--            <footer class="py-5 bg-dark">-->
 <!--                <div class="container px-4"><p class="m-0 text-center text-white">Copyright &copy; Your Website 2021</p></div>-->
