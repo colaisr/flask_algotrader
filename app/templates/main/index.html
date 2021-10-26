@@ -230,7 +230,9 @@
                                             <li class="scroll-item">Entry point for each position targeted to gain intraday advantage based on 1year back research for each ticker (daily updated)</li>
                                         </a>
                                         <li>Profit maximization with a trailing stop</li>
-                                        <li>Positions open only during positive market emotional phase</li>
+                                        <a class="nav-scroll" href="#trading-by-emotions">
+                                            <li class="scroll-item">Positions open only during positive market emotional phase</li>
+                                        </a>
                                         <li>Long held positions eliminated for better use of resources</li>
                                         <li>Market crash protection based on market intraday drop (Black swan)</li>
                                     </ul>
@@ -445,8 +447,7 @@
                     </a>
                 </div>
             </section>
-
-            <!-- Timing - Profit maximization -->
+            <!-- Timing - Advantage Entry Point -->
             <section id="advantage-entry-point" style="margin-top: -7%;">
                 <div class="container px-4">
                     <div class="gx-4">
@@ -461,7 +462,29 @@
                     </div>
                 </div>
                 <div class="fa-3x scroll-arrow">
-                    <a class="nav-scroll" href="#profit-maximization">
+                    <a class="nav-scroll" href="#trading-by-emotions">
+                        <i class="fas fa-arrow-circle-down" aria-hidden="true"></i>
+                    </a>
+                </div>
+            </section>
+
+            <!-- Timing - Trading By Emotions -->
+            <section id="trading-by-emotions" style="margin-top: -7%;">
+                <div class="container px-4">
+                    <div class="gx-4">
+                        <div class="animated lightSpeedIn">
+                            <div class="section-title font-weight-bold" style="text-align: inherit;">
+                                <h2>Trading based on market emotions</h2>
+                                <h3 style="padding-right: 55%;">New positions are opened only during a positive market phase. Minimal level can be adjusted by user – with a ability to back test on one last year. </h3>
+                            </div>
+                        </div>
+                        <div style="position: relative; top: 5%;">
+                           <img class="algo-score-img" src="{{ url_for('static', filename='images/main/trading_by_emotions.png') }}" style="width: 80%;">
+                        </div>
+                    </div>
+                </div>
+                <div class="fa-3x scroll-arrow">
+                    <a class="nav-scroll" href="#trading-by-emotions">
                         <i class="fas fa-arrow-circle-down" aria-hidden="true"></i>
                     </a>
                 </div>
