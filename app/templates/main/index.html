@@ -32,7 +32,7 @@
         <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
 
     </head>
-    <body style="height: 2000px; background-image: url({{ url_for('static', filename='images/main/1.png') }}); background-size: cover;">
+    <body style="height: 2000px; background-image: url({{ url_for('static', filename='images/main/background.png') }}); background-size: cover;">
         <div id="page-top">
             <!-- Navigation-->
             <nav class="navbar navbar-expand-lg fixed-top" id="mainNav">
@@ -601,7 +601,6 @@
                     </a>
                 </div>
             </section>
-
             <!-- Management - Custom Filters-->
             <section id="custom-filters">
                 <div class="container" style="display: inherit;">
@@ -681,8 +680,30 @@
                     </div>
                 </div>
                 <div class="fa-3x scroll-arrow">
-                    <a class="nav-scroll" href="#market-emotion">
+                    <a class="nav-scroll" href="#user-view">
                         <i class="fas fa-arrow-circle-down" aria-hidden="true"></i>
+                    </a>
+                </div>
+            </section>
+
+            <!-- User View -->
+            <section id="user-view">
+                <div class="container px-4">
+                    <div class="gx-4">
+                        <div class="animated lightSpeedIn" style="margin-bottom: 3%;">
+                            <div class="section-title font-weight-bold" style="text-align: inherit; padding-left: 2%;">
+                                <h2>Aggregated user view available from all devices</h2>
+                            </div>
+                        </div>
+                        <div>
+                            <img src="{{ url_for('static', filename='images/main/user_view_1.png') }}" style="width: 100%;">
+                            <img src="{{ url_for('static', filename='images/main/user_view_2.png') }}" style="width: 100%;">
+                        </div>
+                    </div>
+                </div>
+                <div class="fa-3x scroll-arrow">
+                    <a class="nav-scroll" href="#page-top">
+                        <i class="fas fa-arrow-circle-up" aria-hidden="true"></i>
                     </a>
                 </div>
             </section>
