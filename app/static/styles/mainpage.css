@@ -117,3 +117,24 @@
                  #cad5e2 5px 5px 0;
     color: #040000;
 }
+
+.custom-card .swatch-holder{
+    position: absolute;
+    top: -32%;
+    opacity: .9;
+    text-align: center;
+    font-size: x-large;
+}
+
+.custom-body{
+    padding: 6px 0 18px 0;
+    text-align: center;
+}
+
+.custom-body-content{
+    padding: 0 2px 0 2px;
+    height: 36px;
+    font-size: 13px;
+    opacity: 0.9;
+    color: #2F327D;
+}
