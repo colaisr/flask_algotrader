@@ -250,7 +250,9 @@
                             <div class="card-body">
                                 <h5 class="card-title">Management</h5>
                                 <ul>
-                                    <li>Portfolio diversification by sectors</li>
+                                    <a class="nav-scroll" href="#portfolio-management">
+                                        <li class="scroll-item">Portfolio diversification by sectors</li>
+                                    </a>
                                     <li>Flexible behavior configuration- for different portfolio sizes</li>
                                     <li>Performance research for adjustment</li>
                                     <li>Filters to adjust a personal risk level per user</li>
@@ -490,8 +492,7 @@
                     </a>
                 </div>
             </section>
-
-            <!-- Timing - Trading By Emotions -->
+            <!-- Timing - Crash Protaction -->
             <section id="crash-protaction">
                 <div class="container px-4">
                     <div class="gx-4">
@@ -512,7 +513,34 @@
                     </div>
                 </div>
                 <div class="fa-3x scroll-arrow">
-                    <a class="nav-scroll" href="#trading-by-emotions">
+                    <a class="nav-scroll" href="#portfolio-management">
+                        <i class="fas fa-arrow-circle-down" aria-hidden="true"></i>
+                    </a>
+                </div>
+            </section>
+
+            <!-- Timing - Crash Protaction -->
+            <section id="portfolio-management">
+                <div class="container px-4">
+                    <div class="gx-4">
+                        <div class="animated lightSpeedIn">
+                            <div class="section-title font-weight-bold" style="text-align: inherit; padding-left: 2%;">
+                                <h2>Portfolio management</h2>
+                                <div style="display: flex;">
+                                    <div style="font-size: 15px; width: 40%;">
+                                        Fully managed, diversifyed portfolio, with customizable settings to adjust better to users personal style of work
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="position: relative; top: 5%; display: flex;">
+                            <img class="algo-score-img" src="{{ url_for('static', filename='images/main/portfolio_management_pie.png') }}" style="width: 35%;">
+                            <img class="algo-score-img" src="{{ url_for('static', filename='images/main/portfolio_management.png') }}" style="width: 68%;">
+                        </div>
+                    </div>
+                </div>
+                <div class="fa-3x scroll-arrow">
+                    <a class="nav-scroll" href="#portfolio-management">
                         <i class="fas fa-arrow-circle-down" aria-hidden="true"></i>
                     </a>
                 </div>
