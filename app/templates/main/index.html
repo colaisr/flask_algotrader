@@ -45,11 +45,6 @@
                         <span><i class="bars icon text-secondary"></i></span>
                     </button>
                     <div class="collapse navbar-collapse" id="navbarResponsive">
-<!--                        <ul class="navbar-nav ms-auto">-->
-<!--                            <li class="nav-item"><a class="nav-link text-end" href="#about">About</a></li>-->
-<!--                            <li class="nav-item"><a class="nav-link text-end" href="#services">Services</a></li>-->
-<!--                            <li class="nav-item"><a class="nav-link text-end" href="#contact">Contact</a></li>-->
-<!--                        </ul>-->
                         <ul class="navbar-nav ms-auto">
                             <li class="nav-item p-3">
                                 <a href="" class="nav-link text-end">
@@ -228,7 +223,9 @@
                                 <h5 class="card-title">Timing</h5>
                                 <div class="pt-4">
                                     <ul>
-                                        <li>Profit maximization for Trending market phase</li>
+                                        <a class="nav-scroll" href="#profit-maximization">
+                                            <li>Profit maximization for Trending market phase</li>
+                                        </a>
                                         <li>Entry point for each position targeted to gain intraday advantage based on 1year back research for each ticker (daily updated)</li>
                                         <li>Profit maximization with a trailing stop</li>
                                         <li>Positions open only during positive market emotional phase</li>
@@ -261,7 +258,7 @@
             <section id="algotrader-score">
                 <div class="container px-4">
                     <div class="gx-4">
-                        <div style="width: 52%; position: absolute; z-index: 1;" class="animated lightSpeedIn">
+                        <div style="width: 48%; position: absolute; z-index: 1;" class="animated lightSpeedIn">
                             <div class="section-title font-weight-bold">
                                 <h2>Algotrader score</h2>
                                 <h4>The data is saved in DB in order to validate the analysis quality</h4>
@@ -343,7 +340,6 @@
                     </div>
                 </div>
             </section>
-
             <!-- Analytics section - Market Emotion-->
             <section id="market-emotion">
                 <div class="container px-4">
@@ -351,10 +347,77 @@
                         <div style="position: absolute;">
                            <img class="algo-score-img" src="{{ url_for('static', filename='images/main/market_emotion.png') }}" style="width: 525px;height: 390px;">
                         </div>
-                        <div class="animated lightSpeedIn" style="margin-top: 8%; position: relative; margin-left: 56%;">
-                            <div class="section-title font-weight-bold">
+                        <div class="animated lightSpeedIn" style="margin-top: 2%; position: relative; margin-left: 52%;">
+                            <div style="color: #2F327D;">
                                 <h2>Market Emotion</h2>
-                                <h4></h4>
+                                <div>
+                                    <p class="opacity-8" style="padding-right: 20%;">Market emotions are moving between exteeme Fear and Greed : between 0 and 100.</p>
+                                    <p style="padding-left: 3%; font-weight: bold;">Measured hourly by :</p>
+                                    <ul>
+                                        <li>
+                                            <span class="pr-1 font-weight-bold">S&P 500 Momentum.</span>Versus its 125-day moving average.
+                                        </li>
+                                        <li>
+                                            <span class="pr-1 font-weight-bold">S&P 500 Strength.</span>The number of stocks hitting 52-week Highs and Lows.
+                                        </li>
+                                        <li>
+                                            <span class="pr-1 font-weight-bold">Stock Price Breadth.</span>The volume of shares trading in stocks on the rise versus those declining.
+                                        </li>
+                                        <li>
+                                            <span class="pr-1 font-weight-bold">Put and Call Options.</span>The put/call ratio, which compares the trading volume of bullish call options relative to the trading volume of bearish put options
+                                        </li>
+                                        <li>
+                                            <span class="pr-1 font-weight-bold">Junk Bond Demand.</span>The spread between yields on investment grade bonds and junk bonds.
+                                        </li>
+                                        <li>
+                                            <span class="pr-1 font-weight-bold">Market Volatility.</span>The VIX, which measures volatility
+                                        </li>
+                                        <li>
+                                            <span class="pr-1 font-weight-bold">Safe Haven Demand.</span>The difference in returns for stocks versus Treasuries
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- Timing - Profit maximization -->
+            <section id="profit-maximization">
+                <div class="container px-4">
+                    <div class="gx-4" style="width: 100%;">
+                        <div class="animated lightSpeedIn" style="width: 60%; float: left; overflow: hidden;">
+                            <div class="section-title" style="text-align: inherit;">
+                                <h2>Maximizing a profit for a winning position.Better than simply investing.</h2>
+                                <p style="font-size: medium; padding-top: 2%;">
+                                    We believe that entering to position on small drops caused by market deviations and bad news and getting out of position with small profit overtime bring better value than just holding it
+                                </p>
+                                <p style="font-size: medium;">
+                                    Aggregated profit for a shorter positions should be higher than just a stock overall revenue. Of course it will work only if stock is profitable! Entering only to candidate stocks with highest ranks from slide 3
+                                </p>
+                                <div style="padding-top: 3%; width: 89%; display: flex;">
+                                    <div class="opacity-7" style="font-size: small; padding-right: 5px; padding-left: 15%; text-align: justify;">
+                                        Profit point : configured according broker fees... as personal sence...<br/>Better to use Trailing stop if allowed by API. For example: 1% on IB =not good  it is 10 USD – 2 USD fee, but 6% is already fine: 50 USD-2 USD Fee.
+                                    </div>
+                                    <div style="padding-top: 6%;">
+                                        <img class="algo-score-img" src="{{ url_for('static', filename='images/main/arrow_right.png') }}">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="width: 100%;">
+                            <img class="algo-score-img" src="{{ url_for('static', filename='images/main/profit_maximization.png') }}" style="width: 100%; top: 26px; margin-top: -21%;">
+                        </div>
+                        <div class="animated lightSpeedIn" style="width: 50%; float: right; margin: -237px -26px 0 0;">
+                            <div class="section-title">
+                                <div style="width: 89%; display: flex;">
+                                    <div style="padding-top: 6%; padding-left: 2px;">
+                                        <img class="algo-score-img" src="{{ url_for('static', filename='images/main/arrow_left.png') }}">
+                                    </div>
+                                    <div class="opacity-7" style="font-size: small; text-align: justify; padding: 12px 20px 0 15px;">
+                                        Entry point: if during a day stock falls more then average intraday fall of a last year. The statistics is updated on daily basis. From Yahoo finance.
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>

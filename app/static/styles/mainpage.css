@@ -83,6 +83,15 @@
     width: 50%;
 }
 
+#market-emotion li{
+    color: #2F327D;
+    line-height: 1.5;
+}
+
+#algotrader-score .widget-content-wrapper{
+    font-size: 11px;
+}
+
 @media (min-width: 992px)
     .container {
         max-width: 1120px !important;
