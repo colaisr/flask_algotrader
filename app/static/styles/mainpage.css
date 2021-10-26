@@ -88,6 +88,14 @@
     line-height: 1.5;
 }
 
+.scroll-arrow{
+    float: right;
+    margin-right: 2%;
+}
+.scroll-arrow a{
+    color: #4183c4;
+}
+
 #algotrader-score .widget-content-wrapper{
     font-size: 11px;
 }
