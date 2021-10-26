@@ -256,8 +256,12 @@
                                     <a class="nav-scroll" href="#candidates">
                                         <li class="scroll-item">Flexible behavior configuration- for different portfolio sizes</li>
                                     </a>
-                                    <li>Performance research for adjustment</li>
-                                    <li>Filters to adjust a personal risk level per user</li>
+                                    <a class="nav-scroll" href="#personal-performance">
+                                        <li class="scroll-item">Performance research for adjustment</li>
+                                    </a>
+                                    <a class="nav-scroll" href="#candidates">
+                                        <li class="scroll-item">Filters to adjust a personal risk level per user</li>
+                                    </a>
                                 </ul>
                             </div>
                         </div>
@@ -568,7 +572,32 @@
                     </div>
                 </div>
                 <div class="fa-3x scroll-arrow">
-                    <a class="nav-scroll" href="#advantage-entry-point">
+                    <a class="nav-scroll" href="#personal-performance">
+                        <i class="fas fa-arrow-circle-down" aria-hidden="true"></i>
+                    </a>
+                </div>
+            </section>
+
+            <!-- Management - Personal Performance-->
+            <section id="personal-performance">
+                <div class="container px-4" style="padding-top: 8%;">
+                    <div class="gx-4">
+                        <div style="width: 48%; position: absolute; z-index: 1;" class="animated lightSpeedIn">
+                            <div class="section-title font-weight-bold" style="text-align: inherit; position: absolute; padding-left: 10%; padding-top: 0;">
+                                <h2>Personal performance</h2>
+                                <h5 style="width: 65%;">Ability to analyze the performance and adjust strategy</h5>
+                            </div>
+                            <div class="row" style="margin: 90px -130px 0 0; position: relative; left: 35%;">
+                                <img src="{{ url_for('static', filename='images/main/personal_performance_1.png') }}" style="width: 80%;">
+                            </div>
+                        </div>
+                        <div style="position: relative; left: 59%; top: -32%;">
+                           <img class="algo-score-img" src="{{ url_for('static', filename='images/main/personal_performance_2.png') }}" style="width: 80%;">
+                        </div>
+                    </div>
+                </div>
+                <div class="fa-3x scroll-arrow">
+                    <a class="nav-scroll" href="#personal-performance">
                         <i class="fas fa-arrow-circle-down" aria-hidden="true"></i>
                     </a>
                 </div>
