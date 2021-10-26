@@ -234,7 +234,9 @@
                                             <li class="scroll-item">Positions open only during positive market emotional phase</li>
                                         </a>
                                         <li>Long held positions eliminated for better use of resources</li>
-                                        <li>Market crash protection based on market intraday drop (Black swan)</li>
+                                        <a class="nav-scroll" href="#crash-protaction">
+                                            <li class="scroll-item">Market crash protection based on market intraday drop (Black swan)</li>
+                                        </a>
                                     </ul>
                                 </div>
                             </div>
@@ -467,9 +469,8 @@
                     </a>
                 </div>
             </section>
-
             <!-- Timing - Trading By Emotions -->
-            <section id="trading-by-emotions" style="margin-top: -7%;">
+            <section id="trading-by-emotions">
                 <div class="container px-4">
                     <div class="gx-4">
                         <div class="animated lightSpeedIn">
@@ -480,6 +481,33 @@
                         </div>
                         <div style="position: relative; top: 5%;">
                            <img class="algo-score-img" src="{{ url_for('static', filename='images/main/trading_by_emotions.png') }}" style="width: 80%;">
+                        </div>
+                    </div>
+                </div>
+                <div class="fa-3x scroll-arrow">
+                    <a class="nav-scroll" href="#crash-protaction">
+                        <i class="fas fa-arrow-circle-down" aria-hidden="true"></i>
+                    </a>
+                </div>
+            </section>
+
+            <!-- Timing - Trading By Emotions -->
+            <section id="crash-protaction">
+                <div class="container px-4">
+                    <div class="gx-4">
+                        <div class="animated lightSpeedIn">
+                            <div class="section-title font-weight-bold" style="text-align: inherit; padding-left: 2%;">
+                                <h2>Market crash protection</h2>
+                                <div style="display: flex;">
+                                    <div style="font-size: 15px; width: 40%;">
+                                        Market fall protection –if unexpected intraday massive fall occurs to SnP 500 (Black Swan)- all the existing positions can be automatically closed. The level can be adjusted by user. BACKTESTING
+                                    </div>
+                                    <div style="margin-left: 8%; margin-top: -1%;"><img class="algo-score-img" src="{{ url_for('static', filename='images/main/black_swan_input.png') }}" style="width: 80%;"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="position: relative; top: 5%;">
+                           <img class="algo-score-img" src="{{ url_for('static', filename='images/main/crash_protaction.png') }}" style="width: 80%;">
                         </div>
                     </div>
                 </div>
