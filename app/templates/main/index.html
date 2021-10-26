@@ -253,7 +253,9 @@
                                     <a class="nav-scroll" href="#portfolio-management">
                                         <li class="scroll-item">Portfolio diversification by sectors</li>
                                     </a>
-                                    <li>Flexible behavior configuration- for different portfolio sizes</li>
+                                    <a class="nav-scroll" href="#candidates">
+                                        <li class="scroll-item">Flexible behavior configuration- for different portfolio sizes</li>
+                                    </a>
                                     <li>Performance research for adjustment</li>
                                     <li>Filters to adjust a personal risk level per user</li>
                                 </ul>
@@ -316,7 +318,7 @@
                                                     1 - 10
                                                 </div>
                                                 <div class="pt-3">
-                                                    <img class="smart-score-img" src="/static/images/main/smart_score.png" style="width: 100%;">
+                                                    <img src="/static/images/main/smart_score.png" style="width: 100%;">
                                                 </div>
                                             </div>
                                         </div>
@@ -363,7 +365,7 @@
                 <div class="container px-4">
                     <div class="gx-4" style="display: flex; width: 100%;">
                         <div style="position: absolute;">
-                           <img class="algo-score-img" src="{{ url_for('static', filename='images/main/market_emotion.png') }}" style="width: 525px;height: 390px;">
+                           <img src="{{ url_for('static', filename='images/main/market_emotion.png') }}" style="width: 525px;height: 390px;">
                         </div>
                         <div class="animated lightSpeedIn" style="margin-top: 2%; position: relative; margin-left: 52%;">
                             <div style="color: #2F327D;">
@@ -423,19 +425,19 @@
                                         Profit point : configured according broker fees... as personal sence...<br/>Better to use Trailing stop if allowed by API. For example: 1% on IB =not good  it is 10 USD – 2 USD fee, but 6% is already fine: 50 USD-2 USD Fee.
                                     </div>
                                     <div style="padding-top: 6%;">
-                                        <img class="algo-score-img" src="{{ url_for('static', filename='images/main/arrow_right.png') }}">
+                                        <img src="{{ url_for('static', filename='images/main/arrow_right.png') }}">
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div style="width: 100%;">
-                            <img class="algo-score-img" src="{{ url_for('static', filename='images/main/profit_maximization.png') }}" style="width: 100%; top: 26px; margin-top: -21%;">
+                            <img src="{{ url_for('static', filename='images/main/profit_maximization.png') }}" style="width: 100%; top: 26px; margin-top: -21%;">
                         </div>
                         <div class="animated lightSpeedIn" style="width: 50%; float: right; margin: -237px -26px 0 0;">
                             <div class="section-title">
                                 <div style="width: 89%; display: flex;">
                                     <div style="padding-top: 6%; padding-left: 2px;">
-                                        <img class="algo-score-img" src="{{ url_for('static', filename='images/main/arrow_left.png') }}">
+                                        <img src="{{ url_for('static', filename='images/main/arrow_left.png') }}">
                                     </div>
                                     <div class="opacity-7" style="font-size: small; text-align: justify; padding: 12px 20px 0 15px;">
                                         Entry point: if during a day stock falls more then average intraday fall of a last year. The statistics is updated on daily basis. From Yahoo finance.
@@ -461,7 +463,7 @@
                             </div>
                         </div>
                         <div style="position: relative; top: 3%;">
-                           <img class="algo-score-img" src="{{ url_for('static', filename='images/main/advantage_entry_point.png') }}" style="width: 80%;">
+                           <img src="{{ url_for('static', filename='images/main/advantage_entry_point.png') }}" style="width: 80%;">
                         </div>
                     </div>
                 </div>
@@ -482,7 +484,7 @@
                             </div>
                         </div>
                         <div style="position: relative; top: 5%;">
-                           <img class="algo-score-img" src="{{ url_for('static', filename='images/main/trading_by_emotions.png') }}" style="width: 80%;">
+                           <img src="{{ url_for('static', filename='images/main/trading_by_emotions.png') }}" style="width: 80%;">
                         </div>
                     </div>
                 </div>
@@ -503,12 +505,12 @@
                                     <div style="font-size: 15px; width: 40%;">
                                         Market fall protection –if unexpected intraday massive fall occurs to SnP 500 (Black Swan)- all the existing positions can be automatically closed. The level can be adjusted by user. BACKTESTING
                                     </div>
-                                    <div style="margin-left: 8%; margin-top: -1%;"><img class="algo-score-img" src="{{ url_for('static', filename='images/main/black_swan_input.png') }}" style="width: 80%;"></div>
+                                    <div style="margin-left: 8%; margin-top: -1%;"><img src="{{ url_for('static', filename='images/main/black_swan_input.png') }}" style="width: 80%;"></div>
                                 </div>
                             </div>
                         </div>
                         <div style="position: relative; top: 5%;">
-                           <img class="algo-score-img" src="{{ url_for('static', filename='images/main/crash_protaction.png') }}" style="width: 80%;">
+                           <img src="{{ url_for('static', filename='images/main/crash_protaction.png') }}" style="width: 80%;">
                         </div>
                     </div>
                 </div>
@@ -518,8 +520,7 @@
                     </a>
                 </div>
             </section>
-
-            <!-- Timing - Crash Protaction -->
+            <!-- MANAGEMENT - Portfolio Management -->
             <section id="portfolio-management">
                 <div class="container px-4">
                     <div class="gx-4">
@@ -534,13 +535,40 @@
                             </div>
                         </div>
                         <div style="position: relative; top: 5%; display: flex;">
-                            <img class="algo-score-img" src="{{ url_for('static', filename='images/main/portfolio_management_pie.png') }}" style="width: 35%;">
-                            <img class="algo-score-img" src="{{ url_for('static', filename='images/main/portfolio_management.png') }}" style="width: 68%;">
+                            <img src="{{ url_for('static', filename='images/main/portfolio_management_pie.png') }}" style="width: 35%;">
+                            <img src="{{ url_for('static', filename='images/main/portfolio_management.png') }}" style="width: 68%;">
                         </div>
                     </div>
                 </div>
                 <div class="fa-3x scroll-arrow">
-                    <a class="nav-scroll" href="#portfolio-management">
+                    <a class="nav-scroll" href="#candidates">
+                        <i class="fas fa-arrow-circle-down" aria-hidden="true"></i>
+                    </a>
+                </div>
+            </section>
+            <!-- MANAGEMENT - Candidates -->
+            <section id="candidates">
+                <div class="container px-4">
+                    <div class="gx-4" style="width: 100%; padding-left: 6%;">
+                        <div style="width: 70%;">
+                            <div class="section-title font-weight-bold" style="text-align: inherit; padding-left: 5%;">
+                                <h2>Candidates to follow</h2>
+                                <h5 style="padding-right: 55%;">Built in system selected list of tickers to follow or user defined custom selection</h5>
+                            </div>
+                            <img src="{{ url_for('static', filename='images/main/candidates_1.png') }}" style="width: 100%;">
+                        </div>
+                        <div class="animated lightSpeedIn" style="width: 50%; float: right; margin: -544px 0 0 0;; display: flex;">
+                            <div>
+                               <img src="{{ url_for('static', filename='images/main/candidates_2.png') }}" style="width: 80%;">
+                            </div>
+                            <div style="padding-top: 13%; margin: 7px 0px 0px -76px;">
+                               <img src="{{ url_for('static', filename='images/main/candidates_3.png') }}" style="width: 80%;">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="fa-3x scroll-arrow">
+                    <a class="nav-scroll" href="#advantage-entry-point">
                         <i class="fas fa-arrow-circle-down" aria-hidden="true"></i>
                     </a>
                 </div>
