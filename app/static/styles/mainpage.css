@@ -1,3 +1,12 @@
+#page-top p{
+    font-family: 'FontAwesome';
+    color: #2F327D;
+}
+
+#algotrader-score h4{
+    width: 50%;
+}
+
 .nav-link{
     color: #6c757d;
 }
@@ -79,9 +88,6 @@
     text-align: inherit;
 }
 
-#algotrader-score h4{
-    width: 50%;
-}
 
 #market-emotion li{
     color: #2F327D;
