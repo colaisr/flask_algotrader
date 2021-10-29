@@ -21,6 +21,7 @@ class Subscription(db.Model):
     price = db.Column(db.String(50))
     # users = db.relationship('User', backref='subscription', lazy='dynamic')
 
+
 class Role(db.Model):
     __tablename__ = 'roles'
     # __bind_key__ = 'db_users'
