@@ -278,9 +278,7 @@ def save_signature():
         current_user.signature = signature
         current_user.update_user()
 
-    user_settings = UserSetting(current_user.email)
     client_command = ClientCommand(current_user.email)
-    db.session.add(user_settings)
     db.session.add(client_command)
     db.session.commit()
 

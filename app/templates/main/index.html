@@ -1,749 +1,662 @@
-<!DOCTYPE html>
-<html lang="en">
-    <head>
-        <link rel="shortcut icon" href="#"/>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta http-equiv="Content-Language" content="en">
-        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-        <meta name="description" content="Algotrader server dashboard" />
-        <meta name="msapplication-tap-highlight" content="no">
-        <title>{% block page_title %}{{ config.APP_NAME }}{% endblock %}</title>
-        {# Any templates that extend this template can set custom_head_tags to add scripts to their page #}
-<!--        <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />-->
-        <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='scrolling/assets/favicon.ico') }}">
-        <!-- Core theme CSS (includes Bootstrap)-->
-<!--        <link href="css/styles.css" rel="stylesheet" />-->
-        <link rel="stylesheet" href="{{ url_for('static', filename='scrolling/css/styles.css') }}">
-        <link rel="stylesheet" href="{{ url_for('static', filename='styles/app_styles.css') }}">
-        <link rel="stylesheet" href="{{ url_for('static', filename='styles/arch_ui.css') }}">
-        <link href="{{ url_for('static', filename='styles/base_app.scss') }}">
+{% extends 'layouts/main.html' %}
 
-    <!--    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.1/css/bootstrap.min.css" />-->
-        <link rel="stylesheet" href="{{ url_for('static', filename='styles/semantic.min.css') }}">
-        <link rel="stylesheet" href="{{ url_for('static', filename='font-icons/css/pe-icon-7-stroke.css') }}">
-        <link rel="stylesheet" href="{{ url_for('static', filename='font-icons/css/helper.css') }}">
-        <link rel="stylesheet" href="{{ url_for('static', filename='font-awesome/css/font-awesome.min.css') }}">
+{% block content %}
 
-        <link rel="stylesheet" href="{{ url_for('static', filename='dist/css/animsition.min.css') }}">
-        <link rel="stylesheet" href="{{ url_for('static', filename='styles/mainpage.css') }}">
-
-        <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
-
-    </head>
-    <body style="height: 2000px; background-image: url({{ url_for('static', filename='images/main/background.png') }}); background-size: cover;">
-        <div id="page-top">
-            <!-- Navigation-->
-            <nav class="navbar navbar-expand-lg fixed-top" id="mainNav">
-                <div class="container">
-<!--                    TODO: width mobile-->
-                    <a class="navbar-brand" href="#page-top" style="width: 50%;">
-                        <img class="logo-img" style="width: 30%;" src="{{ url_for('static', filename='images/Logos_New/logo_transparent_background.png') }}">
-                    </a>
-                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-                        <span><i class="bars icon text-secondary"></i></span>
-                    </button>
-                    <div class="collapse navbar-collapse" id="navbarResponsive">
-                        <ul class="navbar-nav ms-auto">
-                            <li class="nav-item p-3">
-                                <a href="https://t.me/Algotrader_signals"  target="_blank" class="nav-link text-end">
-                                    <i class="fab fa-telegram-plane pr-1"></i>
-                                    Telegram
-                                </a>
+<!-- Header-->
+<header class="bg-gradient">
+    <div class="container">
+        <div class="section-title font-weight-bold" style="width:25%;">
+            <h2>Analytics driven automated trading</h2>
+        </div>
+        <div class="main-cards">
+            <div class="row">
+                <div class="col-md-4 col-xl-4">
+                    <div class="card mb-3 widget-content">
+                        <div class="widget-content-outer">
+                            <div class="widget-content-wrapper">
+                                <div class="widget-content-left">
+                                    <div class="widget-heading">Users</div>
+                                    <div class="widget-subheading">Registered users</div>
+                                </div>
+                                <div class="widget-content-right">
+                                    <div class="widget-numbers text-primary">{{system_status['users_registered']}}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 col-xl-4">
+                    <div class="card mb-3 widget-content">
+                        <div class="widget-content-outer">
+                            <div class="widget-content-wrapper">
+                                <div class="widget-content-left">
+                                    <div class="widget-heading">Tickers</div>
+                                    <div class="widget-subheading">Candidates tracked daily</div>
+                                </div>
+                                <div class="widget-content-right">
+                                    <div class="widget-numbers text-primary">{{system_status['tickers_tracked']}}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 col-xl-4">
+                    <div class="card mb-3 widget-content">
+                        <div class="widget-content-outer">
+                            <div class="widget-content-wrapper">
+                                <div class="widget-content-left">
+                                    <div class="widget-heading">Executions</div>
+                                    <div class="widget-subheading">Deals executed</div>
+                                </div>
+                                <div class="widget-content-right">
+                                    <div class="widget-numbers text-primary">{{system_status['all_positions']}}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4 col-xl-4">
+                    <div class="card mb-3 widget-content">
+                        <div class="widget-content-outer">
+                            <div class="widget-content-wrapper">
+                                <div class="widget-content-left">
+                                    <div class="widget-heading">Funds</div>
+                                    <div class="widget-subheading">All users portfolio value</div>
+                                </div>
+                                <div class="widget-content-right">
+                                    <div class="widget-numbers text-primary">{{system_status['funds'] | round |int}} $</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 col-xl-4">
+                    <div class="card mb-3 widget-content">
+                        <div class="widget-content-outer">
+                            <div class="widget-content-wrapper">
+                                <div class="widget-content-left">
+                                    <div class="widget-heading">Last Update</div>
+                                    <div class="widget-subheading">Last data update</div>
+                                </div>
+                                <div class="widget-content-right">
+                                    <div class="text-primary">{{system_status['last_update_date']}}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 col-xl-4">
+                    <div class="card mb-3 widget-content">
+                        <div class="widget-content-wrapper">
+                            <div class="widget-content-left">
+                                <div class="widget-heading">Success Rate</div>
+                            </div>
+                            <div class="widget-content-right filter-items">
+                                <div class="position-items">
+                                    <div class="item info-items pr-3" data-toggle="tooltip" data-placement="bottom" title="Positions closed for technical reason">
+                                        <div class="text-primary text-center rate-item">{{system_status['technical_positions']}}</div>
+                                        <div class="label-info text-primary">Technical</div>
+                                    </div>
+                                    <div class="item info-items pr-3">
+                                        <div class="text-success text-center rate-item">{{system_status['profit_positions']}}</div>
+                                        <div class="label-info text-success">Success</div>
+                                    </div>
+                                    <div class="item last-item info-items">
+                                        <div class="text-danger text-center rate-item">{{system_status['lost_positions']}}</div>
+                                        <div class="label-info text-danger">Fail</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container mt-5">
+        <div class="col-md-3">
+            <div class="main-card mb-3 pt-4 card">
+                <div class="swatch-holder swatch-holder-lg bg-primary" id="TooltipC-0">
+                    <i class="fas fa-chart-line text-white"></i>
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">Analytics</h5>
+                    <div class="pt-4">
+                        <a class="nav-scroll" href="#algotrader-score">
+                            <ul class="scroll-item">
+                                <li><p>AI driven Stock analytics</p></li>
+                                <li><p>Daily updated</p></li>
+                                <li><p>Enriched by 3d party data</p></li>
+                            </ul>
+                        </a>
+                        <a class="nav-scroll" href="#market-emotion">
+                            <ul class="scroll-item">
+                                <li><p>AI driven Market analytics</p></li>
+                                <li><p>Hourly updated</p></li>
+                                <li><p>Measured by 7 parameters</p></li>
+                            </ul>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="main-card mb-3 pt-4 card">
+                <div class="swatch-holder swatch-holder-lg bg-primary" id="TooltipC-1">
+                    <i class="fab fa-think-peaks text-white text-white"></i>
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">Timing</h5>
+                    <div class="pt-4">
+                        <ul>
+                            <a class="nav-scroll" href="#profit-maximization">
+                                <li class="scroll-item"><p>Profit maximization for Trending market phase</p></li>
+                            </a>
+                            <a class="nav-scroll" href="#advantage-entry-point">
+                                <li class="scroll-item"><p>Entry point for each position targeted to gain intraday advantage based on 1year back research for each ticker (daily updated)</p></li>
+                            </a>
+                            <li><p>Profit maximization with a trailing stop</p></li>
+                            <a class="nav-scroll" href="#trading-by-emotions">
+                                <li class="scroll-item"><p>Positions open only during positive market emotional phase</p></li>
+                            </a>
+                            <li><p>Long held positions eliminated for better use of resources</p></li>
+                            <a class="nav-scroll" href="#crash-protaction">
+                                <li class="scroll-item"><p>Market crash protection based on market intraday drop (Black swan)</p></li>
+                            </a>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="main-card mb-3 pt-4 card">
+                <div class="swatch-holder swatch-holder-lg bg-primary" id="TooltipC-2">
+                    <i class="fas fa-chart-pie text-white"></i>
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">Management</h5>
+                    <ul>
+                        <a class="nav-scroll" href="#portfolio-management">
+                            <li class="scroll-item"><p>Portfolio diversification by sectors</p></li>
+                        </a>
+                        <a class="nav-scroll" href="#candidates">
+                            <li class="scroll-item"><p>Flexible behavior configuration- for different portfolio sizes</p></li>
+                        </a>
+                        <a class="nav-scroll" href="#personal-performance">
+                            <li class="scroll-item"><p>Performance research for adjustment</p></li>
+                        </a>
+                        <a class="nav-scroll" href="#custom-filters">
+                            <li class="scroll-item"><p>Filters to adjust a personal risk level per user</p></li>
+                        </a>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="fa-3x scroll-arrow">
+        <a class="nav-scroll" href="#algotrader-score">
+            <i class="fas fa-arrow-circle-down" aria-hidden="true"></i>
+        </a>
+    </div>
+</header>
+<!-- Analytics section - Algotrader Score-->
+<section id="algotrader-score">
+    <div class="container px-4" style="margin-bottom: 12%; margin-top: 6%;">
+        <div class="gx-4">
+            <div style="width: 48%; position: absolute; z-index: 1;" class="animated lightSpeedIn">
+                <div>
+                    <h2 class="section-title font-weight-bold">Algotrader score</h2>
+                    <p>The data is saved in DB in order to validate the analysis quality</p>
+                </div>
+                <div class="row" style="padding-top: 6%;">
+                    <div class="col-md-4 col-xl-4">
+                    <div class="card mb-3 widget-content">
+                        <div class="widget-content-outer">
+                            <div class="widget-content-wrapper card-title">
+                                <p>INSIDER ACTIVITIES</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card mb-3 widget-content">
+                        <div class="widget-content-outer">
+                            <div class="widget-content-wrapper card-title">
+                                <p>FUNDAMENT ALS</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card mb-3 widget-content">
+                        <div class="widget-content-outer">
+                            <div class="widget-content-wrapper card-title">
+                                <p>TECHNIC ALS</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                    <div class="col-md-4 col-xl-4">
+                        <div class="card mb-3 widget-content">
+                            <div class="widget-content-outer">
+                                <div class="widget-content-wrapper card-title">
+                                    <p>HEDGE FUND ACTIVITY</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card mb-3 widget-content">
+                            <div class="widget-content-outer">
+                                <div class="widget-content-wrapper card-title" style="flex-direction: column;">
+                                    <h3>SMART SCORE</h3>
+                                    <div class="text-success" style="font-size: 32px;">
+                                        <p style="width: 100%;">1 - 10</p>
+                                    </div>
+                                    <div class="pt-3">
+                                        <img src="/static/images/main/smart_score.png" style="width: 100%;">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-xl-4">
+                        <div class="card mb-3 widget-content">
+                            <div class="widget-content-outer">
+                                <div class="widget-content-wrapper card-title">
+                                    <p>NEW SENTIMENT</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card mb-3 widget-content">
+                            <div class="widget-content-outer">
+                                <div class="widget-content-wrapper card-title">
+                                    <p>ANALYST RATINGS</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card mb-3 widget-content">
+                            <div class="widget-content-outer">
+                                <div class="widget-content-wrapper card-title">
+                                    <p>BLOGGER OPTIONS</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div style="position: relative; left: 66%; top: 9%;">
+               <img class="algo-score-img" src="{{ url_for('static', filename='images/main/algotrader_score.png') }}" style="width: 80%;">
+            </div>
+        </div>
+    </div>
+    <div class="fa-3x scroll-arrow">
+        <a class="nav-scroll" href="#market-emotion">
+            <i class="fas fa-arrow-circle-down" aria-hidden="true"></i>
+        </a>
+    </div>
+</section>
+<!-- Analytics section - Market Emotion-->
+<section id="market-emotion">
+    <div class="container px-4" style="margin-top: 6%; margin-bottom: 10%;">
+        <div class="gx-4" style="display: flex; width: 100%;">
+            <div style="position: absolute;">
+               <img src="{{ url_for('static', filename='images/main/market_emotion.png') }}" style="width: 525px;height: 390px;">
+            </div>
+            <div class="animated lightSpeedIn" style="margin-top: 2%; position: relative; margin-left: 52%;">
+                <div style="color: #2F327D;">
+                    <h2>Market Emotion</h2>
+                    <div>
+                        <p class="opacity-8" style="padding-right: 20%;">Market emotions are moving between exteeme Fear and Greed : between 0 and 100.</p>
+                        <p style="padding-left: 3%; font-weight: bold;">Measured hourly by :</p>
+                        <ul>
+                            <li>
+                                <p>
+                                    <span class="pr-1 font-weight-bold">S&P 500 Momentum.</span>Versus its 125-day moving average.
+                                </p>
                             </li>
-                            <li class="nav-item p-3">
-                                <a href="" class="nav-link text-end">
-                                    <i class="fas fa-dollar-sign pr-1"></i>
-                                    Pricing
-                                </a>
+                            <li>
+                                <p>
+                                    <span class="pr-1 font-weight-bold">S&P 500 Strength.</span>The number of stocks hitting 52-week Highs and Lows.
+                                </p>
                             </li>
-                            <li class="nav-item p-3">
-                                <a href="/account/login" class="nav-link text-end fw-bold">
-                                    <i class="fa fa-sign-in pr-1"></i>
-                                    Log In
-                                </a>
+                            <li>
+                                <p>
+                                    <span class="pr-1 font-weight-bold">Stock Price Breadth.</span>The volume of shares trading in stocks on the rise versus those declining.
+                                </p>
                             </li>
-                            <li class="nav-item p-3">
-                                <a href="/account/register" class="nav-link text-end fw-bold">
-                                    <i class="fa fa-user-plus pr-1"></i>
-                                    Register
-                                </a>
+                            <li>
+                                <p>
+                                    <span class="pr-1 font-weight-bold">Put and Call Options.</span>The put/call ratio, which compares the trading volume of bullish call options relative to the trading volume of bearish put options
+                                </p>
+                            </li>
+                            <li>
+                                <p>
+                                    <span class="pr-1 font-weight-bold">Junk Bond Demand.</span>The spread between yields on investment grade bonds and junk bonds.
+                                </p>
+                            </li>
+                            <li>
+                                <p>
+                                    <span class="pr-1 font-weight-bold">Market Volatility.</span>The VIX, which measures volatility
+                                </p>
+                            </li>
+                            <li>
+                                <p>
+                                    <span class="pr-1 font-weight-bold">Safe Haven Demand.</span>The difference in returns for stocks versus Treasuries
+                                </p>
                             </li>
                         </ul>
                     </div>
                 </div>
-            </nav>
-            <!-- Header-->
-            <header class="bg-gradient">
-                <div class="container">
-                    <div class="section-title font-weight-bold" style="width:25%;">
-                        <h2>Analytics driven automated trading</h2>
-                    </div>
-                    <div class="main-cards">
-                        <div class="row">
-                            <div class="col-md-4 col-xl-4">
-                                <div class="card mb-3 widget-content">
-                                    <div class="widget-content-outer">
-                                        <div class="widget-content-wrapper">
-                                            <div class="widget-content-left">
-                                                <div class="widget-heading">Users</div>
-                                                <div class="widget-subheading">Registered users</div>
-                                            </div>
-                                            <div class="widget-content-right">
-                                                <div class="widget-numbers text-primary">{{system_status['users_registered']}}</div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-4 col-xl-4">
-                                <div class="card mb-3 widget-content">
-                                    <div class="widget-content-outer">
-                                        <div class="widget-content-wrapper">
-                                            <div class="widget-content-left">
-                                                <div class="widget-heading">Tickers</div>
-                                                <div class="widget-subheading">Candidates tracked daily</div>
-                                            </div>
-                                            <div class="widget-content-right">
-                                                <div class="widget-numbers text-primary">{{system_status['tickers_tracked']}}</div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-4 col-xl-4">
-                                <div class="card mb-3 widget-content">
-                                    <div class="widget-content-outer">
-                                        <div class="widget-content-wrapper">
-                                            <div class="widget-content-left">
-                                                <div class="widget-heading">Executions</div>
-                                                <div class="widget-subheading">Deals executed</div>
-                                            </div>
-                                            <div class="widget-content-right">
-                                                <div class="widget-numbers text-primary">{{system_status['all_positions']}}</div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-4 col-xl-4">
-                                <div class="card mb-3 widget-content">
-                                    <div class="widget-content-outer">
-                                        <div class="widget-content-wrapper">
-                                            <div class="widget-content-left">
-                                                <div class="widget-heading">Funds</div>
-                                                <div class="widget-subheading">All users portfolio value</div>
-                                            </div>
-                                            <div class="widget-content-right">
-                                                <div class="widget-numbers text-primary">{{system_status['funds'] | round |int}} $</div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-4 col-xl-4">
-                                <div class="card mb-3 widget-content">
-                                    <div class="widget-content-outer">
-                                        <div class="widget-content-wrapper">
-                                            <div class="widget-content-left">
-                                                <div class="widget-heading">Last Update</div>
-                                                <div class="widget-subheading">Last data update</div>
-                                            </div>
-                                            <div class="widget-content-right">
-                                                <div class="text-primary">{{system_status['last_update_date']}}</div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-4 col-xl-4">
-                                <div class="card mb-3 widget-content">
-                                    <div class="widget-content-wrapper">
-                                        <div class="widget-content-left">
-                                            <div class="widget-heading">Success Rate</div>
-                                        </div>
-                                        <div class="widget-content-right filter-items">
-                                            <div class="position-items">
-                                                <div class="item info-items pr-3" data-toggle="tooltip" data-placement="bottom" title="Positions closed for technical reason">
-                                                    <div class="text-primary text-center rate-item">{{system_status['technical_positions']}}</div>
-                                                    <div class="label-info text-primary">Technical</div>
-                                                </div>
-                                                <div class="item info-items pr-3">
-                                                    <div class="text-success text-center rate-item">{{system_status['profit_positions']}}</div>
-                                                    <div class="label-info text-success">Success</div>
-                                                </div>
-                                                <div class="item last-item info-items">
-                                                    <div class="text-danger text-center rate-item">{{system_status['lost_positions']}}</div>
-                                                    <div class="label-info text-danger">Fail</div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="container mt-5">
-                    <div class="col-md-3">
-                        <div class="main-card mb-3 pt-4 card">
-                            <div class="swatch-holder swatch-holder-lg bg-primary" id="TooltipC-0">
-                                <i class="fas fa-chart-line text-white"></i>
-                            </div>
-                            <div class="card-body">
-                                <h5 class="card-title">Analytics</h5>
-                                <div class="pt-4">
-                                    <a class="nav-scroll" href="#algotrader-score">
-                                        <ul class="scroll-item">
-                                            <li><p>AI driven Stock analytics</p></li>
-                                            <li><p>Daily updated</p></li>
-                                            <li><p>Enriched by 3d party data</p></li>
-                                        </ul>
-                                    </a>
-                                    <a class="nav-scroll" href="#market-emotion">
-                                        <ul class="scroll-item">
-                                            <li><p>AI driven Market analytics</p></li>
-                                            <li><p>Hourly updated</p></li>
-                                            <li><p>Measured by 7 parameters</p></li>
-                                        </ul>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="main-card mb-3 pt-4 card">
-                            <div class="swatch-holder swatch-holder-lg bg-primary" id="TooltipC-1">
-                                <i class="fab fa-think-peaks text-white text-white"></i>
-                            </div>
-                            <div class="card-body">
-                                <h5 class="card-title">Timing</h5>
-                                <div class="pt-4">
-                                    <ul>
-                                        <a class="nav-scroll" href="#profit-maximization">
-                                            <li class="scroll-item"><p>Profit maximization for Trending market phase</p></li>
-                                        </a>
-                                        <a class="nav-scroll" href="#advantage-entry-point">
-                                            <li class="scroll-item"><p>Entry point for each position targeted to gain intraday advantage based on 1year back research for each ticker (daily updated)</p></li>
-                                        </a>
-                                        <li><p>Profit maximization with a trailing stop</p></li>
-                                        <a class="nav-scroll" href="#trading-by-emotions">
-                                            <li class="scroll-item"><p>Positions open only during positive market emotional phase</p></li>
-                                        </a>
-                                        <li><p>Long held positions eliminated for better use of resources</p></li>
-                                        <a class="nav-scroll" href="#crash-protaction">
-                                            <li class="scroll-item"><p>Market crash protection based on market intraday drop (Black swan)</p></li>
-                                        </a>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="main-card mb-3 pt-4 card">
-                            <div class="swatch-holder swatch-holder-lg bg-primary" id="TooltipC-2">
-                                <i class="fas fa-chart-pie text-white"></i>
-                            </div>
-                            <div class="card-body">
-                                <h5 class="card-title">Management</h5>
-                                <ul>
-                                    <a class="nav-scroll" href="#portfolio-management">
-                                        <li class="scroll-item"><p>Portfolio diversification by sectors</p></li>
-                                    </a>
-                                    <a class="nav-scroll" href="#candidates">
-                                        <li class="scroll-item"><p>Flexible behavior configuration- for different portfolio sizes</p></li>
-                                    </a>
-                                    <a class="nav-scroll" href="#personal-performance">
-                                        <li class="scroll-item"><p>Performance research for adjustment</p></li>
-                                    </a>
-                                    <a class="nav-scroll" href="#custom-filters">
-                                        <li class="scroll-item"><p>Filters to adjust a personal risk level per user</p></li>
-                                    </a>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="fa-3x scroll-arrow">
-                    <a class="nav-scroll" href="#algotrader-score">
-                        <i class="fas fa-arrow-circle-down" aria-hidden="true"></i>
-                    </a>
-                </div>
-            </header>
-            <!-- Analytics section - Algotrader Score-->
-            <section id="algotrader-score">
-                <div class="container px-4" style="margin-bottom: 12%; margin-top: 6%;">
-                    <div class="gx-4">
-                        <div style="width: 48%; position: absolute; z-index: 1;" class="animated lightSpeedIn">
-                            <div>
-                                <h2 class="section-title font-weight-bold">Algotrader score</h2>
-                                <p>The data is saved in DB in order to validate the analysis quality</p>
-                            </div>
-                            <div class="row" style="padding-top: 6%;">
-                                <div class="col-md-4 col-xl-4">
-                                <div class="card mb-3 widget-content">
-                                    <div class="widget-content-outer">
-                                        <div class="widget-content-wrapper card-title">
-                                            <p>INSIDER ACTIVITIES</p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="card mb-3 widget-content">
-                                    <div class="widget-content-outer">
-                                        <div class="widget-content-wrapper card-title">
-                                            <p>FUNDAMENT ALS</p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="card mb-3 widget-content">
-                                    <div class="widget-content-outer">
-                                        <div class="widget-content-wrapper card-title">
-                                            <p>TECHNIC ALS</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                                <div class="col-md-4 col-xl-4">
-                                    <div class="card mb-3 widget-content">
-                                        <div class="widget-content-outer">
-                                            <div class="widget-content-wrapper card-title">
-                                                <p>HEDGE FUND ACTIVITY</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="card mb-3 widget-content">
-                                        <div class="widget-content-outer">
-                                            <div class="widget-content-wrapper card-title" style="flex-direction: column;">
-                                                <h3>SMART SCORE</h3>
-                                                <div class="text-success" style="font-size: 32px;">
-                                                    <p style="width: 100%;">1 - 10</p>
-                                                </div>
-                                                <div class="pt-3">
-                                                    <img src="/static/images/main/smart_score.png" style="width: 100%;">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-4 col-xl-4">
-                                    <div class="card mb-3 widget-content">
-                                        <div class="widget-content-outer">
-                                            <div class="widget-content-wrapper card-title">
-                                                <p>NEW SENTIMENT</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="card mb-3 widget-content">
-                                        <div class="widget-content-outer">
-                                            <div class="widget-content-wrapper card-title">
-                                                <p>ANALYST RATINGS</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="card mb-3 widget-content">
-                                        <div class="widget-content-outer">
-                                            <div class="widget-content-wrapper card-title">
-                                                <p>BLOGGER OPTIONS</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div style="position: relative; left: 66%; top: 9%;">
-                           <img class="algo-score-img" src="{{ url_for('static', filename='images/main/algotrader_score.png') }}" style="width: 80%;">
-                        </div>
-                    </div>
-                </div>
-                <div class="fa-3x scroll-arrow">
-                    <a class="nav-scroll" href="#market-emotion">
-                        <i class="fas fa-arrow-circle-down" aria-hidden="true"></i>
-                    </a>
-                </div>
-            </section>
-            <!-- Analytics section - Market Emotion-->
-            <section id="market-emotion">
-                <div class="container px-4" style="margin-top: 6%; margin-bottom: 10%;">
-                    <div class="gx-4" style="display: flex; width: 100%;">
-                        <div style="position: absolute;">
-                           <img src="{{ url_for('static', filename='images/main/market_emotion.png') }}" style="width: 525px;height: 390px;">
-                        </div>
-                        <div class="animated lightSpeedIn" style="margin-top: 2%; position: relative; margin-left: 52%;">
-                            <div style="color: #2F327D;">
-                                <h2>Market Emotion</h2>
-                                <div>
-                                    <p class="opacity-8" style="padding-right: 20%;">Market emotions are moving between exteeme Fear and Greed : between 0 and 100.</p>
-                                    <p style="padding-left: 3%; font-weight: bold;">Measured hourly by :</p>
-                                    <ul>
-                                        <li>
-                                            <p>
-                                                <span class="pr-1 font-weight-bold">S&P 500 Momentum.</span>Versus its 125-day moving average.
-                                            </p>
-                                        </li>
-                                        <li>
-                                            <p>
-                                                <span class="pr-1 font-weight-bold">S&P 500 Strength.</span>The number of stocks hitting 52-week Highs and Lows.
-                                            </p>
-                                        </li>
-                                        <li>
-                                            <p>
-                                                <span class="pr-1 font-weight-bold">Stock Price Breadth.</span>The volume of shares trading in stocks on the rise versus those declining.
-                                            </p>
-                                        </li>
-                                        <li>
-                                            <p>
-                                                <span class="pr-1 font-weight-bold">Put and Call Options.</span>The put/call ratio, which compares the trading volume of bullish call options relative to the trading volume of bearish put options
-                                            </p>
-                                        </li>
-                                        <li>
-                                            <p>
-                                                <span class="pr-1 font-weight-bold">Junk Bond Demand.</span>The spread between yields on investment grade bonds and junk bonds.
-                                            </p>
-                                        </li>
-                                        <li>
-                                            <p>
-                                                <span class="pr-1 font-weight-bold">Market Volatility.</span>The VIX, which measures volatility
-                                            </p>
-                                        </li>
-                                        <li>
-                                            <p>
-                                                <span class="pr-1 font-weight-bold">Safe Haven Demand.</span>The difference in returns for stocks versus Treasuries
-                                            </p>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="fa-3x scroll-arrow">
-                    <a class="nav-scroll" href="#profit-maximization">
-                        <i class="fas fa-arrow-circle-down" aria-hidden="true"></i>
-                    </a>
-                </div>
-            </section>
-            <!-- Timing - Profit maximization -->
-            <section id="profit-maximization">
-                <div class="container px-4">
-                    <div class="gx-4" style="width: 100%;">
-                        <div class="animated lightSpeedIn" style="width: 60%; float: left; overflow: hidden;">
-                            <div style="text-align: inherit;">
-                                <h2 class="section-title">Maximizing a profit for a winning position.Better than simply investing.</h2>
-                                <p style="padding-top: 2%;">
-                                    We believe that entering to position on small drops caused by market deviations and bad news and getting out of position with small profit overtime bring better value than just holding it
-                                </p>
-                                <p>
-                                    Aggregated profit for a shorter positions should be higher than just a stock overall revenue. Of course it will work only if stock is profitable!
-                                </p>
-                                <div style="padding-top: 3%; width: 89%; display: flex;">
-                                    <div class="opacity-7" style="font-size: small; padding-right: 5px; padding-left: 15%; text-align: justify;">
-                                        <p>
-                                            <span class="pr-1 font-weight-bold">Profit point:</span> configured according broker fees... as personal sence...<br/>
-                                            Better to use Trailing stop if allowed by API. For example: 1% on IB =not good  it is 10 USD – 2 USD fee, but 6% is already fine: 50 USD-2 USD Fee.
-                                        </p>
-                                    </div>
-                                    <div style="padding-top: 6%;">
-                                        <img src="{{ url_for('static', filename='images/main/arrow_right.png') }}">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div style="width: 100%;">
-                            <img src="{{ url_for('static', filename='images/main/profit_maximization.png') }}" style="width: 100%; top: 26px; margin-top: -21%;">
-                        </div>
-                        <div class="animated lightSpeedIn" style="width: 50%; float: right; margin: -237px -26px 0 0;">
-                            <div class="section-title">
-                                <div style="width: 89%; display: flex;">
-                                    <div style="padding-top: 6%; padding-left: 2px;">
-                                        <img src="{{ url_for('static', filename='images/main/arrow_left.png') }}">
-                                    </div>
-                                    <div class="opacity-7" style="font-size: small; text-align: justify; padding: 12px 20px 0 15px;">
-                                        <p>
-                                            <span class="pr-1 font-weight-bold">Entry point:</span> if during a day stock falls more then average intraday fall of a last year. The statistics is updated on daily basis. From Yahoo finance.
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="fa-3x scroll-arrow">
-                    <a class="nav-scroll" href="#advantage-entry-point">
-                        <i class="fas fa-arrow-circle-down" aria-hidden="true"></i>
-                    </a>
-                </div>
-            </section>
-            <!-- Timing - Advantage Entry Point -->
-            <section id="advantage-entry-point" style="margin-top: -7%;">
-                <div class="container px-4">
-                    <div class="gx-4">
-                        <div style="width: 48%" class="animated lightSpeedIn">
-                            <div class="section-title font-weight-bold">
-                                <h2>Advantage entry point (daily)</h2>
-                            </div>
-                        </div>
-                        <div style="position: relative; top: 3%;">
-                           <img src="{{ url_for('static', filename='images/main/advantage_entry_point.png') }}" style="width: 80%;">
-                        </div>
-                    </div>
-                </div>
-                <div class="fa-3x scroll-arrow" style="margin-top: 3%;">
-                    <a class="nav-scroll" href="#trading-by-emotions">
-                        <i class="fas fa-arrow-circle-down" aria-hidden="true"></i>
-                    </a>
-                </div>
-            </section>
-            <!-- Timing - Trading By Emotions -->
-            <section id="trading-by-emotions">
-                <div class="container px-4">
-                    <div class="gx-4">
-                        <div class="animated lightSpeedIn">
-                            <div style="text-align: inherit;">
-                                <h2 class="section-title font-weight-bold">Trading based on market emotions</h2>
-                                <p style="padding-right: 55%;">New positions are opened only during a positive market phase. Minimal level can be adjusted by user – with a ability to back test on one last year. </p>
-                            </div>
-                        </div>
-                        <div style="position: relative; top: 5%;">
-                           <img src="{{ url_for('static', filename='images/main/trading_by_emotions.png') }}" style="width: 80%;">
-                        </div>
-                    </div>
-                </div>
-                <div class="fa-3x scroll-arrow" style="margin-top: 2%;">
-                    <a class="nav-scroll" href="#crash-protaction">
-                        <i class="fas fa-arrow-circle-down" aria-hidden="true"></i>
-                    </a>
-                </div>
-            </section>
-            <!-- Timing - Crash Protaction -->
-            <section id="crash-protaction">
-                <div class="container px-4" style="margin-top: -2%;">
-                    <div class="gx-4">
-                        <div class="animated lightSpeedIn">
-                            <div style="text-align: inherit; padding-left: 2%;">
-                                <h2 class="section-title font-weight-bold">Market crash protection</h2>
-                                <div style="display: flex;">
-                                    <div style="font-size: 15px; width: 40%;">
-                                        <p>
-                                            Market fall protection –if unexpected intraday massive fall occurs to SnP 500 (Black Swan)- all the existing positions can be automatically closed. The level can be adjusted by user. BACKTESTING
-                                        </p>
-                                    </div>
-                                    <div style="margin-left: 8%; margin-top: -1%;"><img src="{{ url_for('static', filename='images/main/black_swan_input.png') }}" style="width: 80%;"></div>
-                                </div>
-                            </div>
-                        </div>
-                        <div style="position: relative;">
-                           <img src="{{ url_for('static', filename='images/main/crash_protaction.png') }}" style="width: 80%;">
-                        </div>
-                    </div>
-                </div>
-                <div class="fa-3x scroll-arrow">
-                    <a class="nav-scroll" href="#portfolio-management">
-                        <i class="fas fa-arrow-circle-down" aria-hidden="true"></i>
-                    </a>
-                </div>
-            </section>
-            <!-- MANAGEMENT - Portfolio Management -->
-            <section id="portfolio-management">
-                <div class="container px-4">
-                    <div class="gx-4">
-                        <div class="animated lightSpeedIn">
-                            <div style="text-align: inherit; padding-left: 2%;">
-                                <h2 class="section-title font-weight-bold">Portfolio management</h2>
-                                <div style="display: flex;">
-                                    <div style="font-size: 15px; width: 40%;">
-                                        <p>
-                                            Fully managed, diversifyed portfolio, with customizable settings to adjust better to users personal style of work
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div style="position: relative; top: 5%; display: flex;">
-                            <img src="{{ url_for('static', filename='images/main/portfolio_management_pie.png') }}" style="width: 35%;">
-                            <img src="{{ url_for('static', filename='images/main/portfolio_management.png') }}" style="width: 68%;">
-                        </div>
-                    </div>
-                </div>
-                <div class="fa-3x scroll-arrow" style="margin-top: 5%;">
-                    <a class="nav-scroll" href="#candidates">
-                        <i class="fas fa-arrow-circle-down" aria-hidden="true"></i>
-                    </a>
-                </div>
-            </section>
-            <!-- MANAGEMENT - Candidates -->
-            <section id="candidates">
-                <div class="container px-4">
-                    <div class="gx-4" style="width: 100%; padding-left: 6%;">
-                        <div style="width: 70%;">
-                            <div style="text-align: inherit; padding-left: 5%;">
-                                <h2  class="section-title font-weight-bold">Candidates to follow</h2>
-                                <p style="padding-right: 55%;">Built in system selected list of tickers to follow or user defined custom selection</p>
-                            </div>
-                            <img src="{{ url_for('static', filename='images/main/candidates_1.png') }}" style="width: 100%;">
-                        </div>
-                        <div class="animated lightSpeedIn" style="width: 50%; float: right; margin: -544px 0 0 0;; display: flex;">
-                            <div>
-                               <img src="{{ url_for('static', filename='images/main/candidates_2.png') }}" style="width: 80%;">
-                            </div>
-                            <div style="padding-top: 13%; margin: 7px 0px 0px -76px;">
-                               <img src="{{ url_for('static', filename='images/main/candidates_3.png') }}" style="width: 80%;">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="fa-3x scroll-arrow" style="margin-top: 1%;">
-                    <a class="nav-scroll" href="#personal-performance">
-                        <i class="fas fa-arrow-circle-down" aria-hidden="true"></i>
-                    </a>
-                </div>
-            </section>
-            <!-- Management - Personal Performance-->
-            <section id="personal-performance">
-                <div class="container px-4" style="padding-top: 8%;">
-                    <div class="gx-4">
-                        <div style="width: 48%; position: absolute; z-index: 1;" class="animated lightSpeedIn">
-                            <div style="text-align: inherit; position: absolute; padding-left: 10%; padding-top: 0;">
-                                <h2 class="section-title font-weight-bold">Personal performance</h2>
-                                <p style="width: 65%;">Ability to analyze the performance and adjust strategy</p>
-                            </div>
-                            <div class="row" style="margin: 90px -130px 0 0; position: relative; left: 35%;">
-                                <img src="{{ url_for('static', filename='images/main/personal_performance_1.png') }}" style="width: 80%;">
-                            </div>
-                        </div>
-                        <div style="position: relative; left: 59%; top: -32%;">
-                           <img class="algo-score-img" src="{{ url_for('static', filename='images/main/personal_performance_2.png') }}" style="width: 80%;">
-                        </div>
-                    </div>
-                </div>
-                <div class="fa-3x scroll-arrow" style="margin-top: 7%;">
-                    <a class="nav-scroll" href="#custom-filters">
-                        <i class="fas fa-arrow-circle-down" aria-hidden="true"></i>
-                    </a>
-                </div>
-            </section>
-            <!-- Management - Custom Filters-->
-            <section id="custom-filters">
-                <div class="container" style="display: inherit; margin-top: 3%">
-                    <div class="section-title" style="padding-top: 0; margin-bottom: 5%; text-align: inherit; padding-left: 8%;">
-                        <h2>Custom filters</h2>
-                    </div>
-                    <div class="">
-                        <div class="row">
-                            <div class="col-md-4 col-xl-4">
-                                <div class="mb-3 pt-4 card custom-card">
-                                    <div class="swatch-holder swatch-holder-lg bg-primary" id="TooltipC-3" style="left: 40%;">
-                                        <i class="fas fa-balance-scale-left text-white"></i>
-                                    </div>
-                                    <div class="custom-body">
-                                        <h5 class="card-title">Algotrader Score</h5>
-                                        <div class="custom-body-content">
-                                            <p>Algotrader AI based score for the ticker</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-4 col-xl-4">
-                                <div class="mb-3 pt-4 card custom-card">
-                                    <div style="left: 40%; top: -29%;" class="swatch-holder swatch-holder-lg bg-primary" id="TooltipC-4">
-                                        <i class="fas fa-angle-double-down text-white"></i>
-                                    </div>
-                                    <div class="custom-body">
-                                        <h5 class="card-title">Max intraday drop</h5>
-                                        <div class="custom-body-content">
-                                            <p>Maximal intraday drop in tickers history. Can show a tickers volatility.</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-4 col-xl-4">
-                                <div class="mb-3 pt-4 card custom-card">
-                                    <div style="left: 40%; top: -26%;" class="swatch-holder swatch-holder-lg bg-primary" id="TooltipC-5">
-                                        <i class="fas fa-bold text-white"></i>
-                                    </div>
-                                    <div class="custom-body">
-                                        <h5 class="card-title">Beta</h5>
-                                        <div class="custom-body-content">
-                                            <p>Tickers behavior comparing to overall sectors performance</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row" style="margin-top: 3%;">
-                            <div class="col-md-6 col-xl-6">
-                                <div class="mb-3 pt-4 card custom-card">
-                                    <div style="left: 42%; top: -25%;" class="swatch-holder swatch-holder-lg bg-primary" id="TooltipC-6">
-                                        <i class="fas fa-bacon text-white"></i>
-                                    </div>
-                                    <div class="custom-body">
-                                        <h5 class="card-title">Minimal momentum</h5>
-                                        <div class="custom-body-content">
-                                            <p>General performance of a company during a last year, does it have a positive trend and how strong is it.</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-6 col-xl-6">
-                                <div class="mb-3 pt-4 card custom-card">
-                                    <div style="left: 41%; top: -25%;" class="swatch-holder swatch-holder-lg bg-primary" id="TooltipC-7">
-                                        <i class="fas fa-compress-alt text-white"></i>
-                                    </div>
-                                    <div class="custom-body">
-                                        <h5 class="card-title">Underprice level</h5>
-                                        <div class="custom-body-content">
-                                            <p>Current price is below an estimated actual stock price (by analytics consensus)</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="fa-3x scroll-arrow" style="margin-top: 6%">
-                    <a class="nav-scroll" href="#user-view">
-                        <i class="fas fa-arrow-circle-down" aria-hidden="true"></i>
-                    </a>
-                </div>
-            </section>
-
-            <!-- User View -->
-            <section id="user-view">
-                <div class="container px-4">
-                    <div class="gx-4">
-                        <div class="animated lightSpeedIn" style="margin-bottom: 3%;">
-                            <div class="section-title font-weight-bold" style="text-align: inherit; padding-left: 2%;">
-                                <h2>Aggregated user view available from all devices</h2>
-                            </div>
-                        </div>
-                        <div>
-                            <img src="{{ url_for('static', filename='images/main/user_view_1.png') }}" style="width: 100%;">
-                            <img src="{{ url_for('static', filename='images/main/user_view_2.png') }}" style="width: 100%;">
-                        </div>
-                    </div>
-                </div>
-                <div class="fa-3x scroll-arrow">
-                    <a class="nav-scroll" href="#page-top">
-                        <i class="fas fa-arrow-circle-up" aria-hidden="true"></i>
-                    </a>
-                </div>
-            </section>
-
-
-<!--            &lt;!&ndash; Footer&ndash;&gt;-->
-<!--            <footer class="py-5 bg-dark">-->
-<!--                <div class="container px-4"><p class="m-0 text-center text-white">Copyright &copy; Your Website 2021</p></div>-->
-<!--            </footer>-->
+            </div>
         </div>
-        <!-- Bootstrap core JS-->
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-        <!-- Core theme JS-->
-        <script type="text/javascript" src="{{ url_for('static', filename='scrolling/js/scripts.js') }}"></script>
-        <script src="https://kit.fontawesome.com/9e19a61416.js" crossorigin="anonymous"></script>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-        <script type="text/javascript" src="{{ url_for('static', filename='dist/js/animsition.min.js') }}"></script>
+    </div>
+    <div class="fa-3x scroll-arrow">
+        <a class="nav-scroll" href="#profit-maximization">
+            <i class="fas fa-arrow-circle-down" aria-hidden="true"></i>
+        </a>
+    </div>
+</section>
+<!-- Timing - Profit maximization -->
+<section id="profit-maximization">
+    <div class="container px-4">
+        <div class="gx-4" style="width: 100%;">
+            <div class="animated lightSpeedIn" style="width: 60%; float: left; overflow: hidden;">
+                <div style="text-align: inherit;">
+                    <h2 class="section-title">Maximizing a profit for a winning position.Better than simply investing.</h2>
+                    <p style="padding-top: 2%;">
+                        We believe that entering to position on small drops caused by market deviations and bad news and getting out of position with small profit overtime bring better value than just holding it
+                    </p>
+                    <p>
+                        Aggregated profit for a shorter positions should be higher than just a stock overall revenue. Of course it will work only if stock is profitable!
+                    </p>
+                    <div style="padding-top: 3%; width: 89%; display: flex;">
+                        <div class="opacity-7" style="font-size: small; padding-right: 5px; padding-left: 15%; text-align: justify;">
+                            <p>
+                                <span class="pr-1 font-weight-bold">Profit point:</span> configured according broker fees... as personal sence...<br/>
+                                Better to use Trailing stop if allowed by API. For example: 1% on IB =not good  it is 10 USD – 2 USD fee, but 6% is already fine: 50 USD-2 USD Fee.
+                            </p>
+                        </div>
+                        <div style="padding-top: 6%;">
+                            <img src="{{ url_for('static', filename='images/main/arrow_right.png') }}">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div style="width: 100%;">
+                <img src="{{ url_for('static', filename='images/main/profit_maximization.png') }}" style="width: 100%; top: 26px; margin-top: -21%;">
+            </div>
+            <div class="animated lightSpeedIn" style="width: 50%; float: right; margin: -237px -26px 0 0;">
+                <div class="section-title">
+                    <div style="width: 89%; display: flex;">
+                        <div style="padding-top: 6%; padding-left: 2px;">
+                            <img src="{{ url_for('static', filename='images/main/arrow_left.png') }}">
+                        </div>
+                        <div class="opacity-7" style="font-size: small; text-align: justify; padding: 12px 20px 0 15px;">
+                            <p>
+                                <span class="pr-1 font-weight-bold">Entry point:</span> if during a day stock falls more then average intraday fall of a last year. The statistics is updated on daily basis. From Yahoo finance.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="fa-3x scroll-arrow">
+        <a class="nav-scroll" href="#advantage-entry-point">
+            <i class="fas fa-arrow-circle-down" aria-hidden="true"></i>
+        </a>
+    </div>
+</section>
+<!-- Timing - Advantage Entry Point -->
+<section id="advantage-entry-point" style="margin-top: -7%;">
+    <div class="container px-4">
+        <div class="gx-4">
+            <div style="width: 48%" class="animated lightSpeedIn">
+                <div class="section-title font-weight-bold">
+                    <h2>Advantage entry point (daily)</h2>
+                </div>
+            </div>
+            <div style="position: relative; top: 3%;">
+               <img src="{{ url_for('static', filename='images/main/advantage_entry_point.png') }}" style="width: 80%;">
+            </div>
+        </div>
+    </div>
+    <div class="fa-3x scroll-arrow" style="margin-top: 3%;">
+        <a class="nav-scroll" href="#trading-by-emotions">
+            <i class="fas fa-arrow-circle-down" aria-hidden="true"></i>
+        </a>
+    </div>
+</section>
+<!-- Timing - Trading By Emotions -->
+<section id="trading-by-emotions">
+    <div class="container px-4">
+        <div class="gx-4">
+            <div class="animated lightSpeedIn">
+                <div style="text-align: inherit;">
+                    <h2 class="section-title font-weight-bold">Trading based on market emotions</h2>
+                    <p style="padding-right: 55%;">New positions are opened only during a positive market phase. Minimal level can be adjusted by user – with a ability to back test on one last year. </p>
+                </div>
+            </div>
+            <div style="position: relative; top: 5%;">
+               <img src="{{ url_for('static', filename='images/main/trading_by_emotions.png') }}" style="width: 80%;">
+            </div>
+        </div>
+    </div>
+    <div class="fa-3x scroll-arrow" style="margin-top: 2%;">
+        <a class="nav-scroll" href="#crash-protaction">
+            <i class="fas fa-arrow-circle-down" aria-hidden="true"></i>
+        </a>
+    </div>
+</section>
+<!-- Timing - Crash Protaction -->
+<section id="crash-protaction">
+    <div class="container px-4" style="margin-top: -2%;">
+        <div class="gx-4">
+            <div class="animated lightSpeedIn">
+                <div style="text-align: inherit; padding-left: 2%;">
+                    <h2 class="section-title font-weight-bold">Market crash protection</h2>
+                    <div style="display: flex;">
+                        <div style="font-size: 15px; width: 40%;">
+                            <p>
+                                Market fall protection –if unexpected intraday massive fall occurs to SnP 500 (Black Swan)- all the existing positions can be automatically closed. The level can be adjusted by user. BACKTESTING
+                            </p>
+                        </div>
+                        <div style="margin-left: 8%; margin-top: -1%;"><img src="{{ url_for('static', filename='images/main/black_swan_input.png') }}" style="width: 80%;"></div>
+                    </div>
+                </div>
+            </div>
+            <div style="position: relative;">
+               <img src="{{ url_for('static', filename='images/main/crash_protaction.png') }}" style="width: 80%;">
+            </div>
+        </div>
+    </div>
+    <div class="fa-3x scroll-arrow">
+        <a class="nav-scroll" href="#portfolio-management">
+            <i class="fas fa-arrow-circle-down" aria-hidden="true"></i>
+        </a>
+    </div>
+</section>
+<!-- MANAGEMENT - Portfolio Management -->
+<section id="portfolio-management">
+    <div class="container px-4">
+        <div class="gx-4">
+            <div class="animated lightSpeedIn">
+                <div style="text-align: inherit; padding-left: 2%;">
+                    <h2 class="section-title font-weight-bold">Portfolio management</h2>
+                    <div style="display: flex;">
+                        <div style="font-size: 15px; width: 40%;">
+                            <p>
+                                Fully managed, diversifyed portfolio, with customizable settings to adjust better to users personal style of work
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div style="position: relative; top: 5%; display: flex;">
+                <img src="{{ url_for('static', filename='images/main/portfolio_management_pie.png') }}" style="width: 35%;">
+                <img src="{{ url_for('static', filename='images/main/portfolio_management.png') }}" style="width: 68%;">
+            </div>
+        </div>
+    </div>
+    <div class="fa-3x scroll-arrow" style="margin-top: 5%;">
+        <a class="nav-scroll" href="#candidates">
+            <i class="fas fa-arrow-circle-down" aria-hidden="true"></i>
+        </a>
+    </div>
+</section>
+<!-- MANAGEMENT - Candidates -->
+<section id="candidates">
+    <div class="container px-4">
+        <div class="gx-4" style="width: 100%; padding-left: 6%;">
+            <div style="width: 70%;">
+                <div style="text-align: inherit; padding-left: 5%;">
+                    <h2  class="section-title font-weight-bold">Candidates to follow</h2>
+                    <p style="padding-right: 55%;">Built in system selected list of tickers to follow or user defined custom selection</p>
+                </div>
+                <img src="{{ url_for('static', filename='images/main/candidates_1.png') }}" style="width: 100%;">
+            </div>
+            <div class="animated lightSpeedIn" style="width: 50%; float: right; margin: -544px 0 0 0;; display: flex;">
+                <div>
+                   <img src="{{ url_for('static', filename='images/main/candidates_2.png') }}" style="width: 80%;">
+                </div>
+                <div style="padding-top: 13%; margin: 7px 0px 0px -76px;">
+                   <img src="{{ url_for('static', filename='images/main/candidates_3.png') }}" style="width: 80%;">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="fa-3x scroll-arrow" style="margin-top: 1%;">
+        <a class="nav-scroll" href="#personal-performance">
+            <i class="fas fa-arrow-circle-down" aria-hidden="true"></i>
+        </a>
+    </div>
+</section>
+<!-- Management - Personal Performance-->
+<section id="personal-performance">
+    <div class="container px-4" style="padding-top: 8%;">
+        <div class="gx-4">
+            <div style="width: 48%; position: absolute; z-index: 1;" class="animated lightSpeedIn">
+                <div style="text-align: inherit; position: absolute; padding-left: 10%; padding-top: 0;">
+                    <h2 class="section-title font-weight-bold">Personal performance</h2>
+                    <p style="width: 65%;">Ability to analyze the performance and adjust strategy</p>
+                </div>
+                <div class="row" style="margin: 90px -130px 0 0; position: relative; left: 35%;">
+                    <img src="{{ url_for('static', filename='images/main/personal_performance_1.png') }}" style="width: 80%;">
+                </div>
+            </div>
+            <div style="position: relative; left: 59%; top: -32%;">
+               <img class="algo-score-img" src="{{ url_for('static', filename='images/main/personal_performance_2.png') }}" style="width: 80%;">
+            </div>
+        </div>
+    </div>
+    <div class="fa-3x scroll-arrow" style="margin-top: 7%;">
+        <a class="nav-scroll" href="#custom-filters">
+            <i class="fas fa-arrow-circle-down" aria-hidden="true"></i>
+        </a>
+    </div>
+</section>
+<!-- Management - Custom Filters-->
+<section id="custom-filters">
+    <div class="container" style="display: inherit; margin-top: 3%">
+        <div class="section-title" style="padding-top: 0; margin-bottom: 5%; text-align: inherit; padding-left: 8%;">
+            <h2>Custom filters</h2>
+        </div>
+        <div class="">
+            <div class="row">
+                <div class="col-md-4 col-xl-4">
+                    <div class="mb-3 pt-4 card custom-card">
+                        <div class="swatch-holder swatch-holder-lg bg-primary" id="TooltipC-3" style="left: 40%;">
+                            <i class="fas fa-balance-scale-left text-white"></i>
+                        </div>
+                        <div class="custom-body">
+                            <h5 class="card-title">Algotrader Score</h5>
+                            <div class="custom-body-content">
+                                <p>Algotrader AI based score for the ticker</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 col-xl-4">
+                    <div class="mb-3 pt-4 card custom-card">
+                        <div style="left: 40%; top: -29%;" class="swatch-holder swatch-holder-lg bg-primary" id="TooltipC-4">
+                            <i class="fas fa-angle-double-down text-white"></i>
+                        </div>
+                        <div class="custom-body">
+                            <h5 class="card-title">Max intraday drop</h5>
+                            <div class="custom-body-content">
+                                <p>Maximal intraday drop in tickers history. Can show a tickers volatility.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 col-xl-4">
+                    <div class="mb-3 pt-4 card custom-card">
+                        <div style="left: 40%; top: -26%;" class="swatch-holder swatch-holder-lg bg-primary" id="TooltipC-5">
+                            <i class="fas fa-bold text-white"></i>
+                        </div>
+                        <div class="custom-body">
+                            <h5 class="card-title">Beta</h5>
+                            <div class="custom-body-content">
+                                <p>Tickers behavior comparing to overall sectors performance</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row" style="margin-top: 3%;">
+                <div class="col-md-6 col-xl-6">
+                    <div class="mb-3 pt-4 card custom-card">
+                        <div style="left: 42%; top: -25%;" class="swatch-holder swatch-holder-lg bg-primary" id="TooltipC-6">
+                            <i class="fas fa-bacon text-white"></i>
+                        </div>
+                        <div class="custom-body">
+                            <h5 class="card-title">Minimal momentum</h5>
+                            <div class="custom-body-content">
+                                <p>General performance of a company during a last year, does it have a positive trend and how strong is it.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-xl-6">
+                    <div class="mb-3 pt-4 card custom-card">
+                        <div style="left: 41%; top: -25%;" class="swatch-holder swatch-holder-lg bg-primary" id="TooltipC-7">
+                            <i class="fas fa-compress-alt text-white"></i>
+                        </div>
+                        <div class="custom-body">
+                            <h5 class="card-title">Underprice level</h5>
+                            <div class="custom-body-content">
+                                <p>Current price is below an estimated actual stock price (by analytics consensus)</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="fa-3x scroll-arrow" style="margin-top: 6%">
+        <a class="nav-scroll" href="#user-view">
+            <i class="fas fa-arrow-circle-down" aria-hidden="true"></i>
+        </a>
+    </div>
+</section>
+<!-- User View -->
+<section id="user-view">
+    <div class="container px-4">
+        <div class="gx-4">
+            <div class="animated lightSpeedIn" style="margin-bottom: 3%;">
+                <div class="section-title font-weight-bold" style="text-align: inherit; padding-left: 2%;">
+                    <h2>Aggregated user view available from all devices</h2>
+                </div>
+            </div>
+            <div>
+                <img src="{{ url_for('static', filename='images/main/user_view_1.png') }}" style="width: 100%;">
+                <img src="{{ url_for('static', filename='images/main/user_view_2.png') }}" style="width: 100%;">
+            </div>
+        </div>
+    </div>
+    <div class="fa-3x scroll-arrow">
+        <a class="nav-scroll" href="#page-top">
+            <i class="fas fa-arrow-circle-up" aria-hidden="true"></i>
+        </a>
+    </div>
+</section>
 
-    </body>
-</html>
+{% endblock %}
+

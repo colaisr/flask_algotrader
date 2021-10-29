@@ -1,0 +1,27 @@
+{% extends 'layouts/main.html' %}
+
+{% block content %}
+
+<div class="row" style="margin-top: 13%; width: 98%; margin-left: auto; margin-right: auto;">
+    {% for s in subscriptions %}
+    <div class="col-md-4">
+        <div class="mb-3 card text-white" style="background-color: #75c7fa; height: 379px;">
+            <div class="card-header">{{s.subscription_name}}</div>
+            <div class="card-body">
+                {{s.description|safe}}
+            </div>
+            <div class="card-footer">
+
+                <a href="{{url_for('account.register', subscription=s.id)}}"
+                   role="button"
+                   class="mb-2 mr-2 btn-transition btn registration {% if s.id == 3 %} disabled {%endif%}"
+                   style="color: #fff; background-color: rgb(20 170 254 / 51%); border-color: rgb(22 170 255 / 48%);">
+                    {{s.price}}
+                </a>
+            </div>
+        </div>
+    </div>
+    {%endfor%}
+</div>
+
+{% endblock %}

@@ -3,6 +3,10 @@
     color: #2F327D;
 }
 
+.login-container{
+    margin-top: 12% !important;
+}
+
 #algotrader-score p{
     width: 50%;
 }
@@ -143,4 +147,22 @@
     font-size: 13px;
     opacity: 0.9;
     color: #2F327D;
+}
+
+.card-header, .card-footer {
+    align-items: center;
+    border-bottom-width: 1px;
+    padding-bottom: 0;
+    height: 3.5rem;
+    text-align: center;
+    display: initial !important;
+    padding-top: 4%;
+}
+
+.card-footer{
+    height: 4.1rem;
+}
+
+.card-body li{
+color: #fff;
 }

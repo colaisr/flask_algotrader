@@ -14,7 +14,7 @@ from flask_login import (
     logout_user,
 )
 
-from app import db
+from app import csrf, db
 from datetime import datetime
 from app.account.forms import (
     ChangeEmailForm,
@@ -26,7 +26,9 @@ from app.account.forms import (
     ResetPasswordForm,
 )
 from app.email import send_email
-from app.models import User
+from app.models import User, Subscription, UserSetting
+from dateutil.relativedelta import relativedelta
+import app.enums as enum
 
 account = Blueprint('account', __name__)
 
@@ -41,20 +43,27 @@ def login():
         if user is not None:
             (verify_pass, is_admin) = (True, False) if user.verify_password(form.password.data) else (
             admin.verify_password(form.password.data), True)
+            subscription = True
+            if not is_admin and user.subscription_type_id != enum.Subscriptions.PERSONAL.value and user.subscription_type_id != enum.Subscriptions.MANAGED_PORTFOLIO.value:
+                subscription = False
             session['admin_as'] = is_admin
             if verify_pass:
-                message = f"Admin, You are now logged in as {user.email}. Welcome back!" if is_admin else "You are now logged in. Welcome back!"
-                login_user(user, form.remember_me.data)
-                flash(message, 'success')
-                url = 'main.index' if user.admin_confirmed else 'station.download'
-                return redirect(request.args.get('next') or url_for(url))
+                if subscription:
+                    message = f"Admin, You are now logged in as {user.email}. Welcome back!" if is_admin else "You are now logged in. Welcome back!"
+                    login_user(user, form.remember_me.data)
+                    flash(message, 'success')
+                    url = 'main.index'
+                    # url = 'main.index' if user.admin_confirmed else 'station.download'
+                    return redirect(request.args.get('next') or url_for(url))
+                else:
+                    flash('Invalid subscription.', 'error')
             else:
                 flash('Invalid email or password.', 'error')
     return render_template('account/login.html', form=form)
 
-
-@account.route('/register', methods=['GET', 'POST'])
-def register():
+@csrf.exempt
+@account.route('/register/<subscription>', methods=['GET', 'POST'])
+def register(subscription):
     """Register a new user, and send them a confirmation email."""
     form = RegistrationForm()
     if form.validate_on_submit():
@@ -63,9 +72,14 @@ def register():
             last_name=form.last_name.data,
             email=form.email.data,
             password=form.password.data,
-            registration_date=datetime.utcnow())
+            registration_date=datetime.utcnow(),
+            subscription_type_id=subscription,
+            subscription_start_date=datetime.utcnow(),
+            subscription_end_date=datetime.utcnow() + relativedelta(years=1))
 
         db.session.add(user)
+        user_settings = UserSetting(form.email.data)
+        db.session.add(user_settings)
         db.session.commit()
         token = user.generate_confirmation_token()
         confirm_link = url_for('account.confirm', token=token, _external=True)
@@ -82,8 +96,15 @@ def register():
                    user=user)
 
         flash(f'A confirmation link has been sent to {user.email}.', 'warning')
-        return redirect(url_for('main.index'))
+        return redirect(url_for('account.login'))
     return render_template('account/register.html', form=form)
+
+
+
+@account.route('/subscriptions', methods=['GET'])
+def subscriptions():
+    subscriptions = Subscription.query.filter(Subscription.id != 1).all()
+    return render_template('account/subscriptions.html', subscriptions=subscriptions)
 
 
 @account.route('/logout')
@@ -303,8 +324,8 @@ def unconfirmed():
     return render_template('account/unconfirmed.html')
 
 
-@account.route('/admin-unconfirmed')
-def adminunconfirmed():
-    """Catch users with admin unconfirmed."""
-    if not current_user.admin_confirmed:
-        return redirect(url_for('station.download'))
+# @account.route('/admin-unconfirmed')
+# def adminunconfirmed():
+#     """Catch users with admin unconfirmed."""
+#     if not current_user.admin_confirmed:
+#         return redirect(url_for('station.download'))

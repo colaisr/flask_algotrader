@@ -10,6 +10,7 @@ from flask_login import login_required, current_user
 
 from app import csrf
 from app.models import TickerData, Candidate, UserSetting
+import app.enums as enum
 
 candidates = Blueprint('candidates', __name__)
 
@@ -17,8 +18,8 @@ candidates = Blueprint('candidates', __name__)
 @candidates.route('usercandidates', methods=['GET', 'POST'])
 @login_required
 def usercandidates():
-    if not current_user.admin_confirmed or not current_user.signature:
-        return redirect(url_for('station.download'))
+    # if not current_user.admin_confirmed or not current_user.signature:
+    #     return redirect(url_for('station.download'))
     candidates = Candidate.query.filter_by(email=current_user.email).all()
     user_settings = UserSetting.query.filter_by(email=current_user.email).first()
     admin_candidates = {}
