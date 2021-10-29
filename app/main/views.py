@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, url_for
-from flask_login import current_user, flash
-from sqlalchemy import text, or_
+from flask_login import current_user
+from sqlalchemy import text
 from werkzeug.utils import redirect
 
 import app.generalutils as general
