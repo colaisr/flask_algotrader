@@ -164,5 +164,13 @@
 }
 
 .card-body li{
-color: #fff;
+    color: #fff;
+}
+
+.widget-subheading{
+    font-size: 12px;
+}
+
+.tooltip-help{
+    cursor: help;
 }

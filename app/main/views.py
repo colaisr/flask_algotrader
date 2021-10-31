@@ -24,7 +24,6 @@ def index():
             return redirect(url_for('userview.traderstationstate'))
 
     system_status = {}
-    system_status['users_count'] = len(User.query.all())
     query_text = "select a.* from Tickersdata a join (  select Tickersdata.`ticker`, max(Tickersdata.`updated_server_time`) as updated_server_time  from Tickersdata group by Tickersdata.`ticker`) b on b.`ticker`=a.`ticker` and b.`updated_server_time`=a.`updated_server_time`"
     uniq_tickers_data = db.session.query(TickerData).from_statement(text(query_text)).all()
     system_status['tickers_tracked'] = len(uniq_tickers_data)
@@ -33,7 +32,12 @@ def index():
     central = general.utc_datetime_to_local(last_update_date)
     system_status['last_update_date'] = central.strftime("%d %b, %Y")
 
-    system_status['users_registered'] = len(Report.query.all())
+    all_users = User.query.all()
+    personal_users = list(filter(lambda p: p.subscription_type_id == enum.Subscriptions.PERSONAL.value, all_users))
+    managed_users = list(filter(lambda p: p.subscription_type_id == enum.Subscriptions.MANAGED_PORTFOLIO.value, all_users))
+    system_status['users_registered'] = len(all_users)
+    system_status['personal_users'] = len(personal_users)
+    system_status['managed_users'] = len(managed_users)
 
     closed_positions = Position.query.filter(Position.last_exec_side == 'SLD').all()
     lost_positions = list(filter(lambda p: p.profit <= 0 and (p.profit / (p.open_price * p.stocks) * 100) < -9, closed_positions))
