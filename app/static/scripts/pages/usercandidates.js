@@ -2,6 +2,7 @@
 
 // creating a candidate
     $('#btnAddCandidate').on('click', function() {
+        $('#candidate-flash').empty();
         $('.content-hidden').prop('hidden',true);
         $('.modal-body input, .modal-body textarea').val("");
         $("#btn_submit").prop('disabled', true);
