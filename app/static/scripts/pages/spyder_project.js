@@ -1,5 +1,5 @@
-var domane = 'https://colak.eu.pythonanywhere.com/';
-//var domane = 'http://localhost:8000/';
+//var domane = 'https://colak.eu.pythonanywhere.com/';
+var domane = 'http://localhost:8000/';
 
 function get_data_for_ticker(){
     $('#candidate-flash').empty();
@@ -16,9 +16,9 @@ function get_data_for_ticker(){
         url = domane + 'research/get_info_ticker/' + ticker
         $.getJSON(url, function(data) {
             //var data_parsed = jQuery.parseJSON(data);
-            if (data == 'undefined')
+            if (data.longName == undefined)
             {
-                alert('Wrong ticker');
+                $('#candidate-flash').append(flashMessage("danger","Wrong ticker"));
             }
             else{
                 $('#txt_company_name').val(data.longName);
@@ -47,6 +47,11 @@ function update_candidate(){
     }
     else{
         $('#candidate-flash').empty();
+        var loading = $(".candidate-loading")
+        var spinner = $('<div class="spinner-border text-info" role="status"><span class="sr-only">Loading...</span></div>');
+        loading.empty();
+        loading.append(spinner);
+        $('.content-hidden').prop('hidden',true);
         url = domane + 'candidates/updatecandidate/';
         $.post(url,{ticker: ticker, reason: reason, email: email}, function(data) {
             window.location.reload();

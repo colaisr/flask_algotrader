@@ -214,8 +214,7 @@ def pending_approval():
 @admin_required
 def market_data():
     query_text = "select a.* from Tickersdata a join (  select Tickersdata.`ticker`, max(Tickersdata.`updated_server_time`) as updated_server_time  from Tickersdata group by Tickersdata.`ticker`) b on b.`ticker`=a.`ticker` and b.`updated_server_time`=a.`updated_server_time`"
-    r = db.session.query(TickerData).from_statement(text(query_text)).all()
-    marketdata = r
+    marketdata = db.session.query(TickerData).from_statement(text(query_text)).all()
     user_settings = UserSetting.query.filter_by(email=current_user.email).first()
     for m in marketdata:
         if m.tipranks is None:

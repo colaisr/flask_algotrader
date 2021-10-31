@@ -5,6 +5,7 @@
         $('.content-hidden').prop('hidden',true);
         $('.modal-body input, .modal-body textarea').val("");
         $("#btn_submit").prop('disabled', true);
+        $('#user-email').val($('#user_email').val());
         $("#add_candidate_modal").show();
     })
 

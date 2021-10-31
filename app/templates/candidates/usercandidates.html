@@ -21,8 +21,7 @@
     <div class="column">
 
         <button type="button" id="btnAddCandidate" class="btn mr-2 mb-2 btn-primary">
-            Add
-            Candidate
+            Add Candidate
         </button>
         <div class="ui menu">
             <div class="ui left search item">
@@ -52,6 +51,7 @@
                 </div>
             </div>
         </div>
+        <input type="hidden" id="user_email" value="{{ user.email }}">
 
         {# Use overflow-x: scroll so that mobile views don't freak out
         # when the table is too wide #}
@@ -63,6 +63,7 @@
                 <tr>
                     <th></th>
                     <th class="sorted descending">Ticker</th>
+                    <th class="sorted descending">Algotrader <br/>rank</th>
                     <th></th>
                     <th></th>
                     <th>Enabled</th>
@@ -82,6 +83,7 @@
                             {{ m.ticker }}
                         </a>
                     </td>
+                    <td>{{algo_rank[m.ticker]}}</td>
                     <td>
                         <form action="{{url_for('candidates.removecandidate')}}" method="post">
                             <input type="hidden" name="ticker_to_remove" value="{{ m.ticker }}">
@@ -128,6 +130,7 @@
                 <tr>
                     <th></th>
                     <th class="sorted descending">Ticker</th>
+                    <th class="sorted descending">Algotrader <br/>rank</th>
                     <th>Reason</th>
                     <th>Company</th>
                     <th>Sector</th>
@@ -144,6 +147,7 @@
                             {{ m.ticker }}
                         </a>
                     </td>
+                    <td>{{algo_rank[m.ticker]}}</td>
                     <td><textarea disabled rows="2" cols="40">{{ m.reason }}</textarea></td>
                     <td>{{ m.company_name }}</td>
                     <td>{{ m.sector }}</td>
@@ -184,7 +188,7 @@
                 <div class="modal-body">
                     <div id="candidate-flash"></div>
                     <div>
-                        <input type="hidden" id="user-email" value="{{ user.email }}">
+                        <input type="hidden" id="user-email" value="{{ current_user.email }}">
                         <div class="form-group">
                             <label class="form-label" for="txt_ticker">Ticker</label>
                             <input required id="txt_ticker" name="txt_ticker" type="text" class="form-control"
@@ -203,10 +207,10 @@
                             <span class="candidate-loading d-flex justify-content-center"></span>
                             <div class="candidate-data content-hidden" hidden>
                                 <div class="form-group">
-                            <label class="form-label" for="txt_company_name">Name</label>
-                            <input required id="txt_company_name" name="txt_company_name" type="text" disabled
-                                   class="form-control">
-                        </div>
+                                    <label class="form-label" for="txt_company_name">Name</label>
+                                    <input required id="txt_company_name" name="txt_company_name" type="text" disabled
+                                           class="form-control">
+                                </div>
                                 <div class="form-group">
                                     <label class="form-label" for="txt_company_description">Description</label>
                                     <textarea required class="form-control" name="txt_company_description" disabled

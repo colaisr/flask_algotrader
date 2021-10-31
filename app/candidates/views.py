@@ -8,9 +8,9 @@ from flask import (
 
 from flask_login import login_required, current_user
 
-from app import csrf
+from app import csrf, db
 from app.models import TickerData, Candidate, UserSetting, Fgi_score
-import app.enums as enum
+from sqlalchemy import text
 
 candidates = Blueprint('candidates', __name__)
 
@@ -20,6 +20,10 @@ candidates = Blueprint('candidates', __name__)
 def usercandidates():
     # if not current_user.admin_confirmed or not current_user.signature:
     #     return redirect(url_for('station.download'))
+    query_text = "select a.* from Tickersdata a join (  select Tickersdata.`ticker`, max(Tickersdata.`updated_server_time`) as updated_server_time  from Tickersdata group by Tickersdata.`ticker`) b on b.`ticker`=a.`ticker` and b.`updated_server_time`=a.`updated_server_time`"
+    marketdata = db.session.query(TickerData).from_statement(text(query_text)).all()
+    # marketdata_dic = marketdata.toDictionary()
+    algo_rank = {m.ticker: m.algotrader_rank for m in marketdata}
     candidates = Candidate.query.filter_by(email=current_user.email).all()
     user_settings = UserSetting.query.filter_by(email=current_user.email).first()
 
@@ -33,7 +37,7 @@ def usercandidates():
     if user_settings.server_use_system_candidates:
         admin_candidates = Candidate.query.filter_by(email='support@algotrader.company', enabled=True).all()
     return render_template('candidates/usercandidates.html', admin_candidates=admin_candidates, candidates=candidates,
-                           user=current_user, market_emotion=market_emotion, fgi_text_color=fgi_text_color, form=None)
+                           user=current_user, market_emotion=market_emotion, fgi_text_color=fgi_text_color, algo_rank=algo_rank,  form=None)
 
 
 @candidates.route('removecandidate/', methods=['POST'])
