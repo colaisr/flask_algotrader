@@ -9,7 +9,7 @@ from flask import (
 from flask_login import login_required, current_user
 
 from app import csrf
-from app.models import TickerData, Candidate, UserSetting
+from app.models import TickerData, Candidate, UserSetting, Fgi_score
 import app.enums as enum
 
 candidates = Blueprint('candidates', __name__)
@@ -22,11 +22,18 @@ def usercandidates():
     #     return redirect(url_for('station.download'))
     candidates = Candidate.query.filter_by(email=current_user.email).all()
     user_settings = UserSetting.query.filter_by(email=current_user.email).first()
+
+    market_emotion = Fgi_score.query.order_by(Fgi_score.score_time.desc()).first()
+    if market_emotion.fgi_value < user_settings.algo_min_emotion:
+        fgi_text_color = 'danger'
+    else:
+        fgi_text_color = 'success'
+
     admin_candidates = {}
     if user_settings.server_use_system_candidates:
         admin_candidates = Candidate.query.filter_by(email='support@algotrader.company', enabled=True).all()
     return render_template('candidates/usercandidates.html', admin_candidates=admin_candidates, candidates=candidates,
-                           user=current_user, form=None)
+                           user=current_user, market_emotion=market_emotion, fgi_text_color=fgi_text_color, form=None)
 
 
 @candidates.route('removecandidate/', methods=['POST'])

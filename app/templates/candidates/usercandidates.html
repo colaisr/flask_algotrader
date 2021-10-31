@@ -31,6 +31,26 @@
                     <i class="search icon"></i>
                 </div>
             </div>
+            <div id="emotion_box" class="ui left last-item item">
+                <div class="widget-content-outer">
+                    <div class="widget-content-wrapper">
+                        <div class="widget-content-left pr-2 fsize-1">
+                            <div class="widget-numbers mt-0 fsize-2 text-{{fgi_text_color}}">
+                                {{ market_emotion.fgi_value}}
+                            </div>
+                        </div>
+                        <div class="widget-content-right w-100">
+                            <div class="progress-bar-sm progress-bar-animated-alt progress emotion-progress-bar">
+                                <div class="progress-bar bg-{{fgi_text_color}}" role="progressbar" aria-valuenow="{{ market_emotion.fgi_value }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ market_emotion.fgi_value }}%;"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="widget-content-left fsize-20 market-emotion">
+                        <div class="text-muted opacity-10 ">Market Emotion</div>
+                        <div class="text-muted opacity-2 emotion-update-time">{{ market_emotion.score_time.strftime("%d %b, %Y %H:%M:%S") }}</div>
+                    </div>
+                </div>
+            </div>
         </div>
 
         {# Use overflow-x: scroll so that mobile views don't freak out

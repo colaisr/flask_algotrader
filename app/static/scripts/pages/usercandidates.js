@@ -20,6 +20,10 @@
         $("#add_candidate_modal").show();
     })
 
+    $('#emotion_box').click(function(){
+        window.open("https://money.cnn.com/data/fear-and-greed/", "_blank");
+    });
+
 })
 
 
