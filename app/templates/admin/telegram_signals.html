@@ -1,0 +1,71 @@
+{% extends 'layouts/base.html' %}
+
+{% block content %}
+<div class="ui stackable grid container">
+    <div class="sixteen wide tablet sixteen wide computer centered column">
+        <a class="ui basic compact button" href="{{ url_for('admin.index') }}">
+            <i class="caret left icon"></i>
+            Back to dashboard
+        </a>
+        <h2 class="ui header">
+            TELEGRAM SIGNALS
+            <div class="sub header">
+                All issued Telegram signals
+            </div>
+        </h2>
+
+        <div class="ui menu">
+            <div class="ui left search item">
+                <div class="ui transparent icon input">
+                    <input id="search-users" type="text" placeholder="Search signals…">
+                    <i class="search icon"></i>
+                </div>
+            </div>
+        </div>
+
+        {# Use overflow-x: scroll so that mobile views don't freak out
+        # when the table is too wide #}
+        <div style="overflow-x: scroll;">
+            <table class="ui searchable sortable unstackable selectable celled table">
+                <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Ticker</th>
+                    <th>Received</th>
+                    <th>Signal price</th>
+                    <th>Target price</th>
+                    <th>Target reached</th>
+                    <th>Days to target</th>
+                    <th>Profit %</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for s in all_signals %}
+                <tr>
+                    <td>{{ s.id }}</td>
+                    <td>
+                        <a href="{{url_for('candidates.info')}}?ticker_to_show={{ s.ticker }}">
+                            {{ s.ticker }}
+                        </a>
+                    </td>
+                    <td>{{ s.received }}</td>
+                    <td>{{ s.signal_price }}</td>
+                    <td>{{ s.target_price }}</td>
+                    <td>{{ s.target_met }}</td>
+                    <td>{{ s.days_to_get }}</td>
+                    <td>{{ s.profit_percent }}</td>
+
+
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block scripting %}
+<script type="text/javascript" src="{{ url_for('static', filename='scripts/pages/telegram_signals.js') }}"></script>
+{% endblock %}
