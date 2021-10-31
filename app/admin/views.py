@@ -12,7 +12,7 @@ from flask import (
     url_for,
 )
 from flask_login import current_user, login_required
-from sqlalchemy import text
+from sqlalchemy import text, or_, and_
 
 from app import db
 from app import csrf
@@ -36,6 +36,7 @@ from app.models import (
     SpiderStatus, TelegramSignal
 )
 from app.models.fgi_score import Fgi_score
+import app.enums as enum
 
 admin = Blueprint('admin', __name__)
 
@@ -201,7 +202,9 @@ def spider_status_ajax():
 @admin_required
 def pending_approval():
     """View all registered users."""
-    users = User.query.filter_by(admin_confirmed=0).all()
+    # users = User.query.filter_by(admin_confirmed=0).all()
+    users = User.query.filter(or_(and_(User.subscription_type_id == enum.Subscriptions.PERSONAL.value, User.confirmed == 0),
+                                  and_(User.subscription_type_id == enum.Subscriptions.MANAGED_PORTFOLIO.value, User.admin_confirmed == 0))).all()
     return render_template(
         'admin/pending_approval.html', users=users)
 

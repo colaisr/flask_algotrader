@@ -19,7 +19,7 @@ class Subscription(db.Model):
     subscription_name = db.Column(db.String(150), unique=True)
     description = db.Column(db.String(max))
     price = db.Column(db.String(50))
-    # users = db.relationship('User', backref='subscription', lazy='dynamic')
+    users = db.relationship('User', backref='subscription', lazy='dynamic')
 
 
 class Role(db.Model):
@@ -71,7 +71,7 @@ class User(UserMixin, db.Model):
     signature = db.Column(db.Boolean, default=False)
     signature_full_name = db.Column(db.String(100))
     registration_date = db.Column(db.DateTime)
-    subscription_type_id = db.Column(db.Integer)
+    subscription_type_id = db.Column(db.Integer, db.ForeignKey('Subscriptions.id'))
     subscription_start_date = db.Column(db.DateTime)
     subscription_end_date = db.Column(db.DateTime)
 
@@ -79,8 +79,8 @@ class User(UserMixin, db.Model):
         super(User, self).__init__(**kwargs)
         self.signature = False
         self.signature_full_name = ''
-        # if self.subscription is None:
-        #     self.subscription = Subscription.query.filter_by(id=self.subscription_type_id).first()
+        if self.subscription is None:
+            self.subscription = Subscription.query.filter_by(id=self.subscription_type_id).first()
         if self.role is None:
             if self.email == current_app.config['ADMIN_EMAIL']:
                 self.role = Role.query.filter_by(

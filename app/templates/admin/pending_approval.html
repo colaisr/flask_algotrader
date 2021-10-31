@@ -23,8 +23,9 @@
                     <th>First name</th>
                     <th class="sorted ascending">Last name</th>
                     <th>Email address</th>
-                    <th>Email confirmed</th>
-                    <th>TWS requirements is sent</th>
+                    <th>Subscription</th>
+                    <th>Email <br/> confirmed</th>
+                    <th>TWS <br/> requirements</th>
                     <th>Approve</th>
                 </tr>
                 </thead>
@@ -35,6 +36,7 @@
                     <td>{{ u.first_name }}</td>
                     <td>{{ u.last_name }}</td>
                     <td>{{ u.email }}</td>
+                    <td>{{ u.subscription.subscription_name }}</td>
                     <td class="text-center">
                         {% if u.confirmed %}
                         <i class="check icon green"></i>
