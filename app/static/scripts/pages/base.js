@@ -12,10 +12,16 @@ $(document).ready(function () {
 //        var dpi_y = document.getElementById('dpi').offsetHeight;
 //        var width = screen.width / dpi_x;
 //        var height = screen.height / dpi_y;
-//        if(screen.width > 1400 && screen.height > 700){
-//            $('.main-page-styles').remove();
-//            $( "<link class='main-page-styles' rel='stylesheet' href='static/styles/mainpage_max.css'>" ).appendTo( "head" );
-//        }
+        var screen_width = screen.width;
+        var screen_height = screen.height;
+        if((screen_width > 1400 && screen_height > 800) && (screen_width < 1500 && screen_height <= 900)){
+            $('.main-page-styles').remove();
+            $( "<link class='main-page-styles' rel='stylesheet' href='static/styles/mainpage.css'>" ).appendTo( "head" );
+        }
+        else if(screen_width >= 1500 && screen_height >= 900){
+            $('.main-page-styles').remove();
+            $( "<link class='main-page-styles' rel='stylesheet' href='static/styles/mainpage_max.css'>" ).appendTo( "head" );
+        }
 
     }).resize();
 

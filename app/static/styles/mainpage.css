@@ -457,7 +457,7 @@
 
 #trading-by-emotions .relative-div,
 #portfolio-management .relative-div,
-#portfolio-management .scroll-arrow{
+{
     top: 5%;
 }
 
@@ -503,4 +503,8 @@
 
 #user-view .animated{
     margin-bottom: 3%;
+}
+
+#portfolio-management .scroll-arrow {
+    top: -18%;
 }
