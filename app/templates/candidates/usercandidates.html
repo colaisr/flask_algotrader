@@ -177,8 +177,12 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel">Candidate</h5>
+                    <button type="button" class="btn-modal-hide close" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
                 </div>
                 <div class="modal-body">
+                    <div id="candidate-flash"></div>
                     <div>
                         <input type="hidden" id="user-email" value="{{ user.email }}">
                         <div class="form-group">
@@ -194,39 +198,45 @@
                         <div class="form-group">
                             <button type="button" onclick="get_data_for_ticker()" id="btn_validate" class="btn btn-primary">Validate</button>
                         </div>
-                        <div class="form-group">
+
+                        <div class="candidate-bottom">
+                            <span class="candidate-loading d-flex justify-content-center"></span>
+                            <div class="candidate-data content-hidden" hidden>
+                                <div class="form-group">
                             <label class="form-label" for="txt_company_name">Name</label>
                             <input required id="txt_company_name" name="txt_company_name" type="text" disabled
                                    class="form-control">
                         </div>
-                        <div class="form-group">
-                            <label class="form-label" for="txt_company_description">Description</label>
-                            <textarea required class="form-control" name="txt_company_description" disabled
-                                      id="txt_company_description" rows="3"></textarea>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label" for="txt_exchange">Exchange</label>
-                            <input required id="txt_exchange" name="txt_exchange" type="text" class="form-control"
-                                   disabled>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label" for="txt_industry">Sector</label>
-                            <input required id="txt_sector" name="txt_sector" type="text" class="form-control"
-                                   disabled>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label" for="txt_industry">Industry</label>
-                            <input required id="txt_industry" name="txt_industry" type="text" class="form-control"
-                                   disabled>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label" for="txt_logo">Logo URL</label>
-                            <input required id="txt_logo" name="txt_logo" type="text" class="form-control" disabled>
+                                <div class="form-group">
+                                    <label class="form-label" for="txt_company_description">Description</label>
+                                    <textarea required class="form-control" name="txt_company_description" disabled
+                                              id="txt_company_description" rows="3"></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label" for="txt_exchange">Exchange</label>
+                                    <input required id="txt_exchange" name="txt_exchange" type="text" class="form-control"
+                                           disabled>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label" for="txt_industry">Sector</label>
+                                    <input required id="txt_sector" name="txt_sector" type="text" class="form-control"
+                                           disabled>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label" for="txt_industry">Industry</label>
+                                    <input required id="txt_industry" name="txt_industry" type="text" class="form-control"
+                                           disabled>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label" for="txt_logo">Logo URL</label>
+                                    <input required id="txt_logo" name="txt_logo" type="text" class="form-control" disabled>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" id="btn-modal-hide">Close
+                <div class="modal-footer content-hidden">
+                    <button type="button" class="btn btn-secondary btn-modal-hide">Close
                     </button>
                     <input type="button" title="Validate to Submit" class="btn btn-primary" disabled id="btn_submit"
                            value="Submit" onclick="update_candidate()">

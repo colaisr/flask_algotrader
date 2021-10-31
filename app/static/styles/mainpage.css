@@ -174,3 +174,8 @@
 .tooltip-help{
     cursor: help;
 }
+
+.candidate-loading{
+    width: 3rem;
+    height: 3rem;
+}

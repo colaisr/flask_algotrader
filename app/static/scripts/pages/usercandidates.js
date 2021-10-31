@@ -2,10 +2,13 @@
 
 // creating a candidate
     $('#btnAddCandidate').on('click', function() {
+        $('.content-hidden').prop('hidden',true);
+        $('.modal-body input, .modal-body textarea').val("");
+        $("#btn_submit").prop('disabled', true);
         $("#add_candidate_modal").show();
     })
 
-    $('#btn-modal-hide').on('click', function() {
+    $('.btn-modal-hide').on('click', function() {
         $("#add_candidate_modal").hide();
     })
 
@@ -22,6 +25,10 @@
 
     $('#emotion_box').click(function(){
         window.open("https://money.cnn.com/data/fear-and-greed/", "_blank");
+    });
+
+    $('#txt_ticker, #txt_reason').on('input',function(){
+        $('#candidate-flash').empty();
     });
 
 })
