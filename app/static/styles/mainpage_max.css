@@ -1,15 +1,8 @@
-.container {
-    width: 100% !important;
-    padding-right: 30px !important;
-    padding-left: 30px !important;
-    margin-right: 0px !important;
-    margin-left: 0px !important;
+.container{
     flex-wrap: inherit;
     justify-content: space-between;
     display: flex;
 }
-
-
 
 #page-top p,
 .section-title,
@@ -465,7 +458,7 @@
 
 #trading-by-emotions .relative-div,
 #portfolio-management .relative-div,
-#portfolio-management .scroll-arrow{
+{
     top: 5%;
 }
 
@@ -511,4 +504,26 @@
 
 #user-view .animated{
     margin-bottom: 3%;
+}
+
+#portfolio-management .scroll-arrow {
+    top: -18%;
+}
+
+.subscription-page{
+    margin-top: 13%;
+    width: 98%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.subscription-page .card{
+    background-color: #75c7fa;
+    height: 379px;
+}
+
+.subscription-page .card-footer a{
+    color: #fff;
+    background-color: rgb(20 170 254 / 51%);
+    border-color: rgb(22 170 255 / 48%);
 }

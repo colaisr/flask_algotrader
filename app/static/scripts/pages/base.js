@@ -16,11 +16,11 @@ $(document).ready(function () {
         var screen_height = screen.height;
         if((screen_width > 1400 && screen_height > 800) && (screen_width < 1500 && screen_height <= 900)){
             $('.main-page-styles').remove();
-            $( "<link class='main-page-styles' rel='stylesheet' href='static/styles/mainpage.css'>" ).appendTo( "head" );
+            $( "<link class='main-page-styles' rel='stylesheet' href='/static/styles/mainpage.css'>" ).appendTo( "head" );
         }
         else if(screen_width >= 1500 && screen_height >= 900){
             $('.main-page-styles').remove();
-            $( "<link class='main-page-styles' rel='stylesheet' href='static/styles/mainpage_max.css'>" ).appendTo( "head" );
+            $( "<link class='main-page-styles' rel='stylesheet' href='/static/styles/mainpage_max.css'>" ).appendTo( "head" );
         }
 
     }).resize();
