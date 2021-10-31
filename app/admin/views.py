@@ -33,7 +33,7 @@ from app.models import (
     ClientCommand,
     Report,
     LastUpdateSpyderData,
-    SpiderStatus
+    SpiderStatus, TelegramSignal
 )
 from app.models.fgi_score import Fgi_score
 
@@ -218,6 +218,14 @@ def market_data():
         if m.tipranks is None:
             m.tipranks = 0
     return render_template('admin/market_data.html', user_settings=user_settings, marketdata=marketdata)
+
+@admin.route('/signalsstatus', methods=['GET'])
+@login_required
+@admin_required
+def signals_status():
+    query_text = "select * from `TelegramSignals`"
+    all_signals = db.session.query(TelegramSignal).from_statement(text(query_text)).all()
+    return render_template('admin/telegram_signals.html', all_signals=all_signals)
 
 
 @admin.route('/clientcommands')
