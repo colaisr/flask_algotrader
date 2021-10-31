@@ -1,9 +1,22 @@
 $(document).ready(function () {
+
+//    alert (width + ' x ' + height);
+
     $(window).resize(function() {
         var width = $(this).width() - 100;
         var height = $(this).height() - 400;
         $('.modal-bigger').css('max-width', width);
         $('.height-resize').css('height',height);
+
+//        var dpi_x = document.getElementById('dpi').offsetWidth;
+//        var dpi_y = document.getElementById('dpi').offsetHeight;
+//        var width = screen.width / dpi_x;
+//        var height = screen.height / dpi_y;
+//        if(screen.width > 1400 && screen.height > 700){
+//            $('.main-page-styles').remove();
+//            $( "<link class='main-page-styles' rel='stylesheet' href='static/styles/mainpage_max.css'>" ).appendTo( "head" );
+//        }
+
     }).resize();
 
     $('.message').each((i, el) => {

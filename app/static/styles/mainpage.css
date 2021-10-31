@@ -1,13 +1,26 @@
-#page-top p{
-    font-family: 'FontAwesome';
+#page-top p,
+.section-title,
+.card-title,
+#market-emotion li,
+.custom-body-content,
+#market-emotion .div-color{
     color: #2F327D;
+}
+
+
+#page-top p,
+.section-title,
+.card-title{
+    font-family: 'FontAwesome';
 }
 
 .login-container{
     margin-top: 12% !important;
 }
 
-#algotrader-score p{
+#algotrader-score p,
+#profit-maximization .animated-left,
+#candidates .animated{
     width: 50%;
 }
 
@@ -15,17 +28,23 @@
     color: #6c757d;
 }
 .container{
+    flex-wrap: inherit;
+    justify-content: space-between;
     display: flex;
-  flex-wrap: inherit;
-  justify-content: space-between;
+}
+
+.widget-content .widget-numbers,
+#crash-protaction .crash-content,
+.portfolio-content{
+    font-size: 15px;
 }
 
 .widget-content .widget-numbers {
-    font-size: 15px;
     font-weight: inherit;
 }
 
-.main-cards{
+.main-cards,
+#candidates .div-left{
     width: 70%;
 }
 
@@ -33,22 +52,38 @@
     font-size: smaller;
 }
 
+.animated-left .animated-content{
+    font-size: small;
+}
+
 .card{
     border-radius: 17px;
 }
 
-.section-title{
-    color: #2F327D;
+.section-title,
+.main-card .swatch-holder,
+.custom-card .swatch-holder{
     font-size: x-large;
-    font-family: 'FontAwesome';
+}
+
+.section-title,
+.card-title,
+.main-card .swatch-holder,
+.scroll-arrow,
+.custom-card .swatch-holder,
+.custom-body,
+.card-header,
+.card-footer{
     text-align: center;
+}
+
+.section-title,
+.card-header,
+.card-footer {
     padding-top: 4%;
 }
 
 .card-title{
-    color: #2F327D;
-    font-family: 'FontAwesome';
-    text-align: center;
     font-weight: bold;
     justify-content: center;
 }
@@ -59,12 +94,22 @@
     color: rgba(0,0,0,.87);
 }
 
-.main-card .swatch-holder{
+.main-card .swatch-holder,
+.custom-card .swatch-holder,
+#algotrader-score .animated,
+#market-emotion .emotion-img,
+#personal-performance .animated,
+#personal-performance .performance-title{
     position: absolute;
-    top: -8%;
+}
+
+.main-card .swatch-holder,
+.custom-card .swatch-holder{
     opacity: .9;
-    text-align: center;
-    font-size: x-large;
+}
+
+.main-card .swatch-holder{
+    top: -8%;
 }
 
 #TooltipC-0{
@@ -88,18 +133,24 @@
     min-height: 347.5px;
 }
 
-#algotrader-score .section-title{
+#algotrader-score .section-title,
+#profit-maximization .profit-title,
+#trading-by-emotions .animated div,
+#crash-protaction .crash-title,
+#portfolio-management .portfolio-title,
+#candidates .candidates-title,
+#personal-performance .performance-title,
+#custom-filters .section-title,
+#user-view .section-title{
     text-align: inherit;
 }
 
 
 #market-emotion li{
-    color: #2F327D;
     line-height: 1.5;
 }
 
 .scroll-arrow{
-    text-align: center;
     margin-top: -3%;
 }
 .scroll-arrow a{
@@ -110,15 +161,6 @@
     font-size: 11px;
 }
 
-@media (min-width: 992px)
-    .container {
-        max-width: 1120px !important;
-    }
-
-@media (min-width: 1500px)
-    .container {
-        max-width: 1500px !important;
-}
 
 .scroll-item:hover{
     color: #0d3967;
@@ -129,16 +171,11 @@
 }
 
 .custom-card .swatch-holder{
-    position: absolute;
     top: -32%;
-    opacity: .9;
-    text-align: center;
-    font-size: x-large;
 }
 
 .custom-body{
     padding: 6px 0 18px 0;
-    text-align: center;
 }
 
 .custom-body-content{
@@ -146,7 +183,6 @@
     height: 36px;
     font-size: 13px;
     opacity: 0.9;
-    color: #2F327D;
 }
 
 .card-header, .card-footer {
@@ -154,9 +190,7 @@
     border-bottom-width: 1px;
     padding-bottom: 0;
     height: 3.5rem;
-    text-align: center;
     display: initial !important;
-    padding-top: 4%;
 }
 
 .card-footer{
@@ -178,4 +212,295 @@
 .candidate-loading{
     width: 3rem;
     height: 3rem;
+}
+
+.main-page header .section-title{
+    width:25%;
+}
+
+#algotrader-score .container{
+    margin-bottom: 12%;
+}
+
+#algotrader-score .container,
+#market-emotion .container,
+#custom-filters .scroll-arrow{
+    margin-top: 6%;
+}
+
+#algotrader-score .animated,
+#advantage-entry-point .animated,
+#personal-performance .animated{
+    width: 48%;
+}
+
+.main-page #algotrader-score .animated,
+.main-page #personal-performance animated{
+    z-index: 1;
+}
+
+#algotrader-score .row,
+#profit-maximization .profit-maximization-img,
+#profit-maximization .arrow-left-img{
+    padding-top: 6%;
+}
+
+#algotrader-score .smart-score{
+    flex-direction: column;
+}
+
+#algotrader-score .smart-score .text-success{
+    font-size: 32px;
+}
+
+#algotrader-score .smart-score p,
+#algotrader-score .smart-score img,
+#market-emotion .container .gx-4,
+#profit-maximization .container .gx-4,
+#profit-maximization .img-first,
+#profit-maximization .img-first img,
+#candidates .container .gx-4,
+#candidates .div-left img,
+#user-view img{
+    width: 100%;
+}
+
+.relative-div{
+    position: relative;
+}
+
+#algotrader-score .relative-div{
+    left: 66%;
+    top: 9%;
+}
+
+#algotrader-score .algo-score-img,
+#advantage-entry-point img,
+#trading-by-emotions img,
+#crash-protaction img,
+#candidates img,
+#personal-performance img{
+    width: 80%;
+}
+
+#market-emotion .container{
+    margin-bottom: 10%;
+}
+
+#market-emotion img{
+    width: 525px;
+    height: 390px;
+}
+
+#market-emotion .animated,
+#trading-by-emotions .scroll-arrow{
+    margin-top: 2%;
+}
+
+#market-emotion .animated{
+    margin-left: 52%;
+}
+
+#market-emotion .emotion-title{
+    padding-right: 20%;
+}
+
+#market-emotion .emotion-list{
+    padding-left: 3%;
+}
+
+#profit-maximization .animated{
+    width: 60%;
+    float: left;
+    overflow: hidden;
+}
+
+#user-view .section-title,
+.portfolio-title,
+.crash-title{
+    padding-left: 2%;
+}
+
+#advantage-entry-point{
+    margin-top: -7%;
+}
+
+#advantage-entry-point .relative-div{
+    top: 3%;
+}
+
+.right-div-flex{
+    padding-top: 3%;
+}
+
+.right-div-flex,
+.left-div-flex{
+    width: 89%;
+}
+
+.arrow-left-img{
+    padding-left: 2px;
+}
+
+.img-first img{
+    top: 26px;
+    margin-top: -21%;
+}
+
+#candidates .animated,
+.animated-left{
+    float: right;
+}
+
+.animated-left{
+    margin: -237px -26px 0 0;
+}
+
+#profit-maximization .right-div-flex .animated-content{
+    padding-right: 5px;
+    padding-left: 15%;
+}
+
+#profit-maximization .animated-content,
+{
+    text-align: justify;
+}
+
+.animated-left .animated-content{
+    padding: 12px 20px 0 15px;
+}
+
+.pt-2p{
+    padding-top: 2%;
+}
+
+#advantage-entry-point .scroll-arrow,
+#custom-filters .container,
+#custom-filters .minimal-momentum{
+    margin-top: 3%;
+}
+
+#custom-filters .container{
+    display: inherit;
+}
+
+#custom-filters .section-title,
+.performance-title{
+    padding-top: 0;
+}
+
+#personal-performance .container{
+    padding-top: 8%;
+}
+
+#crash-protaction .container{
+    margin-top: -2%;
+}
+
+.portfolio-content,
+.crash-content{
+    width: 40%;
+}
+
+.crash-img{
+    margin-left: 8%;
+    margin-top: -1%;
+}
+
+#trading-by-emotions .animated p,
+#candidates .candidates-title p{
+    padding-right: 55%;
+}
+
+#candidates .candidates{
+    padding-left: 6%;
+}
+
+.candidates-title{
+    padding-left: 5%;
+}
+
+#candidates .animated{
+    margin: -544px 0 0 0;
+}
+
+.candidates-img-3{
+    padding-top: 13%;
+    margin: 7px 0px 0px -76px;
+}
+
+#candidates .scroll-arrow{
+    margin-top: 1%;
+}
+
+.performance-title{
+    padding-left: 10%;
+}
+
+#personal-performance .animated .relative-div{
+    margin: 90px -130px 0 0;
+    left: 35%;
+}
+
+.personal_performance_2{
+    left: 59%;
+    top: -32%;
+}
+
+#personal-performance .scroll-arrow{
+    margin-top: 7%;
+}
+
+#personal-performance .performance-title p{
+    width: 65%;
+}
+
+#trading-by-emotions .relative-div,
+#portfolio-management .relative-div,
+#portfolio-management .scroll-arrow{
+    top: 5%;
+}
+
+.portfolio_management_pie{
+    width: 35%;
+}
+
+.portfolio_management-img{
+    width: 68%;
+}
+
+#custom-filters .section-title{
+    margin-bottom: 5%;
+    padding-left: 8%;
+}
+
+#TooltipC-3,
+#TooltipC-4,
+#TooltipC-5{
+    left: 40%;
+}
+
+#TooltipC-5{
+    top: -26%;
+}
+
+#TooltipC-4{
+    top: -29%;
+}
+
+#TooltipC-6{
+    left: 42%;
+}
+
+#TooltipC-6,
+#TooltipC-7{
+    top: -25%;
+}
+
+#TooltipC-7{
+    left: 41%;
+}
+
+#user-view .animated{
+    margin-bottom: 3%;
 }

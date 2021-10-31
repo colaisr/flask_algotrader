@@ -26,12 +26,13 @@
         <link rel="stylesheet" href="{{ url_for('static', filename='font-icons/css/helper.css') }}">
         <link rel="stylesheet" href="{{ url_for('static', filename='font-awesome/css/font-awesome.min.css') }}">
 
-        <link rel="stylesheet" href="{{ url_for('static', filename='styles/mainpage.css') }}">
+        <link class="main-page-styles" rel="stylesheet" href="{{ url_for('static', filename='styles/mainpage.css') }}">
 
         <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
 
     </head>
     <body style="background-image: url({{ url_for('static', filename='images/main/background.png') }}); background-size: cover;">
+        <div id="dpi" style="height: 1in; width: 1in; left: 100%; position: fixed; top: 100%;"></div>
         <div id="page-top">
             <!-- Navigation-->
             <nav class="navbar navbar-expand-lg fixed-top" id="mainNav">
@@ -106,6 +107,7 @@
         <script type="text/javascript" src="{{ url_for('static', filename='scrolling/js/scripts.js') }}"></script>
         <script src="https://kit.fontawesome.com/9e19a61416.js" crossorigin="anonymous"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+        <script type="text/javascript" src="{{ url_for('static', filename='scripts/pages/base.js') }}"></script>
 
     </body>
 </html>
