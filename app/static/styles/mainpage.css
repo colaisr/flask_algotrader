@@ -240,9 +240,12 @@
 }
 
 #algotrader-score .row,
-#profit-maximization .profit-maximization-img,
 #profit-maximization .arrow-left-img{
     padding-top: 6%;
+}
+
+#profit-maximization .profit-maximization-img{
+    padding-top: 7%;
 }
 
 #algotrader-score .smart-score{
@@ -347,12 +350,27 @@
 }
 
 #candidates .animated,
-.animated-left{
+.animated-right{
     float: right;
 }
 
+.animated-right{
+    margin: -21% -12% 0 0;
+}
+
+
+.animated-right .animated-content{
+    padding: 4% 2%;
+    width: 67%;
+}
+
+#crash-protaction{
+    padding-top: 3%;
+}
+
 .animated-left{
-    margin: -237px -26px 0 0;
+    margin: -23px 0 0 0;
+    float: left;
 }
 
 #profit-maximization .right-div-flex .animated-content{
@@ -430,7 +448,7 @@
 }
 
 #candidates .scroll-arrow{
-    margin-top: 1%;
+    margin-top: -1%;
 }
 
 .performance-title{
