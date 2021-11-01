@@ -4,11 +4,12 @@ body{
 }
 
 .navbar-toggler{
-    padding-left: 62% !important;
+    padding-left: 90% !important;
     margin-top: -6% !important;
 }
 
-ul.navbar-toggler{
+ul.navbar-toggler,
+ul.navbar-nav{
     flex-direction: row !important;
 }
 
@@ -640,7 +641,7 @@ ul.navbar-toggler{
 
 header{
     padding-bottom: 6rem !important;
-    padding-top: 13.5rem !important;
+    padding-top: 7.5rem !important;
 }
 
 h2{
