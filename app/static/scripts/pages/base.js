@@ -14,13 +14,21 @@ $(document).ready(function () {
 //        var height = screen.height / dpi_y;
         var screen_width = screen.width;
         var screen_height = screen.height;
-        if((screen_width > 1400 && screen_height > 800) && (screen_width < 1500 && screen_height <= 900)){
-            $('.main-page-styles').remove();
-            $( "<link class='main-page-styles' rel='stylesheet' href='/static/styles/mainpage.css'>" ).appendTo( "head" );
-        }
-        else if(screen_width >= 1500 && screen_height >= 900){
+        if(screen_width >= 1500 && screen_height >= 900){
             $('.main-page-styles').remove();
             $( "<link class='main-page-styles' rel='stylesheet' href='/static/styles/mainpage_max.css'>" ).appendTo( "head" );
+        }
+        else if(screen_width > 767 && screen_width < 1400 && screen_height <= 800){
+            $('.main-page-styles').remove();
+            $( "<link class='main-page-styles' rel='stylesheet' href='/static/styles/mainpage_min.css'>" ).appendTo( "head" );
+        }
+        else if(screen_width <= 767){
+            $('.main-page-styles').remove();
+            $( "<link class='main-page-styles' rel='stylesheet' href='/static/styles/mainpage_mobile.css'>" ).appendTo( "head" );
+        }
+        else{
+            $('.main-page-styles').remove();
+            $( "<link class='main-page-styles' rel='stylesheet' href='/static/styles/mainpage.css'>" ).appendTo( "head" );
         }
 
     }).resize();

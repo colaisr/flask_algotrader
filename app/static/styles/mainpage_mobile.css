@@ -1,3 +1,17 @@
+body{
+    background-size: auto !important;
+    width: revert;
+}
+
+.navbar-toggler{
+    padding-left: 62% !important;
+    margin-top: -6% !important;
+}
+
+ul.navbar-toggler{
+    flex-direction: row !important;
+}
+
 .container {
     width: 100% !important;
     padding-right: 40px !important;
@@ -8,6 +22,11 @@
     justify-content: space-between;
     display: flex;
     max-width: 1550px !important;
+}
+
+#mainNav{
+    height: 60px;
+    background-color: #F0F8FF;
 }
 
 #page-top p,
@@ -37,7 +56,7 @@
 }
 
 #profit-maximization .scroll-arrow{
-    margin-top: -12%;
+    margin-top: -14%;
 }
 
 .nav-link{
@@ -119,8 +138,12 @@
     opacity: .9;
 }
 
-.main-card .swatch-holder{
+.main-card .main-card-left{
     top: -8%;
+}
+
+.main-card .main-card-central{
+    top: -5%;
 }
 
 #TooltipC-0{
@@ -136,12 +159,9 @@
     top: -9%;
 }
 
-#mainNav{
-    background-color: #F0F8FF;
-}
 
 .main-card{
-    min-height: 279.5px;
+    min-height: 308.5px;
 }
 
 #algotrader-score .section-title,
@@ -172,10 +192,6 @@
     color: #4183c4;
 }
 
-#algotrader-score .widget-content-wrapper{
-    font-size: 11px;
-}
-
 
 .scroll-item:hover{
     color: #0d3967;
@@ -183,6 +199,10 @@
                  #cad5e2 3px 3px 0, #cad5e2 4px 4px 0,
                  #cad5e2 5px 5px 0;
     color: #040000;
+}
+
+#algotrader-score .scroll-arrow{
+    margin-top: -7%;
 }
 
 .custom-card .swatch-holder{
@@ -237,9 +257,9 @@
     margin-bottom: 10%;
 }
 
-#algotrader-score .container,
-#market-emotion .container{
-    margin-top: 6%;
+
+#algotrader-score .container{
+    margin-top: 2%;
 }
 
 #algotrader-score .animated,
@@ -253,11 +273,20 @@
     z-index: 1;
 }
 
-#algotrader-score .row,
 #profit-maximization .profit-maximization-img,
 #profit-maximization .arrow-left-img{
     padding-top: 6%;
 }
+
+#algotrader-score .card-title p{
+    width: 75%;
+    font-size: 8px;
+}
+
+#algotrader-score .row{
+    padding-top: 4%;
+}
+
 
 #algotrader-score .smart-score{
     flex-direction: column;
@@ -291,7 +320,7 @@
 }
 
 #algotrader-score .relative-div{
-    left: 66%;
+    left: 52%;
     top: 9%;
 }
 
@@ -316,7 +345,8 @@
 }
 
 #market-emotion .container{
-    margin-bottom: 8%;
+    margin-bottom: -1%;
+    margin-top: 3%;
 }
 
 #market-emotion img{
@@ -357,7 +387,7 @@
 }
 
 #advantage-entry-point{
-    margin-top: -8%;
+    margin-top: -13%;
 }
 
 #advantage-entry-point .container{
@@ -395,7 +425,7 @@
 }
 
 .animated-right{
-    margin: -300px -26px 0 0;
+    margin: -238px -26px 0 0;
     float: right;
 }
 
@@ -424,18 +454,42 @@
 }
 
 #advantage-entry-point .scroll-arrow{
-    margin-top: 2%;
+    margin-top: -1%;
 }
 
-#trading-by-emotions,
-#portfolio-management,
 #candidates,
 #custom-filters{
     padding-top: 4rem !important;
 }
 
+#trading-by-emotions{
+    padding-top: 0rem !important;
+}
+
+#profit-maximization,
+#portfolio-management,
+#crash-protaction{
+    padding-top: 2rem !important;
+}
+
 #custom-filters .container{
     display: inherit;
+}
+
+.profit-maximization-img img{
+    margin-top: -65%;
+}
+
+.img-first{
+    margin-top: -2%;
+}
+
+.pl-p{
+    font-size: 12px;
+}
+
+#profit-maximization .animated-content p{
+    font-size: xx-small;
 }
 
 #custom-filters .section-title,
@@ -480,7 +534,7 @@
 }
 
 #candidates .animated{
-    margin: -558px 60px 0 0;
+    margin: -462px 42px 0 0;
 }
 
 .candidates-img-3{
@@ -591,11 +645,16 @@
 }
 
 #algotrader-score .container .gx-4{
-    margin-left: 11%;
+    margin-left: 7%;
 }
 
 header{
     padding-bottom: 6rem !important;
+    padding-top: 13.5rem !important;
+}
+
+h2{
+    font-size: 20px !important;
 }
 
 #algotrader-score,
