@@ -22,9 +22,10 @@ $(document).ready(function () {
             $('.main-page-styles').remove();
             $( "<link class='main-page-styles' rel='stylesheet' href='/static/styles/mainpage_min.css'>" ).appendTo( "head" );
         }
-        else if(screen_width <= 767){
+        else if(screen_width >= 307 && screen_width <= 767){
             $('.main-page-styles').remove();
             $( "<link class='main-page-styles' rel='stylesheet' href='/static/styles/mainpage_mobile.css'>" ).appendTo( "head" );
+            $('.mobile-hidden').prop('hidden', true);
         }
         else{
             $('.main-page-styles').remove();

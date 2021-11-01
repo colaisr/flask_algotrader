@@ -20,7 +20,7 @@ ul.navbar-toggler{
     margin-left: auto;
     flex-wrap: inherit;
     justify-content: space-between;
-    display: flex;
+    display: inline-block;
     max-width: 1550px !important;
 }
 
@@ -73,10 +73,6 @@ ul.navbar-toggler{
     font-weight: inherit;
 }
 
-.main-cards,
-#candidates .div-left{
-    width: 70%;
-}
 
 .rate-item{
     font-size: smaller;
@@ -107,12 +103,9 @@ ul.navbar-toggler{
     text-align: center;
 }
 
-.section-title,
-.card-header,
-.card-footer {
-    padding-top: 4%;
+.main-header .container .section-title{
+    margin-bottom: 3%;
 }
-
 .card-title{
     font-weight: bold;
     justify-content: center;
@@ -249,9 +242,6 @@ ul.navbar-toggler{
     height: 3rem;
 }
 
-.main-page header .section-title{
-    width:25%;
-}
 
 #algotrader-score .container{
     margin-bottom: 10%;
