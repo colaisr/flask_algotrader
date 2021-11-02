@@ -58,7 +58,7 @@
                     <td class="user role">{{ u.role.name }}</td>
                     <td>
                         {% if u.registration_date is not none %}
-                        u.registration_date.strftime("%d %b, %Y")
+                        {{u.registration_date.strftime("%d %b, %Y")}}
                         {%endif%}
                     </td>
                 </tr>
