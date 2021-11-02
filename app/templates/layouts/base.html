@@ -184,6 +184,12 @@
                 <div class="app-sidebar__inner">
                     <ul class="vertical-nav-menu">
                         <li class="app-sidebar__heading">Dashboards</li>
+                        <li>
+                            <a href="/candidates/today">
+                                <i class="metismenu-icon pe-7s-like"></i>
+                                Today
+                            </a>
+                        </li>
                         {% if not current_user.is_admin() and current_user.subscription_type_id == 4 and current_user.admin_confirmed and current_user.signature%}
                         <li>
                             <a href="/userview/traderstationstate">
@@ -199,12 +205,12 @@
                             </a>
                         </li>
                         {%endif%}
-                        <li>
-                            <a href="/candidates/usercandidates">
-                                <i class="metismenu-icon pe-7s-like"></i>
-                                Candidates
-                            </a>
-                        </li>
+<!--                        <li>-->
+<!--                            <a href="/candidates/usercandidates">-->
+<!--                                <i class="metismenu-icon pe-7s-like"></i>-->
+<!--                                Candidates-->
+<!--                            </a>-->
+<!--                        </li>-->
                         {% if not current_user.is_admin() and current_user.subscription_type_id == 4 and current_user.admin_confirmed and current_user.signature%}
                         <li>
                             <a href="/algotradersettings/usersettings">
@@ -213,7 +219,9 @@
                             </a>
                         </li>
                         {%endif%}
+                        {% if current_user.subscription_type_id != 2 %}
                         <li class="app-sidebar__heading">Analytics</li>
+                        {% endif %}
                         {% if current_user.is_admin()%}
                         <li>
                             <a target="_blank"

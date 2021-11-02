@@ -1,0 +1,282 @@
+{% extends 'layouts/base.html' %}
+
+{% block content %}
+
+<div class="app-main__inner">
+    <div class="app-page-title">
+        <div class="page-title-wrapper">
+            <div class="page-title-heading">
+                <div class="page-title-icon">
+                    <i class="pe-7s-albums icon-gradient bg-mean-fruit">
+                    </i>
+                </div>
+                <div>User candidates
+                    <div class="page-title-subheading">Candidates added by user.
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="column">
+
+        <button type="button" id="btnAddCandidate" class="btn mr-2 mb-2 btn-primary">
+            Add Candidate
+        </button>
+        <div class="ui menu">
+            <div class="ui left search item">
+                <div class="ui transparent icon input">
+                    <input id="search-users" type="text" placeholder="Search users…">
+                    <i class="search icon"></i>
+                </div>
+            </div>
+            <div id="emotion_box" class="ui left last-item item">
+                <input type="hidden" id="user-emotion" value={{user_fgi}}>
+                <div class="widget-content-outer">
+                    <div class="widget-content-wrapper">
+                        <div class="widget-content-left pr-2 fsize-1">
+                            <div class="widget-numbers mt-0 fsize-2 text-{{fgi_text_color}}">
+                                {{ market_emotion.fgi_value}}
+                            </div>
+                        </div>
+                        <div class="widget-content-right w-100">
+                            <div class="progress-bar-sm progress-bar-animated-alt progress emotion-progress-bar">
+                                <div class="progress-bar bg-{{fgi_text_color}}" role="progressbar" aria-valuenow="{{ market_emotion.fgi_value }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ market_emotion.fgi_value }}%;"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="widget-content-left fsize-20 market-emotion">
+                        <div class="text-muted opacity-10 ">Market Emotion</div>
+                        <div class="text-muted opacity-2 emotion-update-time">{{ market_emotion.score_time.strftime("%d %b, %Y %H:%M:%S") }}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <input type="hidden" id="user_email" value="{{ user.email }}">
+
+        {# Use overflow-x: scroll so that mobile views don't freak out
+        # when the table is too wide #}
+        <div style="overflow-x: scroll;">
+            <div class="page-title-subheading">User Candidates:
+            </div>
+            <table class="ui searchable sortable unstackable selectable celled table">
+                <thead>
+                <tr>
+                    <th></th>
+                    <th class="sorted descending">Ticker</th>
+                    <th class="sorted descending">Algotrader <br/>rank</th>
+                    <th></th>
+                    <th></th>
+                    <th>Enabled</th>
+                    <th>Reason</th>
+                    <th>Company</th>
+                    <th>Sector</th>
+                    <th>Industry</th>
+                    <th>Description</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for m in candidates | sort(attribute='ticker') %}
+                <tr>
+                    <td><img src="{{ m.logo }}" width="20" height="20"></td>
+                    <td>
+                        <a href="{{url_for('candidates.info')}}?ticker_to_show={{ m.ticker }}">
+                            {{ m.ticker }}
+                        </a>
+                    </td>
+                    <td>{{algo_rank[m.ticker]}}</td>
+                    <td>
+                        <form action="{{url_for('candidates.removecandidate')}}" method="post">
+                            <input type="hidden" name="ticker_to_remove" value="{{ m.ticker }}">
+                            <button type="submit"><i class="fa fa-trash"></i></button>
+                        </form>
+
+                    </td>
+                    <td>
+
+                        <button class="btn_edit"><i class="fa fa-edit"></i></button>
+                        <input type="hidden" class="h_tick" value="{{ m.ticker }}">
+                        <input type="hidden" class="h_reason" value="{{ m.reason }}">
+                    </td>
+                    <td>
+                        <form action="{{url_for('candidates.enabledisable')}}" method="post">
+                            <input type="hidden" name="ticker_to_change" value="{{ m.ticker }}">
+                            <input type="checkbox" onChange="this.form.submit()"
+                                   {%if m.enabled%}
+                                   checked
+                                   {% endif %}
+                            >
+
+                        </form>
+
+                    </td>
+                    <td><textarea disabled rows="2" cols="40">{{ m.reason }}</textarea></td>
+                    <td>{{ m.company_name }}</td>
+                    <td>{{ m.sector }}</td>
+                    <td>{{ m.industry }}</td>
+                    <td><textarea disabled rows="2" cols="40">{{ m.full_description }}</textarea>
+
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="divider mt-0" style="margin-bottom: 30px;"></div>
+        {% if admin_candidates|length != 0 %}
+        <div style="overflow-x: scroll;">
+            <div class="page-title-subheading">Admin Candidates enabled:
+            </div>
+            <table class="ui searchable sortable unstackable selectable celled table">
+                <thead>
+                <tr>
+                    <th></th>
+                    <th class="sorted descending">Ticker</th>
+                    <th class="sorted descending">Algotrader <br/>rank</th>
+                    <th>Reason</th>
+                    <th>Company</th>
+                    <th>Sector</th>
+                    <th>Industry</th>
+                    <th>Description</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for m in admin_candidates | sort(attribute='ticker') %}
+                <tr>
+                    <td><img src="{{ m.logo }}" width="20" height="20"></td>
+                    <td>
+                        <a href="{{url_for('candidates.info')}}?ticker_to_show={{ m.ticker }}">
+                            {{ m.ticker }}
+                        </a>
+                    </td>
+                    <td>{{algo_rank[m.ticker]}}</td>
+                    <td><textarea disabled rows="2" cols="40">{{ m.reason }}</textarea></td>
+                    <td>{{ m.company_name }}</td>
+                    <td>{{ m.sector }}</td>
+                    <td>{{ m.industry }}</td>
+                    <td><textarea disabled rows="2" cols="40">{{ m.full_description }}</textarea>
+                    </td>
+
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% endif %}
+    </div>
+
+</div>
+{% endblock %}
+
+{% block scripting %}
+<script src="https://code.highcharts.com/stock/highstock.js"></script>
+<script src="https://code.highcharts.com/stock/modules/data.js"></script>
+<script src="https://code.highcharts.com/stock/modules/exporting.js"></script>
+<script src="https://code.highcharts.com/stock/modules/export-data.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.2.0/chart.min.js"
+        integrity="sha512-VMsZqo0ar06BMtg0tPsdgRADvl0kDHpTbugCBBrL55KmucH6hP9zWdLIWY//OTfMnzz6xWQRxQqsUFefwHuHyg=="
+        crossorigin="anonymous"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='scripts/pages/snp_graph.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='scripts/pages/spyder_project.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='scripts/pages/usercandidates.js') }}"></script>
+{% endblock %}
+
+{% block modal %}
+<!-- Modal -->
+<div class="modal" tabindex="-1" id="add_candidate_modal" data-keyboard="false" role="dialog"
+     aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <form>
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Candidate</h5>
+                    <button type="button" class="btn-modal-hide close" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                </div>
+                <div class="modal-body">
+                    <div id="candidate-flash"></div>
+                    <div>
+                        <input type="hidden" id="user-email" value="{{ current_user.email }}">
+                        <div class="form-group">
+                            <label class="form-label" for="txt_ticker">Ticker</label>
+                            <input required id="txt_ticker" name="txt_ticker" type="text" class="form-control"
+                                   placeholder="Enter a ticker ...">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="txt_reason">Reason</label>
+                            <textarea required class="form-control" name="txt_reason" id="txt_reason" rows="3"
+                                      placeholder="Enter a reason ..."></textarea>
+                        </div>
+                        <div class="form-group">
+                            <button type="button" onclick="get_data_for_ticker()" id="btn_validate" class="btn btn-primary">Validate</button>
+                        </div>
+
+                        <div class="candidate-bottom">
+                            <span class="candidate-loading d-flex justify-content-center"></span>
+                            <div class="candidate-data content-hidden" hidden>
+                                <div class="form-group">
+                                    <label class="form-label" for="txt_company_name">Name</label>
+                                    <input required id="txt_company_name" name="txt_company_name" type="text" disabled
+                                           class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label" for="txt_company_description">Description</label>
+                                    <textarea required class="form-control" name="txt_company_description" disabled
+                                              id="txt_company_description" rows="3"></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label" for="txt_exchange">Exchange</label>
+                                    <input required id="txt_exchange" name="txt_exchange" type="text" class="form-control"
+                                           disabled>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label" for="txt_industry">Sector</label>
+                                    <input required id="txt_sector" name="txt_sector" type="text" class="form-control"
+                                           disabled>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label" for="txt_industry">Industry</label>
+                                    <input required id="txt_industry" name="txt_industry" type="text" class="form-control"
+                                           disabled>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label" for="txt_logo">Logo URL</label>
+                                    <input required id="txt_logo" name="txt_logo" type="text" class="form-control" disabled>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer content-hidden">
+                    <button type="button" class="btn btn-secondary btn-modal-hide">Close
+                    </button>
+                    <input type="button" title="Validate to Submit" class="btn btn-primary" disabled id="btn_submit"
+                           value="Submit" onclick="update_candidate()">
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="modal emotion-modal" tabindex="-1" role="dialog" aria-hidden="true" >
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">S&P with Market Emotion</h5>
+                <button type="button" class="emotion-modal-close close" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="container_sp500" style="width:100%; height:300px;"></div>
+                <div id="container_emotion" style="width:100%; height:300px;"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" onclick="go_to_cnn()" class="btn btn-secondary" >Description</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+

@@ -15,6 +15,32 @@ from sqlalchemy import text
 candidates = Blueprint('candidates', __name__)
 
 
+@candidates.route('today', methods=['GET', 'POST'])
+@login_required
+def today():
+    # if not current_user.admin_confirmed or not current_user.signature:
+    #     return redirect(url_for('station.download'))
+    query_text = "select a.* from Tickersdata a join (  select Tickersdata.`ticker`, max(Tickersdata.`updated_server_time`) as updated_server_time  from Tickersdata group by Tickersdata.`ticker`) b on b.`ticker`=a.`ticker` and b.`updated_server_time`=a.`updated_server_time`"
+    marketdata = db.session.query(TickerData).from_statement(text(query_text)).all()
+    # marketdata_dic = marketdata.toDictionary()
+    algo_rank = {m.ticker: m.algotrader_rank for m in marketdata}
+    candidates = Candidate.query.filter_by(email=current_user.email).all()
+    user_settings = UserSetting.query.filter_by(email=current_user.email).first()
+    user_fgi = user_settings.algo_min_emotion
+
+    market_emotion = Fgi_score.query.order_by(Fgi_score.score_time.desc()).first()
+    if market_emotion.fgi_value < user_settings.algo_min_emotion:
+        fgi_text_color = 'danger'
+    else:
+        fgi_text_color = 'success'
+
+    admin_candidates = {}
+    if user_settings.server_use_system_candidates:
+        admin_candidates = Candidate.query.filter_by(email='support@algotrader.company', enabled=True).all()
+    return render_template('candidates/today.html', admin_candidates=admin_candidates, candidates=candidates,
+                           user=current_user, market_emotion=market_emotion, user_fgi=user_fgi, fgi_text_color=fgi_text_color, algo_rank=algo_rank,  form=None)
+
+
 @candidates.route('usercandidates', methods=['GET', 'POST'])
 @login_required
 def usercandidates():

@@ -19,7 +19,7 @@ def index():
         if current_user.is_admin():
             return redirect(url_for('admin.users_monitor'))
         if current_user.subscription_type_id == enum.Subscriptions.PERSONAL.value:
-            return redirect(url_for('candidates.usercandidates'))
+            return redirect(url_for('candidates.today'))
         elif current_user.subscription_type_id == enum.Subscriptions.MANAGED_PORTFOLIO.value:
             return redirect(url_for('userview.traderstationstate'))
 
@@ -41,8 +41,8 @@ def index():
 
     closed_positions = Position.query.filter(Position.last_exec_side == 'SLD').all()
     lost_positions = list(filter(lambda p: p.profit <= 0 and (p.profit / (p.open_price * p.stocks) * 100) < -9, closed_positions))
-    profit_positions = list(filter(lambda p: p.profit > 0 and (p.profit / (p.open_price * p.stocks) * 100) <= 5, closed_positions))
-    technical_positions = list(filter(lambda p: (p.profit / (p.open_price * p.stocks) * 100) > 5 or (p.profit / (p.open_price * p.stocks) * 100) >= -9, closed_positions))
+    profit_positions = list(filter(lambda p: p.profit > 0 and (p.profit / (p.open_price * p.stocks) * 100) >= 5, closed_positions))
+    technical_positions = list(filter(lambda p: (p.profit > 0 and (p.profit / (p.open_price * p.stocks) * 100) < 5) or (p.profit <= 0 and (p.profit / (p.open_price * p.stocks) * 100) >= -9), closed_positions))
     system_status['lost_positions'] = len(lost_positions)
     system_status['profit_positions'] = len(profit_positions)
     system_status['technical_positions'] = len(technical_positions)

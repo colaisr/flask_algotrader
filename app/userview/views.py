@@ -46,8 +46,8 @@ def is_market_open():
 @userview.route('traderstationstate', methods=['GET', 'POST'])
 @login_required
 def traderstationstate():
-    if not current_user.admin_confirmed or not current_user.signature:
-        return redirect(url_for('station.download'))
+    # if not current_user.admin_confirmed or not current_user.signature:
+    #     return redirect(url_for('station.download'))
     market_emotion = db.session.query(Fgi_score).order_by(Fgi_score.score_time.desc()).first()
     settings = UserSetting.query.filter_by(email=current_user.email).first()
     user_fgi = settings.algo_min_emotion
@@ -216,9 +216,9 @@ def closedpositions():
         failed_positions = list(
             filter(lambda p: p.profit <= 0 and (p.profit / (p.open_price * p.stocks) * 100) < -9, closed_positions))
         succeed_positions = list(
-            filter(lambda p: p.profit > 0 and (p.profit / (p.open_price * p.stocks) * 100) <= 5, closed_positions))
-        technical_positions = list(filter(lambda p: (p.profit / (p.open_price * p.stocks) * 100) > 5 or (
-                p.profit / (p.open_price * p.stocks) * 100) >= -9, closed_positions))
+            filter(lambda p: p.profit > 0 and (p.profit / (p.open_price * p.stocks) * 100) >= 5, closed_positions))
+        technical_positions = list(filter(lambda p: (p.profit > 0 and (p.profit / (p.open_price * p.stocks) * 100) < 5) or (p.profit <= 0 and (
+                p.profit / (p.open_price * p.stocks) * 100) >= -9), closed_positions))
     else:
         succeed_positions = []
         failed_positions = []
