@@ -6,6 +6,31 @@
     var count_days_emotion = 0;
     fill_emotion_and_snp_graphs(emotion_settings, false, main_snp, main_emotion);
 
+    $('.show_signals_modal').click(function(){
+        $(".signals_modal").show();
+    });
+
+    $('.signals-modal-close').click(function(){
+        $(".signals_modal").hide();
+    });
+
+    $('.show_personal_modal').click(function(){
+        $(".personal_modal").show();
+    });
+
+    $('.personal-modal-close').click(function(){
+        $(".personal_modal").hide();
+    });
+
+    $('.show_improovers_modal').click(function(){
+        $(".improovers_modal").show();
+    });
+
+    $('.improovers-modal-close').click(function(){
+        $(".improovers_modal").hide();
+    });
+
+
     $('#today_emotion_box').click(function(){
         $(".emotion-modal").show();
     });
@@ -39,9 +64,6 @@
         $("#add_candidate_modal").show();
     })
 
-//    $('#emotion_box').click(function(){
-//        window.open("https://money.cnn.com/data/fear-and-greed/", "_blank");
-//    });
 
     $('#txt_ticker, #txt_reason').on('input',function(){
         $('#candidate-flash').empty();

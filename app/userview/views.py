@@ -1,8 +1,6 @@
 import json
-import ssl
 import app.generalutils as general
 from datetime import datetime
-from urllib.request import urlopen
 from functools import reduce
 from dateutil.relativedelta import relativedelta
 
@@ -23,24 +21,6 @@ from app import db
 from app.models.fgi_score import Fgi_score
 
 userview = Blueprint('userview', __name__)
-
-
-def is_market_open():
-    url = ('https://financialmodelingprep.com/api/v3/is-the-market-open?apikey=f6003a61d13c32709e458a1e6c7df0b0')
-    state = 'Error'
-    try:
-        context = ssl._create_unverified_context()
-        response = urlopen(url, context=context)
-        data = response.read().decode("utf-8")
-        parsed = json.loads(data)
-        state = parsed['isTheStockMarketOpen']
-        if state:
-            state = "Open"
-        else:
-            state = "Closed"
-    except:
-        pass
-    return state
 
 
 @userview.route('traderstationstate', methods=['GET', 'POST'])
@@ -126,7 +106,7 @@ def traderstationstate():
         online = general.user_online_status(report.report_time, settings.station_interval_worker_sec)
         api_error = False if report.api_connected else True
 
-    trading_session_state = is_market_open()
+    trading_session_state = general.is_market_open()
     current_est_time = general.get_by_timezone('US/Eastern').time().strftime("%H:%M")
     if report is not None:
         if report.net_liquidation != 0:

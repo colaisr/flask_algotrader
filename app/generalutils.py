@@ -1,8 +1,10 @@
+import json
+import ssl
 from dateutil import tz
 from pytz import timezone
-import json
 from sqlalchemy.ext.declarative import DeclarativeMeta
 from datetime import datetime, date
+from urllib.request import urlopen
 
 
 def utc_datetime_to_local(utc):
@@ -49,6 +51,24 @@ def check_for_blanks(str):
         return False
     # myString is None OR myString is empty or blank
     return True
+
+
+def is_market_open():
+    url = ('https://financialmodelingprep.com/api/v3/is-the-market-open?apikey=f6003a61d13c32709e458a1e6c7df0b0')
+    state = 'Error'
+    try:
+        context = ssl._create_unverified_context()
+        response = urlopen(url, context=context)
+        data = response.read().decode("utf-8")
+        parsed = json.loads(data)
+        state = parsed['isTheStockMarketOpen']
+        if state:
+            state = "Open"
+        else:
+            state = "Closed"
+    except:
+        pass
+    return state
 
 
 class JsonEncoder(json.JSONEncoder):

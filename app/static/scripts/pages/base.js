@@ -3,8 +3,10 @@ $(document).ready(function () {
     $(window).resize(function() {
         var width = $(this).width() - 100;
         var height = $(this).height() - 400;
+        var big_height = $(this).height() - 150;
         $('.modal-bigger').css('max-width', width);
         $('.height-resize').css('height',height);
+        $('.big-height-resize').css('height',big_height);
 
     }).resize();
 
@@ -22,13 +24,13 @@ $(document).ready(function () {
     $('#search-users').keyup(function () {
         var searchText = $(this).val();
         if (searchText.length > 0) {
-            $('tbody td:icontains(' + searchText + ')').addClass('positive');
-            $('td.positive').not(':icontains(' + searchText + ')').removeClass('positive');
-            $('tbody td').not(':icontains(' + searchText + ')').closest('tr').addClass('hidden').hide();
-            $('tr.hidden:icontains(' + searchText + ')').removeClass('hidden').show();
+            $('.searchable tbody td:icontains(' + searchText + ')').addClass('positive');
+            $('.searchable td.positive').not(':icontains(' + searchText + ')').removeClass('positive');
+            $('.searchable tbody td').not(':icontains(' + searchText + ')').closest('tr').addClass('hidden').hide();
+            $('.searchable tr.hidden:icontains(' + searchText + ')').removeClass('hidden').show();
         } else {
-            $('td.positive').removeClass('positive');
-            $('tr.hidden').removeClass('hidden').show();
+            $('.searchable td.positive').removeClass('positive');
+            $('.searchable tr.hidden').removeClass('hidden').show();
         }
     });
 

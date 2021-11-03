@@ -84,7 +84,12 @@
     width: 30%;
 }
 
-#emotion_box, #user_emotion_box
+#today_emotion_box {
+    width: 30%;
+    margin-left: 20%;
+}
+
+#emotion_box, #user_emotion_box, #today_emotion_box
 {
     cursor: pointer;
 }
@@ -92,7 +97,9 @@
 #emotion_box .widget-content-outer .widget-content-wrapper,
 #emotion_box .widget-content-outer .market-emotion,
 #user_emotion_box .widget-content-outer .widget-content-wrapper,
-#user_emotion_box .widget-content-outer .market-emotion{
+#user_emotion_box .widget-content-outer .market-emotion,
+#today_emotion_box .widget-content-outer .widget-content-wrapper,
+#today_emotion_box .widget-content-outer .market-emotion{
     display: flex;
     flex: 1;
     position: relative;
@@ -169,7 +176,7 @@
     .ibkr-btn{
         width: 150px;
     }
-    #user_emotion_box
+    #user_emotion_box, #today_emotion_box
     {
         width: auto;
     }
@@ -246,6 +253,54 @@ input[type=range]:focus::-webkit-slider-runnable-track {
 .highcharts-tooltip table th {
     padding-bottom: 0.2em;
     border-bottom: 1px solid silver;
+}
+
+.today-cards .improovers .card {
+    max-height: 471px;
+}
+
+.today-cards .personal-list .card,
+.today-cards .signals .card{
+    min-height: 471px;
+    max-height: 471px;
+}
+
+.today-cards .signals .card-footer{
+    min-height: 41px;
+}
+
+.today-cards .improovers-tbl th,
+.improovers_modal .improovers-modal-tbl th,
+.signals_modal .signals-modal-tbl th {
+  border:0;
+  font-size: small;
+}
+
+.personal-list .personal-tbl th,
+.personal_modal .personal-modal-tbl th,
+.signals .signals-tbl th {
+  border:0;
+  font-size: x-small;
+}
+
+.today-cards .improovers-tbl .text-small,
+.personal-list .personal-tbl .text-small,
+.personal_modal .personal-modal-tbl .text-small,
+.signals .signals-tbl .text-small,
+.signals_modal .signals-modal-tbl .text-small,
+.admin-candidates-tbl .text-small{
+    font-size: x-small;
+}
+
+.admin-candidates {
+    max-height: 600px;
+    overflow-y: scroll;
+
+}
+
+.improovers_modal .modal-body,
+.personal_modal .modal-body{
+    overflow-y: scroll;
 }
 
 

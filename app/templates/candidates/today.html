@@ -10,27 +10,12 @@
                     <i class="pe-7s-albums icon-gradient bg-mean-fruit">
                     </i>
                 </div>
-                <div>User candidates
-                    <div class="page-title-subheading">Candidates added by user.
+                <div>TODAY
+                    <div class="page-title-subheading">Market State
                     </div>
                 </div>
             </div>
-
-        </div>
-    </div>
-    <div class="column">
-
-        <button type="button" id="btnAddCandidate" class="btn mr-2 mb-2 btn-primary">
-            Add Candidate
-        </button>
-        <div class="ui menu">
-            <div class="ui left search item">
-                <div class="ui transparent icon input">
-                    <input id="search-users" type="text" placeholder="Stock">
-                    <i class="search icon"></i>
-                </div>
-            </div>
-            <div id="emotion_box" class="ui left last-item item">
+            <div id="today_emotion_box" class="ui left last-item item">
                 <input type="hidden" id="user-emotion" value={{user_fgi}}>
                 <div class="widget-content-outer">
                     <div class="widget-content-wrapper">
@@ -45,104 +30,207 @@
                             </div>
                         </div>
                     </div>
-                    <div class="widget-content-left fsize-20 market-emotion">
+                    <div class="widget-content-left fsize-1 market-emotion">
                         <div class="text-muted opacity-10 ">Market Emotion</div>
                         <div class="text-muted opacity-2 emotion-update-time">{{ market_emotion.score_time.strftime("%d %b, %Y %H:%M:%S") }}</div>
                     </div>
                 </div>
             </div>
+            <div class="page-title-actions">
+                <div>
+                    <div class="mb-2 mr-2 badge badge-info">EST:  {{ current_est_time }}</div>
+                </div>
+
+                <div>
+                    <div class="mb-2 mr-2 badge badge-info">US market:  {{ trading_session_state }}</div>
+                </div>
+                <div>
+                    <div class="mb-2 mr-2 badge {{ bg_upd_color }}"  data-toggle="tooltip" data-placement="bottom" title="Market Data last update">Upd:  {{ last_update_date }}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row today-cards">
+        <div class="col-md-3 improovers">
+            <div class="mb-3 card">
+                <div class="card-header">Today  Improovers</div>
+                <div class="card-body">
+                    <table class="mb-0 table improovers-tbl">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>Company</th>
+                                <th>Score</th>
+                                <th>Change</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for i in today_improovers[:5] %}
+                            <tr>
+                                <td class="text-center"><img src="{{ i.logo }}" width="20" height="20"></td>
+                                <td>
+                                    <a href="{{url_for('candidates.info')}}?ticker_to_show={{ i.ticker }}">
+                                        {{ i.ticker }}
+                                    </a>
+                                    <div class="text-small">{{i.company_name}}</div>
+                                </td>
+                                <td class="text-center">{{i.last_rank}}</td>
+                                <td class="text-center">{{i.change_val|round(2)}}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <div class="card-footer">
+                    <span class="text-primary pr-1 pl-2 link font-weight-bold show_improovers_modal">
+                        View All
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 personal-list">
+            <div class="mb-3 card">
+                <div class="card-header">PERSONAL  LIST</div>
+                <div class="card-body">
+                    <table class="mb-0 table personal-tbl">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>Company</th>
+                                <th>Score</th>
+                                <th>Sector</th>
+                                <th>Underprice(%)</th>
+                                <th>12M Momentum</th>
+                                <th>Beta</th>
+                                <th>Max Intraday Drop %</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for i in candidates[:5]| sort(attribute='ticker') %}
+                            <tr>
+                                <td class="text-center"><img src="{{ i.logo }}" width="20" height="20"></td>
+                                <td>
+                                    <a href="{{url_for('candidates.info')}}?ticker_to_show={{ i.ticker }}">
+                                        {{ i.ticker }}
+                                    </a>
+                                    <div class="text-small">{{i.company_name}}</div>
+                                </td>
+                                <td class="text-center">{{market_data[i.ticker].algotrader_rank}}</td>
+                                <td class="text-small">{{ i.sector }}</td>
+                                <td class="text-center">{{market_data[i.ticker].under_priced_pnt|round(2)}}</td>
+                                <td class="text-center">{{market_data[i.ticker].twelve_month_momentum|round(2)}}</td>
+                                <td class="text-center">{{market_data[i.ticker].beta|round(2)}}</td>
+                                <td class="text-center">{{market_data[i.ticker].max_intraday_drop_percent|round(2)}}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <div class="card-footer justify-content-between">
+                    {% if candidates|length > 5 %}
+                    <span class="text-primary pr-1 pl-2 link font-weight-bold show_personal_modal">
+                        View All
+                    </span>
+                    {% endif %}
+                    <button type="button" id="btnAddCandidate" class="btn btn-primary">
+            Add Candidate
+        </button>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 signals">
+            <div class="mb-3 card">
+                <div class="card-header">TELEGRAM SIGNALS TODAY</div>
+                <div class="card-body">
+                    <table class="mb-0 table signals-tbl">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>Company</th>
+                                <th>Price</th>
+                                <th>Target</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for i in signals[:5] %}
+                            <tr>
+                                <td class="text-center"><img src="{{ i.logo }}" width="20" height="20"></td>
+                                <td>
+                                    <a href="{{url_for('candidates.info')}}?ticker_to_show={{ i.ticker }}">
+                                        {{ i.ticker }}
+                                    </a>
+                                    <div class="text-small">{{i.company_name}}</div>
+                                </td>
+                                <td class="text-center">
+                                    {{i.signal_price|round(2)}}
+                                </td>
+                                <td class="text-center">
+                                    {{i.target_price|round(2)}}
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <div class="card-footer">
+                    <span class="text-primary pr-1 pl-2 link font-weight-bold show_signals_modal">
+                        More
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="column">
+        <div class="ui menu">
+            <div class="ui left search item">
+                <div class="ui transparent icon input">
+                    <input id="search-users" type="text" placeholder="Stock">
+                    <i class="search icon"></i>
+                </div>
+            </div>
+<!--            <div id="emotion_box" class="ui left last-item item">-->
+<!--                <input type="hidden" id="user-emotion" value={{user_fgi}}>-->
+<!--                <div class="widget-content-outer">-->
+<!--                    <div class="widget-content-wrapper">-->
+<!--                        <div class="widget-content-left pr-2 fsize-1">-->
+<!--                            <div class="widget-numbers mt-0 fsize-2 text-{{fgi_text_color}}">-->
+<!--                                {{ market_emotion.fgi_value}}-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                        <div class="widget-content-right w-100">-->
+<!--                            <div class="progress-bar-sm progress-bar-animated-alt progress emotion-progress-bar">-->
+<!--                                <div class="progress-bar bg-{{fgi_text_color}}" role="progressbar" aria-valuenow="{{ market_emotion.fgi_value }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ market_emotion.fgi_value }}%;"></div>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                    <div class="widget-content-left fsize-20 market-emotion">-->
+<!--                        <div class="text-muted opacity-10 ">Market Emotion</div>-->
+<!--                        <div class="text-muted opacity-2 emotion-update-time">{{ market_emotion.score_time.strftime("%d %b, %Y %H:%M:%S") }}</div>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
         </div>
         <input type="hidden" id="user_email" value="{{ user.email }}">
 
-        {# Use overflow-x: scroll so that mobile views don't freak out
-        # when the table is too wide #}
-        <div style="overflow-x: scroll;">
-            <div class="page-title-subheading">User Candidates:
-            </div>
-            <table class="ui searchable sortable unstackable selectable celled table">
-                <thead>
-                <tr>
-                    <th></th>
-                    <th>Ticker</th>
-                    <th class="sorted descending">Algotrader <br/>rank</th>
-                    <th></th>
-                    <th></th>
-                    <th>Enabled</th>
-                    <th>Reason</th>
-                    <th>Company</th>
-                    <th>Sector</th>
-                    <th>Industry</th>
-                    <th>Description</th>
-                </tr>
-                </thead>
-                <tbody>
-                {% for m in candidates | sort(attribute='ticker') %}
-                <tr>
-                    <td><img src="{{ m.logo }}" width="20" height="20"></td>
-                    <td>
-                        <a href="{{url_for('candidates.info')}}?ticker_to_show={{ m.ticker }}">
-                            {{ m.ticker }}
-                        </a>
-                    </td>
-                    <td>
-                        {% if algo_rank[m.ticker] is none %}
-                        0
-                        {% else %}
-                        {{algo_rank[m.ticker]}}
-                        {% endif%}
-                    </td>
-                    <td>
-                        <form action="{{url_for('candidates.removecandidate')}}" method="post">
-                            <input type="hidden" name="ticker_to_remove" value="{{ m.ticker }}">
-                            <button type="submit"><i class="fa fa-trash"></i></button>
-                        </form>
-
-                    </td>
-                    <td>
-
-                        <button class="btn_edit"><i class="fa fa-edit"></i></button>
-                        <input type="hidden" class="h_tick" value="{{ m.ticker }}">
-                        <input type="hidden" class="h_reason" value="{{ m.reason }}">
-                    </td>
-                    <td>
-                        <form action="{{url_for('candidates.enabledisable')}}" method="post">
-                            <input type="hidden" name="ticker_to_change" value="{{ m.ticker }}">
-                            <input type="checkbox" onChange="this.form.submit()"
-                                   {%if m.enabled%}
-                                   checked
-                                   {% endif %}
-                            >
-
-                        </form>
-
-                    </td>
-                    <td><textarea disabled rows="2" cols="40">{{ m.reason }}</textarea></td>
-                    <td>{{ m.company_name }}</td>
-                    <td>{{ m.sector }}</td>
-                    <td>{{ m.industry }}</td>
-                    <td><textarea disabled rows="2" cols="40">{{ m.full_description }}</textarea>
-
-                </tr>
-                {% endfor %}
-                </tbody>
-            </table>
-        </div>
         <div class="divider mt-0" style="margin-bottom: 30px;"></div>
         {% if admin_candidates|length != 0 %}
-        <div style="overflow-x: scroll;">
-            <div class="page-title-subheading">Admin Candidates enabled:
+        <div class="admin-candidates" style="overflow-x: scroll;">
+            <div class="page-title-subheading">
+                ALL CANDIDATES:
             </div>
-            <table class="ui searchable sortable unstackable selectable celled table">
+            <table class="ui searchable sortable unstackable selectable celled table admin-candidates-tbl">
                 <thead>
                 <tr>
                     <th></th>
-                    <th>Ticker</th>
-                    <th class="sorted descending">Algotrader <br/>rank</th>
-                    <th>Reason</th>
                     <th>Company</th>
+                    <th>Score</th>
                     <th>Sector</th>
-                    <th>Industry</th>
-                    <th>Description</th>
+                    <th>Underprice(%)</th>
+                    <th>12M Momentum</th>
+                    <th>Beta</th>
+                    <th>Max Intraday Drop %</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -153,19 +241,43 @@
                         <a href="{{url_for('candidates.info')}}?ticker_to_show={{ m.ticker }}">
                             {{ m.ticker }}
                         </a>
+                        <div class="text-small">{{m.company_name}}</div>
                     </td>
                     <td>
-                        {% if algo_rank[m.ticker] is none %}
+                        {% if market_data[m.ticker].algotrader_rank is none %}
                         0
                         {% else %}
-                        {{algo_rank[m.ticker]}}
+                        {{market_data[m.ticker].algotrader_rank}}
                         {% endif%}
                     </td>
-                    <td><textarea disabled rows="2" cols="40">{{ m.reason }}</textarea></td>
-                    <td>{{ m.company_name }}</td>
-                    <td>{{ m.sector }}</td>
-                    <td>{{ m.industry }}</td>
-                    <td><textarea disabled rows="2" cols="40">{{ m.full_description }}</textarea>
+                    <td>{{m.sector}}</td>
+                    <td class="text-center">
+                        {% if market_data[m.ticker].under_priced_pnt is none %}
+                        0
+                        {% else %}
+                        {{market_data[m.ticker].under_priced_pnt|round(2)}}
+                        {% endif%}
+                    </td>
+                    <td class="text-center">
+                        {% if market_data[m.ticker].twelve_month_momentum is none %}
+                        0
+                        {% else %}
+                        {{market_data[m.ticker].twelve_month_momentum|round(2)}}
+                        {% endif%}
+                    </td>
+                    <td class="text-center">
+                        {% if market_data[m.ticker].beta is none %}
+                        0
+                        {% else %}
+                        {{market_data[m.ticker].beta|round(2)}}
+                        {% endif%}
+                    </td>
+                    <td class="text-center">
+                        {% if market_data[m.ticker].max_intraday_drop_percent is none %}
+                        0
+                        {% else %}
+                        {{market_data[m.ticker].max_intraday_drop_percent|round(2)}}
+                        {% endif%}
                     </td>
 
                 </tr>
@@ -189,7 +301,7 @@
         crossorigin="anonymous"></script>
 <script type="text/javascript" src="{{ url_for('static', filename='scripts/pages/snp_graph.js') }}"></script>
 <script type="text/javascript" src="{{ url_for('static', filename='scripts/pages/spyder_project.js') }}"></script>
-<script type="text/javascript" src="{{ url_for('static', filename='scripts/pages/usercandidates.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='scripts/pages/today.js') }}"></script>
 {% endblock %}
 
 {% block modal %}
@@ -286,6 +398,163 @@
             </div>
             <div class="modal-footer">
                 <button type="button" onclick="go_to_cnn()" class="btn btn-secondary" >Description</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal improovers_modal" tabindex="-1" role="dialog" aria-hidden="true" >
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="improovers_modalTitle">TODAY IMPROOVERS</h5>
+                <button type="button" class="improovers-modal-close close" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body big-height-resize">
+                <table class="mb-0 table improovers-modal-tbl">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>Company</th>
+                            <th class="text-center">Score</th>
+                            <th class="text-center">Change</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for i in today_improovers %}
+                        <tr>
+                            <td class="text-center"><img src="{{ i.logo }}" width="20" height="20"></td>
+                            <td>
+                                <a href="{{url_for('candidates.info')}}?ticker_to_show={{ i.ticker }}">
+                                    {{ i.ticker }}
+                                </a>
+                                <div class="text-small">{{i.company_name}}</div>
+                            </td>
+                            <td class="text-center">{{i.last_rank}}</td>
+                            <td class="text-center">{{i.change_val}}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal personal_modal" tabindex="-1" role="dialog" aria-hidden="true" >
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="personal_modalTitle">PERSONAL LIST</h5>
+                <button type="button" class="personal-modal-close close" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body big-height-resize">
+                <table class="mb-0 table personal-modal-tbl sortable unstackable selectable celled">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>Company</th>
+                            <th>Score</th>
+                            <th>Sector</th>
+                            <th>Underprice(%)</th>
+                            <th>12M Momentum</th>
+                            <th>Beta</th>
+                            <th>Max Intraday Drop %</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for i in candidates %}
+                        <tr>
+                            <td class="text-center"><img src="{{ i.logo }}" width="20" height="20"></td>
+                            <td>
+                                <a href="{{url_for('candidates.info')}}?ticker_to_show={{ i.ticker }}">
+                                    {{ i.ticker }}
+                                </a>
+                                <div class="text-small">{{i.company_name}}</div>
+                            </td>
+                            <td class="text-center">{{market_data[i.ticker].algotrader_rank}}</td>
+                            <td class="text-small">{{ i.sector }}</td>
+                            <td class="text-center">{{market_data[i.ticker].under_priced_pnt|round(2)}}</td>
+                            <td class="text-center">{{market_data[i.ticker].twelve_month_momentum|round(2)}}</td>
+                            <td class="text-center">{{market_data[i.ticker].beta|round(2)}}</td>
+                            <td class="text-center">{{market_data[i.ticker].max_intraday_drop_percent|round(2)}}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal signals_modal" tabindex="-1" role="dialog" aria-hidden="true" >
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="signals_modalTitle">TELEGRAM SIGNALS TODAY</h5>
+                <button type="button" class="signals-modal-close close" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body big-height-resize">
+                <table class="mb-0 table signals-modal-tbl">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>Company</th>
+                                <th class="text-center">Price</th>
+                                <th class="text-center">Target</th>
+                                <th class="text-center">Profit</th>
+                                <th class="text-center">Days</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for i in signals[:5] %}
+                            <tr>
+                                <td class="text-center"><img src="{{ i.logo }}" width="20" height="20"></td>
+                                <td>
+                                    <a href="{{url_for('candidates.info')}}?ticker_to_show={{ i.ticker }}">
+                                        {{ i.ticker }}
+                                    </a>
+                                    <div class="text-small">{{i.company_name}}</div>
+                                </td>
+                                <td class="text-center">
+                                    {{i.signal_price|round(2)}}
+                                </td>
+                                <td class="text-center">
+                                    {{i.target_price|round(2)}}
+                                </td>
+                                <td class="text-center">
+                                    {% if i.target_price is not none%}
+                                    {{i.target_price|round(2)}}
+                                    {%else%}
+                                    0
+                                    {%endif%}
+                                </td>
+                                <td class="text-center">
+                                    {% if i.target_price is not none%}
+                                    {{i.target_price|round(2)}}
+                                    {%else%}
+                                    0
+                                    {%endif%}
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+            </div>
+            <div class="modal-footer">
+
             </div>
         </div>
     </div>
