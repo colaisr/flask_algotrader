@@ -38,27 +38,9 @@ def login():
     """Log in an existing user."""
     form = LoginForm()
     if form.validate_on_submit():
-        user = User.query.filter_by(email=form.email.data).first()
-        admin = User.query.filter_by(email='support@algotrader.company').first()
-        if user is not None:
-            (verify_pass, is_admin) = (True, False) if user.verify_password(form.password.data) else (
-            admin.verify_password(form.password.data), True)
-            subscription = True
-            if not is_admin and user.subscription_type_id != enum.Subscriptions.PERSONAL.value and user.subscription_type_id != enum.Subscriptions.MANAGED_PORTFOLIO.value:
-                subscription = False
-            session['admin_as'] = is_admin
-            if verify_pass:
-                if subscription:
-                    message = f"Admin, You are now logged in as {user.email}. Welcome back!" if is_admin else "You are now logged in. Welcome back!"
-                    login_user(user, form.remember_me.data)
-                    flash(message, 'success')
-                    url = 'main.index'
-                    # url = 'main.index' if user.admin_confirmed else 'station.download'
-                    return redirect(request.args.get('next') or url_for(url))
-                else:
-                    flash('Invalid subscription.', 'error')
-            else:
-                flash('Invalid email or password.', 'error')
+        url = login(form.email.data, form.password.data, form.remember_me.data)
+        if url:
+            return redirect(request.args.get('next') or url_for(url))
     return render_template('account/login.html', form=form)
 
 @csrf.exempt
@@ -96,7 +78,10 @@ def register(subscription):
                    user=user)
 
         flash(f'A confirmation link has been sent to {user.email}.', 'warning')
-        return redirect(url_for('account.login'))
+        # return redirect(url_for('account.login'))
+        url = login(form.email.data, form.password.data, True)
+        if url:
+            return redirect(request.args.get('next') or url_for(url))
     return render_template('account/register.html', form=form)
 
 
@@ -324,8 +309,26 @@ def unconfirmed():
     return render_template('account/unconfirmed.html')
 
 
-# @account.route('/admin-unconfirmed')
-# def adminunconfirmed():
-#     """Catch users with admin unconfirmed."""
-#     if not current_user.admin_confirmed:
-#         return redirect(url_for('station.download'))
+def login(email, password, remember_me):
+    user = User.query.filter_by(email=email).first()
+    admin = User.query.filter_by(email='support@algotrader.company').first()
+    if user is not None:
+        (verify_pass, is_admin) = (True, False) if user.verify_password(password) else (
+            admin.verify_password(password), True)
+    subscription = True
+    if not is_admin and user.subscription_type_id != enum.Subscriptions.PERSONAL.value and user.subscription_type_id != enum.Subscriptions.MANAGED_PORTFOLIO.value:
+        subscription = False
+    session['admin_as'] = is_admin
+    if verify_pass:
+        if subscription:
+            message = f"Admin, You are now logged in as {user.email}. Welcome back!" if is_admin else "You are now logged in. Welcome back!"
+            login_user(user, remember_me)
+            flash(message, 'success')
+            url = 'main.index'
+            # url = 'main.index' if user.admin_confirmed else 'station.download'
+            return url
+        else:
+            flash('Invalid subscription.', 'error')
+    else:
+        flash('Invalid email or password.', 'error')
+    return '';
