@@ -62,7 +62,7 @@
                 <thead>
                 <tr>
                     <th></th>
-                    <th class="sorted descending">Ticker</th>
+                    <th>Ticker</th>
                     <th class="sorted descending">Algotrader <br/>rank</th>
                     <th></th>
                     <th></th>
@@ -83,7 +83,13 @@
                             {{ m.ticker }}
                         </a>
                     </td>
-                    <td>{{algo_rank[m.ticker]}}</td>
+                    <td>
+                        {% if algo_rank[m.ticker] is none %}
+                        0
+                        {% else %}
+                        {{algo_rank[m.ticker]}}
+                        {% endif%}
+                    </td>
                     <td>
                         <form action="{{url_for('candidates.removecandidate')}}" method="post">
                             <input type="hidden" name="ticker_to_remove" value="{{ m.ticker }}">
