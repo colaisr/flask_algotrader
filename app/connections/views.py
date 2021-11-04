@@ -259,6 +259,7 @@ def check_for_signals(candidates_live_json):
     candidates_live = json.loads(candidates_live_json)
     for k, v in candidates_live.items():
         if v['Ask'] < v['target_price'] and v['Ask'] != -1:
+            # signals_exist = TelegramSignal.query.filter_by(target_met=None).all() add checking if signal allready logged
             signal = TelegramSignal()
             ticker_data = TickerData.query.filter_by(ticker=v['Stock']).order_by(
                 TickerData.updated_server_time.desc()).first()
