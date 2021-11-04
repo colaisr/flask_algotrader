@@ -44,6 +44,7 @@ market_data =jQuery.parseJSON(market_data);
 // creating a candidate
     $('#btnAddCandidate').on('click', function() {
         $('#candidate-flash').empty();
+        $('.ticker-desc').val('');
         $('.content-hidden').prop('hidden',true);
         $('.modal-body input, .modal-body textarea').val("");
         $("#btn_submit").prop('disabled', true);
@@ -58,6 +59,7 @@ market_data =jQuery.parseJSON(market_data);
     //editing a candidate
     $('.btn_edit').on('click', function() {
         clicked_on=event.target.parentElement;
+        $('.ticker-desc').val('');
         ticker=$(clicked_on).siblings('.h_tick')[0].value;
         reason=$(clicked_on).siblings('.h_reason')[0].value;
         $('#txt_ticker').val(ticker);
@@ -71,6 +73,12 @@ market_data =jQuery.parseJSON(market_data);
         remove_candidate(ticker);
     })
 
+    $('.enable-checkbox').on('change',function(){
+        var ticker = $(this).data('ticker');
+        var enabled = $(this).is(':checked');
+        change_enabled(ticker, enabled);
+    })
+
 
     $('#txt_ticker, #txt_reason').on('input',function(){
         $('#candidate-flash').empty();
@@ -78,9 +86,21 @@ market_data =jQuery.parseJSON(market_data);
 
 })
 
-function change_enabled()
+function change_enabled(ticker, enabled)
 {
-    alert('test');
+    if($(this).data('ticker') != undefined){
+        ticker = $(this).data('ticker');
+        enabled = $(this).is(':checked');
+    }
+    $.post("/candidates/enabledisable_ajax",{ticker: ticker}, function(data) {
+        var data_parsed = jQuery.parseJSON(data);
+        if(data_parsed["result"]){
+            var candidate = $.grep( candidates, function( n, i ) { return n.ticker == ticker;});
+            if(candidate.length != 0){
+                candidate.enabled = enabled;
+            }
+        }
+    });
 }
 
 function remove_candidate(ticker){

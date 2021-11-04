@@ -130,7 +130,15 @@ def removecandidate_ajax():
     ticker = request.form['ticker']
     candidate = Candidate.query.filter_by(email=current_user.email, ticker=ticker).first()
     candidate.delete_candidate()
+    return json.dumps({'result': True})
 
+
+@candidates.route('/enabledisable_ajax', methods=['POST'])
+@csrf.exempt
+def enabledisable_ajax():
+    ticker = request.form['ticker']
+    candidate = Candidate.query.filter_by(email=current_user.email, ticker=ticker).first()
+    candidate.change_enabled_state()
     return json.dumps({'result': True})
 
 

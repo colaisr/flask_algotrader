@@ -88,7 +88,7 @@ function add_row_to_personal_candidates(c, market_data, tbl_class, is_modal){
         tr.append(td_remove);
         var td_edit = $('<td class="text-center"><button class="btn_edit bord-none"><i class="fa fa-edit mt-1"></i></button><input type="hidden" class="h_tick" value="' + c.ticker + '"><input type="hidden" class="h_reason" value="' + c.reason + '"></td>');
         tr.append(td_edit);
-        var td_enabled = $('<td class="text-center"><input type="hidden" name="ticker_to_change" value="' + c.ticker + '"><input class="mt-2" id="enabled-' + c.ticker + '" type="checkbox" onChange="change_enabled()"></td>');
+        var td_enabled = $('<td class="text-center"><input class="mt-2 enable-checkbox" id="enabled-' + c.ticker + '" data-ticker="' + c.ticker + '" type="checkbox" onChange="change_enabled()"></td>');
         tr.append(td_enabled);
     }
     var td_score = $('<td class="text-center">'+score+'</td>');

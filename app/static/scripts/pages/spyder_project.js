@@ -1,5 +1,5 @@
-var domane = 'https://colak.eu.pythonanywhere.com/';
-//var domane = 'http://localhost:8000/';
+//var domane = 'https://colak.eu.pythonanywhere.com/';
+var domane = 'http://localhost:8000/';
 
 function get_data_for_ticker(){
     $('#candidate-flash').empty();
@@ -36,7 +36,7 @@ function get_data_for_ticker(){
     }
 }
 
-function update_candidate(remove_candidate_event){
+function update_candidate(remove_candidate_event, change_enabled_event){
     $('#candidate-flash').empty();
     ticker = $('#txt_ticker').val();
     reason = $('#txt_reason').val();
@@ -66,6 +66,7 @@ function update_candidate(remove_candidate_event){
             }
             add_row_to_personal_candidates(c, market_data, 'personal-modal-tbl', true);  //from base.js
             $('#remove-' + c.ticker).on('click',remove_candidate_event);
+            $('#enabled-' + c.ticker).on('click',change_enabled_event);
 //            $('.personal-modal-tbl').on('click', '#remove-' + c.ticker, remove_candidate_event(ticker))
         }
         else{
