@@ -110,6 +110,12 @@
                             <ul class="header-menu nav">
                                 {% if current_user.is_authenticated %}
                                 <li class="btn-group nav-item">
+                                    <a href="https://t.me/Algotrader_signals"  target="_blank" class="nav-link text-end">
+                                    <i class="fa fa-telegram pr-1"></i>
+                                    Telegram
+                                </a>
+                                </li>
+                                <li class="btn-group nav-item">
                                     <a href="/account/manage/info" class="nav-link">
                                         <i class="nav-link-icon fa fa-user-circle"></i>
                                         {% if session['admin_as'] %}
