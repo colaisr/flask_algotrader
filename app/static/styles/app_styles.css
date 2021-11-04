@@ -85,8 +85,10 @@
 }
 
 #today_emotion_box {
-    width: 30%;
-    margin-left: 20%;
+    width: 25%;
+    margin-left: 3%;
+    margin-right: 3%;
+    margin-top: -17px;
 }
 
 #emotion_box, #user_emotion_box, #today_emotion_box
@@ -261,12 +263,24 @@ input[type=range]:focus::-webkit-slider-runnable-track {
 
 .today-cards .personal-list .card,
 .today-cards .signals .card{
-    min-height: 471px;
-    max-height: 471px;
+    min-height: 451px;
+    max-height: 451px;
+}
+
+@media (max-width: 1280px){
+    .today-cards .improovers .card {
+        max-height: 583px;
+    }
+
+    .today-cards .personal-list .card,
+    .today-cards .signals .card{
+        min-height: 573px;
+        max-height: 573px;
+    }
 }
 
 .today-cards .signals .card-footer{
-    min-height: 41px;
+    min-height: 37px;
 }
 
 .today-cards .improovers-tbl th,
@@ -303,8 +317,44 @@ input[type=range]:focus::-webkit-slider-runnable-track {
 }
 
 .improovers_modal .modal-body,
-.personal_modal .modal-body{
+.personal_modal .modal-body,
+.signals_modal .modal-body{
     overflow-y: scroll;
+}
+
+.today-page .today-title{
+    width: 75px;
+    margin: -24px 30px 0 0 !important;
+}
+
+.today-page .tradingview-widget-container{
+    width: 60% !important;
+    height: auto !important;
+    margin-left: 1% !important;
+    margin-top: -13px !important;
+}
+
+.today-page {
+    padding-top: 0 !important;
+}
+
+.today-page .app-page-title{
+    height: 70px !important;
+}
+
+.today-page .page-title-icon{
+    width: 51px !important;
+    height: 51px !important;
+    margin: -24px 30px 0 0 !important;
+}
+
+.today-page  .page-title-actions,
+.today-page  .market-emotion{
+    font-size: 10px;
+}
+
+.today-page  .page-title-actions{
+    margin-top: -19px;
 }
 
 

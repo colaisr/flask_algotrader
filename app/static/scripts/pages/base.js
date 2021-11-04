@@ -78,7 +78,7 @@ function add_row_to_personal_candidates(c, market_data, tbl_class, is_modal){
         beta = market_data[c.ticker].beta.toFixed(2) || 0;
         max_intraday_drop_percent = market_data[c.ticker].max_intraday_drop_percent.toFixed(2) || 0;
     }
-    var tr = $('<tr></tr>');
+    var tr = $('<tr title="' + c.reason + '></tr>');
     var td_logo =$('<td class="text-center"><img src="' + c.logo + '" width="20" height="20"></td>');
     tr.append(td_logo);
     var td_company = $('<td><a href="/candidates/info?ticker_to_show=' + c.ticker + '">' + c.ticker + '</a><div class="text-small">' + c.company_name + '</div></td>');

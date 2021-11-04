@@ -2,7 +2,7 @@
 
 {% block content %}
 
-<div class="app-main__inner">
+<div class="app-main__inner today-page">
     <div class="app-page-title">
         <div class="page-title-wrapper">
             <div class="page-title-heading">
@@ -10,11 +10,38 @@
                     <i class="pe-7s-albums icon-gradient bg-mean-fruit">
                     </i>
                 </div>
-                <div>TODAY
+                <div class="today-title">TODAY
                     <div class="page-title-subheading">Market State
                     </div>
                 </div>
             </div>
+            <!-- TradingView Widget BEGIN -->
+            <div class="tradingview-widget-container">
+              <div class="tradingview-widget-container__widget"></div>
+              <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-tickers.js" async>
+                  {
+                      "symbols": [
+                        {
+                          "proName": "FOREXCOM:SPXUSD",
+                          "title": "S&P 500"
+                        },
+                        {
+                          "proName": "FOREXCOM:NSXUSD",
+                          "title": "Nasdaq 100"
+                        },
+                        {
+                          "proName": "BITSTAMP:BTCUSD",
+                          "title": "BTC/USD"
+                        }
+                      ],
+                      "colorTheme": "light",
+                      "isTransparent": true,
+                      "showSymbolLogo": true,
+                      "locale": "en"
+                  }
+              </script>
+            </div>
+            <!-- TradingView Widget END -->
             <div id="today_emotion_box" class="ui left last-item item">
                 <input type="hidden" id="user-emotion" value={{user_fgi}}>
                 <div class="widget-content-outer">
@@ -30,7 +57,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="widget-content-left fsize-1 market-emotion">
+                    <div class="widget-content-left market-emotion">
                         <div class="text-muted opacity-10 ">Market Emotion</div>
                         <div class="text-muted opacity-2 emotion-update-time">{{ market_emotion.score_time.strftime("%d %b, %Y %H:%M:%S") }}</div>
                     </div>
@@ -38,14 +65,14 @@
             </div>
             <div class="page-title-actions">
                 <div>
-                    <div class="mb-2 mr-2 badge badge-info">EST:  {{ current_est_time }}</div>
+                    <div class="mb-1 mr-1 badge badge-info">EST:  {{ current_est_time }}</div>
                 </div>
 
                 <div>
-                    <div class="mb-2 mr-2 badge badge-info">US market:  {{ trading_session_state }}</div>
+                    <div class="mb-1 mr-1 badge badge-info">US market:  {{ trading_session_state }}</div>
                 </div>
                 <div>
-                    <div class="mb-2 mr-2 badge {{ bg_upd_color }}"  data-toggle="tooltip" data-placement="bottom" title="Market Data last update">Upd:  {{ last_update_date }}</div>
+                    <div class="mb-1 mr-1 badge {{ bg_upd_color }}"  data-toggle="tooltip" data-placement="bottom" title="Market Data last update">Upd:  {{ last_update_date }}</div>
                 </div>
             </div>
         </div>
@@ -108,7 +135,7 @@
                         </thead>
                         <tbody>
                             {% for i in candidates[:5]| sort(attribute='ticker') %}
-                            <tr>
+                            <tr title="{{i.reason}}">
                                 <td class="text-center"><img src="{{ i.logo }}" width="20" height="20"></td>
                                 <td>
                                     <a href="{{url_for('candidates.info')}}?ticker_to_show={{ i.ticker }}">
@@ -152,9 +179,11 @@
                     </table>
                 </div>
                 <div class="card-footer justify-content-between">
+                    {% if candidates|length > 0 %}
                     <span class="text-primary pr-1 pl-2 link font-weight-bold show_personal_modal">
                         More
                     </span>
+                    {% endif %}
                     <button type="button" id="btnAddCandidate" class="btn btn-primary">
             Add Candidate
         </button>
@@ -214,27 +243,6 @@
                     <i class="search icon"></i>
                 </div>
             </div>
-<!--            <div id="emotion_box" class="ui left last-item item">-->
-<!--                <input type="hidden" id="user-emotion" value={{user_fgi}}>-->
-<!--                <div class="widget-content-outer">-->
-<!--                    <div class="widget-content-wrapper">-->
-<!--                        <div class="widget-content-left pr-2 fsize-1">-->
-<!--                            <div class="widget-numbers mt-0 fsize-2 text-{{fgi_text_color}}">-->
-<!--                                {{ market_emotion.fgi_value}}-->
-<!--                            </div>-->
-<!--                        </div>-->
-<!--                        <div class="widget-content-right w-100">-->
-<!--                            <div class="progress-bar-sm progress-bar-animated-alt progress emotion-progress-bar">-->
-<!--                                <div class="progress-bar bg-{{fgi_text_color}}" role="progressbar" aria-valuenow="{{ market_emotion.fgi_value }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ market_emotion.fgi_value }}%;"></div>-->
-<!--                            </div>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                    <div class="widget-content-left fsize-20 market-emotion">-->
-<!--                        <div class="text-muted opacity-10 ">Market Emotion</div>-->
-<!--                        <div class="text-muted opacity-2 emotion-update-time">{{ market_emotion.score_time.strftime("%d %b, %Y %H:%M:%S") }}</div>-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--            </div>-->
         </div>
         <input type="hidden" id="user_email" value="{{ user.email }}">
 
@@ -423,7 +431,7 @@
                     </thead>
                     <tbody>
                         {% for i in candidates %}
-                        <tr>
+                        <tr title="{{i.reason}}">
                             <td class="text-center"><img src="{{ i.logo }}" width="20" height="20"></td>
                             <td>
                                 <a href="{{url_for('candidates.info')}}?ticker_to_show={{ i.ticker }}">
@@ -516,7 +524,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            {% for i in signals[:5] %}
+                            {% for i in signals %}
                             <tr>
                                 <td class="text-center"><img src="{{ i.logo }}" width="20" height="20"></td>
                                 <td>
@@ -526,14 +534,8 @@
                                     <div class="text-small">{{i.company_name}}</div>
                                 </td>
                                 <td class="text-center">
+                                    {% if i.signal_price is not none%}
                                     {{i.signal_price|round(2)}}
-                                </td>
-                                <td class="text-center">
-                                    {{i.target_price|round(2)}}
-                                </td>
-                                <td class="text-center">
-                                    {% if i.target_price is not none%}
-                                    {{i.target_price|round(2)}}
                                     {%else%}
                                     0
                                     {%endif%}
@@ -543,6 +545,20 @@
                                     {{i.target_price|round(2)}}
                                     {%else%}
                                     0
+                                    {%endif%}
+                                </td>
+                                <td class="text-center">
+                                    {% if i.profit_percent is not none%}
+                                    {{i.profit_percent|round(2)}}
+                                    {%else%}
+                                    --
+                                    {%endif%}
+                                </td>
+                                <td class="text-center">
+                                    {% if i.days_to_get is not none%}
+                                    {{i.days_to_get}}
+                                    {%else%}
+                                    --
                                     {%endif%}
                                 </td>
                             </tr>
