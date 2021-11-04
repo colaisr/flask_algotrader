@@ -56,7 +56,7 @@
             <div class="mb-3 card">
                 <div class="card-header">Today  Improovers</div>
                 <div class="card-body">
-                    <table class="mb-0 table improovers-tbl">
+                    <table class="mb-0 table improovers-tbl table-hover">
                         <thead>
                             <tr>
                                 <th></th>
@@ -93,7 +93,7 @@
             <div class="mb-3 card">
                 <div class="card-header">PERSONAL  LIST</div>
                 <div class="card-body">
-                    <table class="mb-0 table personal-tbl">
+                    <table class="mb-0 table personal-tbl table-hover">
                         <thead>
                             <tr>
                                 <th></th>
@@ -165,7 +165,7 @@
             <div class="mb-3 card">
                 <div class="card-header">TELEGRAM SIGNALS TODAY</div>
                 <div class="card-body">
-                    <table class="mb-0 table signals-tbl">
+                    <table class="mb-0 table signals-tbl table-hover">
                         <thead>
                             <tr>
                                 <th></th>
@@ -196,9 +196,11 @@
                     </table>
                 </div>
                 <div class="card-footer">
+                    {% if signals|length != 0%}
                     <span class="text-primary pr-1 pl-2 link font-weight-bold show_signals_modal">
                         More
                     </span>
+                    {%endif%}
                 </div>
             </div>
         </div>
@@ -360,7 +362,7 @@
                 </button>
             </div>
             <div class="modal-body big-height-resize">
-                <table class="mb-0 table improovers-modal-tbl">
+                <table class="mb-0 table improovers-modal-tbl table-hover">
                     <thead>
                         <tr>
                             <th></th>
@@ -403,7 +405,7 @@
                 </button>
             </div>
             <div class="modal-body big-height-resize">
-                <table class="mb-0 table personal-modal-tbl sortable unstackable selectable celled">
+                <table class="mb-0 table personal-modal-tbl table-hover">
                     <thead>
                         <tr>
                             <th></th>
@@ -502,7 +504,7 @@
                 </button>
             </div>
             <div class="modal-body big-height-resize">
-                <table class="mb-0 table signals-modal-tbl">
+                <table class="mb-0 table signals-modal-tbl table-hover">
                         <thead>
                             <tr>
                                 <th></th>
