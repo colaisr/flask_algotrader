@@ -65,6 +65,48 @@ function isFloat(n){
     return Number(n) === n && n % 1 !== 0;
 }
 
+function add_row_to_personal_candidates(c, market_data, tbl_class, is_modal){
+    var score = 0;
+    var under_priced_pnt = 0;
+    var twelve_month_momentum = 0;
+    var beta = 0;
+    var max_intraday_drop_percent = 0;
+    if(market_data[c.ticker] != undefined){
+        score = market_data[c.ticker].algotrader_rank || 0;
+        under_priced_pnt = market_data[c.ticker].under_priced_pnt.toFixed(2) || 0;
+        twelve_month_momentum = market_data[c.ticker].twelve_month_momentum.toFixed(2) || 0;
+        beta = market_data[c.ticker].beta.toFixed(2) || 0;
+        max_intraday_drop_percent = market_data[c.ticker].max_intraday_drop_percent.toFixed(2) || 0;
+    }
+    var tr = $('<tr></tr>');
+    var td_logo =$('<td class="text-center"><img src="' + c.logo + '" width="20" height="20"></td>');
+    tr.append(td_logo);
+    var td_company = $('<td><a href="/candidates/info?ticker_to_show=' + c.ticker + '">' + c.ticker + '</a><div class="text-small">' + c.company_name + '</div></td>');
+    tr.append(td_company);
+    if(is_modal){
+        var td_remove = $('<td class="text-center"><button id="remove-' + c.ticker +'" type="submit" data-ticker="' + c.ticker + '" class="bord-none remove-candidate"><i class="fa fa-trash"></i></button></td>');
+        tr.append(td_remove);
+        var td_edit = $('<td class="text-center"><button class="btn_edit bord-none"><i class="fa fa-edit mt-1"></i></button><input type="hidden" class="h_tick" value="' + c.ticker + '"><input type="hidden" class="h_reason" value="' + c.reason + '"></td>');
+        tr.append(td_edit);
+        var td_enabled = $('<td class="text-center"><input type="hidden" name="ticker_to_change" value="' + c.ticker + '"><input class="mt-2" id="enabled-' + c.ticker + '" type="checkbox" onChange="change_enabled()"></td>');
+        tr.append(td_enabled);
+    }
+    var td_score = $('<td class="text-center">'+score+'</td>');
+    tr.append(td_score);
+    var td_sector = $('<td class="text-small">' + c.sector + '</td>');
+    tr.append(td_sector);
+    var td_under_price = $('<td class="text-center">' + under_priced_pnt + '</td>');
+    tr.append(td_under_price);
+    var td_momentum = $('<td class="text-center">' + twelve_month_momentum + '</td>');
+    tr.append(td_momentum);
+    var td_beta = $('<td class="text-center">' + beta + '</td>');
+    tr.append(td_beta);
+    var td_intraday_drop = $('<td class="text-center">' + max_intraday_drop_percent + '</td>');
+    tr.append(td_intraday_drop);
+    $('.' + tbl_class + ' tbody').append(tr);
+    $('#enabled-' + c.ticker).prop('checked', c.enabled);
+}
+
 
 
 

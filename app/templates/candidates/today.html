@@ -331,82 +331,6 @@
 
 {% block modal %}
 <!-- Modal -->
-<div class="modal" tabindex="-1" id="add_candidate_modal" data-keyboard="false" role="dialog"
-     aria-labelledby="exampleModalLabel"
-     aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <form>
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Candidate</h5>
-                    <button type="button" class="btn-modal-hide close" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-                </div>
-                <div class="modal-body">
-                    <div id="candidate-flash"></div>
-                    <div>
-                        <input type="hidden" id="user-email" value="{{ current_user.email }}">
-                        <div class="form-group">
-                            <label class="form-label" for="txt_ticker">Ticker</label>
-                            <input required id="txt_ticker" name="txt_ticker" type="text" class="form-control"
-                                   placeholder="Enter a ticker ...">
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label" for="txt_reason">Reason</label>
-                            <textarea required class="form-control" name="txt_reason" id="txt_reason" rows="3"
-                                      placeholder="Enter a reason ..."></textarea>
-                        </div>
-                        <div class="form-group">
-                            <button type="button" onclick="get_data_for_ticker()" id="btn_validate" class="btn btn-primary">Validate</button>
-                        </div>
-
-                        <div class="candidate-bottom">
-                            <span class="candidate-loading d-flex justify-content-center"></span>
-                            <div class="candidate-data content-hidden" hidden>
-                                <div class="form-group">
-                                    <label class="form-label" for="txt_company_name">Name</label>
-                                    <input required id="txt_company_name" name="txt_company_name" type="text" disabled
-                                           class="form-control">
-                                </div>
-                                <div class="form-group">
-                                    <label class="form-label" for="txt_company_description">Description</label>
-                                    <textarea required class="form-control" name="txt_company_description" disabled
-                                              id="txt_company_description" rows="3"></textarea>
-                                </div>
-                                <div class="form-group">
-                                    <label class="form-label" for="txt_exchange">Exchange</label>
-                                    <input required id="txt_exchange" name="txt_exchange" type="text" class="form-control"
-                                           disabled>
-                                </div>
-                                <div class="form-group">
-                                    <label class="form-label" for="txt_industry">Sector</label>
-                                    <input required id="txt_sector" name="txt_sector" type="text" class="form-control"
-                                           disabled>
-                                </div>
-                                <div class="form-group">
-                                    <label class="form-label" for="txt_industry">Industry</label>
-                                    <input required id="txt_industry" name="txt_industry" type="text" class="form-control"
-                                           disabled>
-                                </div>
-                                <div class="form-group">
-                                    <label class="form-label" for="txt_logo">Logo URL</label>
-                                    <input required id="txt_logo" name="txt_logo" type="text" class="form-control" disabled>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer content-hidden">
-                    <button type="button" class="btn btn-secondary btn-modal-hide">Close
-                    </button>
-                    <input type="button" title="Validate to Submit" class="btn btn-primary" disabled id="btn_submit"
-                           value="Submit" onclick="update_candidate()">
-                </div>
-            </div>
-        </form>
-    </div>
-</div>
 
 <div class="modal emotion-modal" tabindex="-1" role="dialog" aria-hidden="true" >
     <div class="modal-dialog modal-lg">
@@ -508,11 +432,7 @@
                                 <div class="text-small">{{i.company_name}}</div>
                             </td>
                             <td class="text-center">
-<!--                                <form action="{{url_for('candidates.removecandidate')}}" method="post">-->
-<!--                                    <input type="hidden" name="ticker_to_remove" value="{{ i.ticker }}">-->
-<!--                                    <button type="submit" class="bord-none"><i class="fa fa-trash"></i></button>-->
-<!--                                </form>-->
-                                <button type="submit" data-ticker="{{ i.ticker }}" class="bord-none remove-candidate"><i class="fa fa-trash"></i></button>
+                                <button id="remove-{{i.ticker}}" type="submit" data-ticker="{{ i.ticker }}" class="bord-none remove-candidate"><i class="fa fa-trash"></i></button>
                             </td>
                             <td class="text-center">
                                 <button class="btn_edit bord-none"><i class="fa fa-edit mt-1"></i></button>
@@ -520,13 +440,18 @@
                                 <input type="hidden" class="h_reason" value="{{ i.reason }}">
                             </td>
                             <td class="text-center">
-                                <form action="{{url_for('candidates.enabledisable')}}" method="post">
-                                    <input type="hidden" name="ticker_to_change" value="{{ i.ticker }}">
-                                    <input class="mt-2" type="checkbox" onChange="this.form.submit()"
-                                           {%if i.enabled%}
-                                           checked
-                                           {% endif %}>
-                                </form>
+<!--                                <form action="{{url_for('candidates.enabledisable')}}" method="post">-->
+<!--                                    <input type="hidden" name="ticker_to_change" value="{{ i.ticker }}">-->
+<!--                                    <input class="mt-2" type="checkbox" onChange="this.form.submit()"-->
+<!--                                           {%if i.enabled%}-->
+<!--                                           checked-->
+<!--                                           {% endif %}>-->
+<!--                                </form>-->
+                                <input type="hidden" name="ticker_to_change" value="{{ i.ticker }}">
+                                <input class="mt-2" type="checkbox" onChange="change_enabled()"
+                                       {%if i.enabled%}
+                                       checked
+                                       {% endif %}>
                             </td>
                             <td class="text-center">{{market_data[i.ticker].algotrader_rank}}</td>
                             <td class="text-small">{{ i.sector }}</td>
@@ -630,6 +555,83 @@
 
             </div>
         </div>
+    </div>
+</div>
+
+<div class="modal" tabindex="-1" id="add_candidate_modal" data-keyboard="false" role="dialog"
+     aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <form>
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Candidate</h5>
+                    <button type="button" class="btn-modal-hide close" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                </div>
+                <div class="modal-body">
+                    <div id="candidate-flash"></div>
+                    <div>
+                        <input type="hidden" id="user-email" value="{{ current_user.email }}">
+                        <div class="form-group">
+                            <label class="form-label" for="txt_ticker">Ticker</label>
+                            <input required id="txt_ticker" name="txt_ticker" type="text" class="form-control"
+                                   placeholder="Enter a ticker ...">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="txt_reason">Reason</label>
+                            <textarea required class="form-control" name="txt_reason" id="txt_reason" rows="3"
+                                      placeholder="Enter a reason ..."></textarea>
+                        </div>
+                        <div class="form-group">
+                            <button type="button" onclick="get_data_for_ticker()" id="btn_validate" class="btn btn-primary">Validate</button>
+                        </div>
+
+                        <div class="candidate-bottom">
+                            <span class="candidate-loading d-flex justify-content-center"></span>
+                            <div class="candidate-data content-hidden" hidden>
+                                <div class="form-group">
+                                    <label class="form-label" for="txt_company_name">Name</label>
+                                    <input required id="txt_company_name" name="txt_company_name" type="text" disabled
+                                           class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label" for="txt_company_description">Description</label>
+                                    <textarea required class="form-control" name="txt_company_description" disabled
+                                              id="txt_company_description" rows="3"></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label" for="txt_exchange">Exchange</label>
+                                    <input required id="txt_exchange" name="txt_exchange" type="text" class="form-control"
+                                           disabled>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label" for="txt_industry">Sector</label>
+                                    <input required id="txt_sector" name="txt_sector" type="text" class="form-control"
+                                           disabled>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label" for="txt_industry">Industry</label>
+                                    <input required id="txt_industry" name="txt_industry" type="text" class="form-control"
+                                           disabled>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label" for="txt_logo">Logo URL</label>
+                                    <input required id="txt_logo" name="txt_logo" type="text" class="form-control" disabled>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer content-hidden">
+                    <button type="button" class="btn btn-secondary btn-modal-hide">Close
+                    </button>
+                    <input type="button" title="Validate to Submit" class="btn btn-primary" disabled id="btn_submit"
+                           value="Submit" onclick="update_candidate(remove_candidate)">
+                </div>
+            </div>
+        </form>
     </div>
 </div>
 {% endblock %}

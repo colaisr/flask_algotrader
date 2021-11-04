@@ -1,5 +1,5 @@
-var domane = 'https://colak.eu.pythonanywhere.com/';
-//var domane = 'http://localhost:8000/';
+//var domane = 'https://colak.eu.pythonanywhere.com/';
+var domane = 'http://localhost:8000/';
 
 function get_data_for_ticker(){
     $('#candidate-flash').empty();
@@ -36,21 +36,43 @@ function get_data_for_ticker(){
     }
 }
 
-function update_candidate(){
+function update_candidate(remove_candidate_event){
     $('#candidate-flash').empty();
     ticker = $('#txt_ticker').val();
-//    reason = $('#txt_reason').val();
+    reason = $('#txt_reason').val();
     email = $('#user-email').val();
 
-    $('#candidate-flash').empty();
-        var loading = $(".candidate-loading")
-        var spinner = $('<div class="spinner-border text-info" role="status"><span class="sr-only">Loading...</span></div>');
+    var loading = $(".candidate-loading")
+    var spinner = $('<div class="spinner-border text-info" role="status"><span class="sr-only">Loading...</span></div>');
+    loading.empty();
+    loading.append(spinner);
+    $('.content-hidden').prop('hidden',true);
+    url = domane + 'candidates/updatecandidate/';
+    $.post(url,{ticker: ticker, reason: reason, email: email}, function(data) {
+        //candidates and market_data - global prop from today page
+        var candidate = $.grep( candidates, function( n, i ) { return n.ticker == ticker;});
+        if(candidate.length == 0){
+            c = {
+                logo: $('#txt_logo').val(),
+                ticker: ticker,
+                company_name: $('#txt_company_name').val(),
+                sector: $('#txt_sector').val(),
+                reason: reason,
+                enabled: true
+            };
+            candidates.push(c);
+            if(candidates.length <= 5){
+                add_row_to_personal_candidates(c, market_data, 'personal-tbl', false);//from base.js
+            }
+            add_row_to_personal_candidates(c, market_data, 'personal-modal-tbl', true);  //from base.js
+            $('#remove-' + c.ticker).on('click',remove_candidate_event);
+//            $('.personal-modal-tbl').on('click', '#remove-' + c.ticker, remove_candidate_event(ticker))
+        }
+        else{
+            candidate.reason = reason;
+        }
         loading.empty();
-        loading.append(spinner);
-        $('.content-hidden').prop('hidden',true);
-        url = domane + 'candidates/updatecandidate/';
-        $.post(url,{ticker: ticker, reason: reason, email: email}, function(data) {
-            window.location.reload();
+        $("#add_candidate_modal").hide();
     })
 }
 
