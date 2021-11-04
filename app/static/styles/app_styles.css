@@ -295,7 +295,11 @@ input[type=range]:focus::-webkit-slider-runnable-track {
 .admin-candidates {
     max-height: 600px;
     overflow-y: scroll;
+}
 
+.personal-modal-tbl .bord-none{
+    border: 0;
+    background: none;
 }
 
 .improovers_modal .modal-body,

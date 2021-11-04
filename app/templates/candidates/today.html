@@ -118,10 +118,34 @@
                                 </td>
                                 <td class="text-center">{{market_data[i.ticker].algotrader_rank}}</td>
                                 <td class="text-small">{{ i.sector }}</td>
-                                <td class="text-center">{{market_data[i.ticker].under_priced_pnt|round(2)}}</td>
-                                <td class="text-center">{{market_data[i.ticker].twelve_month_momentum|round(2)}}</td>
-                                <td class="text-center">{{market_data[i.ticker].beta|round(2)}}</td>
-                                <td class="text-center">{{market_data[i.ticker].max_intraday_drop_percent|round(2)}}</td>
+                                <td class="text-center">
+                                    {% if market_data[i.ticker].under_priced_pnt is none %}
+                                        0
+                                    {% else %}
+                                        {{market_data[i.ticker].under_priced_pnt|round(2)}}
+                                    {%endif %}
+                                </td>
+                                <td class="text-center">
+                                    {% if market_data[i.ticker].twelve_month_momentum is none %}
+                                        0
+                                    {% else %}
+                                        {{market_data[i.ticker].twelve_month_momentum|round(2)}}
+                                    {%endif %}
+                                </td>
+                                <td class="text-center">
+                                    {% if market_data[i.ticker].beta is none %}
+                                        0
+                                    {% else %}
+                                        {{market_data[i.ticker].beta|round(2)}}
+                                    {%endif %}
+                                </td>
+                                <td class="text-center">
+                                    {% if market_data[i.ticker].max_intraday_drop_percent is none %}
+                                        0
+                                    {% else %}
+                                        {{market_data[i.ticker].max_intraday_drop_percent|round(2)}}
+                                    {%endif %}
+                                </td>
                             </tr>
                             {% endfor %}
                         </tbody>
@@ -287,7 +311,8 @@
         </div>
         {% endif %}
     </div>
-
+<script>var candidates = {{ candidates_json|tojson}};</script>
+<script>var market_data = {{ market_data_json|tojson}};</script>
 </div>
 {% endblock %}
 
@@ -461,6 +486,9 @@
                         <tr>
                             <th></th>
                             <th>Company</th>
+                            <th></th>
+                            <th></th>
+                            <th>Enabled</th>
                             <th>Score</th>
                             <th>Sector</th>
                             <th>Underprice(%)</th>
@@ -479,12 +507,57 @@
                                 </a>
                                 <div class="text-small">{{i.company_name}}</div>
                             </td>
+                            <td class="text-center">
+<!--                                <form action="{{url_for('candidates.removecandidate')}}" method="post">-->
+<!--                                    <input type="hidden" name="ticker_to_remove" value="{{ i.ticker }}">-->
+<!--                                    <button type="submit" class="bord-none"><i class="fa fa-trash"></i></button>-->
+<!--                                </form>-->
+                                <button type="submit" data-ticker="{{ i.ticker }}" class="bord-none remove-candidate"><i class="fa fa-trash"></i></button>
+                            </td>
+                            <td class="text-center">
+                                <button class="btn_edit bord-none"><i class="fa fa-edit mt-1"></i></button>
+                                <input type="hidden" class="h_tick" value="{{ i.ticker }}">
+                                <input type="hidden" class="h_reason" value="{{ i.reason }}">
+                            </td>
+                            <td class="text-center">
+                                <form action="{{url_for('candidates.enabledisable')}}" method="post">
+                                    <input type="hidden" name="ticker_to_change" value="{{ i.ticker }}">
+                                    <input class="mt-2" type="checkbox" onChange="this.form.submit()"
+                                           {%if i.enabled%}
+                                           checked
+                                           {% endif %}>
+                                </form>
+                            </td>
                             <td class="text-center">{{market_data[i.ticker].algotrader_rank}}</td>
                             <td class="text-small">{{ i.sector }}</td>
-                            <td class="text-center">{{market_data[i.ticker].under_priced_pnt|round(2)}}</td>
-                            <td class="text-center">{{market_data[i.ticker].twelve_month_momentum|round(2)}}</td>
-                            <td class="text-center">{{market_data[i.ticker].beta|round(2)}}</td>
-                            <td class="text-center">{{market_data[i.ticker].max_intraday_drop_percent|round(2)}}</td>
+                            <td class="text-center">
+                                {% if market_data[i.ticker].under_priced_pnt is none %}
+                                    0
+                                {% else %}
+                                    {{market_data[i.ticker].under_priced_pnt|round(2)}}
+                                {%endif %}
+                            </td>
+                            <td class="text-center">
+                                {% if market_data[i.ticker].twelve_month_momentum is none %}
+                                    0
+                                {% else %}
+                                    {{market_data[i.ticker].twelve_month_momentum|round(2)}}
+                                {%endif %}
+                            </td>
+                            <td class="text-center">
+                                {% if market_data[i.ticker].beta is none %}
+                                    0
+                                {% else %}
+                                    {{market_data[i.ticker].beta|round(2)}}
+                                {%endif %}
+                            </td>
+                            <td class="text-center">
+                                {% if market_data[i.ticker].max_intraday_drop_percent is none %}
+                                    0
+                                {% else %}
+                                    {{market_data[i.ticker].max_intraday_drop_percent|round(2)}}
+                                {%endif %}
+                            </td>
                         </tr>
                         {% endfor %}
                     </tbody>

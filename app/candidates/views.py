@@ -1,4 +1,5 @@
 import app.generalutils as general
+import json
 from flask import (
     Blueprint,
     redirect,
@@ -83,6 +84,8 @@ def today():
                            bg_upd_color=bg_upd_color,
                            admin_candidates=admin_candidates,
                            candidates=candidates,
+                           candidates_json=json.dumps(candidates, cls=general.JsonEncoder),
+                           market_data_json=json.dumps(market_data, cls=general.JsonEncoder),
                            signals=signals,
                            form=None)
 
@@ -119,6 +122,16 @@ def removecandidate():
     candidate = Candidate.query.filter_by(email=current_user.email, ticker=ticker).first()
     candidate.delete_candidate()
     return redirect(url_for('candidates.usercandidates'))
+
+
+@candidates.route('/removecandidate_ajax', methods=['POST'])
+@csrf.exempt
+def removecandidate_ajax():
+    ticker = request.form['ticker']
+    candidate = Candidate.query.filter_by(email=current_user.email, ticker=ticker).first()
+    candidate.delete_candidate()
+
+    return json.dumps({'result': True})
 
 
 @candidates.route('enabledisable/', methods=['POST'])

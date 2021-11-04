@@ -24,7 +24,6 @@ from app.models.fgi_score import Fgi_score
 from app.telegram.signal_notify import send_telegram_signal_message
 
 from app.research import yahoo_research as yahoo
-import app.generalutils as general
 
 connections = Blueprint('connections', __name__)
 
