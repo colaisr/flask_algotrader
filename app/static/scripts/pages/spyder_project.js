@@ -39,14 +39,10 @@ function get_data_for_ticker(){
 function update_candidate(){
     $('#candidate-flash').empty();
     ticker = $('#txt_ticker').val();
-    reason = $('#txt_reason').val();
+//    reason = $('#txt_reason').val();
     email = $('#user-email').val();
 
-    if(reason == ""){
-        $('#candidate-flash').append(flashMessage("danger","Reason is must!"));
-    }
-    else{
-        $('#candidate-flash').empty();
+    $('#candidate-flash').empty();
         var loading = $(".candidate-loading")
         var spinner = $('<div class="spinner-border text-info" role="status"><span class="sr-only">Loading...</span></div>');
         loading.empty();
@@ -55,8 +51,7 @@ function update_candidate(){
         url = domane + 'candidates/updatecandidate/';
         $.post(url,{ticker: ticker, reason: reason, email: email}, function(data) {
             window.location.reload();
-        })
-    }
+    })
 }
 
 function update_market_data(ticker){
