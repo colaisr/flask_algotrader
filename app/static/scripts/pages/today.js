@@ -7,6 +7,7 @@ $(document).ready(function () {
 //    load_data();
     upload_personal_list();
     upload_today_improovers_data();
+    upload_telegram_signals();
     fill_emotion_and_snp_graphs(emotion_settings, false, main_snp, main_emotion);
 
     $('.show_signals_modal').click(function(){
@@ -136,6 +137,50 @@ function add_row_to_today_improovers(c, tbl_class){
     tr.append(td_score);
     var td_change = $('<td class="text-center text-success">' + change + '</td>');
     tr.append(td_change);
+    $('.' + tbl_class + ' tbody').append(tr);
+}
+
+function upload_telegram_signals(){
+    url = '/candidates/telegram_signals';
+    $.getJSON(url, function(data) {
+        draw_telegram_signals_tbl(data);
+    });
+}
+
+function draw_telegram_signals_tbl(data){
+    $('.signals-tbl tbody').empty();
+    $('.signals-modal-tbl tbody').empty();
+    $.each(data, function( index, c ){
+        if(parseInt(index) < 5){
+            add_row_to_telegram_signals(c, 'signals-tbl', false)
+        }
+        add_row_to_telegram_signals(c, 'signals-modal-tbl', true)
+    })
+}
+
+function add_row_to_telegram_signals(c, tbl_class, is_modal){
+    var price = c.signal_price != null ? c.signal_price.toFixed(2) : 0;
+    var target = c.target_price != null ? c.target_price.toFixed(2) : 0;
+
+    var tr = $('<tr></tr>');
+    var td_logo =$('<td class="text-center"><img src="' + c.logo + '" width="20" height="20"></td>');
+    tr.append(td_logo);
+    var td_company = $('<td><a href="/candidates/info?ticker_to_show=' + c.ticker + '">' + c.ticker + '</a><div class="text-small">' + c.company_name + '</div></td>');
+    tr.append(td_company);
+
+    var td_price = $('<td class="text-center">'+price+'</td>');
+    tr.append(td_price);
+    var td_target = $('<td class="text-center">' + target + '</td>');
+    tr.append(td_target);
+
+    if(is_modal){
+        var profit = c.tprofit_percent != null ? c.profit_percent.toFixed(2) : 0;
+        var days = c.days_to_get != null ? c.days_to_get.toString() : '--';
+        var td_profit = $('<td class="text-center">' + profit + '</td>');
+        tr.append(td_profit);
+        var td_days = $('<td class="text-center">' + days + '</td>');
+        tr.append(td_days);
+    }
     $('.' + tbl_class + ' tbody').append(tr);
 }
 

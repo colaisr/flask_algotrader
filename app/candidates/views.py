@@ -22,9 +22,6 @@ candidates = Blueprint('candidates', __name__)
 @candidates.route('today', methods=['GET', 'POST'])
 @login_required
 def today():
-    # test = "SELECT a.`algotrader_rank`, c.* FROM Candidates c left join Tickersdata a ON a.`ticker`=c.`ticker` JOIN (select Tickersdata.`ticker`, max(Tickersdata.`updated_server_time`) as updated_server_time from Tickersdata group by Tickersdata.`ticker`) b ON a.`ticker`=b.`ticker` AND a.`updated_server_time`=b.`updated_server_time` ORDER BY a.`algotrader_rank` desc"
-    # test_res = db.engine.execute(text(test))
-
     last_update = db.session.query(LastUpdateSpyderData).order_by(
         LastUpdateSpyderData.start_process_time.desc()).first()
     bg_upd_color = "badge-success" if datetime.now().date() == last_update.last_update_date.date() and not last_update.error_status else "badge-danger"
@@ -39,13 +36,24 @@ def today():
     else:
         fgi_text_color = 'success'
 
-    admin_query = "SELECT c.ticker, c.company_name, c.logo, c.sector, a.under_priced_pnt, case when a.algotrader_rank IS NULL then 0 ELSE a.algotrader_rank END AS algotrader_rank, a.twelve_month_momentum, a.beta, a.max_intraday_drop_percent FROM (SELECT * FROM Candidates WHERE enabled=1 GROUP BY ticker) c JOIN Tickersdata a ON a.ticker=c.ticker JOIN (select Tickersdata.ticker, max(Tickersdata.`updated_server_time`) as updated_server_time from Tickersdata group by Tickersdata.ticker ) b on b.ticker=a.ticker and b.updated_server_time=a.updated_server_time"
+    admin_query = "SELECT c.ticker, " \
+                  "c.company_name, " \
+                  "c.logo, c.sector, " \
+                  "a.under_priced_pnt, " \
+                  "case when a.algotrader_rank IS NULL then 0 ELSE a.algotrader_rank END AS algotrader_rank, " \
+                  "a.twelve_month_momentum, " \
+                  "a.beta, " \
+                  "a.max_intraday_drop_percent " \
+                  "FROM (SELECT * FROM Candidates " \
+                  "WHERE enabled=1 GROUP BY ticker) c " \
+                  "JOIN Tickersdata a ON a.ticker=c.ticker " \
+                  "JOIN (select Tickersdata.ticker, " \
+                  "max(Tickersdata.`updated_server_time`) as updated_server_time " \
+                  "from Tickersdata group by Tickersdata.ticker ) b on b.ticker=a.ticker " \
+                  "and b.updated_server_time=a.updated_server_time"
+
     admin_candidates_res = db.engine.execute(text(admin_query))
     admin_candidates = [dict(r.items()) for r in admin_candidates_res]
-
-    signals_query = f"SELECT s.*,c.company_name, c.logo FROM TelegramSignals s JOIN Candidates c ON c.ticker=s.ticker WHERE DATE(s.received) = DATE(NOW())"
-    signals_res = db.engine.execute(text(signals_query))
-    signals = [dict(r.items()) for r in signals_res]
 
     return render_template('candidates/today.html',
                            user=current_user,
@@ -57,8 +65,25 @@ def today():
                            last_update_date=last_update.last_update_date.strftime("%d %b %H:%M"),
                            bg_upd_color=bg_upd_color,
                            admin_candidates=admin_candidates,
-                           signals=signals,
                            form=None)
+
+
+@candidates.route('/telegram_signals', methods=['GET'])
+@csrf.exempt
+def telegram_signals():
+    signals_query = f"SELECT s.ticker, " \
+                    f"s.signal_price, " \
+                    f"s.target_price, " \
+                    f"s.profit_percent, " \
+                    f"s.days_to_get, " \
+                    f"c.company_name, " \
+                    f"c.logo " \
+                    f"FROM TelegramSignals s " \
+                    f"JOIN Candidates c ON c.ticker=s.ticker " \
+                    f"WHERE DATE(s.received) = DATE(NOW())"
+    signals_res = db.engine.execute(text(signals_query))
+    signals = [dict(r.items()) for r in signals_res]
+    return json.dumps(signals, cls=general.JsonEncoder)
 
 
 @candidates.route('/today_improovers', methods=['GET'])
