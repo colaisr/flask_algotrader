@@ -143,34 +143,34 @@
                                     </a>
                                     <div class="text-small">{{i.company_name}}</div>
                                 </td>
-                                <td class="text-center">{{market_data[i.ticker].algotrader_rank}}</td>
+                                <td class="text-center">{{i.algotrader_rank}}</td>
                                 <td class="text-small">{{ i.sector }}</td>
                                 <td class="text-center">
-                                    {% if market_data[i.ticker].under_priced_pnt is none %}
+                                    {% if i.under_priced_pnt is none %}
                                         0
                                     {% else %}
-                                        {{market_data[i.ticker].under_priced_pnt|round(2)}}
+                                        {{i.under_priced_pnt|round(2)}}
                                     {%endif %}
                                 </td>
                                 <td class="text-center">
-                                    {% if market_data[i.ticker].twelve_month_momentum is none %}
+                                    {% if i.twelve_month_momentum is none %}
                                         0
                                     {% else %}
-                                        {{market_data[i.ticker].twelve_month_momentum|round(2)}}
+                                        {{i.twelve_month_momentum|round(2)}}
                                     {%endif %}
                                 </td>
                                 <td class="text-center">
-                                    {% if market_data[i.ticker].beta is none %}
+                                    {% if i.beta is none %}
                                         0
                                     {% else %}
-                                        {{market_data[i.ticker].beta|round(2)}}
+                                        {{i.beta|round(2)}}
                                     {%endif %}
                                 </td>
                                 <td class="text-center">
-                                    {% if market_data[i.ticker].max_intraday_drop_percent is none %}
+                                    {% if i.max_intraday_drop_percent is none %}
                                         0
                                     {% else %}
-                                        {{market_data[i.ticker].max_intraday_drop_percent|round(2)}}
+                                        {{i.max_intraday_drop_percent|round(2)}}
                                     {%endif %}
                                 </td>
                             </tr>
@@ -179,11 +179,9 @@
                     </table>
                 </div>
                 <div class="card-footer justify-content-between">
-                    {% if candidates|length > 0 %}
                     <span class="text-primary pr-1 pl-2 link font-weight-bold show_personal_modal">
                         More
                     </span>
-                    {% endif %}
                     <button type="button" id="btnAddCandidate" class="btn btn-primary">
             Add Candidate
         </button>
@@ -255,7 +253,7 @@
                 <tr>
                     <th></th>
                     <th>Company</th>
-                    <th>Score</th>
+                    <th class="sorted descending">Score</th>
                     <th>Sector</th>
                     <th>Underprice(%)</th>
                     <th>12M Momentum</th>
@@ -264,7 +262,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                {% for m in admin_candidates | sort(attribute='ticker') %}
+                {% for m in admin_candidates | sort(attribute='algotrader_rank', reverse = True) %}
                 <tr>
                     <td><img src="{{ m.logo }}" width="20" height="20"></td>
                     <td>
@@ -274,39 +272,39 @@
                         <div class="text-small">{{m.company_name}}</div>
                     </td>
                     <td>
-                        {% if market_data[m.ticker].algotrader_rank is none %}
+                        {% if m.algotrader_rank is none %}
                         0
                         {% else %}
-                        {{market_data[m.ticker].algotrader_rank}}
+                        {{m.algotrader_rank}}
                         {% endif%}
                     </td>
                     <td>{{m.sector}}</td>
                     <td class="text-center">
-                        {% if market_data[m.ticker].under_priced_pnt is none %}
+                        {% if m.under_priced_pnt is none %}
                         0
                         {% else %}
-                        {{market_data[m.ticker].under_priced_pnt|round(2)}}
+                        {{m.under_priced_pnt|round(2)}}
                         {% endif%}
                     </td>
                     <td class="text-center">
-                        {% if market_data[m.ticker].twelve_month_momentum is none %}
+                        {% if m.twelve_month_momentum is none %}
                         0
                         {% else %}
-                        {{market_data[m.ticker].twelve_month_momentum|round(2)}}
+                        {{m.twelve_month_momentum|round(2)}}
                         {% endif%}
                     </td>
                     <td class="text-center">
-                        {% if market_data[m.ticker].beta is none %}
+                        {% if m.beta is none %}
                         0
                         {% else %}
-                        {{market_data[m.ticker].beta|round(2)}}
+                        {{m.beta|round(2)}}
                         {% endif%}
                     </td>
                     <td class="text-center">
-                        {% if market_data[m.ticker].max_intraday_drop_percent is none %}
+                        {% if m.max_intraday_drop_percent is none %}
                         0
                         {% else %}
-                        {{market_data[m.ticker].max_intraday_drop_percent|round(2)}}
+                        {{m.max_intraday_drop_percent|round(2)}}
                         {% endif%}
                     </td>
 
@@ -318,7 +316,6 @@
         {% endif %}
     </div>
 <script>var candidates = {{ candidates_json|tojson}};</script>
-<script>var market_data = {{ market_data_json|tojson}};</script>
 </div>
 {% endblock %}
 
@@ -446,46 +443,39 @@
                                 <input type="hidden" class="h_reason" value="{{ i.reason }}">
                             </td>
                             <td class="text-center">
-<!--                                <form action="{{url_for('candidates.enabledisable')}}" method="post">-->
-<!--                                    <input type="hidden" name="ticker_to_change" value="{{ i.ticker }}">-->
-<!--                                    <input class="mt-2" type="checkbox" onChange="this.form.submit()"-->
-<!--                                           {%if i.enabled%}-->
-<!--                                           checked-->
-<!--                                           {% endif %}>-->
-<!--                                </form>-->
                                 <input class="mt-2 enable-checkbox" id="enabled-{{i.ticker}}" data-ticker="{{i.ticker}}" type="checkbox"
                                        {%if i.enabled%}
                                        checked
                                        {% endif %}>
                             </td>
-                            <td class="text-center">{{market_data[i.ticker].algotrader_rank}}</td>
+                            <td class="text-center">{{i.algotrader_rank}}</td>
                             <td class="text-small">{{ i.sector }}</td>
                             <td class="text-center">
-                                {% if market_data[i.ticker].under_priced_pnt is none %}
+                                {% if i.under_priced_pnt is none %}
                                     0
                                 {% else %}
-                                    {{market_data[i.ticker].under_priced_pnt|round(2)}}
+                                    {{i.under_priced_pnt|round(2)}}
                                 {%endif %}
                             </td>
                             <td class="text-center">
-                                {% if market_data[i.ticker].twelve_month_momentum is none %}
+                                {% if i.twelve_month_momentum is none %}
                                     0
                                 {% else %}
-                                    {{market_data[i.ticker].twelve_month_momentum|round(2)}}
+                                    {{i.twelve_month_momentum|round(2)}}
                                 {%endif %}
                             </td>
                             <td class="text-center">
-                                {% if market_data[i.ticker].beta is none %}
+                                {% if i.beta is none %}
                                     0
                                 {% else %}
-                                    {{market_data[i.ticker].beta|round(2)}}
+                                    {{i.beta|round(2)}}
                                 {%endif %}
                             </td>
                             <td class="text-center">
-                                {% if market_data[i.ticker].max_intraday_drop_percent is none %}
+                                {% if i.max_intraday_drop_percent is none %}
                                     0
                                 {% else %}
-                                    {{market_data[i.ticker].max_intraday_drop_percent|round(2)}}
+                                    {{i.max_intraday_drop_percent|round(2)}}
                                 {%endif %}
                             </td>
                         </tr>

@@ -65,19 +65,17 @@ function isFloat(n){
     return Number(n) === n && n % 1 !== 0;
 }
 
-function add_row_to_personal_candidates(c, market_data, tbl_class, is_modal){
+function add_row_to_personal_candidates(c, tbl_class, is_modal){
     var score = 0;
     var under_priced_pnt = 0;
     var twelve_month_momentum = 0;
     var beta = 0;
     var max_intraday_drop_percent = 0;
-    if(market_data[c.ticker] != undefined){
-        score = market_data[c.ticker].algotrader_rank || 0;
-        under_priced_pnt = market_data[c.ticker].under_priced_pnt.toFixed(2) || 0;
-        twelve_month_momentum = market_data[c.ticker].twelve_month_momentum.toFixed(2) || 0;
-        beta = market_data[c.ticker].beta.toFixed(2) || 0;
-        max_intraday_drop_percent = market_data[c.ticker].max_intraday_drop_percent.toFixed(2) || 0;
-    }
+    score = c.algotrader_rank || 0;
+    under_priced_pnt = c.under_priced_pnt.toFixed(2) || 0;
+    twelve_month_momentum = c.twelve_month_momentum.toFixed(2) || 0;
+    beta = c.beta.toFixed(2) || 0;
+    max_intraday_drop_percent = c.max_intraday_drop_percent.toFixed(2) || 0;
     var tr = $('<tr title="' + c.reason + '"></tr>');
     var td_logo =$('<td class="text-center"><img src="' + c.logo + '" width="20" height="20"></td>');
     tr.append(td_logo);

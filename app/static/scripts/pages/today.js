@@ -1,5 +1,5 @@
 candidates =jQuery.parseJSON(candidates);
-market_data =jQuery.parseJSON(market_data);
+//market_data =jQuery.parseJSON(market_data);
 
  $(document).ready(function () {
     var emotion_settings = parseInt($('#user-emotion').val());
@@ -116,7 +116,7 @@ function remove_candidate(ticker){
                 var candidates_updated = $.grep( candidates, function( n, i ) { return n.ticker == ticker;},true);
                 var top_candidates = candidates_updated.slice(0,5);
                 $.each(top_candidates, function( index, c ){
-                    add_row_to_personal_candidates(c, market_data, 'personal-tbl', false)       //from base.js
+                    add_row_to_personal_candidates(c, 'personal-tbl', false)       //from base.js
                 })
             }
         }

@@ -57,15 +57,17 @@ def today():
     today_improovers_res = db.engine.execute(text(query))
     today_improovers = [dict(r.items()) for r in today_improovers_res]
 
-    candidates = Candidate.query.filter_by(email=current_user.email).all()
+    user_query = f"SELECT c.ticker, c.company_name, c.logo, c.sector, a.under_priced_pnt, case when a.algotrader_rank IS NULL then 0 ELSE a.algotrader_rank END AS algotrader_rank, a.twelve_month_momentum, a.beta, a.max_intraday_drop_percent FROM Candidates c JOIN Tickersdata a ON a.ticker=c.ticker JOIN (select Tickersdata.ticker, max(Tickersdata.updated_server_time) as updated_server_time from Tickersdata group by Tickersdata.ticker) b on b.ticker=a.ticker and b.updated_server_time=a.updated_server_time WHERE c.email='{current_user.email}'"
+    candidates_res = db.engine.execute(text(user_query))
+    candidates = [dict(r.items()) for r in candidates_res]
 
-    query_text = "select a.* from Tickersdata a join (  select Tickersdata.`ticker`, max(Tickersdata.`updated_server_time`) as updated_server_time  from Tickersdata group by Tickersdata.`ticker`) b on b.`ticker`=a.`ticker` and b.`updated_server_time`=a.`updated_server_time`"
-    marketdata = db.session.query(TickerData).from_statement(text(query_text)).all()
-    market_data = {m.ticker: m for m in marketdata}
+    # query_text = "select a.* from Tickersdata a join (  select Tickersdata.`ticker`, max(Tickersdata.`updated_server_time`) as updated_server_time  from Tickersdata group by Tickersdata.`ticker`) b on b.`ticker`=a.`ticker` and b.`updated_server_time`=a.`updated_server_time`"
+    # marketdata = db.session.query(TickerData).from_statement(text(query_text)).all()
+    # market_data = {m.ticker: m for m in marketdata}
 
-    admin_candidates = {}
-    if user_settings.server_use_system_candidates:
-        admin_candidates = Candidate.query.filter_by(email=admin_email, enabled=True).all()
+    admin_query = "SELECT c.ticker, c.company_name, c.logo, c.sector, a.under_priced_pnt, case when a.algotrader_rank IS NULL then 0 ELSE a.algotrader_rank END AS algotrader_rank, a.twelve_month_momentum, a.beta, a.max_intraday_drop_percent FROM (SELECT * FROM Candidates WHERE enabled=1 GROUP BY ticker) c JOIN Tickersdata a ON a.ticker=c.ticker JOIN (select Tickersdata.ticker, max(Tickersdata.`updated_server_time`) as updated_server_time from Tickersdata group by Tickersdata.ticker ) b on b.ticker=a.ticker and b.updated_server_time=a.updated_server_time"
+    admin_candidates_res = db.engine.execute(text(admin_query))
+    admin_candidates = [dict(r.items()) for r in admin_candidates_res]
 
     signals_query = f"SELECT s.*,c.company_name, c.logo FROM TelegramSignals s JOIN Candidates c ON c.ticker=s.ticker WHERE DATE(s.received) = DATE(NOW())"
     signals_res = db.engine.execute(text(signals_query))
@@ -77,7 +79,7 @@ def today():
                            market_emotion=market_emotion,
                            user_fgi=user_fgi,
                            fgi_text_color=fgi_text_color,
-                           market_data=market_data,
+                           # market_data=market_data,
                            current_est_time=current_est_time,
                            trading_session_state=trading_session_state,
                            last_update_date=last_update.last_update_date.strftime("%d %b %H:%M"),
@@ -85,7 +87,7 @@ def today():
                            admin_candidates=admin_candidates,
                            candidates=candidates,
                            candidates_json=json.dumps(candidates, cls=general.JsonEncoder),
-                           market_data_json=json.dumps(market_data, cls=general.JsonEncoder),
+                           # market_data_json=json.dumps(market_data, cls=general.JsonEncoder),
                            signals=signals,
                            form=None)
 
