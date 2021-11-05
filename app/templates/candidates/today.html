@@ -82,19 +82,21 @@
         <div class="col-md-3 improovers">
             <div class="mb-3 card">
                 <div class="card-header">Today  Improovers</div>
-                <div class="card-body">
-                    <table class="mb-0 table improovers-tbl table-hover">
-                        <thead>
-                            <tr>
-                                <th></th>
-                                <th>Company</th>
-                                <th>Score</th>
-                                <th>Change</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                        </tbody>
-                    </table>
+                <div class="card-body improovers-card-body">
+                    <div class="div-content">
+                        <table class="mb-0 table improovers-tbl table-hover">
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    <th>Company</th>
+                                    <th>Score</th>
+                                    <th>Change</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                    {% include 'layouts/loader.html' %}
                 </div>
                 <div class="card-footer">
                     <span class="text-primary pr-1 pl-2 link font-weight-bold show_improovers_modal">
@@ -106,24 +108,27 @@
         <div class="col-md-6 personal-list">
             <div class="mb-3 card">
                 <div class="card-header">PERSONAL  LIST</div>
-                <div class="card-body">
-                    <table class="mb-0 table personal-tbl table-hover">
-                        <thead>
-                            <tr>
-                                <th></th>
-                                <th>Company</th>
-                                <th>Score</th>
-                                <th>Sector</th>
-                                <th>Underprice(%)</th>
-                                <th>12M Momentum</th>
-                                <th>Beta</th>
-                                <th>Max Intraday Drop %</th>
-                            </tr>
-                        </thead>
-                        <tbody>
+                <div class="card-body personal-list-card-body">
+                    <div class="div-content">
+                        <table class="mb-0 table personal-tbl table-hover">
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    <th>Company</th>
+                                    <th>Score</th>
+                                    <th>Sector</th>
+                                    <th>Underprice(%)</th>
+                                    <th>12M Momentum</th>
+                                    <th>Beta</th>
+                                    <th>Max Intraday Drop %</th>
+                                </tr>
+                            </thead>
+                            <tbody>
 
-                        </tbody>
-                    </table>
+                            </tbody>
+                        </table>
+                    </div>
+                    {% include 'layouts/loader.html' %}
                 </div>
                 <div class="card-footer justify-content-between">
                     <span class="text-primary pr-1 pl-2 link font-weight-bold show_personal_modal">
@@ -138,19 +143,22 @@
         <div class="col-md-3 signals">
             <div class="mb-3 card">
                 <div class="card-header">TELEGRAM SIGNALS TODAY</div>
-                <div class="card-body">
-                    <table class="mb-0 table signals-tbl table-hover">
-                        <thead>
-                            <tr>
-                                <th></th>
-                                <th>Company</th>
-                                <th>Price</th>
-                                <th>Target</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                        </tbody>
-                    </table>
+                <div class="card-body telegram-card-body">
+                    <div class="div-content">
+                       <table class="mb-0 table signals-tbl table-hover">
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    <th>Company</th>
+                                    <th>Price</th>
+                                    <th>Target</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                    {% include 'layouts/loader.html' %}
                 </div>
                 <div class="card-footer">
                     <span class="text-primary pr-1 pl-2 link font-weight-bold show_signals_modal">
@@ -399,56 +407,56 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
                 </div>
-                <div class="modal-body">
+                <div class="modal-body add-candidate-body">
                     <div id="candidate-flash"></div>
-                    <div>
-                        <input type="hidden" id="user-email" value="{{ current_user.email }}">
-                        <div class="form-group">
-                            <label class="form-label" for="txt_ticker">Ticker</label>
-                            <input required id="txt_ticker" name="txt_ticker" type="text" class="form-control"
-                                   placeholder="Enter a ticker ...">
+                    <input type="hidden" id="user-email" value="{{ current_user.email }}">
+                    <div class="form-group">
+                        <label class="form-label" for="txt_ticker">Ticker</label>
+                        <input required id="txt_ticker" name="txt_ticker" type="text" class="form-control"
+                               placeholder="Enter a ticker ...">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="txt_reason">Reason</label>
+                        <textarea required class="form-control" name="txt_reason" id="txt_reason" rows="3"
+                                  placeholder="Enter a reason ..."></textarea>
+                    </div>
+                    <div class="form-group">
+                        <button type="button" onclick="get_data_for_ticker()" id="btn_validate" class="btn btn-primary">Validate</button>
+                    </div>
+                    <div class="candidate-bottom">
+                        <div class="">
+                            <div class="div-content"></div>
+                            {% include 'layouts/loader.html' %}
                         </div>
-                        <div class="form-group">
-                            <label class="form-label" for="txt_reason">Reason</label>
-                            <textarea required class="form-control" name="txt_reason" id="txt_reason" rows="3"
-                                      placeholder="Enter a reason ..."></textarea>
-                        </div>
-                        <div class="form-group">
-                            <button type="button" onclick="get_data_for_ticker()" id="btn_validate" class="btn btn-primary">Validate</button>
-                        </div>
-
-                        <div class="candidate-bottom">
-                            <span class="candidate-loading d-flex justify-content-center"></span>
-                            <div class="candidate-data content-hidden" hidden>
-                                <div class="form-group">
-                                    <label class="form-label" for="txt_company_name">Name</label>
-                                    <input required id="txt_company_name" name="txt_company_name" type="text" disabled
-                                           class="form-control ticker-desc">
-                                </div>
-                                <div class="form-group">
-                                    <label class="form-label" for="txt_company_description">Description</label>
-                                    <textarea required class="form-control ticker-desc" name="txt_company_description" disabled
-                                              id="txt_company_description" rows="3"></textarea>
-                                </div>
-                                <div class="form-group">
-                                    <label class="form-label" for="txt_exchange">Exchange</label>
-                                    <input required id="txt_exchange" name="txt_exchange" type="text" class="form-control ticker-desc"
-                                           disabled>
-                                </div>
-                                <div class="form-group">
-                                    <label class="form-label" for="txt_industry">Sector</label>
-                                    <input required id="txt_sector" name="txt_sector" type="text" class="form-control ticker-desc"
-                                           disabled>
-                                </div>
-                                <div class="form-group">
-                                    <label class="form-label" for="txt_industry">Industry</label>
-                                    <input required id="txt_industry" name="txt_industry" type="text" class="form-control ticker-desc"
-                                           disabled>
-                                </div>
-                                <div class="form-group">
-                                    <label class="form-label" for="txt_logo">Logo URL</label>
-                                    <input required id="txt_logo" name="txt_logo" type="text" class="form-control ticker-desc" disabled>
-                                </div>
+                        <div class="candidate-data content-hidden" hidden>
+                            <div class="form-group">
+                                <label class="form-label" for="txt_company_name">Name</label>
+                                <input required id="txt_company_name" name="txt_company_name" type="text" disabled
+                                       class="form-control ticker-desc">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="txt_company_description">Description</label>
+                                <textarea required class="form-control ticker-desc" name="txt_company_description" disabled
+                                          id="txt_company_description" rows="3"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="txt_exchange">Exchange</label>
+                                <input required id="txt_exchange" name="txt_exchange" type="text" class="form-control ticker-desc"
+                                       disabled>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="txt_industry">Sector</label>
+                                <input required id="txt_sector" name="txt_sector" type="text" class="form-control ticker-desc"
+                                       disabled>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="txt_industry">Industry</label>
+                                <input required id="txt_industry" name="txt_industry" type="text" class="form-control ticker-desc"
+                                       disabled>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="txt_logo">Logo URL</label>
+                                <input required id="txt_logo" name="txt_logo" type="text" class="form-control ticker-desc" disabled>
                             </div>
                         </div>
                     </div>

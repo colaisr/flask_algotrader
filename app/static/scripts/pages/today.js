@@ -59,7 +59,6 @@ $(document).ready(function () {
         $("#add_candidate_modal").hide();
     })
 
-
     $('.remove-candidate').on('click',function(){
         var ticker = $(this).data('ticker');
         remove_candidate(ticker);
@@ -108,9 +107,11 @@ function edit_candidate(){
 }
 
 function upload_today_improovers_data(){
+    loading('improovers-card-body');
     url = '/candidates/today_improovers';
     $.getJSON(url, function(data) {
         draw_today_improovers_tbl(data);
+        stop_loading('improovers-card-body');
     });
 }
 
@@ -141,9 +142,11 @@ function add_row_to_today_improovers(c, tbl_class){
 }
 
 function upload_telegram_signals(){
+    loading('telegram-card-body');
     url = '/candidates/telegram_signals';
     $.getJSON(url, function(data) {
         draw_telegram_signals_tbl(data);
+        stop_loading('telegram-card-body');
     });
 }
 

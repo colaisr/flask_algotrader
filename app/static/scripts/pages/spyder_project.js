@@ -2,6 +2,7 @@ var domane = 'https://colak.eu.pythonanywhere.com/';
 //var domane = 'http://localhost:8000/';
 
 function get_data_for_ticker(){
+    $('.content-hidden').prop('hidden', true);
     $('#candidate-flash').empty();
     ticker=$('#txt_ticker').val();
     if(ticker == ""){
@@ -9,13 +10,9 @@ function get_data_for_ticker(){
     }
     else{
         $('#candidate-flash').empty();
-        var loading = $(".candidate-loading")
-        var spinner = $('<div class="spinner-border text-info" role="status"><span class="sr-only">Loading...</span></div>');
-        loading.empty();
-        loading.append(spinner);
+        loading('add-candidate-body'); //from base.js
         url = domane + 'research/get_info_ticker/' + ticker
         $.getJSON(url, function(data) {
-            //var data_parsed = jQuery.parseJSON(data);
             if (data.longName == undefined)
             {
                 $('#candidate-flash').append(flashMessage("danger","Wrong ticker"));
@@ -28,30 +25,28 @@ function get_data_for_ticker(){
                 $('#txt_sector').val(data.sector);
                 $('#txt_logo').val(data.logo_url);
                 $('#txt_ticker').val($('#txt_ticker').val().toUpperCase());
-                $('.content-hidden').prop('hidden',false);
                 $("#btn_submit").prop('disabled', false);
             }
-            loading.empty();
+            stop_loading('add-candidate-body'); //from base.js
+            $('.content-hidden').prop('hidden',false);
         })
     }
 }
 
 function update_candidate(){
+    $('.content-hidden').prop('hidden',true);
+    loading('add-candidate-body'); //from base.js
     $('#candidate-flash').empty();
     ticker = $('#txt_ticker').val();
     reason = $('#txt_reason').val();
     email = $('#user-email').val();
 
-    var loading = $(".candidate-loading")
-    var spinner = $('<div class="spinner-border text-info" role="status"><span class="sr-only">Loading...</span></div>');
-    loading.empty();
-    loading.append(spinner);
     $('.content-hidden').prop('hidden',true);
     url = domane + 'candidates/updatecandidate/';
     $.post(url,{ticker: ticker, reason: reason, email: email}, function(data) {
         var data_parsed = jQuery.parseJSON(data);
         upload_personal_list(); //from base.js
-        loading.empty();
+        stop_loading('add-candidate-body'); //from base.js
         $('#candidate-flash').append(flashMessage(data_parsed["color_status"],data_parsed["message"]));
         $('.content-hidden').prop('hidden',false);
         setTimeout(function(){

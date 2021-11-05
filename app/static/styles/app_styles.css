@@ -387,6 +387,24 @@ input[type=range]:focus::-webkit-slider-runnable-track {
     margin-top: -19px;
 }
 
+.div-content{
+    position: absolute;
+    width: 100%;
+}
+
+.div-loading{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.div-loading .spinner-border{
+    width: 4rem;
+    height: 4rem;
+    opacity: 0.6;
+}
+
 
 
 

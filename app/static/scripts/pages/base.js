@@ -115,10 +115,25 @@ function draw_user_candidates_tbl(data){
 }
 
 function upload_personal_list(){
+    loading('personal-list-card-body');
     url = '/candidates/user_candidates';
     $.getJSON(url, function(data) {
         draw_user_candidates_tbl(data); //from base.js
+        stop_loading('personal-list-card-body');
     });
+}
+
+function loading(parrent_div){
+    $('.' + parrent_div + ' .div-content').css('opacity', 0.2);
+    var height = $('.' + parrent_div).height();
+    $('.' + parrent_div + ' .div-loading').css('height', height);
+
+    $('.' + parrent_div + ' .div-loading').prop('hidden',false);
+}
+
+function stop_loading(parrent_div){
+    $('.' + parrent_div + ' .div-content').css('opacity', 1);
+    $('.' + parrent_div + ' .div-loading').prop('hidden',true);
 }
 
 
