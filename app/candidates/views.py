@@ -40,27 +40,29 @@ def today():
     else:
         fgi_text_color = 'success'
 
-    admin_email = 'support@algotrader.company'
     query = f"SELECT DISTINCT c.ticker, " \
             f"c.company_name, " \
-            f"t.algotrader_rank AS last_rank, " \
-            f"(t.algotrader_rank - pre.algotrader_rank) AS change_val, " \
-            f"c.logo " \
-            f"FROM Candidates c " \
-            f"JOIN Tickersdata t ON t.ticker=c.ticker " \
-            f"JOIN Tickersdata pre ON pre.ticker=t.ticker " \
-            f"WHERE c.email = '{admin_email}' " \
-            f"AND DATE(t.updated_server_time) >= subdate(DATE(NOW()), 1) " \
-            f"AND DATE(pre.updated_server_time) >= subdate(DATE(NOW()), 2) " \
-            f"AND DATE(t.updated_server_time) <> DATE(pre.updated_server_time) " \
-            f"AND t.algotrader_rank >pre.algotrader_rank " \
-            f"ORDER BY t.algotrader_rank desc"
+            f"lst.algotrader_rank as last_rank, " \
+            f"(lst.algotrader_rank - pre.algotrader_rank) AS change_val, " \
+            f"c.logo FROM Candidates c " \
+            f"join (SELECT a.ticker, " \
+            f"MAX(a.updated_server_time) AS pre_server_time, " \
+            f"b.last_updated_server_time " \
+            f"from Tickersdata a " \
+            f"JOIN (select Tickersdata.ticker, " \
+            f"max(Tickersdata.updated_server_time) as last_updated_server_time " \
+            f"from Tickersdata " \
+            f"group by Tickersdata.ticker" \
+            f") b on b.ticker=a.ticker and date(b.last_updated_server_time) > date(a.updated_server_time) " \
+            f"group by a.ticker) d ON d.ticker=c.ticker " \
+            f"JOIN Tickersdata lst ON lst.ticker=d.ticker " \
+            f"AND lst.updated_server_time=d.last_updated_server_time " \
+            f"JOIN Tickersdata pre ON pre.ticker=d.ticker " \
+            f"AND pre.updated_server_time=d.pre_server_time  " \
+            f"AND lst.algotrader_rank > pre.algotrader_rank " \
+            f"ORDER BY lst.algotrader_rank desc"
     today_improovers_res = db.engine.execute(text(query))
     today_improovers = [dict(r.items()) for r in today_improovers_res]
-
-    # user_query = f"SELECT c.ticker, c.company_name, c.logo, c.sector, a.under_priced_pnt, case when a.algotrader_rank IS NULL then 0 ELSE a.algotrader_rank END AS algotrader_rank, a.twelve_month_momentum, a.beta, a.max_intraday_drop_percent FROM Candidates c JOIN Tickersdata a ON a.ticker=c.ticker JOIN (select Tickersdata.ticker, max(Tickersdata.updated_server_time) as updated_server_time from Tickersdata group by Tickersdata.ticker) b on b.ticker=a.ticker and b.updated_server_time=a.updated_server_time WHERE c.email='{current_user.email}'"
-    # candidates_res = db.engine.execute(text(user_query))
-    # candidates = [dict(r.items()) for r in candidates_res]
 
     admin_query = "SELECT c.ticker, c.company_name, c.logo, c.sector, a.under_priced_pnt, case when a.algotrader_rank IS NULL then 0 ELSE a.algotrader_rank END AS algotrader_rank, a.twelve_month_momentum, a.beta, a.max_intraday_drop_percent FROM (SELECT * FROM Candidates WHERE enabled=1 GROUP BY ticker) c JOIN Tickersdata a ON a.ticker=c.ticker JOIN (select Tickersdata.ticker, max(Tickersdata.`updated_server_time`) as updated_server_time from Tickersdata group by Tickersdata.ticker ) b on b.ticker=a.ticker and b.updated_server_time=a.updated_server_time"
     admin_candidates_res = db.engine.execute(text(admin_query))
@@ -82,9 +84,6 @@ def today():
                            last_update_date=last_update.last_update_date.strftime("%d %b %H:%M"),
                            bg_upd_color=bg_upd_color,
                            admin_candidates=admin_candidates,
-                           candidates=candidates,
-                           candidates_json=json.dumps(admin_candidates, cls=general.JsonEncoder),
-                           # market_data_json=json.dumps(market_data, cls=general.JsonEncoder),
                            signals=signals,
                            form=None)
 
@@ -120,7 +119,7 @@ def usercandidates():
                            user=current_user, market_emotion=market_emotion, fgi_text_color=fgi_text_color, algo_rank=algo_rank,  form=None)
 
 
-@candidates.route('removecandidate/', methods=['POST'])
+@candidates.route('/removecandidate', methods=['POST'])
 @csrf.exempt
 def removecandidate():
     ticker = request.form['ticker_to_remove']
@@ -142,10 +141,14 @@ def removecandidate_ajax():
 @candidates.route('/enabledisable_ajax', methods=['POST'])
 @csrf.exempt
 def enabledisable_ajax():
-    ticker = request.form['ticker']
-    candidate = Candidate.query.filter_by(email=current_user.email, ticker=ticker).first()
-    candidate.change_enabled_state()
-    return json.dumps({'result': True})
+    result = {"color_status": "success", "message": "Ticker updated"}
+    try:
+        ticker = request.form['ticker']
+        candidate = Candidate.query.filter_by(email=current_user.email, ticker=ticker).first()
+        candidate.change_enabled_state()
+    except Exception as e:
+        result = {"color_status": "danger", "message": "Error in server"}
+    return json.dumps(result)
 
 
 @candidates.route('enabledisable/', methods=['POST'])
@@ -190,7 +193,8 @@ def get_user_candidates():
                  f"c.company_name, " \
                  f"c.logo, " \
                  f"c.sector, " \
-                 f"c.reason," \
+                 f"c.reason, " \
+                 f"c.enabled," \
                  f"a.under_priced_pnt, " \
                  f"case when a.algotrader_rank IS NULL then 0 ELSE a.algotrader_rank END AS algotrader_rank, " \
                  f"a.twelve_month_momentum, " \

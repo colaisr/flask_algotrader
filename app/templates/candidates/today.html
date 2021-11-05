@@ -277,7 +277,6 @@
         {% endif %}
     </div>
 <!--    END ALL CANDIDATES-->
-<script>var candidates = {{ candidates_json|tojson}};</script>
 </div>
 {% endblock %}
 
@@ -370,6 +369,7 @@
                 </button>
             </div>
             <div class="modal-body big-height-resize">
+                <div id="personal-list-flash"></div>
                 <table class="mb-0 table personal-modal-tbl table-hover">
                     <thead>
                         <tr>

@@ -79,9 +79,9 @@ function add_row_to_personal_candidates(c, tbl_class, is_modal){
     if(is_modal){
         var td_remove = $('<td class="text-center"><button id="remove-' + c.ticker +'" type="submit" data-ticker="' + c.ticker + '" class="bord-none remove-candidate"><i class="fa fa-trash"></i></button></td>');
         tr.append(td_remove);
-        var td_edit = $('<td class="text-center"><button class="btn_edit bord-none"><i class="fa fa-edit mt-1"></i></button><input type="hidden" class="h_tick" value="' + c.ticker + '"><input type="hidden" class="h_reason" value="' + c.reason + '"></td>');
+        var td_edit = $('<td class="text-center"><button class="btn_edit bord-none" id="edit-' + c.ticker + '"><i class="fa fa-edit mt-1"></i></button><input type="hidden" class="h_tick" value="' + c.ticker + '"><input type="hidden" class="h_reason" value="' + c.reason + '"></td>');
         tr.append(td_edit);
-        var td_enabled = $('<td class="text-center"><input class="mt-2 enable-checkbox" id="enabled-' + c.ticker + '" data-ticker="' + c.ticker + '" type="checkbox" onChange="change_enabled()"></td>');
+        var td_enabled = $('<td class="text-center"><input class="mt-2 enable-checkbox" id="enabled-' + c.ticker + '" data-ticker="' + c.ticker + '" type="checkbox"></td>');
         tr.append(td_enabled);
     }
     var td_score = $('<td class="text-center">'+score+'</td>');
@@ -98,6 +98,27 @@ function add_row_to_personal_candidates(c, tbl_class, is_modal){
     tr.append(td_intraday_drop);
     $('.' + tbl_class + ' tbody').append(tr);
     $('#enabled-' + c.ticker).prop('checked', c.enabled);
+}
+
+function draw_user_candidates_tbl(data){
+    $('.personal-tbl tbody').empty();
+    $('.personal-modal-tbl tbody').empty();
+    $.each(data, function( index, c ){
+        if(parseInt(index) < 5){
+            add_row_to_personal_candidates(c, 'personal-tbl', false)       //from base.js
+        }
+        add_row_to_personal_candidates(c, 'personal-modal-tbl', true)       //from base.js
+        $('#remove-' + c.ticker).on('click',remove_candidate);
+        $('#enabled-' + c.ticker).on('click',change_enabled);
+        $('#edit-' + c.ticker).on('click',edit_candidate);
+    })
+}
+
+function upload_personal_list(){
+    url = '/candidates/user_candidates';
+    $.getJSON(url, function(data) {
+        draw_user_candidates_tbl(data); //from base.js
+    });
 }
 
 
