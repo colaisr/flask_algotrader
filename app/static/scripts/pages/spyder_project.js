@@ -1,5 +1,5 @@
-var domane = 'https://colak.eu.pythonanywhere.com/';
-//var domane = 'http://localhost:8000/';
+//var domane = 'https://colak.eu.pythonanywhere.com/';
+var domane = 'http://localhost:8000/';
 
 function get_data_for_ticker(){
     $('#candidate-flash').empty();
@@ -49,31 +49,32 @@ function update_candidate(remove_candidate_event, change_enabled_event){
     $('.content-hidden').prop('hidden',true);
     url = domane + 'candidates/updatecandidate/';
     $.post(url,{ticker: ticker, reason: reason, email: email}, function(data) {
-        //candidates and market_data - global prop from today page
-        var candidate = $.grep( candidates, function( n, i ) { return n.ticker == ticker;});
-        if(candidate.length == 0){
-            c = {
-                logo: $('#txt_logo').val(),
-                ticker: ticker,
-                company_name: $('#txt_company_name').val(),
-                sector: $('#txt_sector').val(),
-                reason: reason,
-                enabled: true
-            };
-            candidates.push(c);
-            if(candidates.length <= 5){
-                add_row_to_personal_candidates(c, market_data, 'personal-tbl', false);//from base.js
-            }
-            add_row_to_personal_candidates(c, market_data, 'personal-modal-tbl', true);  //from base.js
-            $('#remove-' + c.ticker).on('click',remove_candidate_event);
-            $('#enabled-' + c.ticker).on('click',change_enabled_event);
-//            $('.personal-modal-tbl').on('click', '#remove-' + c.ticker, remove_candidate_event(ticker))
-        }
-        else{
-            candidate.reason = reason;
-        }
-        loading.empty();
-        $("#add_candidate_modal").hide();
+//        //candidates and market_data - global prop from today page
+//        var candidate = $.grep( candidates, function( n, i ) { return n.ticker == ticker;});
+//        if(candidate.length == 0){
+//            c = {
+//                logo: $('#txt_logo').val(),
+//                ticker: ticker,
+//                company_name: $('#txt_company_name').val(),
+//                sector: $('#txt_sector').val(),
+//                reason: reason,
+//                enabled: true
+//            };
+//            candidates.push(c);
+//            if(candidates.length <= 5){
+//                add_row_to_personal_candidates(c, 'personal-tbl', false);//from base.js
+//            }
+//            add_row_to_personal_candidates(c, 'personal-modal-tbl', true);  //from base.js
+//            $('#remove-' + c.ticker).on('click',remove_candidate_event);
+//            $('#enabled-' + c.ticker).on('click',change_enabled_event);
+////            $('.personal-modal-tbl').on('click', '#remove-' + c.ticker, remove_candidate_event(ticker))
+//        }
+//        else{
+//            candidate.reason = reason;
+//        }
+//        loading.empty();
+//        $("#add_candidate_modal").hide();
+            window.location.reload(1);
     })
 }
 
