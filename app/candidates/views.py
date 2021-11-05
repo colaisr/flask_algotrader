@@ -5,7 +5,8 @@ from flask import (
     redirect,
     render_template,
     request,
-    url_for
+    url_for,
+    jsonify
 )
 
 from flask_login import login_required, current_user
@@ -57,13 +58,9 @@ def today():
     today_improovers_res = db.engine.execute(text(query))
     today_improovers = [dict(r.items()) for r in today_improovers_res]
 
-    user_query = f"SELECT c.ticker, c.company_name, c.logo, c.sector, a.under_priced_pnt, case when a.algotrader_rank IS NULL then 0 ELSE a.algotrader_rank END AS algotrader_rank, a.twelve_month_momentum, a.beta, a.max_intraday_drop_percent FROM Candidates c JOIN Tickersdata a ON a.ticker=c.ticker JOIN (select Tickersdata.ticker, max(Tickersdata.updated_server_time) as updated_server_time from Tickersdata group by Tickersdata.ticker) b on b.ticker=a.ticker and b.updated_server_time=a.updated_server_time WHERE c.email='{current_user.email}'"
-    candidates_res = db.engine.execute(text(user_query))
-    candidates = [dict(r.items()) for r in candidates_res]
-
-    # query_text = "select a.* from Tickersdata a join (  select Tickersdata.`ticker`, max(Tickersdata.`updated_server_time`) as updated_server_time  from Tickersdata group by Tickersdata.`ticker`) b on b.`ticker`=a.`ticker` and b.`updated_server_time`=a.`updated_server_time`"
-    # marketdata = db.session.query(TickerData).from_statement(text(query_text)).all()
-    # market_data = {m.ticker: m for m in marketdata}
+    # user_query = f"SELECT c.ticker, c.company_name, c.logo, c.sector, a.under_priced_pnt, case when a.algotrader_rank IS NULL then 0 ELSE a.algotrader_rank END AS algotrader_rank, a.twelve_month_momentum, a.beta, a.max_intraday_drop_percent FROM Candidates c JOIN Tickersdata a ON a.ticker=c.ticker JOIN (select Tickersdata.ticker, max(Tickersdata.updated_server_time) as updated_server_time from Tickersdata group by Tickersdata.ticker) b on b.ticker=a.ticker and b.updated_server_time=a.updated_server_time WHERE c.email='{current_user.email}'"
+    # candidates_res = db.engine.execute(text(user_query))
+    # candidates = [dict(r.items()) for r in candidates_res]
 
     admin_query = "SELECT c.ticker, c.company_name, c.logo, c.sector, a.under_priced_pnt, case when a.algotrader_rank IS NULL then 0 ELSE a.algotrader_rank END AS algotrader_rank, a.twelve_month_momentum, a.beta, a.max_intraday_drop_percent FROM (SELECT * FROM Candidates WHERE enabled=1 GROUP BY ticker) c JOIN Tickersdata a ON a.ticker=c.ticker JOIN (select Tickersdata.ticker, max(Tickersdata.`updated_server_time`) as updated_server_time from Tickersdata group by Tickersdata.ticker ) b on b.ticker=a.ticker and b.updated_server_time=a.updated_server_time"
     admin_candidates_res = db.engine.execute(text(admin_query))
@@ -86,10 +83,16 @@ def today():
                            bg_upd_color=bg_upd_color,
                            admin_candidates=admin_candidates,
                            candidates=candidates,
-                           candidates_json=json.dumps(candidates, cls=general.JsonEncoder),
+                           candidates_json=json.dumps(admin_candidates, cls=general.JsonEncoder),
                            # market_data_json=json.dumps(market_data, cls=general.JsonEncoder),
                            signals=signals,
                            form=None)
+
+@candidates.route('/user_candidates', methods=['GET'])
+@csrf.exempt
+def user_candidates():
+    candidates = get_user_candidates()
+    return json.dumps(candidates, cls=general.JsonEncoder)
 
 
 @candidates.route('usercandidates', methods=['GET', 'POST'])
@@ -132,7 +135,8 @@ def removecandidate_ajax():
     ticker = request.form['ticker']
     candidate = Candidate.query.filter_by(email=current_user.email, ticker=ticker).first()
     candidate.delete_candidate()
-    return json.dumps({'result': True})
+    candidates = get_user_candidates()
+    return json.dumps(candidates, cls=general.JsonEncoder)
 
 
 @candidates.route('/enabledisable_ajax', methods=['POST'])
@@ -179,6 +183,30 @@ def info():
                            market_data=m_data,
                            hist_dates=hist_dates,
                            hist_algo_ranks=hist_algo_ranks)
+
+
+def get_user_candidates():
+    user_query = f"SELECT c.ticker, " \
+                 f"c.company_name, " \
+                 f"c.logo, " \
+                 f"c.sector, " \
+                 f"c.reason," \
+                 f"a.under_priced_pnt, " \
+                 f"case when a.algotrader_rank IS NULL then 0 ELSE a.algotrader_rank END AS algotrader_rank, " \
+                 f"a.twelve_month_momentum, " \
+                 f"a.beta, " \
+                 f"a.max_intraday_drop_percent " \
+                 f"FROM Candidates c " \
+                 f"JOIN Tickersdata a ON a.ticker=c.ticker " \
+                 f"JOIN (select Tickersdata.ticker, " \
+                 f"max(Tickersdata.updated_server_time) as updated_server_time " \
+                 f"from Tickersdata group by Tickersdata.ticker" \
+                 f") b on b.ticker=a.ticker and b.updated_server_time=a.updated_server_time " \
+                 f"WHERE c.email='{current_user.email}'" \
+                 f"order by algotrader_rank desc"
+    candidates_res = db.engine.execute(text(user_query))
+    candidates = [dict(r.items()) for r in candidates_res]
+    return candidates
 
 
 

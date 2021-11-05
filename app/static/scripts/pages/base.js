@@ -66,16 +66,11 @@ function isFloat(n){
 }
 
 function add_row_to_personal_candidates(c, tbl_class, is_modal){
-    var score = 0;
-    var under_priced_pnt = 0;
-    var twelve_month_momentum = 0;
-    var beta = 0;
-    var max_intraday_drop_percent = 0;
-    score = c.algotrader_rank || 0;
-    under_priced_pnt = c.under_priced_pnt.toFixed(2) || 0;
-    twelve_month_momentum = c.twelve_month_momentum.toFixed(2) || 0;
-    beta = c.beta.toFixed(2) || 0;
-    max_intraday_drop_percent = c.max_intraday_drop_percent.toFixed(2) || 0;
+    var score = c.algotrader_rank || 0;
+    var under_priced_pnt = c.under_priced_pnt != null ? c.under_priced_pnt.toFixed(2) : 0;
+    var twelve_month_momentum = c.twelve_month_momentum != null ? c.twelve_month_momentum.toFixed(2) : 0;
+    var beta = c.beta != null ? c.beta.toFixed(2) : 0;
+    var max_intraday_drop_percent = c.max_intraday_drop_percent != null ? c.max_intraday_drop_percent.toFixed(2) : 0;
     var tr = $('<tr title="' + c.reason + '"></tr>');
     var td_logo =$('<td class="text-center"><img src="' + c.logo + '" width="20" height="20"></td>');
     tr.append(td_logo);

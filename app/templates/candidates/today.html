@@ -134,47 +134,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            {% for i in candidates[:5]| sort(attribute='ticker') %}
-                            <tr title="{{i.reason}}">
-                                <td class="text-center"><img src="{{ i.logo }}" width="20" height="20"></td>
-                                <td>
-                                    <a href="{{url_for('candidates.info')}}?ticker_to_show={{ i.ticker }}">
-                                        {{ i.ticker }}
-                                    </a>
-                                    <div class="text-small">{{i.company_name}}</div>
-                                </td>
-                                <td class="text-center">{{i.algotrader_rank}}</td>
-                                <td class="text-small">{{ i.sector }}</td>
-                                <td class="text-center">
-                                    {% if i.under_priced_pnt is none %}
-                                        0
-                                    {% else %}
-                                        {{i.under_priced_pnt|round(2)}}
-                                    {%endif %}
-                                </td>
-                                <td class="text-center">
-                                    {% if i.twelve_month_momentum is none %}
-                                        0
-                                    {% else %}
-                                        {{i.twelve_month_momentum|round(2)}}
-                                    {%endif %}
-                                </td>
-                                <td class="text-center">
-                                    {% if i.beta is none %}
-                                        0
-                                    {% else %}
-                                        {{i.beta|round(2)}}
-                                    {%endif %}
-                                </td>
-                                <td class="text-center">
-                                    {% if i.max_intraday_drop_percent is none %}
-                                        0
-                                    {% else %}
-                                        {{i.max_intraday_drop_percent|round(2)}}
-                                    {%endif %}
-                                </td>
-                            </tr>
-                            {% endfor %}
+
                         </tbody>
                     </table>
                 </div>
@@ -231,6 +191,7 @@
         </div>
     </div>
 
+<!--    ALL CANDIDATES-->
     <div class="column">
         <div class="ui menu">
             <div class="ui search item">
@@ -315,6 +276,7 @@
         </div>
         {% endif %}
     </div>
+<!--    END ALL CANDIDATES-->
 <script>var candidates = {{ candidates_json|tojson}};</script>
 </div>
 {% endblock %}
@@ -425,61 +387,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        {% for i in candidates %}
-                        <tr title="{{i.reason}}">
-                            <td class="text-center"><img src="{{ i.logo }}" width="20" height="20"></td>
-                            <td>
-                                <a href="{{url_for('candidates.info')}}?ticker_to_show={{ i.ticker }}">
-                                    {{ i.ticker }}
-                                </a>
-                                <div class="text-small">{{i.company_name}}</div>
-                            </td>
-                            <td class="text-center">
-                                <button id="remove-{{i.ticker}}" type="submit" data-ticker="{{ i.ticker }}" class="bord-none remove-candidate"><i class="fa fa-trash"></i></button>
-                            </td>
-                            <td class="text-center">
-                                <button class="btn_edit bord-none"><i class="fa fa-edit mt-1"></i></button>
-                                <input type="hidden" class="h_tick" value="{{ i.ticker }}">
-                                <input type="hidden" class="h_reason" value="{{ i.reason }}">
-                            </td>
-                            <td class="text-center">
-                                <input class="mt-2 enable-checkbox" id="enabled-{{i.ticker}}" data-ticker="{{i.ticker}}" type="checkbox"
-                                       {%if i.enabled%}
-                                       checked
-                                       {% endif %}>
-                            </td>
-                            <td class="text-center">{{i.algotrader_rank}}</td>
-                            <td class="text-small">{{ i.sector }}</td>
-                            <td class="text-center">
-                                {% if i.under_priced_pnt is none %}
-                                    0
-                                {% else %}
-                                    {{i.under_priced_pnt|round(2)}}
-                                {%endif %}
-                            </td>
-                            <td class="text-center">
-                                {% if i.twelve_month_momentum is none %}
-                                    0
-                                {% else %}
-                                    {{i.twelve_month_momentum|round(2)}}
-                                {%endif %}
-                            </td>
-                            <td class="text-center">
-                                {% if i.beta is none %}
-                                    0
-                                {% else %}
-                                    {{i.beta|round(2)}}
-                                {%endif %}
-                            </td>
-                            <td class="text-center">
-                                {% if i.max_intraday_drop_percent is none %}
-                                    0
-                                {% else %}
-                                    {{i.max_intraday_drop_percent|round(2)}}
-                                {%endif %}
-                            </td>
-                        </tr>
-                        {% endfor %}
+
                     </tbody>
                 </table>
             </div>

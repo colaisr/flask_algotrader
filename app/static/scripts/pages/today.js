@@ -6,6 +6,8 @@ candidates =jQuery.parseJSON(candidates);
     var main_snp = [];
     var main_emotion = [];
     var count_days_emotion = 0;
+
+    upload_personal_list();
     fill_emotion_and_snp_graphs(emotion_settings, false, main_snp, main_emotion);
 
     $('.show_signals_modal').click(function(){
@@ -86,8 +88,7 @@ candidates =jQuery.parseJSON(candidates);
 
 })
 
-function change_enabled(ticker, enabled)
-{
+function change_enabled(ticker, enabled){
     if($(this).data('ticker') != undefined){
         ticker = $(this).data('ticker');
         enabled = $(this).is(':checked');
@@ -109,18 +110,28 @@ function remove_candidate(ticker){
     }
     $.post("/candidates/removecandidate_ajax",{ticker: ticker}, function(data) {
         var data_parsed = jQuery.parseJSON(data);
-        if(data_parsed["result"]){
-            $('.personal-modal-tbl tbody td:icontains(' + ticker + ')').closest('tr').remove();
-            if($('.personal-tbl tbody td:icontains(' + ticker + ')').length > 0){
-                $('.personal-tbl tbody').empty();
-                var candidates_updated = $.grep( candidates, function( n, i ) { return n.ticker == ticker;},true);
-                var top_candidates = candidates_updated.slice(0,5);
-                $.each(top_candidates, function( index, c ){
-                    add_row_to_personal_candidates(c, 'personal-tbl', false)       //from base.js
-                })
-            }
-        }
+        draw_user_candidates_tbl(data_parsed);
     });
+}
+
+function upload_personal_list(){
+    url = '/candidates/user_candidates';
+    $.getJSON(url, function(data) {
+        draw_user_candidates_tbl(data);
+    });
+}
+
+function draw_user_candidates_tbl(data){
+    $('.personal-tbl tbody').empty();
+    $('.personal-modal-tbl tbody').empty();
+    $.each(data, function( index, c ){
+        if(parseInt(index) < 5){
+            add_row_to_personal_candidates(c, 'personal-tbl', false)       //from base.js
+        }
+        add_row_to_personal_candidates(c, 'personal-modal-tbl', true)       //from base.js
+        $('#remove-' + c.ticker).on('click',remove_candidate);
+        $('#enabled-' + c.ticker).on('click',change_enabled);
+    })
 }
 
 
