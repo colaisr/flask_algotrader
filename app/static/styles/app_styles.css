@@ -257,12 +257,10 @@ input[type=range]:focus::-webkit-slider-runnable-track {
     border-bottom: 1px solid silver;
 }
 
-.today-cards .improovers .card {
-    max-height: 471px;
-}
 
 .today-cards .personal-list .card,
-.today-cards .signals .card{
+.today-cards .signals .card,
+.today-cards .improovers .card{
     min-height: 451px;
     max-height: 451px;
 }
@@ -270,6 +268,7 @@ input[type=range]:focus::-webkit-slider-runnable-track {
 @media (max-width: 1280px){
     .today-cards .improovers .card {
         max-height: 583px;
+        min-height: 573px;
     }
 
     .today-cards .personal-list .card,

@@ -4,7 +4,9 @@ $(document).ready(function () {
     var main_emotion = [];
     var count_days_emotion = 0;
 
-    upload_personal_list(); //from base.js
+//    load_data();
+    upload_personal_list();
+    upload_today_improovers_data();
     fill_emotion_and_snp_graphs(emotion_settings, false, main_snp, main_emotion);
 
     $('.show_signals_modal').click(function(){
@@ -103,6 +105,55 @@ function edit_candidate(){
     $('#btn_validate').click();
     $("#add_candidate_modal").show();
 }
+
+function upload_today_improovers_data(){
+    url = '/candidates/today_improovers';
+    $.getJSON(url, function(data) {
+        draw_today_improovers_tbl(data);
+    });
+}
+
+function draw_today_improovers_tbl(data){
+    $('.improovers-tbl tbody').empty();
+    $('.improovers-modal-tbl tbody').empty();
+    $.each(data, function( index, c ){
+        if(parseInt(index) < 5){
+            add_row_to_today_improovers(c, 'improovers-tbl')       //from base.js
+        }
+        add_row_to_today_improovers(c, 'improovers-modal-tbl')       //from base.js
+    })
+}
+
+function add_row_to_today_improovers(c, tbl_class){
+    var score = c.last_rank || 0;
+    var change = c.change_val != null ? c.change_val.toFixed(2) : 0;
+    var tr = $('<tr></tr>');
+    var td_logo =$('<td class="text-center"><img src="' + c.logo + '" width="20" height="20"></td>');
+    tr.append(td_logo);
+    var td_company = $('<td><a href="/candidates/info?ticker_to_show=' + c.ticker + '">' + c.ticker + '</a><div class="text-small">' + c.company_name + '</div></td>');
+    tr.append(td_company);
+    var td_score = $('<td class="text-center">' + score + '</td>');
+    tr.append(td_score);
+    var td_change = $('<td class="text-center text-success">' + change + '</td>');
+    tr.append(td_change);
+    $('.' + tbl_class + ' tbody').append(tr);
+}
+
+//function load_data(){
+//    improovers_url = '/candidates/today_improovers';
+//    user_candidates_url = '/candidates/user_candidates';
+//    Promise.all([
+//      $.ajax({ url: improovers_url }),
+//      $.ajax({ url: user_candidates_url })
+//    ])
+//    .then(([improovers, user_cand]) => {
+//        improovers_data = jQuery.parseJSON(improovers);
+//        users_candidates_data = jQuery.parseJSON(user_cand);
+//        draw_user_candidates_tbl(improovers_data);   //from base.js
+//        draw_today_improovers_tbl(users_candidates_data);
+//    });
+//
+//}
 
 
 

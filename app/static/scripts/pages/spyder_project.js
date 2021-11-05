@@ -1,5 +1,5 @@
-//var domane = 'https://colak.eu.pythonanywhere.com/';
-var domane = 'http://localhost:8000/';
+var domane = 'https://colak.eu.pythonanywhere.com/';
+//var domane = 'http://localhost:8000/';
 
 function get_data_for_ticker(){
     $('#candidate-flash').empty();
@@ -36,7 +36,7 @@ function get_data_for_ticker(){
     }
 }
 
-function update_candidate(remove_candidate_event, change_enabled_event){
+function update_candidate(){
     $('#candidate-flash').empty();
     ticker = $('#txt_ticker').val();
     reason = $('#txt_reason').val();
@@ -49,9 +49,14 @@ function update_candidate(remove_candidate_event, change_enabled_event){
     $('.content-hidden').prop('hidden',true);
     url = domane + 'candidates/updatecandidate/';
     $.post(url,{ticker: ticker, reason: reason, email: email}, function(data) {
+        var data_parsed = jQuery.parseJSON(data);
         upload_personal_list(); //from base.js
         loading.empty();
+        $('#candidate-flash').append(flashMessage(data_parsed["color_status"],data_parsed["message"]));
         $('.content-hidden').prop('hidden',false);
+        setTimeout(function(){
+            $('#candidate-flash').empty();
+        }, 2000);
     })
 }
 
