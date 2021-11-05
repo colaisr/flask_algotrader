@@ -404,6 +404,10 @@ input[type=range]:focus::-webkit-slider-runnable-track {
     opacity: 0.6;
 }
 
+.personal-list-card-body .div-content{
+    width: 100%;
+}
+
 
 
 
