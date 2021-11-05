@@ -377,45 +377,6 @@
                             </tr>
                         </thead>
                         <tbody>
-                            {% for i in signals %}
-                            <tr>
-                                <td class="text-center"><img src="{{ i.logo }}" width="20" height="20"></td>
-                                <td>
-                                    <a href="{{url_for('candidates.info')}}?ticker_to_show={{ i.ticker }}">
-                                        {{ i.ticker }}
-                                    </a>
-                                    <div class="text-small">{{i.company_name}}</div>
-                                </td>
-                                <td class="text-center">
-                                    {% if i.signal_price is not none%}
-                                    {{i.signal_price|round(2)}}
-                                    {%else%}
-                                    0
-                                    {%endif%}
-                                </td>
-                                <td class="text-center">
-                                    {% if i.target_price is not none%}
-                                    {{i.target_price|round(2)}}
-                                    {%else%}
-                                    0
-                                    {%endif%}
-                                </td>
-                                <td class="text-center">
-                                    {% if i.profit_percent is not none%}
-                                    {{i.profit_percent|round(2)}}
-                                    {%else%}
-                                    --
-                                    {%endif%}
-                                </td>
-                                <td class="text-center">
-                                    {% if i.days_to_get is not none%}
-                                    {{i.days_to_get}}
-                                    {%else%}
-                                    --
-                                    {%endif%}
-                                </td>
-                            </tr>
-                            {% endfor %}
                         </tbody>
                     </table>
             </div>
