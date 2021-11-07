@@ -59,7 +59,7 @@ def get_default_strategy_settings():
 def savesettings():
     send_email(recipient='support@algotrader.company',
                subject='testing the email',
-               template='account/email/user_data_provided')
+               template='account/email/test_message')
     user_settings = UserSetting.query.filter_by(email=current_user.email).first()
     user_settings.algo_max_loss = request.form['algo_max_loss']
     user_settings.algo_take_profit = request.form['algo_take_profit']
