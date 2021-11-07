@@ -6,6 +6,10 @@ from sendgrid import SendGridAPIClient
 from sendgrid.helpers.mail import Mail
 
 def send_email(recipient, subject, template, **kwargs):
+    api_key = os.environ.get('MAIL_JET_API_KEY')
+    api_secret = os.environ.get('MAIL_JET_API_SECRET')
+    print(api_key)
+    print(api_secret)
     data = {
         'Messages': [
             {
@@ -27,8 +31,7 @@ def send_email(recipient, subject, template, **kwargs):
         ]
     }
     try:
-        api_key = os.environ.get('MAIL_JET_API_KEY')
-        api_secret = os.environ.get('MAIL_JET_API_SECRET')
+
         mailjet = Client(auth=(api_key, api_secret), version='v3.1')
         result = mailjet.send.create(data=data)
         print(result.status_code)
