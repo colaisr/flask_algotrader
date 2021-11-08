@@ -4,6 +4,7 @@ from flask import (
 
 from app import csrf
 from app.models import ReportStatistic, Report
+from datetime import datetime
 
 research = Blueprint('research', __name__)
 
@@ -17,6 +18,7 @@ def update_reports_statistic():
             snapshot = ReportStatistic()
             snapshot.email = r.email
             snapshot.report_time = r.report_time
+            snapshot.snapshot_time = datetime.utcnow()
             snapshot.net_liquidation = r.net_liquidation
             snapshot.remaining_sma_with_safety = r.remaining_sma_with_safety
             snapshot.remaining_trades = r.remaining_trades

@@ -16,7 +16,7 @@ from flask_login import (
     login_required
 )
 from app.models import Position, Report, ReportStatistic, Candidate, UserSetting, LastUpdateSpyderData,TickerData
-from sqlalchemy import or_, and_
+from sqlalchemy import text
 from app import db
 from app.models.fgi_score import Fgi_score
 
@@ -160,32 +160,38 @@ def closedpositions():
     min_date = db.session.query(ReportStatistic).filter(ReportStatistic.email == current_user.email).order_by(
         ReportStatistic.report_time).first().report_time
     min_date = min_date if min_date is not None else datetime.now() + relativedelta(years=1)
-    from_date = min_date
-    to_date = datetime.now() + relativedelta(days=1)
+    from_date = min_date.strftime("%Y-%m-%d")
+    to_date = (datetime.now() + relativedelta(days=1)).strftime("%Y-%m-%d")
 
     if request.method == 'POST':
         from_date = request.form['from_date']
         to_date_str = request.form['to_date']
-        to_date = datetime.strptime(to_date_str, '%Y-%m-%d') + relativedelta(days=1)
+        to_date = (datetime.strptime(to_date_str, '%Y-%m-%d') + relativedelta(days=1)).strftime("%Y-%m-%d")
         filter_radio = request.form['filter_radio']
 
     closed_positions = Position.query.filter(Position.email == current_user.email,
                                              Position.last_exec_side == 'SLD',
                                              Position.closed.between(from_date, to_date)).all()
 
-    reports_min_max = db.session.query(db.func.min(ReportStatistic.report_time),
-                                       db.func.max(ReportStatistic.report_time)) \
-        .filter(ReportStatistic.email == current_user.email,
-                ReportStatistic.report_time.between(from_date, to_date),
-                ReportStatistic.net_liquidation != 0).first()
+    query = f"SELECT distinct rs.email," \
+            f"(IFNULL(r.net_liquidation, st_to.net_liquidation) - st_from.net_liquidation) AS profit_usd, " \
+            f"(IFNULL(r.net_liquidation, st_to.net_liquidation) - st_from.net_liquidation) / st_from.net_liquidation * 100 AS profit_procent " \
+            f"FROM (SELECT email, MIN(report_time) AS min_report_time, " \
+            f"MAX(report_time) AS max_report_time FROM ReportsStatistic " \
+            f"WHERE email = '{current_user.email}' " \
+            f"AND report_time BETWEEN DATE('{from_date}') AND DATE('{to_date}') " \
+            f"AND net_liquidation <> 0 GROUP BY email) rs " \
+            f"JOIN ReportsStatistic st_from ON st_from.email=rs.email AND st_from.report_time=rs.min_report_time " \
+            f"JOIN ReportsStatistic st_to ON st_to.email=rs.email " \
+            f"AND st_to.report_time=rs.max_report_time left " \
+            f"JOIN Reports r ON r.email=rs.email AND DATE_ADD(date(r.report_time), INTERVAL 1 DAY) <= DATE('{to_date}')"
 
-    reports = ReportStatistic.query.filter(ReportStatistic.email == current_user.email) \
-        .filter(or_(ReportStatistic.report_time == reports_min_max[0],
-                    ReportStatistic.report_time == reports_min_max[1])).all()
+    reports_res = db.engine.execute(text(query))
+    reports = [dict(r.items()) for r in reports_res]
 
-    if reports is not None and len(reports) > 0:
-        profit_usd = reduce(lambda x, y: y - x, list(map(lambda z: z.net_liquidation, reports)))
-        profit_procent = profit_usd / reports[0].net_liquidation * 100
+    if reports is not None:
+        profit_usd = reports[0]['profit_usd']
+        profit_procent = reports[0]['profit_procent']
         profit_class = "text-success" if profit_usd > 0 else "text-danger"
     else:
         profit_usd = 0
@@ -214,7 +220,7 @@ def closedpositions():
                            min_date=min_date.strftime("%Y-%m-%d"),
                            max_date=max_date.strftime("%Y-%m-%d"),
                            from_date=from_date,
-                           to_date=to_date + relativedelta(days=-1),
+                           to_date=(datetime.strptime(to_date, '%Y-%m-%d') + relativedelta(days=-1)).strftime("%Y-%m-%d"),
                            profit_usd=profit_usd,
                            profit_procent=profit_procent,
                            count_positions=len(closed_positions),

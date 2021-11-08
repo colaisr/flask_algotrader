@@ -69,6 +69,7 @@ class ReportStatistic(db.Model):
     id = db.Column('id', db.Integer, primary_key=True)
     email = db.Column('email', db.String)
     report_time = db.Column('report_time', db.DateTime)
+    snapshot_time = db.Column('snapshot_time', db.DateTime)
     net_liquidation = db.Column('net_liquidation', db.Float)
     remaining_sma_with_safety = db.Column('remaining_sma_with_safety', db.Float)
     excess_liquidity = db.Column('excess_liquidity', db.Float)

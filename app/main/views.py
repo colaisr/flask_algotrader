@@ -6,7 +6,7 @@ from werkzeug.utils import redirect
 import app.generalutils as general
 import app.enums as enum
 
-from app.models import EditableHTML, User, TickerData, Position, Report, LastUpdateSpyderData
+from app.models import EditableHTML, User, Candidate, Position, Report, LastUpdateSpyderData
 
 from app import db
 
@@ -24,8 +24,8 @@ def index():
             return redirect(url_for('userview.traderstationstate'))
 
     system_status = {}
-    query_text = "select a.* from Tickersdata a join (  select Tickersdata.`ticker`, max(Tickersdata.`updated_server_time`) as updated_server_time  from Tickersdata group by Tickersdata.`ticker`) b on b.`ticker`=a.`ticker` and b.`updated_server_time`=a.`updated_server_time`"
-    uniq_tickers_data = db.session.query(TickerData).from_statement(text(query_text)).all()
+    query_text = "SELECT * FROM Candidates WHERE enabled=1 GROUP BY ticker"
+    uniq_tickers_data = db.session.query(Candidate).from_statement(text(query_text)).all()
     system_status['tickers_tracked'] = len(uniq_tickers_data)
 
     last_update_date = db.session.query(LastUpdateSpyderData.last_update_date).order_by(LastUpdateSpyderData.start_process_time.desc()).first().last_update_date

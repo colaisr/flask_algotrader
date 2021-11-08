@@ -3,6 +3,8 @@ import ssl
 import app.generalutils as general
 from urllib.request import urlopen
 
+from sqlalchemy import text
+
 from flask import (
     Blueprint,
     render_template,
@@ -11,7 +13,7 @@ from flask import (
 from datetime import datetime, date
 from dateutil.relativedelta import relativedelta
 
-from app import csrf
+from app import csrf, db
 from app.models import TickerData, Position, ReportStatistic
 
 closed_position_info = Blueprint('closed_position_info', __name__)
@@ -65,6 +67,18 @@ def user_reports_history():
     to_date_str = request.form['to_date']
     from_date = datetime.strptime(from_date_str.split(' GMT')[0], '%a %b %d %Y %X')
     to_date = datetime.strptime(to_date_str.split(' GMT')[0], '%a %b %d %Y %X') + relativedelta(days=1)
-    history = ReportStatistic.query.filter(ReportStatistic.email == user,
-                                           ReportStatistic.report_time.between(from_date, to_date)).all()
+
+    query = f"SELECT DATE_FORMAT(report_time, '%Y-%m-%d') AS report_time, " \
+            f"net_liquidation FROM ReportsStatistic " \
+            f"WHERE email = '{user}' " \
+            f"AND report_time BETWEEN '{from_date.strftime('%Y-%m-%d')}' AND '{to_date.strftime('%Y-%m-%d')}' " \
+            f"UNION SELECT DATE_FORMAT(report_time, '%Y-%m-%d') AS report_time, " \
+            f"net_liquidation from Reports " \
+            f"WHERE  email = '{user}' " \
+            f"AND DATE_ADD(date(report_time), INTERVAL 1 DAY) <= DATE('{to_date.strftime('%Y-%m-%d')}') " \
+            f"ORDER BY report_time"
+
+    history_res = db.engine.execute(text(query))
+    history = [dict(r.items()) for r in history_res]
+
     return json.dumps(history, cls=general.JsonEncoder)
