@@ -68,10 +68,10 @@ def user_reports_history():
     from_date = datetime.strptime(from_date_str.split(' GMT')[0], '%a %b %d %Y %X')
     to_date = datetime.strptime(to_date_str.split(' GMT')[0], '%a %b %d %Y %X') + relativedelta(days=1)
 
-    query = f"SELECT DATE_FORMAT(report_time, '%Y-%m-%d') AS report_time, " \
+    query = f"SELECT DATE_FORMAT(snapshot_time, '%Y-%m-%d') AS report_time, " \
             f"net_liquidation FROM ReportsStatistic " \
             f"WHERE email = '{user}' " \
-            f"AND report_time BETWEEN '{from_date.strftime('%Y-%m-%d')}' AND '{to_date.strftime('%Y-%m-%d')}' " \
+            f"AND snapshot_time BETWEEN '{from_date.strftime('%Y-%m-%d')}' AND '{to_date.strftime('%Y-%m-%d')}' " \
             f"UNION SELECT DATE_FORMAT(report_time, '%Y-%m-%d') AS report_time, " \
             f"net_liquidation from Reports " \
             f"WHERE  email = '{user}' " \

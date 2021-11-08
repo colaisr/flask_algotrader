@@ -49,6 +49,7 @@ def register(subscription):
     """Register a new user, and send them a confirmation email."""
     form = RegistrationForm()
     if form.validate_on_submit():
+        # db_service.register_new_user(form.first_name.data, form.last_name.data, form.email.data, form.password.data, subscription)
         user = User(
             first_name=form.first_name.data,
             last_name=form.last_name.data,

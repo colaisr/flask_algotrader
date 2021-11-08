@@ -176,14 +176,14 @@ def closedpositions():
     query = f"SELECT distinct rs.email," \
             f"(IFNULL(r.net_liquidation, st_to.net_liquidation) - st_from.net_liquidation) AS profit_usd, " \
             f"(IFNULL(r.net_liquidation, st_to.net_liquidation) - st_from.net_liquidation) / st_from.net_liquidation * 100 AS profit_procent " \
-            f"FROM (SELECT email, MIN(report_time) AS min_report_time, " \
-            f"MAX(report_time) AS max_report_time FROM ReportsStatistic " \
+            f"FROM (SELECT email, MIN(snapshot_time) AS min_report_time, " \
+            f"MAX(snapshot_time) AS max_report_time FROM ReportsStatistic " \
             f"WHERE email = '{current_user.email}' " \
-            f"AND report_time BETWEEN DATE('{from_date}') AND DATE('{to_date}') " \
+            f"AND snapshot_time BETWEEN DATE('{from_date}') AND DATE('{to_date}') " \
             f"AND net_liquidation <> 0 GROUP BY email) rs " \
-            f"JOIN ReportsStatistic st_from ON st_from.email=rs.email AND st_from.report_time=rs.min_report_time " \
+            f"JOIN ReportsStatistic st_from ON st_from.email=rs.email AND st_from.snapshot_time=rs.min_report_time " \
             f"JOIN ReportsStatistic st_to ON st_to.email=rs.email " \
-            f"AND st_to.report_time=rs.max_report_time left " \
+            f"AND st_to.snapshot_time=rs.max_report_time left " \
             f"JOIN Reports r ON r.email=rs.email AND DATE_ADD(date(r.report_time), INTERVAL 1 DAY) <= DATE('{to_date}')"
 
     reports_res = db.engine.execute(text(query))
