@@ -19,9 +19,21 @@
                                         <div class="widget-heading">Users</div>
                                         <div class="widget-subheading">Registered users</div>
                                     </div>
-                                    <div class="widget-content-right">
-                                        <div class="widget-numbers text-primary tooltip-help" data-toggle="tooltip" data-placement="bottom" title="Personal: {{system_status['personal_users']}} | Managed: {{system_status['managed_users']}}">
-                                            {{system_status['users_registered']}}
+<!--                                    <div class="widget-content-right">-->
+<!--                                        <div class="widget-numbers text-primary tooltip-help" data-toggle="tooltip" data-placement="bottom" title="Personal: {{system_status['personal_users']}} | Managed: {{system_status['managed_users']}}">-->
+<!--                                            {{system_status['users_registered']}}-->
+<!--                                        </div>-->
+<!--                                    </div>-->
+                                    <div class="widget-content-right filter-items">
+                                        <div class="position-items">
+                                            <div class="item info-items pr-3">
+                                                <div class="text-primary text-center rate-item">{{system_status['personal_users']}}</div>
+                                                <div class="label-info text-primary">Personal</div>
+                                            </div>
+                                            <div class="item last-item info-items">
+                                                <div class="text-primary text-center rate-item">{{system_status['managed_users']}}</div>
+                                                <div class="label-info text-primary">Managed</div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
