@@ -322,13 +322,11 @@ def login(email, password, remember_me,request_data):
     if not is_admin and verify_pass:
         login_info=User_login()
         login_info.email=user.email
-        login_info.user_ip=request_data.remote_addr
+        login_info.user_ip=request.environ.get('HTTP_X_REAL_IP', request.remote_addr)
         login_info.browser = request_data.user_agent.browser
         login_info.useragent_string = request_data.user_agent.string
         login_info.login_time_utc=datetime.utcnow()
         login_info.add_login()
-        print('testip')
-        print(request.environ.get('HTTP_X_REAL_IP', request.remote_addr))
     subscription = True
     if not is_admin and user.subscription_type_id != enum.Subscriptions.PERSONAL.value and user.subscription_type_id != enum.Subscriptions.MANAGED_PORTFOLIO.value:
         subscription = False
