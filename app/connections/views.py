@@ -267,7 +267,7 @@ def check_for_signals(candidates_live_json):
             signal.transmitted = True
             signal.signal_price = v['Ask']
             try:
-                if ticker_data.algotrader_rank >= 9.5:
+                if ticker_data.algotrader_rank >= 9.3:
                     if ticker_data.target_mean_price is None:
                         signal.target_price = 0
                     else:
