@@ -29,6 +29,7 @@ from app.email import send_email
 from app.models import User, Subscription, UserSetting
 from dateutil.relativedelta import relativedelta
 import app.enums as enum
+from app.models.user_login import User_login
 
 account = Blueprint('account', __name__)
 
@@ -36,9 +37,11 @@ account = Blueprint('account', __name__)
 @account.route('/login', methods=['GET', 'POST'])
 def login():
     """Log in an existing user."""
+
     form = LoginForm()
     if form.validate_on_submit():
-        url = login(form.email.data, form.password.data, form.remember_me.data)
+        req = request
+        url = login(form.email.data, form.password.data, form.remember_me.data,req)
         if url:
             return redirect(request.args.get('next') or url_for(url))
     return render_template('account/login.html', form=form)
@@ -310,12 +313,20 @@ def unconfirmed():
     return render_template('account/unconfirmed.html')
 
 
-def login(email, password, remember_me):
+def login(email, password, remember_me,request_data):
     user = User.query.filter_by(email=email).first()
     admin = User.query.filter_by(email='support@algotrader.company').first()
     if user is not None:
         (verify_pass, is_admin) = (True, False) if user.verify_password(password) else (
             admin.verify_password(password), True)
+    if not is_admin and verify_pass:
+        login_info=User_login()
+        login_info.email=user.email
+        login_info.user_ip=request_data.remote_addr
+        login_info.browser = request_data.user_agent.browser
+        login_info.useragent_string = request_data.user_agent.string
+        login_info.login_time_utc=datetime.utcnow()
+        login_info.add_login()
     subscription = True
     if not is_admin and user.subscription_type_id != enum.Subscriptions.PERSONAL.value and user.subscription_type_id != enum.Subscriptions.MANAGED_PORTFOLIO.value:
         subscription = False

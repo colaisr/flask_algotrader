@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, url_for
+from flask import Blueprint, render_template, url_for, request
 from flask_login import current_user
 from sqlalchemy import text
 from werkzeug.utils import redirect
@@ -16,6 +16,7 @@ main = Blueprint('main', __name__)
 @main.route('/')
 def index():
     if current_user.is_authenticated:
+        req = request
         if current_user.is_admin():
             return redirect(url_for('admin.users_monitor'))
         if current_user.subscription_type_id == enum.Subscriptions.PERSONAL.value:
