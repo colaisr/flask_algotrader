@@ -1,5 +1,7 @@
 {% extends 'layouts/base.html' %}
-
+{% block page_title %}
+Administration
+{% endblock %}
 {% macro dashboard_option(title, endpoint, description=None, icon=None) %}
 <a class="column" href="{{ url_for(endpoint) }}">
     <div class="ui padded segment">
