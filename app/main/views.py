@@ -16,7 +16,6 @@ main = Blueprint('main', __name__)
 @main.route('/')
 def index():
     if current_user.is_authenticated:
-        req = request
         if current_user.is_admin():
             return redirect(url_for('admin.users_monitor'))
         if current_user.subscription_type_id == enum.Subscriptions.PERSONAL.value:
