@@ -49,7 +49,7 @@ def index():
     system_status['all_positions'] = len(closed_positions)
     system_status['funds'] = db.session.query(db.func.sum(Report.net_liquidation)).scalar()
     # return render_template('main/index_old.html', system_status=system_status)
-    return render_template('main/index.html', system_status=system_status)
+    return render_template('mainpage/main.html', system_status=system_status)
 
 
 @main.route('/about')

@@ -33,7 +33,8 @@ from app.models import (
     ClientCommand,
     Report,
     LastUpdateSpyderData,
-    SpiderStatus, TelegramSignal
+    SpiderStatus, TelegramSignal,
+    db_service
 )
 from app.models.fgi_score import Fgi_score
 import app.enums as enum
