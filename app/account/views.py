@@ -13,9 +13,8 @@ from flask_login import (
     login_user,
     logout_user,
 )
-
-from app import csrf, db
 from datetime import datetime
+from app import csrf
 from app.account.forms import (
     ChangeEmailForm,
     ChangePasswordForm,
@@ -26,8 +25,7 @@ from app.account.forms import (
     ResetPasswordForm,
 )
 from app.email import send_email
-from app.models import User, Subscription, UserSetting
-from dateutil.relativedelta import relativedelta
+from app.models import db_service
 import app.enums as enum
 from app.models.user_login import User_login
 
@@ -41,10 +39,11 @@ def login():
     form = LoginForm()
     if form.validate_on_submit():
         req = request
-        url = login(form.email.data, form.password.data, form.remember_me.data,req)
+        url = login(form.email.data, form.password.data, form.remember_me.data, req)
         if url:
             return redirect(request.args.get('next') or url_for(url))
     return render_template('account/login.html', form=form)
+
 
 @csrf.exempt
 @account.route('/register/<subscription>', methods=['GET', 'POST'])
@@ -52,22 +51,9 @@ def register(subscription):
     """Register a new user, and send them a confirmation email."""
     form = RegistrationForm()
     if form.validate_on_submit():
-        # db_service.register_new_user(form.first_name.data, form.last_name.data, form.email.data, form.password.data, subscription)
-        user = User(
-            first_name=form.first_name.data,
-            last_name=form.last_name.data,
-            email=form.email.data,
-            password=form.password.data,
-            registration_date=datetime.utcnow(),
-            subscription_type_id=subscription,
-            subscription_start_date=datetime.utcnow(),
-            subscription_end_date=datetime.utcnow() + relativedelta(years=1))
-
-        db.session.add(user)
-        user_settings = UserSetting(form.email.data)
-        db.session.add(user_settings)
-        db.session.commit()
-        token = user.generate_confirmation_token()
+        user = db_service.register_new_user(form.first_name.data, form.last_name.data, form.email.data,
+                                            form.password.data, subscription)
+        token = db_service.generate_confirmation_token(user)
         confirm_link = url_for('account.confirm', token=token, _external=True)
 
         send_email(recipient=user.email,
@@ -82,18 +68,16 @@ def register(subscription):
                    user=user)
 
         flash(f'A confirmation link has been sent to {user.email}.', 'warning')
-        # return redirect(url_for('account.login'))
         url = login(form.email.data, form.password.data, True)
         if url:
             return redirect(request.args.get('next') or url_for(url))
     return render_template('account/register.html', form=form)
 
 
-
 @account.route('/subscriptions', methods=['GET'])
 def subscriptions():
-    subscriptions = Subscription.query.filter(Subscription.id != 1).all()
-    return render_template('account/subscriptions.html', subscriptions=subscriptions)
+    subscriptions = db_service.get_all_subscriptions()
+    return render_template('account/subscriptions_new.html', subscriptions=subscriptions)
 
 
 @account.route('/logout')
@@ -119,9 +103,9 @@ def reset_password_request():
         return redirect(url_for('main.index'))
     form = RequestResetPasswordForm()
     if form.validate_on_submit():
-        user = User.query.filter_by(email=form.email.data).first()
+        user = db_service.get_user_by_email(form.email.data)
         if user:
-            token = user.generate_password_reset_token()
+            token = db_service.generate_password_reset_token(user)
             reset_link = url_for(
                 'account.reset_password', token=token, _external=True)
             send_email(recipient=user.email,
@@ -143,11 +127,11 @@ def reset_password(token):
         return redirect(url_for('main.index'))
     form = ResetPasswordForm()
     if form.validate_on_submit():
-        user = User.query.filter_by(email=form.email.data).first()
+        user = db_service.get_user_by_email(form.email.data)
         if user is None:
             flash('Invalid email address.', 'form-error')
             return redirect(url_for('main.index'))
-        if user.reset_password(token, form.new_password.data):
+        if db_service.reset_password(user, token, form.new_password.data):
             flash('Your password has been updated.', 'form-success')
             return redirect(url_for('account.login'))
         else:
@@ -163,10 +147,9 @@ def change_password():
     """Change an existing user's password."""
     form = ChangePasswordForm()
     if form.validate_on_submit():
-        if current_user.verify_password(form.old_password.data):
+        if db_service.verify_password(current_user, form.old_password.data):
             current_user.password = form.new_password.data
-            db.session.add(current_user)
-            db.session.commit()
+            db_service.update_user_data(current_user)
             flash('Your password has been updated.', 'form-success')
             return redirect(url_for('main.index'))
         else:
@@ -180,9 +163,9 @@ def change_email_request():
     """Respond to existing user's request to change their email."""
     form = ChangeEmailForm()
     if form.validate_on_submit():
-        if current_user.verify_password(form.password.data):
+        if db_service.verify_password(current_user, form.password.data):
             new_email = form.email.data
-            token = current_user.generate_email_change_token(new_email)
+            token = db_service.generate_email_change_token(current_user, new_email)
             change_email_link = url_for(
                 'account.change_email', token=token, _external=True)
             send_email(
@@ -206,7 +189,7 @@ def change_email_request():
 @login_required
 def change_email(token):
     """Change existing user's email with provided token."""
-    if current_user.change_email(token):
+    if db_service.change_email(current_user, token):
         flash('Your email address has been updated.', 'success')
     else:
         flash('The confirmation link is invalid or has expired.', 'error')
@@ -217,7 +200,7 @@ def change_email(token):
 @login_required
 def confirm_request():
     """Respond to new user's request to confirm their account."""
-    token = current_user.generate_confirmation_token()
+    token = db_service.generate_confirmation_token(current_user)
     confirm_link = url_for('account.confirm', token=token, _external=True)
     send_email(
         recipient=current_user.email,
@@ -238,7 +221,7 @@ def confirm(token):
     """Confirm new user's account with provided token."""
     if current_user.confirmed:
         return redirect(url_for('main.index'))
-    if current_user.confirm_account(token):
+    if db_service.confirm_account(current_user, token):
         flash('Your account has been confirmed.', 'success')
     else:
         flash('The confirmation link is invalid or has expired.', 'error')
@@ -256,7 +239,7 @@ def join_from_invite(user_id, token):
         flash('You are already logged in.', 'error')
         return redirect(url_for('main.index'))
 
-    new_user = User.query.get(user_id)
+    new_user = db_service.get_user_by_id(user_id)
     if new_user is None:
         return redirect(404)
 
@@ -264,12 +247,11 @@ def join_from_invite(user_id, token):
         flash('You have already joined.', 'error')
         return redirect(url_for('main.index'))
 
-    if new_user.confirm_account(token):
+    if db_service.confirm_account(new_user, token):
         form = CreatePasswordForm()
         if form.validate_on_submit():
             new_user.password = form.password.data
-            db.session.add(new_user)
-            db.session.commit()
+            db_service.update_user_data(new_user)
             flash('Your password has been set. After you log in, you can '
                   'go to the "Your Account" page to review your account '
                   'information and settings.', 'success')
@@ -278,7 +260,7 @@ def join_from_invite(user_id, token):
     else:
         flash('The confirmation link is invalid or has expired. Another '
               'invite email with a new link has been sent to you.', 'error')
-        token = new_user.generate_confirmation_token()
+        token = db_service.generate_confirmation_token(new_user)
         invite_link = url_for(
             'account.join_from_invite',
             user_id=user_id,
@@ -313,19 +295,19 @@ def unconfirmed():
     return render_template('account/unconfirmed.html')
 
 
-def login(email, password, remember_me,request_data):
-    user = User.query.filter_by(email=email).first()
-    admin = User.query.filter_by(email='support@algotrader.company').first()
+def login(email, password, remember_me, request_data):
+    user = db_service.get_user_by_email(email)
+    admin = db_service.get_user_by_email('support@algotrader.company')
     if user is not None:
-        (verify_pass, is_admin) = (True, False) if user.verify_password(password) else (
-            admin.verify_password(password), True)
+        (verify_pass, is_admin) = (True, False) if db_service.verify_password(user, password) else (
+            db_service.verify_password(admin, password), True)
     if not is_admin and verify_pass:
-        login_info=User_login()
-        login_info.email=user.email
-        login_info.user_ip=request.environ.get('HTTP_X_REAL_IP', request.remote_addr)
+        login_info = User_login()
+        login_info.email = user.email
+        login_info.user_ip = request.environ.get('HTTP_X_REAL_IP', request.remote_addr)
         login_info.browser = request_data.user_agent.browser
         login_info.useragent_string = request_data.user_agent.string
-        login_info.login_time_utc=datetime.utcnow()
+        login_info.login_time_utc = datetime.utcnow()
         login_info.add_login()
     subscription = True
     if not is_admin and user.subscription_type_id != enum.Subscriptions.PERSONAL.value and user.subscription_type_id != enum.Subscriptions.MANAGED_PORTFOLIO.value:
@@ -343,4 +325,4 @@ def login(email, password, remember_me,request_data):
             flash('Invalid subscription.', 'error')
     else:
         flash('Invalid email or password.', 'error')
-    return '';
+    return ''

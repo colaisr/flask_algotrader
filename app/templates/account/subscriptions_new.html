@@ -1,0 +1,38 @@
+{% extends 'mainpage/layout.html' %}
+{% block page_title %}
+Algotrader | Subcriptions
+{% endblock %}
+
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='styles/subscriptions.css') }}">
+{% endblock %}
+
+{% block content %}
+
+<div class="container">
+    <div class="subscriptions" id="subscriptions">
+        <div class="subscriptions__wrap wrap">
+            <div class="subscriptions__row row subscriptionsItems">
+                {% for s in subscriptions %}
+                <div class="subscriptionsItems__col subscriptionsItems__item">
+                    <div class="subscriptionsItems__title">{{s.subscription_name}}</div>
+                    {{s.description|safe}}
+                    <div class="subscriptionsItems__footer">
+                        <a href="{{url_for('account.register', subscription=s.id)}}"
+                           role="button"
+                           class="btn-transition btn registration {% if s.id == 3 %} disabled {%endif%}">
+                            {{s.price}}
+                        </a>
+                    </div>
+                </div>
+                {%endfor%}
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block scripting %}
+
+{% endblock %}

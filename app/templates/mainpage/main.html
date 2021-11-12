@@ -1,0 +1,468 @@
+{% extends 'mainpage/layout.html' %}
+{% block page_title %}
+Algotrader
+{% endblock %}
+
+{% block content %}
+
+<div class="container">
+    <section class="analytics" id="analytics">
+        <div class="analytics__wrap wrap">
+            <div class="analytics__row row">
+                <div class="analytics__col analytics__col_left">
+                    <h1 class="analytics__title">Analytics driven automated trading</h1>
+                </div>
+                <div class="analytics__col analytics__col_right">
+                    <div class="analytics__items">
+                        <div class="analytics__item">
+                            <div class="analytics__insideItem">
+                                <div class="analytics__name">Users</div>
+                                <div class="analytics__desc">Registered users</div>
+                            </div>
+                            <div class="analytics__insideItem analytics__insideItem_row">
+                                <div class="analytics__value analytics__value_yellow analytics__value_textCenter">
+                                    <span>{{system_status['personal_users']}}</span>
+                                    <span>Personal</span>
+                                </div>
+                                <div class="analytics__value analytics__value_green analytics__value_textCenter">
+                                    <span>{{system_status['managed_users']}}</span>
+                                    <span>Managed</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="analytics__item">
+                            <div class="analytics__insideItem">
+                                <div class="analytics__name">Tickers</div>
+                                <div class="analytics__desc">Candidates tracked daily</div>
+                            </div>
+                            <div class="analytics__insideItem">
+                                <div class="analytics__value analytics__value_green">{{system_status['tickers_tracked']}}</div>
+                            </div>
+                        </div>
+                        <div class="analytics__item">
+                            <div class="analytics__insideItem">
+                                <div class="analytics__name">Executions</div>
+                                <div class="analytics__desc">Deals executed</div>
+                            </div>
+                            <div class="analytics__insideItem">
+                                <div class="analytics__value analytics__value_green">{{system_status['all_positions']}}</div>
+                            </div>
+                        </div>
+                        <div class="analytics__item">
+                            <div class="analytics__insideItem">
+                                <div class="analytics__name">Funds</div>
+                                <div class="analytics__desc">All users portfolio value</div>
+                            </div>
+                            <div class="analytics__insideItem">
+                                <div class="analytics__value analytics__value_yellow">{{system_status['funds'] | round |int}} $</div>
+                            </div>
+                        </div>
+                        <div class="analytics__item">
+                            <div class="analytics__insideItem">
+                                <div class="analytics__name">Last Update</div>
+                                <div class="analytics__desc">Last data update</div>
+                            </div>
+                            <div class="analytics__insideItem">
+                                <div class="analytics__value">
+                                    <p>{{system_status['last_update_date']}}</p>
+                                    <!-- <p>12:49</p> -->
+                                </div>
+                            </div>
+                        </div>
+                        <div class="analytics__item">
+                            <div class="analytics__insideItem">
+                                <div class="analytics__name">Success <br>Rate</div>
+                            </div>
+                            <div class="analytics__insideItem analytics__insideItem_row">
+                                <div class="analytics__value analytics__value_yellow analytics__value_textCenter">
+                                    <span>{{system_status['technical_positions']}}</span>
+                                    <span>Technical</span>
+                                </div>
+                                <div class="analytics__value analytics__value_green analytics__value_textCenter">
+                                    <span>{{system_status['profit_positions']}}</span>
+                                    <span>Success</span>
+                                </div>
+                                <div class="analytics__value analytics__value_red analytics__value_textCenter">
+                                    <span>{{system_status['lost_positions']}}</span>
+                                    <span>Fail</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="analytics__row row analyticsItems">
+                <div class="analyticsItems__col analyticsItems__item">
+                    <div class="analyticsItems__title">Analytics</div>
+                    <ul class="analyticsItems__list">
+                        <li class="analyticsItems__listItem">
+                            <a href="#score" class="jsScrollTo analyticsItems__link">
+                                <p>AI driven Stock analytics.</p>
+                                <p>Daily updated.</p>
+                                <p>Enriched by 3d party data.</p>
+                            </a>
+                        </li>
+                    </ul>
+                    <ul class="analyticsItems__list">
+                        <li class="analyticsItems__listItem">
+                            <a href="#marketEmotion" class="jsScrollTo analyticsItems__link">
+                                <p>AI driven Market analytics.</p>
+                                <p>Hourly updated.</p>
+                                <p>Measured by 7 parameters.</p>
+                            </a>
+                        </li>
+                    </ul>
+                    <div class="analyticsItems__circleLabel">
+                        <svg>
+                            <use xlink:href="static/mainpage/assets/icons/sprite-mono.svg#grafic">
+                        </svg>
+                    </div>
+                </div>
+                <div class="analyticsItems__col analyticsItems__col_big analyticsItems__item">
+                    <div class="analyticsItems__title">Timing</div>
+                    <ul class="analyticsItems__list">
+                        <li class="analyticsItems__listItem">
+                            <a href="#maximizing" class="jsScrollTo analyticsItems__link">Profit maximization for Trending market phase.</a>
+                        </li>
+                        <li class="analyticsItems__listItem">
+                            <a href="#entryPoint" class="jsScrollTo analyticsItems__link">Entry point for each position targeted to gain intraday advantage based on 1year back research for each ticker (daily updated)</a>
+                        </li>
+                        <li class="analyticsItems__listItem">
+                            <span>Profit maximization with a trailing stop.</span>
+                        </li>
+                        <li class="analyticsItems__listItem">
+                            <a href="#trading" class="jsScrollTo analyticsItems__link">Positions open only during positive market emotional phase.</a>
+                        </li>
+                        <li class="analyticsItems__listItem">
+                            <span>Long held positions eliminated for better use of resources.</span>
+                        </li>
+                        <li class="analyticsItems__listItem">
+                            <a href="#marketCrash" class="jsScrollTo analyticsItems__link">Market crash protection based on market intraday drop (Black swan).</a>
+                        </li>
+                    </ul>
+                    <div class="analyticsItems__circleLabel">
+                        <svg>
+                            <use xlink:href="static/mainpage/assets/icons/sprite-mono.svg#lines">
+                        </svg>
+                    </div>
+                </div>
+                <div class="analyticsItems__col analyticsItems__item">
+                    <div class="analyticsItems__title">Management</div>
+                    <ul class="analyticsItems__list">
+                        <li class="analyticsItems__listItem">
+                            <a href="#portfolio" class="jsScrollTo analyticsItems__link">Portfolio diversification by sectors.</a>
+                        </li>
+                        <li class="analyticsItems__listItem">
+                            <a href="#candidates" class="jsScrollTo analyticsItems__link">Flexible behavior configuration- for different portfolio sizes.</a>
+                        </li>
+                        <li class="analyticsItems__listItem">
+                            <a href="#personal" class="jsScrollTo analyticsItems__link">Performance research for adjustment.</a>
+                        </li>
+                        <li class="analyticsItems__listItem">
+                            <a href="#customFilters" class="jsScrollTo analyticsItems__link">Filters to adjust a personal risk level per user.</a>
+                        </li>
+                    </ul>
+                    <div class="analyticsItems__circleLabel">
+                        <svg>
+                            <use xlink:href="static/mainpage/assets/icons/sprite-mono.svg#circle">
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <a href="#score" class="jsScrollTo linkArrowAnchor linkArrowAnchor_analytics">
+            <svg class="linkArrowAnchor__img">
+                <use xlink:href="static/mainpage/assets/icons/sprite-mono.svg#arrow-circle">
+            </svg>
+        </a>
+    </section>
+
+    <section class="score" id="score">
+        <div class="score__wrap wrap">
+            <div class="score__row row">
+                <div class="score__col">
+                    <h2>Algotrader score</h2>
+                    <div class="score__text text">The data is saved in DB in order to validate the analysis quality</div>
+                    <div class="scoreItems">
+                        <div class="scoreItems__topBlock">
+                            <div class="scoreItems__valueBlock">1-10</div>
+                            <div class="scoreItems__title">SMART SCORE</div>
+                        </div>
+                        <div class="scoreItems__bottomBlock">
+                            <ul class="scoreItems__list">
+                                <li class="scoreItems__item">Fundamental</li>
+                                <li class="scoreItems__item">Technical</li>
+                                <li class="scoreItems__item">Insiders</li>
+                                <li class="scoreItems__item">Hedge funds</li>
+                                <li class="scoreItems__item">Analysts</li>
+                                <li class="scoreItems__item">News</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <img class="score__img" src="static/mainpage/assets/images/scoreImg.png">
+        <img class="backImg backImg_1" src="static/mainpage/assets/images/back-1.png">
+        <a href="#marketEmotion" class="jsScrollTo linkArrowAnchor linkArrowAnchor_score">
+            <svg class="linkArrowAnchor__img">
+            <use xlink:href="static/mainpage/assets/icons/sprite-mono.svg#arrow-circle">
+            </svg>
+        </a>
+    </section>
+
+    <section class="marketEmotion" id="marketEmotion">
+        <div class="marketEmotion__wrap wrap">
+            <div class="marketEmotion__row row">
+                <div class="marketEmotion__col marketEmotion__col_offset">
+                    <img class="marketEmotion__img" src="static/mainpage/assets/images/marketEmotionImg.png">
+                </div>
+                <div class="marketEmotion__col">
+                    <h2>Market Emotion</h2>
+                    <div class="marketEmotion__desc">Market emotions are moving between exteeme Fear and Greed : between 0 and 100.</div>
+                    <div class="marketEmotion__subtitle">Measured hourly by :</div>
+                    <ul class="marketEmotion__list">
+                        <li class="marketEmotion__item"><b>S&P 500 Momentum.</b> Versus its 125-day moving average.</li>
+                        <li class="marketEmotion__item"><b>S&P 500 Strength.</b> The number of stocks hitting 52-week Highs and Lows.</li>
+                        <li class="marketEmotion__item"><b>Stock Price Breadth.</b> The volume of shares trading in stocks on the rise versus those declining.</li>
+                        <li class="marketEmotion__item"><b>Put and Call Options.</b> The put/call ratio, which compares the trading volume of bullish call options relative to the trading volume of bearish put options</li>
+                        <li class="marketEmotion__item"><b>Junk Bond Demand.</b> The spread between yields on investment grade bonds and junk bonds.</li>
+                        <li class="marketEmotion__item"><b>Market Volatility.</b> The VIX, which measures volatility</li>
+                        <li class="marketEmotion__item"><b>Safe Haven Demand.</b> The difference in returns for stocks versus Treasuries</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <img class="backImg backImg_2" src="static/mainpage/assets/images/back-2.png">
+        <a href="#maximizing" class="jsScrollTo linkArrowAnchor linkArrowAnchor_marketEmotion">
+            <svg class="linkArrowAnchor__img">
+                <use xlink:href="static/mainpage/assets/icons/sprite-mono.svg#arrow-circle">
+            </svg>
+        </a>
+    </section>
+
+    <section class="maximizing" id="maximizing">
+        <div class="maximizing__wrap wrap">
+            <div class="maximizing__row row">
+                <div class="maximizing__col">
+                    <h2 class="maximizing__title">Maximizing a profit for a winning position.Better than simply investing.</h2>
+                    <div class="maximizing__descBlock">
+                        <div class="maximizing__desc maximizing__desc_top text">We believe that entering to position on small drops caused by market deviations and bad news and getting out of position with small profit overtime bring better value than just holding it</div>
+                        <div class="maximizing__desc maximizing__desc_bottom text">Aggregated profit for a shorter positions should be higher than just a stock overall revenue. Of course it will work only if stock is profitable!</div>
+                    </div>
+                    <div class="maximizing__textBlock">
+                        <div class="maximizing__text maximizing__text_right">Profit point: configured according broker fees... as personal sence... Better to use Trailing stop if allowed by API. For example: 1% on IB =not good it is 10 USD – 2 USD fee, but 6% is already fine: 50 USD-2 USD Fee.</div>
+                        <div class="maximizing__text maximizing__text_left">Entry point: if during a day stock falls more then average intraday fall of a last year. The statistics is updated on daily basis. From Yahoo finance.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="maximizing__img">
+            <svg>
+                <use xlink:href="static/mainpage/assets/icons/sprite-multi.svg#graficBig">
+            </svg>
+        </div>
+        <a href="#entryPoint" class="jsScrollTo linkArrowAnchor">
+            <svg class="linkArrowAnchor__img">
+                <use xlink:href="static/mainpage/assets/icons/sprite-mono.svg#arrow-circle">
+            </svg>
+        </a>
+    </section>
+
+    <div class="wrapContainerCenter">
+        <section class="entryPoint" id="entryPoint">
+            <div class="entryPoint__wrap wrap">
+                <div class="entryPoint__row row">
+                    <div class="entryPoint__col">
+                        <h2>Advantage entry point (daily)</h2>
+                        <img class="entryPoint__img" src="static/mainpage/assets/images/entryPointImg.png">
+                    </div>
+                </div>
+            </div>
+            <a href="#trading" class="jsScrollTo linkArrowAnchor linkArrowAnchor_entryPoint">
+                <svg class="linkArrowAnchor__img">
+                    <use xlink:href="static/mainpage/assets/icons/sprite-mono.svg#arrow-circle">
+                </svg>
+            </a>
+        </section>
+
+        <section class="trading" id="trading">
+            <div class="trading__wrap wrap">
+                <div class="trading__row row">
+                    <div class="trading__col">
+                        <h2>Trading based on market emotions</h2>
+                        <div class="trading__text text">New positions are opened only during a positive market phase. Minimal level can be adjusted by user – with a ability to back test on one last year. </div>
+                        <img class="trading__img" src="static/mainpage/assets/images/tradingImg.png">
+                    </div>
+                </div>
+            </div>
+            <img class="backImg backImg_3" src="static/mainpage/assets/images/back-3.png">
+            <a href="#marketCrash" class="jsScrollTo linkArrowAnchor">
+                <svg class="linkArrowAnchor__img">
+                    <use xlink:href="static/mainpage/assets/icons/sprite-mono.svg#arrow-circle">
+                </svg>
+            </a>
+        </section>
+
+        <section class="marketCrash" id="marketCrash">
+            <div class="marketCrash__wrap wrap">
+                <div class="marketCrash__row row">
+                    <div class="marketCrash__col">
+                        <h2>Market crash protection</h2>
+                        <div class="marketCrash__content row">
+                            <div class="marketCrash__text text">Market fall protection –if unexpected intraday massive fall occurs to SnP 500 (Black Swan)- all the existing positions can be automatically closed. The level can be adjusted by user. BACKTESTING</div>
+                            <div class="marketCrash__imgSmallWrap">
+                                <img class="marketCrash__imgSmall" src="static/mainpage/assets/images/marketCrashImg-1.png">
+                            </div>
+                        </div>
+                        <div class="marketCrash__imgWrap">
+                            <img class="marketCrash__img" src="static/mainpage/assets/images/marketCrashImg-2.png">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <img class="backImg backImg_4" src="static/mainpage/assets/images/back-4.png">
+            <a href="#portfolio" class="jsScrollTo linkArrowAnchor linkArrowAnchor_marketCrash">
+                <svg class="linkArrowAnchor__img">
+                    <use xlink:href="static/mainpage/assets/icons/sprite-mono.svg#arrow-circle">
+                </svg>
+            </a>
+        </section>
+    </div>
+
+    <section class="portfolio" id="portfolio">
+        <div class="portfolio__wrap wrap">
+            <div class="portfolio__row row">
+                <div class="portfolio__col">
+                    <h2>Portfolio management</h2>
+                    <div class="portfolio__text text">Fully managed, diversifyed portfolio, with customizable settings to adjust better to users personal style of work</div>
+                    <img class="portfolio__img" src="static/mainpage/assets/images/portfolioImg.png">
+                </div>
+            </div>
+        </div>
+        <img class="backImg backImg_5" src="static/mainpage/assets/images/back-5.png">
+        <a href="#candidates" class="jsScrollTo linkArrowAnchor">
+            <svg class="linkArrowAnchor__img">
+                <use xlink:href="static/mainpage/assets/icons/sprite-mono.svg#arrow-circle">
+            </svg>
+        </a>
+    </section>
+
+    <section class="candidates" id="candidates">
+        <div class="candidates__wrap wrap">
+            <div class="candidates__row row">
+                <div class="candidates__col">
+                    <h2>Candidates to follow</h2>
+                    <div class="candidates__text text">Built in system selected list of tickers to follow or user defined custom selection</div>
+                    <img class="candidates__img" src="static/mainpage/assets/images/candidates.png">
+                </div>
+            </div>
+        </div>
+        <img class="backImg backImg_6" src="static/mainpage/assets/images/back-6.png">
+        <a href="#personal" class="jsScrollTo linkArrowAnchor linkArrowAnchor_candidates">
+            <svg class="linkArrowAnchor__img">
+                <use xlink:href="static/mainpage/assets/icons/sprite-mono.svg#arrow-circle">
+            </svg>
+        </a>
+    </section>
+
+    <section class="personal" id="personal">
+        <div class="personal__wrap wrap">
+            <div class="personal__row row">
+                <div class="personal__col">
+                    <h2>Personal performance</h2>
+                    <div class="personal__text text">Ability to analyze the performance and adjust strategy</div>
+                    <img class="personal__img" src="static/mainpage/assets/images/personal.png">
+                </div>
+            </div>
+        </div>
+        <img class="backImg backImg_7" src="static/mainpage/assets/images/back-7.png">
+        <a href="#customFilters" class="jsScrollTo linkArrowAnchor linkArrowAnchor_personal">
+            <svg class="linkArrowAnchor__img">
+                <use xlink:href="static/mainpage/assets/icons/sprite-mono.svg#arrow-circle">
+            </svg>
+        </a>
+    </section>
+
+    <section class="customFilters" id="customFilters">
+        <div class="customFilters__wrap wrap">
+            <div class="customFilters__row row">
+                <div class="customFilters__col">
+                    <h2>Custom filters</h2>
+                    <div class="customFilters__itemsTop">
+                        <div class="customFilters__item">
+                            <div class="customFilters__title">Algotrader Score</div>
+                            <div class="customFilters__desc">Algotrader AI based score for the ticker</div>
+                            <div class="customFilters__circleLabel">
+                                <svg>
+                                    <use xlink:href="static/mainpage/assets/icons/sprite-mono.svg#scales">
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="customFilters__item">
+                            <div class="customFilters__title">Max intraday drop</div>
+                            <div class="customFilters__desc">Maximal intraday drop in tickers history. Can show a tickers volatility.</div>
+                            <div class="customFilters__circleLabel">
+                                <svg>
+                                    <use xlink:href="static/mainpage/assets/icons/sprite-mono.svg#arrow-down">
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="customFilters__item">
+                            <div class="customFilters__title">Beta</div>
+                            <div class="customFilters__desc">Tickers behavior comparing to overall sectors performance </div>
+                            <div class="customFilters__circleLabel">
+                                <svg>
+                                    <use xlink:href="static/mainpage/assets/icons/sprite-mono.svg#b">
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="customFilters__itemsBottom">
+                        <div class="customFilters__item">
+                            <div class="customFilters__title">Minimal momentum</div>
+                            <div class="customFilters__desc">General performance of a company during a last year, does it have a positive trend and how strong is it.</div>
+                            <div class="customFilters__circleLabel">
+                                <svg>
+                                    <use xlink:href="static/mainpage/assets/icons/sprite-mono.svg#waves">
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="customFilters__item">
+                            <div class="customFilters__title">Underprice level</div>
+                            <div class="customFilters__desc">Current price is below an estimated actual stock price (by analytics consensus)</div>
+                            <div class="customFilters__circleLabel">
+                                <svg>
+                                    <use xlink:href="static/mainpage/assets/icons/sprite-mono.svg#arrows-inside">
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <a href="#aggregatedView" class="jsScrollTo linkArrowAnchor">
+            <svg class="linkArrowAnchor__img">
+                <use xlink:href="static/mainpage/assets/icons/sprite-mono.svg#arrow-circle">
+            </svg>
+        </a>
+    </section>
+
+    <section class="aggregatedView">
+        <div class="aggregatedView__wrap wrap">
+            <div class="aggregatedView__row row">
+                <div class="aggregatedView__col">
+                    <h2 id="aggregatedView">Aggregated user view available from all devices</h2>
+                    <img class="aggregatedView__img" src="static/mainpage/assets/images/imgFooter.png">
+                </div>
+            </div>
+        </div>
+        <a href="#analytics" class="jsScrollTo linkArrowAnchor linkArrowAnchor_aggregatedView">
+            <svg class="linkArrowAnchor__img">
+                <use xlink:href="static/mainpage/assets/icons/sprite-mono.svg#arrow-circle">
+            </svg>
+        </a>
+    </section>
+</div>
+
+{% endblock %}

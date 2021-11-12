@@ -1,0 +1,96 @@
+{% block header %}
+<header class="header">
+    <div class="header__wrap wrap">
+        <div class="header__row row">
+            <div class="header__col header__col_left">
+                <a href="/" class="header__logoLink">
+                    <img class="header__logo" src="{{ url_for('static', filename='mainpage/assets/images/logo.png') }}">
+                </a>
+            </div>
+            <div class="header__col header__col_right">
+                <ul class="menu">
+                    <li class="menu__item">
+                        <a href="https://t.me/Algotrader_signals"  target="_blank" class="menu__link menu__link_opacity">Telegram</a>
+                    </li>
+                    <li class="menu__item">
+                        <a href="/account/subscriptions" class="menu__link menu__link_opacity">Pricing</a>
+                    </li>
+                    {% if current_user.is_authenticated %}
+                    <li class="menu__item">
+                        <a href="/account/manage/info" class="menu__link">
+                            <i class="fa fa-user-circle pr-1"></i>
+                            {% if session['admin_as'] %}
+                            <span class="text-danger pr-2">Admin as </span>
+                            {% endif %}
+                             {{current_user.first_name}} {{current_user.last_name}}
+                        </a>
+                    </li>
+                    <li class="menu__item">
+                        <a href="/account/logout" class="menu__link">
+                            <i class="fa fa-sign-out pr-1"></i>
+                            Log Out
+                        </a>
+                    </li>
+                    {% else %}
+                    <li class="menu__item">
+                        <a href="/account/login" class="menu__link">
+                            Log In
+                        </a>
+                    </li>
+                    <li class="menu__item">
+                        <a href="/account/subscriptions" class="menu__link">
+                            Register
+                        </a>
+                    </li>
+                    {% endif %}
+                </ul>
+                <div class="header__menuMobile">
+                    <div id="menuBtn" class="header__menuBurger">
+                        <span></span>
+                    </div>
+                    <noindex>
+                        <div class="header__listMobileWrap">
+                            <ul class="menuMobile">
+                                <li class="menuMobile__item">
+                                    <a href="https://t.me/Algotrader_signals"  target="_blank" class="menuMobile__link menuMobile__link_opacity">Telegram</a>
+                                </li>
+                                <li class="menuMobile__item">
+                                    <a href="/account/subscriptions" class="menuMobile__link menuMobile__link_opacity">Pricing</a>
+                                </li>
+                                {% if current_user.is_authenticated %}
+                                <li class="menuMobile__item">
+                                    <a href="/account/manage/info" class="menuMobile__link">
+                                        <i class="fa fa-user-circle pr-1"></i>
+                                        {% if session['admin_as'] %}
+                                        <span class="text-danger pr-2">Admin as </span>
+                                        {% endif %}
+                                         {{current_user.first_name}} {{current_user.last_name}}
+                                    </a>
+                                </li>
+                                <li class="menuMobile__item">
+                                    <a href="/account/logout" class="menuMobile__link">
+                                        <i class="fa fa-sign-out pr-1"></i>
+                                        Log Out
+                                    </a>
+                                </li>
+                                {% else %}
+                                <li class="menuMobile__item">
+                                    <a href="/account/login" class="menuMobile__link">
+                                        Log In
+                                    </a>
+                                </li>
+                                <li class="menuMobile__item">
+                                    <a href="/account/subscriptions" class="menuMobile__link">
+                                        Register
+                                    </a>
+                                </li>
+                                {% endif %}
+                            </ul>
+                        </div>
+                    </noindex>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+{% endblock%}
