@@ -10,7 +10,7 @@ from flask import (
 from flask_login import login_required, current_user
 from datetime import datetime
 
-from sqlalchemy import text
+from sqlalchemy import text, desc
 
 from app import db, csrf
 from app.email import send_email
@@ -258,33 +258,39 @@ def check_for_signals(candidates_live_json):
     candidates_live = json.loads(candidates_live_json)
     for k, v in candidates_live.items():
         if v['Ask'] < v['target_price'] and v['Ask'] != -1:
-            # signals_exist = TelegramSignal.query.filter_by(target_met=None).all() add checking if signal allready logged
-            signal = TelegramSignal()
-            ticker_data = TickerData.query.filter_by(ticker=v['Stock']).order_by(
-                TickerData.updated_server_time.desc()).first()
-            signal.ticker = v['Stock']
-            signal.received = datetime.today().date()
-            signal.transmitted = True
-            signal.signal_price = v['Ask']
-            try:
-                if ticker_data.algotrader_rank >= 9.3:
-                    if ticker_data.target_mean_price is None:
-                        signal.target_price = 0
-                    else:
-                        signal.target_price = ticker_data.target_mean_price
-                    added = signal.add_signal()
-                    if added:
-                        send_telegram_signal_message(str(signal.id) + "\n" +
-                                                     "Time to buy: " + signal.ticker + "\n" +
-                                                     "it crossed the trigger of " + str(
-                            round(v['target_price'], 2)) + " USD \n" +
-                                                     "Algotrader Rank: " + str(ticker_data.algotrader_rank) + "\n" +
-                                                     "Expected to reach the target of: " + str(
-                            ticker_data.target_mean_price) + " USD"
-                                                     )
-            except:
-                print("Error in signal for : " + signal.ticker)
-                print(ticker_data)
+            ticker = v['Stock']
+            signal = TelegramSignal.query.filter_by(target_met=None, ticker=ticker).order_by(
+                TelegramSignal.id.desc()).first()
+            if signal is not None:
+                signal_date = signal.received.date()
+                today = datetime.utcnow().date()
+                if signal_date != today:     #there was no same signal today
+                    signal = TelegramSignal()
+                    ticker_data = TickerData.query.filter_by(ticker=v['Stock']).order_by(
+                        TickerData.updated_server_time.desc()).first()
+                    signal.ticker = v['Stock']
+                    signal.received = datetime.today().date()
+                    signal.transmitted = True
+                    signal.signal_price = v['Ask']
+                    try:
+                        if ticker_data.algotrader_rank >= 9.3:
+                            if ticker_data.target_mean_price is None:
+                                signal.target_price = 0
+                            else:
+                                signal.target_price = ticker_data.target_mean_price
+                            added = signal.add_signal()
+                            if added:
+                                send_telegram_signal_message(str(signal.id) + "\n" +
+                                                             "Time to buy: " + signal.ticker + "\n" +
+                                                             "it crossed the trigger of " + str(
+                                    round(v['target_price'], 2)) + " USD \n" +
+                                                             "Algotrader Rank: " + str(ticker_data.algotrader_rank) + "\n" +
+                                                             "Expected to reach the target of: " + str(
+                                    ticker_data.target_mean_price) + " USD"
+                                                             )
+                    except:
+                        print("Error in signal for : " + signal.ticker)
+                        print(ticker_data)
 
 
 @csrf.exempt
