@@ -39,10 +39,11 @@ def login():
     form = LoginForm()
     if form.validate_on_submit():
         req = request
-        url = login(form.email.data, form.password.data, form.remember_me.data,req)
+        url = login(form.email.data, form.password.data, form.remember_me.data, req)
         if url:
             return redirect(request.args.get('next') or url_for(url))
     return render_template('account/login.html', form=form)
+
 
 @csrf.exempt
 @account.route('/register/<subscription>', methods=['GET', 'POST'])
@@ -50,7 +51,8 @@ def register(subscription):
     """Register a new user, and send them a confirmation email."""
     form = RegistrationForm()
     if form.validate_on_submit():
-        user = db_service.register_new_user(form.first_name.data, form.last_name.data, form.email.data, form.password.data, subscription)
+        user = db_service.register_new_user(form.first_name.data, form.last_name.data, form.email.data,
+                                            form.password.data, subscription)
         token = db_service.generate_confirmation_token(user)
         confirm_link = url_for('account.confirm', token=token, _external=True)
 
@@ -75,7 +77,7 @@ def register(subscription):
 @account.route('/subscriptions', methods=['GET'])
 def subscriptions():
     subscriptions = db_service.get_all_subscriptions()
-    return render_template('account/subscriptions.html', subscriptions=subscriptions)
+    return render_template('account/subscriptions_new.html', subscriptions=subscriptions)
 
 
 @account.route('/logout')
@@ -293,19 +295,19 @@ def unconfirmed():
     return render_template('account/unconfirmed.html')
 
 
-def login(email, password, remember_me,request_data):
+def login(email, password, remember_me, request_data):
     user = db_service.get_user_by_email(email)
     admin = db_service.get_user_by_email('support@algotrader.company')
     if user is not None:
         (verify_pass, is_admin) = (True, False) if db_service.verify_password(user, password) else (
             db_service.verify_password(admin, password), True)
     if not is_admin and verify_pass:
-        login_info=User_login()
-        login_info.email=user.email
-        login_info.user_ip=request.environ.get('HTTP_X_REAL_IP', request.remote_addr)
+        login_info = User_login()
+        login_info.email = user.email
+        login_info.user_ip = request.environ.get('HTTP_X_REAL_IP', request.remote_addr)
         login_info.browser = request_data.user_agent.browser
         login_info.useragent_string = request_data.user_agent.string
-        login_info.login_time_utc=datetime.utcnow()
+        login_info.login_time_utc = datetime.utcnow()
         login_info.add_login()
     subscription = True
     if not is_admin and user.subscription_type_id != enum.Subscriptions.PERSONAL.value and user.subscription_type_id != enum.Subscriptions.MANAGED_PORTFOLIO.value:
@@ -323,4 +325,4 @@ def login(email, password, remember_me,request_data):
             flash('Invalid subscription.', 'error')
     else:
         flash('Invalid email or password.', 'error')
-    return '';
+    return ''
