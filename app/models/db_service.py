@@ -10,13 +10,15 @@ from app import db
 
 
 #USERS
-def register_new_user(first_name, last_name, email, password, subscription, role=1):
+def register_new_user(first_name, last_name, email, password, terms_agree, subscription, role=1):
     user = User(
-        role=role,
+        role_id=role,
         first_name=first_name,
         last_name=last_name,
         email=email,
         password=password,
+        signature=terms_agree,
+        signature_full_name=f"{first_name} {last_name}",
         registration_date=datetime.utcnow(),
         subscription_type_id=subscription,
         subscription_start_date=datetime.utcnow(),
