@@ -293,7 +293,7 @@ Trader station
                             <th class="text-center">Close</th>
                             <th class="text-center">Open</th>
                             <th class="text-center">Ask Price</th>
-                            <th class="text-center">Target Buy</th>
+<!--                            <th class="text-center">Target Buy</th>-->
                             <th class="text-center">Target Price</th>
                             <th class="text-center">Algotrader Analytics</th>
                             <th class="text-center">Underprice(%)</th>
@@ -318,13 +318,9 @@ Trader station
                             <td class="text-center">{{value['Close']}}</td>
                             <td class="text-center">{{value['Open']}}</td>
                             <td class="text-center">{{value['Ask']}}</td>
-                            <td class="text-center">
-                                {% if value['buying_target_price_fmp'] is none %}
-                                0
-                                {% else %}
-                                {{value['buying_target_price_fmp']|round(2)}}
-                                {% endif%}
-                            </td>
+<!--                            <td class="text-center">-->
+
+<!--                            </td>-->
                             <td class="text-center">{{value['target_price']|round(2)}}</td>
                             <td class="text-center">{{value['algotrader_rank']}}</td>
                             <td class="text-center">{{value['under_priced_pnt']}}</td>
