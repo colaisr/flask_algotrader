@@ -318,13 +318,37 @@ Trader station
                             <td class="text-center">{{value['Close']}}</td>
                             <td class="text-center">{{value['Open']}}</td>
                             <td class="text-center">{{value['Ask']}}</td>
-                            <td class="text-center">{{value['buying_target_price_fmp']|round(2)}}</td>
+                            <td class="text-center">
+                                {% if value['buying_target_price_fmp'] is none %}
+                                0
+                                {% else %}
+                                {{value['buying_target_price_fmp']|round(2)}}
+                                {% endif%}
+                            </td>
                             <td class="text-center">{{value['target_price']|round(2)}}</td>
                             <td class="text-center">{{value['algotrader_rank']}}</td>
                             <td class="text-center">{{value['under_priced_pnt']}}</td>
-                            <td class="text-center">{{value['twelve_month_momentum']|round(1)}}</td>
-                            <td class="text-center">{{value['beta']|round(2)}}</td>
-                            <td class="text-center">{{value['max_intraday_drop_percent']|round(1)}}</td>
+                            <td class="text-center">
+                                {% if value['twelve_month_momentum'] is none %}
+                                0
+                                {% else %}
+                                {{value['twelve_month_momentum']|round(1)}}
+                                {% endif%}
+                            </td>
+                            <td class="text-center">
+                                {% if value['beta'] is none %}
+                                0
+                                {% else %}
+                                {{value['beta']|round(2)}}
+                                {% endif%}
+                            </td>
+                            <td class="text-center">
+                                {% if value['max_intraday_drop_percent'] is none %}
+                                0
+                                {% else %}
+                                {{value['max_intraday_drop_percent']|round(1)}}
+                                {% endif%}
+                            </td>
                         </tr>
                         {% endfor %}
                         </tbody>
