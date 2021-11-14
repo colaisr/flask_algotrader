@@ -19,6 +19,7 @@ class TickerData(db.Model):
     ticker = db.Column('ticker', db.String)
     yahoo_avdropP = db.Column('yahoo_avdropP', db.Float)
     yahoo_avspreadP = db.Column('yahoo_avspreadP', db.Float)
+    buying_target_price_fmp=db.Column('buying_target_price_fmp', db.Float)
     tipranks = db.Column('tipranks', db.Integer)
     yahoo_rank = db.Column('yahoo_rank', db.Float)
     stock_invest_rank = db.Column('stock_invest_rank', db.Float)
