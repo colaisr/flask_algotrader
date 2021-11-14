@@ -1,0 +1,68 @@
+{% extends 'mainpage/layout.html' %}
+{% block page_title %}
+Algotrader | Register
+{% endblock %}
+{% import 'macros/form_macros.html' as f %}
+{% import 'macros/check_password.html' as check %}
+
+
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='font-awesome/css/font-awesome.min.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='styles/register.css') }}">
+{% endblock %}
+
+{% block header %}
+{% include 'mainpage/header.html' %}
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="register-container">
+        <div class="register-grid">
+            <h2 class="">Create an account</h2>
+
+            {% set flashes = {
+            'error': get_flashed_messages(category_filter=['form-error']),
+            'warning': get_flashed_messages(category_filter=['form-check-email']),
+            'info': get_flashed_messages(category_filter=['form-info']),
+            'success': get_flashed_messages(category_filter=['form-success'])
+            } %}
+
+            {{ f.begin_form(form, flashes) }}
+
+            <div class="two fields">
+                {{ f.render_form_field(form.first_name) }}
+                {{ f.render_form_field(form.last_name) }}
+            </div>
+
+            {{ f.render_form_field(form.email) }}
+
+            <div class="two fields">
+                {{ f.render_form_field(form.password) }}
+                {{ f.render_form_field(form.password2) }}
+            </div>
+            <div class="terms-agree">
+                {{ f.render_form_field(form.terms_agree, extra_classes='column') }}
+
+            </div>
+
+            {{ f.form_message(flashes['error'], header='Something went wrong.', class='error') }}
+            {{ f.form_message(flashes['warning'], header='Check your email.', class='warning') }}
+            {{ f.form_message(flashes['info'], header='Information', class='info') }}
+            {{ f.form_message(flashes['success'], header='Success!', class='success') }}
+
+            {% for field in form | selectattr('type', 'equalto', 'SubmitField') %}
+            {{ f.render_form_field(field) }}
+            {% endfor %}
+
+            {{ f.end_form(form) }}
+        </div>
+    </div>
+</div>
+{{ check.password_check('password', 0) }}
+{% endblock %}
+
+{% block scripting %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='scripts/pages/register.js') }}"></script>
+{% endblock %}

@@ -1,0 +1,61 @@
+{% extends 'mainpage/layout.html' %}
+{% block page_title %}
+Algotrader | Terms Of Use
+{% endblock %}
+
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='styles/contract.css') }}">
+{% endblock %}
+
+
+{% block content %}
+<header class="header">
+    <div class="header__wrap wrap">
+        <div class="header__row row">
+            <div class="header__col header__col_left">
+                <h3>Privacy policy</h3>
+            </div>
+            <div class="header__col header__col_right">
+<!--                <ul class="menu">-->
+<!--                    <li class="menu__item">-->
+<!--                        <a href="/station/terms_of_use/{{menu_language}}"  class="menu__link menu__link_opacity terms_of_use_language">-->
+<!--                            {{menu_language.upper()}}-->
+<!--                        </a>-->
+<!--                    </li>-->
+<!--                    <li class="menu__item">-->
+<!--                        <a href="/station/download_contract/{{download_language}}" class="menu__link menu__link_opacity">Download</a>-->
+<!--                    </li>-->
+<!--                </ul>-->
+                <div class="header__menuMobile" hidden>
+                    <div id="menuBtn" class="header__menuBurger">
+                        <span></span>
+                    </div>
+                    <noindex>
+                        <div class="header__listMobileWrap">
+<!--                            <ul class="menuMobile">-->
+<!--                                <li class="menuMobile__item">-->
+<!--                                    <a href="/station/terms_of_use/{{menu_language}}"  class="menuMobile__link menuMobile__link_opacity">{{menu_language.upper()}}</a>-->
+<!--                                </li>-->
+<!--                                <li class="menuMobile__item">-->
+<!--                                    <a href="/station/download_contract/{{download_language}}" class="menuMobile__link menuMobile__link_opacity">Download</a>-->
+<!--                                </li>-->
+<!--                            </ul>-->
+                        </div>
+                    </noindex>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+<div class="container">
+    <div class="terms-of-use">
+        <div>
+            <textarea id="contract" disabled class="form-control">
+                {{privacy_policy_txt}}
+            </textarea>
+        </div>
+
+    </div>
+</div>
+{% endblock %}
+

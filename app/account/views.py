@@ -52,7 +52,7 @@ def register(subscription):
     form = RegistrationForm()
     if form.validate_on_submit():
         user = db_service.register_new_user(form.first_name.data, form.last_name.data, form.email.data,
-                                            form.password.data, subscription)
+                                            form.password.data, form.terms_agree.data, subscription)
         token = db_service.generate_confirmation_token(user)
         confirm_link = url_for('account.confirm', token=token, _external=True)
 
@@ -68,10 +68,10 @@ def register(subscription):
                    user=user)
 
         flash(f'A confirmation link has been sent to {user.email}.', 'warning')
-        url = login(form.email.data, form.password.data, True)
+        url = login(form.email.data, form.password.data, True, request)
         if url:
             return redirect(request.args.get('next') or url_for(url))
-    return render_template('account/register.html', form=form)
+    return render_template('account/register_new.html', form=form)
 
 
 @account.route('/subscriptions', methods=['GET'])

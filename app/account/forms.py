@@ -41,6 +41,7 @@ class RegistrationForm(FlaskForm):
             EqualTo('password2', 'Passwords must match')
         ])
     password2 = PasswordField('Confirm password', validators=[InputRequired()])
+    terms_agree = BooleanField('I agree to Algotrader  <a href="/station/terms_of_use/en" target="_blank" class="menu__link">Terms of Use</a>  and  <a href="/station/privacy_policy/en" target="_blank" class="menu__link">Privacy Policy</a>', validators=[InputRequired()])
     submit = SubmitField('Register')
 
     def validate_email(self, field):

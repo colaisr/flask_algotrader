@@ -15,7 +15,7 @@
   {% block styles %}{% endblock %}
 </head>
   <body>
-    {% include 'mainpage/header.html' %}
+    {% block header %}{% endblock %}
     {% block content %}{% endblock %}
 
     <script type="text/javascript" src="{{ url_for('static', filename='mainpage/js/vendors.js') }}"></script>

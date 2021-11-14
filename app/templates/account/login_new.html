@@ -1,0 +1,82 @@
+{% extends 'mainpage/layout.html' %}
+{% import 'macros/form_macros.html' as f %}
+{% block page_title %}
+Algotrader | Login
+{% endblock %}
+
+{% block styles %}
+<style>
+    .login-container{
+        background: url('/static/mainpage/assets/images/backTop.png') no-repeat;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+        bottom: 0;
+        background-position: bottom center;
+        background-size: 100% 100%;
+        padding-top: 15% !important;
+        padding-right: 40px;
+        padding-left: 40px;
+    }
+
+    .login-grid{
+        width: calc(723px + 2rem);
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        padding: 1rem;
+        vertical-align: top;
+    }
+
+    h2{
+        padding-bottom: 0.21428571rem;
+        border-bottom: 1px solid rgba(34,36,38,.15);
+        font-size: 1.71428571rem;
+    }
+
+    label{
+        display: block;
+        margin: 0 0 0.28571429rem 0;
+        color: rgba(0,0,0,.87);
+        font-size: .92857143em;
+        font-weight: 700;
+        text-transform: none;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+
+<div class="container">
+    <div class="login-container">
+        <div class="login-grid">
+            <h2 class="">Log in</h2>
+
+            {% set flashes = {
+            'error': get_flashed_messages(category_filter=['form-error']),
+            'warning': get_flashed_messages(category_filter=['form-check-email']),
+            'info': get_flashed_messages(category_filter=['form-info']),
+            'success': get_flashed_messages(category_filter=['form-success'])
+            } %}
+
+            {{ f.begin_form(form, flashes) }}
+            {{ f.render_form_field(form.email) }}
+            {{ f.render_form_field(form.password) }}
+            <div class="">
+                {{ f.render_form_field(form.remember_me, extra_classes='column') }}
+                <div class="">
+                    <a href="{{ url_for('account.reset_password_request') }}">Forgot password?</a>
+                </div>
+            </div>
+
+            {{ f.form_message(flashes['error'], header='Something went wrong.', class='error') }}
+            {{ f.form_message(flashes['warning'], header='Check your email.', class='warning') }}
+            {{ f.form_message(flashes['info'], header='Information', class='info') }}
+            {{ f.form_message(flashes['success'], header='Success!', class='success') }}
+
+            {{ f.render_form_field(form.submit) }}
+            {{ f.end_form(form) }}
+        </div>
+    </div>
+</div>
+{% endblock %}

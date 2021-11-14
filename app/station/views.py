@@ -12,6 +12,38 @@ from app.models import UserSetting
 station = Blueprint('station', __name__)
 
 
+@station.route('/terms_of_use/<language>', methods=['GET'])
+def terms_of_use(language):
+    contract_txt = ''
+    menu_language = 'ru' if language == 'en' else 'en'
+    download_language = language
+    try:
+        with open(f'app/static/files/contract_{language}.txt', encoding="utf8") as f:
+            contract_txt = f.read()
+    except Exception as e:
+        print(e)
+    return render_template('account/terms_of_use.html',
+                           user=current_user,
+                           contract_txt=contract_txt,
+                           menu_language=menu_language,
+                           download_language=download_language)
+
+
+@station.route('/privacy_policy/<language>', methods=['GET'])
+def privacy_policy(language):
+    privacy_policy_txt = ''
+    menu_language = 'ru' if language == 'en' else 'en'
+    try:
+        with open(f'app/static/files/privacy_policy_{language}.txt', encoding="utf8") as f:
+            privacy_policy_txt = f.read()
+    except Exception as e:
+        print(e)
+    return render_template('account/privacy_policy.html',
+                           user=current_user,
+                           privacy_policy_txt=privacy_policy_txt,
+                           menu_language=menu_language)
+
+
 @station.route('/requirements', methods=['GET'])
 def download():
     contract_txt = ''
@@ -21,7 +53,7 @@ def download():
             # file_contents = f.read()
             # print(file_contents)
             # f.close()
-            with open('app/static/files/contract_ru.txt', encoding="utf8") as f:
+            with open('app/static/files/contract_en.txt', encoding="utf8") as f:
                 contract_txt = f.read()
         except Exception as e:
             print(e)
@@ -85,9 +117,13 @@ def request_zip():
     )
 
 
-@station.route('/download_contract', methods=['GET'])
-def download_contract():
+@station.route('/download_contract/<language>', methods=['GET'])
+def download_contract(language):
     return send_from_directory(
         directory='static/files',
-        filename='contract_ru.pdf'
+        filename=f'contract_{language}.pdf'
     )
+
+
+
+

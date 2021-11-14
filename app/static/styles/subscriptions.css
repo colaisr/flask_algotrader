@@ -7,7 +7,7 @@
   .subscriptions::after {
     content: '';
     position: absolute;
-    background: #eff8fe;;
+    background: #eff8fe;
     width: 100%;
     height: 100%;
     z-index: -1;

@@ -77,8 +77,6 @@ class User(UserMixin, db.Model):
 
     def __init__(self, **kwargs):
         super(User, self).__init__(**kwargs)
-        self.signature = False
-        self.signature_full_name = ''
         if self.subscription is None:
             self.subscription = Subscription.query.filter_by(id=self.subscription_type_id).first()
         if self.role is None:
