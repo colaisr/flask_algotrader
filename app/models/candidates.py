@@ -9,14 +9,14 @@ class Candidate(db.Model):
     ticker = db.Column('ticker', db.String)
     reason = db.Column('reason', db.String)
 
-    company_name = db.Column('company_name', db.String)
-    exchange = db.Column('exchange', db.String)
-    exchange_short = db.Column('exchange_short', db.String)
-    industry = db.Column('industry', db.String)
-    sector = db.Column('sector', db.String)
-    full_description = db.Column('full_description', db.String)
-    logo = db.Column('logo', db.String)
-    website = db.Column('website', db.String)
+    company_name = db.Column('company_name_fmp', db.String)
+    exchange = db.Column('exchange_fmp', db.String)
+    exchange_short = db.Column('exchange_short_fmp', db.String)
+    industry = db.Column('industry_fmp', db.String)
+    sector = db.Column('sector_fmp', db.String)
+    full_description = db.Column('full_description_fmp', db.String)
+    logo = db.Column('logo_fmp', db.String)
+    website = db.Column('website_fmp', db.String)
 
     enabled = db.Column('enabled', db.Boolean)
 
