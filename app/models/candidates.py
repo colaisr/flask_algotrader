@@ -11,10 +11,12 @@ class Candidate(db.Model):
 
     company_name = db.Column('company_name', db.String)
     exchange = db.Column('exchange', db.String)
+    exchange_short = db.Column('exchange_short', db.String)
     industry = db.Column('industry', db.String)
     sector = db.Column('sector', db.String)
     full_description = db.Column('full_description', db.String)
     logo = db.Column('logo', db.String)
+    website = db.Column('website', db.String)
 
     enabled = db.Column('enabled', db.Boolean)
 
@@ -29,10 +31,12 @@ class Candidate(db.Model):
             candidate.enabled = self.enabled
             candidate.company_name = self.company_name
             candidate.exchange = self.exchange
+            candidate.exchange_short = self.exchange_short
             candidate.industry = self.industry
             candidate.sector = self.sector
             candidate.full_description = self.full_description
             candidate.logo = self.logo
+            candidate.website = self.website
         db.session.commit()
 
     def delete_candidate(self):
