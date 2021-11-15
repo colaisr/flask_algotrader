@@ -1,0 +1,108 @@
+{% extends 'layouts/base.html' %}
+{% block page_title %}
+Algotrader | Station Login
+{% endblock %}
+
+{% block styles %}
+<link  href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet"><!-- Bootstrap is required -->
+<link  href="https://cdn.jsdelivr.net/npm/bootstrap-steps@%5E1.0/dist/bootstrap-steps.min.css" rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static', filename='styles/registration_steps.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="app-main__inner">
+    <div class="column steps-header">
+        <ul class="steps">
+          <li class="step step-active">
+            <div class="step-content">
+              <span class="step-circle">1</span>
+              <span class="step-text">Station Login</span>
+            </div>
+          </li>
+          <li class="step">
+            <div class="step-content">
+              <span class="step-circle">2</span>
+              <span class="step-text">Data Subscriptions</span>
+            </div>
+          </li>
+          <li class="step">
+            <div class="step-content">
+              <span class="step-circle">3</span>
+              <span class="step-text">SMS</span>
+            </div>
+          </li>
+          <li class="step">
+            <div class="step-content">
+              <span class="step-circle">4</span>
+              <span class="step-text">Confirmation</span>
+            </div>
+          </li>
+        </ul>
+    </div>
+    <div class="column station-login">
+        <div class="tab-content">
+            <form id="station-login-form" action="/algotradersettings/saverequirementssettings" method="post">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                <input type="hidden" id="data-changed" name="data-changed" value="0"/>
+                <div class="tab-pane tabs-animation fade active show">
+                    <div class="main-card mb-3 card">
+                        <div class="card-body">
+                            <h5 style="font-size: large;" class="card-title">Station settings </h5>
+                            <div style="margin-bottom: 30px;">
+                                <p>
+                                  In order to provide You a dedicated virtual machine for Agotrader Client execution,
+                                  please provide a following account details:
+                                </p>
+                            </div>
+                            <div class="form-row">
+                                <div class="col-md-4">
+                                    <div class="position-relative form-group">
+                                        <label for="connection_account_name" class="">IBKR account</label>
+                                        <input title="Account name- can be seen at IBKR.com"
+                                               value="{{user_settings.connection_account_name}}"
+                                               name="connection_account_name" id="connection_account_name" type="text"
+                                               class="form-control"></div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="position-relative form-group">
+                                        <label for="connection_tws_user" class="">TWS user</label>
+                                        <input title="User name - to login to TWS automatically on restarts"
+                                               value="{{user_settings.connection_tws_user}}" name="connection_tws_user"
+                                               id="connection_tws_user" type="text" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="position-relative form-group">
+                                        <label for="connection_tws_pass" class="">TWS password</label>
+                                        <input title="Password - to login to TWS automatically on restarts"
+                                               value="{{user_settings.connection_tws_pass}}" name="connection_tws_pass"
+                                               id="connection_tws_pass" type="password"
+                                               class="form-control"></div>
+                                </div>
+                            </div>
+                            <div style="margin-bottom: 30px;">
+                                <p>
+                                  * IBKR Gateway will be launched on Virtual computer and Log in with the details above.
+                                    No any other actions beside Buy and Sell can be executed for the user through the Getaway.
+                                    Loging In manually from any other device will Disconnect the station and pass the full controll for the owner.
+                                </p>
+                            </div>
+                        </div>
+        <!--                    <div class="card-footer"></div>-->
+        <!--                    <button type="submit" class="mt-2 btn btn-primary">Save</button>-->
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="column steps-footer">
+        <div class="steps-footer-btn">
+            <button type="button" class="btn btn-primary next-btn station-login-btn">Next</button>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripting %}
+<script type="text/javascript" src="{{ url_for('static', filename='scripts/pages/registrations_steps.js') }}"></script>
+{% endblock %}

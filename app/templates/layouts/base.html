@@ -46,6 +46,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='font-awesome/css/font-awesome.min.css') }}">
 
     <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+    {% block styles %}{% endblock %}
 </head>
 
 <body>
@@ -127,9 +128,15 @@
                             <ul class="header-menu nav">
                                 {% if current_user.is_authenticated %}
                                 <li class="btn-group nav-item">
-                                    <a href="https://t.me/Algotrader_signals"  target="_blank" class="nav-link text-end">
+                                    <a href="https://t.me/Algotrader_signals"  target="_blank" class="nav-link">
                                     <i class="fa fa-telegram pr-1"></i>
                                     Telegram
+                                </a>
+                                </li>
+                                <li class="btn-group nav-item">
+                                    <a href="/account/subscriptions" class="nav-link text-end">
+                                    <i class="fa fa-dollar-sign pr-1"></i>
+                                    Improve Subscription
                                 </a>
                                 </li>
                                 <li class="btn-group nav-item">
@@ -213,6 +220,14 @@
                                 Today
                             </a>
                         </li>
+                        {% if not current_user.is_admin() and current_user.subscription_type_id == 4 and not current_user.admin_confirmed%}
+                        <li>
+                            <a href="/station/registration_steps/1">
+                                <i class="metismenu-icon pe-7s-users"></i>
+                                Registration Confirmation
+                            </a>
+                        </li>
+                        {%endif%}
                         {% if not current_user.is_admin() and current_user.subscription_type_id == 4 and current_user.admin_confirmed and current_user.signature%}
                         <li>
                             <a href="/userview/traderstationstate">
@@ -242,7 +257,7 @@
                             </a>
                         </li>
                         {%endif%}
-                        {% if current_user.subscription_type_id != 2 %}
+                        {% if current_user.subscription_type_id != 2 and current_user.admin_confirmed %}
                         <li class="app-sidebar__heading">Analytics</li>
                         {% endif %}
                         {% if current_user.is_admin()%}
@@ -261,7 +276,7 @@
                             </a>
                         </li>
                         {%endif%}
-                        {% if current_user.subscription_type_id != 2 %}
+                        {% if current_user.is_admin() %}
                         <li>
                             <a href="/station/requirements">
                                 <i class="metismenu-icon pe-7s-box1"></i>

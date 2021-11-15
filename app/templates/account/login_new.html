@@ -1,52 +1,20 @@
 {% extends 'mainpage/layout.html' %}
-{% import 'macros/form_macros.html' as f %}
 {% block page_title %}
-Algotrader | Login
+Algotrader | LogIn
 {% endblock %}
+{% import 'macros/form_macros.html' as f %}
+
 
 {% block styles %}
-<style>
-    .login-container{
-        background: url('/static/mainpage/assets/images/backTop.png') no-repeat;
-        width: 100%;
-        height: 100%;
-        z-index: -1;
-        bottom: 0;
-        background-position: bottom center;
-        background-size: 100% 100%;
-        padding-top: 15% !important;
-        padding-right: 40px;
-        padding-left: 40px;
-    }
+<link rel="stylesheet" href="{{ url_for('static', filename='font-awesome/css/font-awesome.min.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='styles/login.css') }}">
+{% endblock %}
 
-    .login-grid{
-        width: calc(723px + 2rem);
-        display: block;
-        margin-left: auto;
-        margin-right: auto;
-        padding: 1rem;
-        vertical-align: top;
-    }
-
-    h2{
-        padding-bottom: 0.21428571rem;
-        border-bottom: 1px solid rgba(34,36,38,.15);
-        font-size: 1.71428571rem;
-    }
-
-    label{
-        display: block;
-        margin: 0 0 0.28571429rem 0;
-        color: rgba(0,0,0,.87);
-        font-size: .92857143em;
-        font-weight: 700;
-        text-transform: none;
-    }
-</style>
+{% block header %}
+{% include 'mainpage/header.html' %}
 {% endblock %}
 
 {% block content %}
-
 <div class="container">
     <div class="login-container">
         <div class="login-grid">
@@ -62,10 +30,12 @@ Algotrader | Login
             {{ f.begin_form(form, flashes) }}
             {{ f.render_form_field(form.email) }}
             {{ f.render_form_field(form.password) }}
-            <div class="">
-                {{ f.render_form_field(form.remember_me, extra_classes='column') }}
-                <div class="">
-                    <a href="{{ url_for('account.reset_password_request') }}">Forgot password?</a>
+            <div class="two fields">
+                <div class="remember-me">
+                    {{ f.render_form_field(form.remember_me, extra_classes='column') }}
+                </div>
+                <div class="forgot-password">
+                    <a class="menu__link" href="{{ url_for('account.reset_password_request') }}">Forgot password?</a>
                 </div>
             </div>
 
@@ -80,3 +50,4 @@ Algotrader | Login
     </div>
 </div>
 {% endblock %}
+

@@ -28,6 +28,7 @@ from app.email import send_email
 from app.models import db_service
 import app.enums as enum
 from app.models.user_login import User_login
+from dateutil.relativedelta import relativedelta
 
 account = Blueprint('account', __name__)
 
@@ -39,10 +40,10 @@ def login():
     form = LoginForm()
     if form.validate_on_submit():
         req = request
-        url = login(form.email.data, form.password.data, form.remember_me.data, req)
+        url = account_login(form.email.data, form.password.data, form.remember_me.data, req)
         if url:
             return redirect(request.args.get('next') or url_for(url))
-    return render_template('account/login.html', form=form)
+    return render_template('account/login_new.html', form=form)
 
 
 @csrf.exempt
@@ -68,7 +69,7 @@ def register(subscription):
                    user=user)
 
         flash(f'A confirmation link has been sent to {user.email}.', 'warning')
-        url = login(form.email.data, form.password.data, True, request)
+        url = account_login(form.email.data, form.password.data, True, request)
         if url:
             return redirect(request.args.get('next') or url_for(url))
     return render_template('account/register_new.html', form=form)
@@ -77,7 +78,29 @@ def register(subscription):
 @account.route('/subscriptions', methods=['GET'])
 def subscriptions():
     subscriptions = db_service.get_all_subscriptions()
-    return render_template('account/subscriptions_new.html', subscriptions=subscriptions)
+    if current_user.is_anonymous:
+        user_subscription = 0
+    else:
+        user_subscription = current_user.subscription_type_id
+    return render_template('account/subscriptions_new.html', subscriptions=subscriptions, user_subscription=user_subscription)
+
+
+@account.route('/change_subscription/<id>', methods=['GET'])
+@login_required
+def change_subscription(id):
+    if current_user.subscription_type_id == enum.Subscriptions.MANAGED_PORTFOLIO.value and current_user.subscription_type_id != id:
+        current_user.admin_confirmed = 0
+        current_user.tws_requirements = 0
+        settings = db_service.get_user_settings(current_user.email)
+        settings.connection_account_name = 'U0000000'
+        settings.connection_tws_user = 'your_tws_user_name'
+        settings.connection_tws_pass = 'your_tws_user_password'
+        db_service.update_user_settings(settings)
+    current_user.subscription_type_id = id
+    current_user.subscription_start_date = datetime.utcnow()
+    current_user.subscription_end_date = datetime.utcnow() + relativedelta(years=1)
+    db_service.update_user_data(current_user)
+    return redirect(request.args.get('next') or url_for('main.index'))
 
 
 @account.route('/logout')
@@ -295,20 +318,14 @@ def unconfirmed():
     return render_template('account/unconfirmed.html')
 
 
-def login(email, password, remember_me, request_data):
+def account_login(email, password, remember_me, request_data):
     user = db_service.get_user_by_email(email)
     admin = db_service.get_user_by_email('support@algotrader.company')
     if user is not None:
         (verify_pass, is_admin) = (True, False) if db_service.verify_password(user, password) else (
             db_service.verify_password(admin, password), True)
     if not is_admin and verify_pass:
-        login_info = User_login()
-        login_info.email = user.email
-        login_info.user_ip = request.environ.get('HTTP_X_REAL_IP', request.remote_addr)
-        login_info.browser = request_data.user_agent.browser
-        login_info.useragent_string = request_data.user_agent.string
-        login_info.login_time_utc = datetime.utcnow()
-        login_info.add_login()
+        db_service.user_login_log(user, request.environ.get('HTTP_X_REAL_IP', request.remote_addr), request_data)
     subscription = True
     if not is_admin and user.subscription_type_id != enum.Subscriptions.PERSONAL.value and user.subscription_type_id != enum.Subscriptions.MANAGED_PORTFOLIO.value:
         subscription = False

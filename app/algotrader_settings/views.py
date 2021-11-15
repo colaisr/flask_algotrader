@@ -194,35 +194,37 @@ def savesettings():
 @algotradersettings.route('/saverequirementssettings', methods=['POST'])
 @login_required
 def saverequirementssettings():
-    connection_account_name = request.form['connection_account_name']
-    connection_tws_user = request.form['connection_tws_user']
-    connection_tws_pass = request.form['connection_tws_pass']
+    is_data_changed = request.form['data-changed']
+    if is_data_changed == "1":
+        connection_account_name = request.form['connection_account_name']
+        connection_tws_user = request.form['connection_tws_user']
+        connection_tws_pass = request.form['connection_tws_pass']
 
-    if connection_account_name == 'U0000000' \
-            or connection_tws_user == 'your_tws_user_name' \
-            or connection_tws_pass == 'your_tws_user_password':
-        flash('Validate credentials', 'error')
-    else:
-        user_settings = UserSetting.query.filter_by(email=current_user.email).first()
-        user_settings.connection_account_name = connection_account_name
-        user_settings.connection_tws_user = connection_tws_user
-        user_settings.connection_tws_pass = connection_tws_pass
+        if connection_account_name == 'U0000000' \
+                or connection_tws_user == 'your_tws_user_name' \
+                or connection_tws_pass == 'your_tws_user_password':
+            flash('Validate credentials', 'error')
+        else:
+            user_settings = UserSetting.query.filter_by(email=current_user.email).first()
+            user_settings.connection_account_name = connection_account_name
+            user_settings.connection_tws_user = connection_tws_user
+            user_settings.connection_tws_pass = connection_tws_pass
 
-        user_settings.update_user_settings()
-        flash('Credentials saved', 'success')
+            user_settings.update_user_settings()
+            flash('Credentials saved', 'success')
 
-        current_user.tws_requirements = 1
-        current_user.update_user()
+            current_user.tws_requirements = 1
+            current_user.update_user()
 
-        url = url_for('admin.pending_approval', _external=True)
+            url = url_for('admin.pending_approval', _external=True)
 
-        send_email(recipient='support@algotrader.company',
-                   subject='Algotrader Server: user provided all the details',
-                   template='account/email/user_data_provided',
-                   user=current_user,
-                   url=url)
+            send_email(recipient='support@algotrader.company',
+                       subject='Algotrader Server: user provided all the details',
+                       template='account/email/user_data_provided',
+                       user=current_user,
+                       url=url)
 
-    return redirect(url_for('station.download'))
+    return redirect(url_for('station.registration_steps', step=2))
 
 
 @csrf.exempt

@@ -1,0 +1,79 @@
+{% extends 'layouts/base.html' %}
+{% block page_title %}
+Algotrader | Data Subscriptions
+{% endblock %}
+
+{% block styles %}
+<link  href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet"><!-- Bootstrap is required -->
+<link  href="https://cdn.jsdelivr.net/npm/bootstrap-steps@%5E1.0/dist/bootstrap-steps.min.css" rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static', filename='styles/registration_steps.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="app-main__inner">
+    <div class="column steps-header">
+        <ul class="steps">
+          <li class="step step-success">
+            <div class="step-content">
+              <a href="/station/registration_steps/1"><span class="step-circle">1</span></a>
+              <span class="step-text">Station Login</span>
+            </div>
+          </li>
+          <li class="step step-success">
+            <div class="step-content">
+              <a href="/station/registration_steps/2"><span class="step-circle">2</span></a>
+              <span class="step-text">Data Subscriptions</span>
+            </div>
+          </li>
+          <li class="step step-success">
+            <div class="step-content">
+              <a href="/station/registration_steps/3"><span class="step-circle">3</span></a>
+              <span class="step-text">SMS</span>
+            </div>
+          </li>
+          <li class="step step-active">
+            <div class="step-content">
+              <span class="step-circle">4</span>
+              <span class="step-text">Confirmation</span>
+            </div>
+          </li>
+        </ul>
+    </div>
+    <div class="column user-confirmation">
+        <div class="tab-content">
+            <div class="tab-pane tabs-animation fade active show">
+                <div class="main-card mb-3 card">
+                    <div class="card-body">
+                        <div style="margin-bottom: 20px;">
+                            <p>
+                                Dear {{user.full_name()}},
+                            </p>
+                            <p>
+                                We got all Info You provided us and work hard to setup Your environment.
+                            </p>
+                            <p>
+                                Typicaly it takes 1-2 bussiness days. We will send You a letter once it is done !
+                            </p>
+                            <p>
+                                Please feel free to visit this page later !
+                            </p>
+                            <p>
+                                Untill everything is getting set, please enjoy our <a href="{{ url_for('candidates.today') }}">Today</a> page.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="column steps-footer">
+                        <div class="steps-footer-btn">
+                            <a role="button" href="/station/registration_steps/3" class="btn btn-secondary previous-btn">Previous</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripting %}
+<script type="text/javascript" src="{{ url_for('static', filename='scripts/pages/registrations_steps.js') }}"></script>
+{% endblock %}

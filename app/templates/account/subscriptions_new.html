@@ -22,11 +22,27 @@ Algotrader | Subcriptions
                     <div class="subscriptionsItems__title">{{s.subscription_name}}</div>
                     {{s.description|safe}}
                     <div class="subscriptionsItems__footer">
+                        {% if current_user.is_anonymous %}
                         <a href="{{url_for('account.register', subscription=s.id)}}"
                            role="button"
                            class="btn-transition btn registration {% if s.id == 3 %} disabled {%endif%}">
                             {{s.price}}
                         </a>
+                        {% else %}
+                        <a href="{{url_for('account.change_subscription', id=s.id)}}"
+                           role="button"
+                           class="btn-transition btn registration {% if s.id == 3 %} disabled {%endif%}">
+                            {% if s.id == 3 %}
+                            {{s.price}}
+                            {% elif s.id == user_subscription %}
+                            Current Plan
+                            {% elif s.id < user_subscription %}
+                            Downgrade
+                            {% else %}
+                            Upgrade
+                            {%endif%}
+                        </a>
+                        {% endif %}
                     </div>
                 </div>
                 {%endfor%}

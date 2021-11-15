@@ -1,4 +1,4 @@
-.register-container{
+.login-container{
         background: #eff8fe;
         height: 92vh;
         z-index: -1;
@@ -10,7 +10,7 @@
         padding-left: 40px;
     }
 
-    .register-grid{
+    .login-grid{
         width: calc(60% + 20px);
         display: block;
         margin-left: auto;
@@ -49,6 +49,7 @@
     -ms-flex-direction: row;
     flex-direction: row;
     margin: 0 -0.5em 1em;
+    justify-content: space-between;
 }
 
  .two.fields>.field, .two.fields>.fields {
@@ -104,17 +105,19 @@ input{
 }
 
 input[type=text],
-input[type=password]{
-    width: 90%;
-}
-
+input[type=password],
 input[type=email]{
     width: 95%;
 }
 
-.terms-agree{
+.forgot-password {
+    margin-right: 1.5rem;
+}
+
+
+.remember-me{
     margin-top: -1rem;
-    margin-left: -1rem;
+    margin-left: -0.5rem;
     margin-right: -1rem;
     display: -webkit-box;
     display: -ms-flexbox;
@@ -131,22 +134,22 @@ input[type=email]{
     padding: 0;
 }
 
-.terms-agree label{
+.remember-me label{
    font-weight: 400;
 }
 
-.terms-agree .menu__link {
+.forgot-password .menu__link {
     font-size: 12px;
     font-weight: 600;
     color: #2F327D;
 }
 
-.terms-agree>.column:not(.row) {
+.remember-me>.column:not(.row) {
     padding-top: 1rem;
     padding-bottom: 1rem;
 }
 
-.terms-agree>.column:not(.row), .terms-agree>.row>.column {
+.remember-me>.column:not(.row), .terms-agree>.row>.column {
     position: relative;
     display: inline-block;
     padding-left: 1rem;
@@ -154,7 +157,7 @@ input[type=email]{
     vertical-align: top;
 }
 
-.terms-agree .checkbox {
+.remember-me .checkbox {
     position: relative;
     display: inline-block;
     -webkit-backface-visibility: hidden;
@@ -168,7 +171,7 @@ input[type=email]{
     min-width: 17px;
 }
 
-.terms-agree .checkbox input[type=checkbox]{
+.remember-me .checkbox input[type=checkbox]{
     cursor: pointer;
     position: absolute;
     top: 0;
@@ -180,7 +183,7 @@ input[type=email]{
     opacity: 0!important;
 }
 
-.terms-agree input[type=checkbox] {
+.remember-me input[type=checkbox] {
     vertical-align: top;
 }
 
@@ -189,13 +192,13 @@ input[type="checkbox"] {
     padding: 0;
 }
 
-.terms-agree .checkbox label, .terms-agree .checkbox+label {
+.remember-me .checkbox label, .remember-me .checkbox+label {
     color: #2F327D;
     -webkit-transition: color .1s ease;
     transition: color .1s ease;
 }
 
-.terms-agree .checkbox .box, .terms-agree .checkbox label {
+.remember-me .checkbox .box, .remember-me .checkbox label {
     cursor: auto;
     position: relative;
     display: block;
@@ -204,7 +207,7 @@ input[type="checkbox"] {
     font-size: 12px;
 }
 
-.register-container .button {
+.login-container .button {
     cursor: pointer;
     display: inline-block;
     min-height: 1em;
@@ -237,12 +240,12 @@ input[type="checkbox"] {
     -webkit-tap-highlight-color: transparent;
 }
 
-.terms-agree .checkbox input:checked~label:before {
+.remember-me .checkbox input:checked~label:before {
     background: #fff;
     border-color: rgba(34,36,38,.35);
 }
 
-.terms-agree .checkbox label:before {
+.remember-me .checkbox label:before {
     position: absolute;
     top: 0;
     left: 0;
@@ -258,20 +261,20 @@ input[type="checkbox"] {
     border: 1px solid #d4d4d5;
 }
 
-.terms-agree .checkbox input:checked~.box:after, .terms-agree .checkbox input:checked~label:after {
+.remember-me .checkbox input:checked~.box:after, .remember-me .checkbox input:checked~label:after {
     content: '\f00c';
 }
 
-.terms-agree .checkbox input:checked~label:after {
+.remember-me .checkbox input:checked~label:after {
     opacity: 1;
     color: rgba(0,0,0,.95);
 }
 
-.terms-agree .checkbox .box:after, .terms-agree .checkbox label:after {
+.remember-me .checkbox .box:after, .remember-me .checkbox label:after {
     font-family: FontAwesome;
 }
 
-.terms-agree .checkbox .box:after, .terms-agree .checkbox label:after {
+.remember-me .checkbox .box:after, .remember-me .checkbox label:after {
     position: absolute;
     font-size: 14px;
     top: 0;
@@ -287,114 +290,6 @@ input[type="checkbox"] {
     transition: border .1s ease,opacity .1s ease,transform .1s ease,box-shadow .1s ease,-webkit-transform .1s ease,-webkit-box-shadow .1s ease;
 }
 
-[type=submit]:disabled, [type=submit].disabled, fieldset:disabled [type=submit] {
-    pointer-events: none;
-    opacity: 0.65;
-}
-
-.ui.form .field.error .input,
-.ui.form .field.error label,
-.ui.form .fields.error .field .input,
-.ui.form .fields.error .field label {
-    color: #9f3a38;
-}
-
-.ui.form .field.error input:not([type]),
-.ui.form .field.error input[type=date],
-.ui.form .field.error input[type=datetime-local],
-.ui.form .field.error input[type=email],
-.ui.form .field.error input[type=file],
-.ui.form .field.error input[type=number],
-.ui.form .field.error input[type=password],
-.ui.form .field.error input[type=search],
-.ui.form .field.error input[type=tel],
-.ui.form .field.error input[type=text],
-.ui.form .field.error input[type=time],
-.ui.form .field.error input[type=url],
-.ui.form .field.error select, .ui.form .field.error textarea,
-.ui.form .fields.error .field input:not([type]),
-.ui.form .fields.error .field input[type=date],
-.ui.form .fields.error .field input[type=datetime-local],
-.ui.form .fields.error .field input[type=email],
-.ui.form .fields.error .field input[type=file],
-.ui.form .fields.error .field input[type=number],
-.ui.form .fields.error .field input[type=password],
-.ui.form .fields.error .field input[type=search],
-.ui.form .fields.error .field input[type=tel],
-.ui.form .fields.error .field input[type=text],
-.ui.form .fields.error .field input[type=time],
-.ui.form .fields.error .field input[type=url],
-.ui.form .fields.error .field select,
-.ui.form .fields.error .field textarea {
-    background: #fff6f6;
-    border-color: #e0b4b4;
-    color: #9f3a38;
-    border-radius: '';
-    -webkit-box-shadow: none;
-    box-shadow: none;
-}
-
-.ui.pointing.label,
-.ui[class*="pointing above"].label {
-    margin-top: 1em;
-}
-
-.ui.pointing.label {
-    position: relative;
-}
-
-.ui.red.label,
-.ui.red.labels .label {
-    background-color: #db2828!important;
-    border-color: #db2828!important;
-    color: #fff!important;
-    font-size: .75714286rem;
-    width: fit-content;
-    padding: 0 5px 0 5px;
-    border-radius: 0.28571429rem;
-}
-
-.ui.pointing.label:before,
-.ui[class*="pointing above"].label:before {
-    border-width: 1px 0 0 1px;
-    -webkit-transform: translateX(-50%) translateY(-50%) rotate(45deg);
-    transform: translateX(-50%) translateY(-50%) rotate(45deg);
-    top: 0;
-    left: 50%;
-}
-
-.ui.pointing.label:before {
-    position: absolute;
-    content: '';
-    -webkit-transform: rotate(45deg);
-    transform: rotate(45deg);
-    background-image: none;
-    z-index: 2;
-    width: 0.7em;
-    height: 0.7em;
-    top: -4px;
-    -webkit-transition: background .1s ease;
-    transition: background .1s ease;
-}
-
-.ui.pointing.label:before {
-    background-color: inherit;
-    background-image: inherit;
-    border-width: none;
-    border-style: solid;
-    border-color: inherit;
-}
-
-.ui.label>a {
-    cursor: pointer;
-    color: inherit;
-    opacity: .5;
-    -webkit-transition: .1s opacity ease;
-    transition: .1s opacity ease;
-    font-size: .75714286rem;
-}
-
-
 
 @media only screen and (max-width: 767px){
 .form:not(.unstackable) .two.fields:not(.unstackable)>.field {
@@ -408,6 +303,4 @@ input[type="checkbox"] {
     flex-wrap: wrap;
     margin: 0 -0.5em 0;
 }
-input[type=email] {
-    width: 90%;
-}}
+}

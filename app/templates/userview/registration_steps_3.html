@@ -1,0 +1,92 @@
+{% extends 'layouts/base.html' %}
+{% block page_title %}
+Algotrader | Data Subscriptions
+{% endblock %}
+
+{% block styles %}
+<link  href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet"><!-- Bootstrap is required -->
+<link  href="https://cdn.jsdelivr.net/npm/bootstrap-steps@%5E1.0/dist/bootstrap-steps.min.css" rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static', filename='styles/registration_steps.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="app-main__inner">
+    <div class="column steps-header">
+        <ul class="steps">
+          <li class="step step-success">
+            <div class="step-content">
+              <a href="/station/registration_steps/1"><span class="step-circle">1</span></a>
+              <span class="step-text">Station Login</span>
+            </div>
+          </li>
+          <li class="step step-success">
+            <div class="step-content">
+              <a href="/station/registration_steps/2"><span class="step-circle">2</span></a>
+              <span class="step-text">Data Subscriptions</span>
+            </div>
+          </li>
+          <li class="step step-active">
+            <div class="step-content">
+              <span class="step-circle">3</span>
+              <span class="step-text">SMS</span>
+            </div>
+          </li>
+          <li class="step">
+            <div class="step-content">
+              <span class="step-circle">4</span>
+              <span class="step-text">Confirmation</span>
+            </div>
+          </li>
+        </ul>
+    </div>
+    <div class="column tws-sms-confirmation">
+        <div class="tab-content">
+            <div class="tab-pane tabs-animation fade active show">
+                <div class="main-card mb-3 card">
+                    <div class="card-body">
+                        <div style="margin-bottom: 10px;">
+                            <h3>TWS without SMS confirmation</h3>
+                        </div>
+                        <div style="margin-bottom: 20px;">
+                            <p>
+                                The security settings of the Interactive brokers require a daily restart for TWS Trader application.
+                                We do it for every user...</br>
+                                In order to let us do that, the Secure Login System Opt Out should be applied.
+                            </p>
+                            <p>
+                                1. <ins>Set a Secure Login Devices:</ins> </br>
+                                a. Go to <em>User Settings => Security => Secure Login System => Seamless Authentication </em></br>
+                                b. Use the check box to enable or disable Seamless Authentication for your mobile device with IB Key.</br>
+                                c. If disabled, you will be required to use a challenge code and pass code sequence to log in.</br>
+                            </p>
+                            <p>2. <ins>SLS Opt Out:</ins> </br>
+                                a. Go to <em>User Settings => Security => Secure Login System => Secure Login required for trading</em></br>
+                                b. Check the radio button "I Only want to use my Secure Login Device When logging into Client
+                                Portal"</br>
+                            </p>
+                            <img style="width: 800px;" src="/static/images/Requirements/sls_optout.png">
+
+
+                            <p>
+                                You may use TWS +Algotrader pair on Your personal computer. if You decide to do so - please follow the
+                                instruction below. </br>
+                                Otherwise we <b>set everything for You </b> when we deploy a dedicated Virtual Machine
+                            </p>
+                        </div>
+                    </div>
+                    <div class="column steps-footer">
+                        <div class="steps-footer-btn">
+                            <a role="button" href="/station/registration_steps/2" class="btn btn-secondary previous-btn">Previous</a>
+                            <a role="button" href="/station/registration_steps/4" class="btn btn-primary next-btn">Confirm</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripting %}
+<script type="text/javascript" src="{{ url_for('static', filename='scripts/pages/registrations_steps.js') }}"></script>
+{% endblock %}

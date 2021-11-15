@@ -26,8 +26,8 @@ userview = Blueprint('userview', __name__)
 @userview.route('traderstationstate', methods=['GET', 'POST'])
 @login_required
 def traderstationstate():
-    # if not current_user.admin_confirmed or not current_user.signature:
-    #     return redirect(url_for('station.download'))
+    if not current_user.admin_confirmed:
+        return redirect(url_for('station.registration_steps', step=1))
     market_emotion = db.session.query(Fgi_score).order_by(Fgi_score.score_time.desc()).first()
     settings = UserSetting.query.filter_by(email=current_user.email).first()
     user_fgi = settings.algo_min_emotion
@@ -115,7 +115,7 @@ def traderstationstate():
             report.pnl_percent = 0
 
     if report is None:
-        return redirect(url_for('candidates.usercandidates'))
+        return redirect(url_for('candidates.today'))
     else:
         return render_template('userview/traderstationstate.html',
                                graph_sectors=graph_sectors,

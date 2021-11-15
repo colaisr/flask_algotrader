@@ -61,6 +61,12 @@ def download():
     return render_template('userview/download.html', user=current_user, user_settings=user_settings, contract_txt=contract_txt)
 
 
+@station.route('/registration_steps/<step>', methods=['GET'])
+def registration_steps(step):
+    user_settings = UserSetting.query.filter_by(email=current_user.email).first()
+    return render_template(f'userview/registration_steps_{step}.html', user_settings=user_settings, user=current_user)
+
+
 def create_script_for_package():
     user_settings = UserSetting.query.filter_by(email=current_user.email).first()
 

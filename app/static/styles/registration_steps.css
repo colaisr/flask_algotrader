@@ -1,0 +1,109 @@
+.app-main .app-main__inner {
+    padding: 0px 30px 0;
+}
+
+.step-content{
+    padding-right: calc(100% + 240px);
+}
+
+.step-circle{
+    width: 4.5rem;
+    height: 4.5rem;
+}
+
+.step-circle::before{
+    width: calc(100% + 188px);
+}
+
+.step-text{
+    width: 150%;
+    text-align: center;
+}
+
+.station-login{
+    margin-top: 3%;
+}
+
+.steps-footer-btn{
+    float: right;
+    display: flex;
+    width: 30%;
+    justify-content: end;
+}
+
+.steps-footer-btn .btn{
+    width: 48%;
+}
+
+.next-btn{
+    margin-left: 4%;
+}
+
+.subscriptions-content {
+    display: flex;
+    justify-content: space-between;
+}
+
+.data-subscriptions-footer{
+    margin-bottom: 6%;
+    margin-top: 1%;
+}
+
+.gfis-subscriptions-img p{
+    position: absolute;
+    color: #0066ff;
+    padding-left: 25%;
+    transform: rotate(37deg);
+}
+
+.subscription-tbl {
+    width: 85%;
+}
+
+.gfis-subscriptions-img img{
+    width: 57%;
+    margin-top: -7px;
+    margin-left: 25%;
+}
+
+
+.tws-sms-confirmation .steps-footer,
+.user-confirmation .steps-footer{
+    margin-bottom: 2%;
+    margin-top: -4%;
+    margin-right: 1%;
+}
+
+@media only screen and (max-width: 767px){
+
+    .step-content{
+        padding-right: calc(100% + 48px);
+    }
+
+    .step-circle{
+        width: 2.5rem;
+        height: 2.5rem;
+    }
+
+    .step-circle::before{
+        width: calc(100% + 52px);
+    }
+
+    .subscriptions-content {
+    display: inherit;
+    }
+
+    .gfis-subscriptions-img img {
+        margin-left: 0;
+    }
+
+    .gfis-subscriptions-img p {
+        padding-left: 29%;
+        padding-top: 6%;
+    }
+
+    .tws-sms-confirmation img{
+        width: 607px;
+    }
+
+}

@@ -3,7 +3,7 @@ from app.models import (
     Subscription,
     UserSetting
 )
-
+from app.models.user_login import User_login
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
 from app import db
@@ -69,10 +69,30 @@ def get_user_by_id(user_id):
     return User.query.get(user_id)
 
 
-#SUBSCRIPTIONS
+#LOGIN LOG
+def user_login_log(user, user_ip, request_data):
+    login_info = User_login()
+    login_info.email = user.email
+    login_info.user_ip = user_ip
+    login_info.browser = request_data.user_agent.browser
+    login_info.useragent_string = request_data.user_agent.string
+    login_info.login_time_utc = datetime.utcnow()
+    login_info.add_login()
 
+
+#SUBSCRIPTIONS
 def get_all_subscriptions():
     subscriptions = Subscription.query.filter(Subscription.id != 1).all()
     return subscriptions
+
+
+#SETTINGS
+def get_user_settings(email):
+    return UserSetting.query.filter_by(email=email).first()
+
+
+def update_user_settings(settings):
+    settings.update_user_settings()
+
 
 

@@ -1,0 +1,128 @@
+{% extends 'layouts/base.html' %}
+{% block page_title %}
+Algotrader | Data Subscriptions
+{% endblock %}
+
+{% block styles %}
+<link  href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet"><!-- Bootstrap is required -->
+<link  href="https://cdn.jsdelivr.net/npm/bootstrap-steps@%5E1.0/dist/bootstrap-steps.min.css" rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static', filename='styles/registration_steps.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="app-main__inner">
+    <div class="column steps-header">
+        <ul class="steps">
+          <li class="step step-success">
+            <div class="step-content">
+              <a href="/station/registration_steps/1"><span class="step-circle">1</span></a>
+              <span class="step-text">Station Login</span>
+            </div>
+          </li>
+          <li class="step step-active">
+            <div class="step-content">
+              <span class="step-circle">2</span>
+              <span class="step-text">Data Subscriptions</span>
+            </div>
+          </li>
+          <li class="step">
+            <div class="step-content">
+              <span class="step-circle">3</span>
+              <span class="step-text">SMS</span>
+            </div>
+          </li>
+          <li class="step">
+            <div class="step-content">
+              <span class="step-circle">4</span>
+              <span class="step-text">Confirmation</span>
+            </div>
+          </li>
+        </ul>
+    </div>
+    <div class="column data-subscriptions">
+        <div class="tab-content">
+            <div class="tab-pane tabs-animation fade active show">
+                <div class="main-card mb-3 card">
+                    <div class="card-body">
+                        <div style="margin-bottom: 10px;">
+                            <p>
+                              The Agrotrader system uses SMART exchange setting to place an orders with the best price via Interactive Brokers.
+                              In order to get the correct Live prices You need a following Data subscriptions enabled for Trader workstation:
+                            </p>
+                        </div>
+                        <div style="margin-bottom: 20px;">
+                            <h6>
+                                <b>Go to:</b> <i>User Settings => Market Data Subscriptions => Configure Market Data => User Settings => Market Data Subscriptions => Configure Market Data</i>
+                            </h6>
+                        </div>
+                        <div>
+                            <div class="subscriptions-content">
+                                <div class="subscription-tbl">
+                                    <table class="table table-striped">
+                                        <thead>
+                                            <tr>
+                                              <th scope="col">Subscription</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>
+                                                  North America => Level 1 (NBBO) => NASDAQ (Network C/UTP)
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                  North America => Level 1 (NBBO) => NYSE (Network A/CTA)
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                  North America => Level 1 (NBBO) => NYSE American, BATS, ARCA, IEX, and Regional Exchanges (Network B)
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                  North America => Level 1 (NBBO) => US Mutual Funds
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                  North America => Level 1 (NBBO) => IEX Depth of Book
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                  Global => Research Platform, brokerage, nonprofessional
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                  Global => US and EU Bond Quotes
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="gfis-subscriptions-img">
+                                    <p><i>Your subscriptions page should look similar to that:</i></p>
+                                    <img src="/static/images/Requirements/MarketDataSubscriptions.png">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="column steps-footer data-subscriptions-footer">
+        <div class="steps-footer-btn">
+            <a role="button" href="/station/registration_steps/1" class="btn btn-secondary previous-btn">Previous</a>
+            <a role="button" href="/station/registration_steps/3" class="btn btn-primary next-btn">Next</a>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripting %}
+<script type="text/javascript" src="{{ url_for('static', filename='scripts/pages/registrations_steps.js') }}"></script>
+{% endblock %}
