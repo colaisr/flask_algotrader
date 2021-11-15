@@ -294,7 +294,7 @@ def save_signature():
 @csrf.exempt
 @algotradersettings.route('/get_all_emotions', methods=['GET'])
 def get_all_emotions():
-    query_text = "select a.* from Fgi_Scores a JOIN (select DATE(Fgi_Scores.`score_time`) AS score_date, max(Fgi_Scores.`score_time`) as max_score_time, MAX(Fgi_Scores.`fgi_value`) AS max_fgi_value from Fgi_Scores group by DATE(Fgi_Scores.`score_time`)) b on b.`max_score_time`=a.`score_time` AND b.`max_fgi_value`=a.`fgi_value` ORDER BY a.`score_time`"
+    query_text = "select a.* from Fgi_Scores a JOIN (select DATE(Fgi_Scores.`score_time`) AS score_date, max(Fgi_Scores.`score_time`) as max_score_time, MAX(Fgi_Scores.`fgi_value_cnn`) AS max_fgi_value from Fgi_Scores group by DATE(Fgi_Scores.`score_time`)) b on b.`max_score_time`=a.`score_time` AND b.`max_fgi_value`=a.`fgi_value_cnn` ORDER BY a.`score_time`"
     fgi_scores = db.session.query(Fgi_score).from_statement(text(query_text)).all()
     # fgi_scores = Fgi_score.query.order_by(Fgi_score.score_time.asc()).all()
     t = json.dumps(fgi_scores, cls=general.JsonEncoder)

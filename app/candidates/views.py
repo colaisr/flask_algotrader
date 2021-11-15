@@ -37,13 +37,13 @@ def today():
         fgi_text_color = 'success'
 
     admin_query = "SELECT c.ticker, " \
-                  "c.company_name, " \
-                  "c.logo, c.sector, " \
-                  "a.under_priced_pnt, " \
+                  "c.company_name_fmp, " \
+                  "c.logo_fmp, c.sector_fmp, " \
+                  "a.under_priced_pnt_yahoo, " \
                   "case when a.algotrader_rank IS NULL then 0 ELSE a.algotrader_rank END AS algotrader_rank, " \
-                  "a.twelve_month_momentum, " \
-                  "a.beta, " \
-                  "a.max_intraday_drop_percent " \
+                  "a.twelve_month_momentum_tr, " \
+                  "a.beta_yahoo, " \
+                  "a.max_intraday_drop_percent_fmp " \
                   "FROM (SELECT * FROM Candidates " \
                   "WHERE enabled=1 GROUP BY ticker) c " \
                   "JOIN Tickersdata a ON a.ticker=c.ticker " \
@@ -90,7 +90,7 @@ def telegram_signals():
 @csrf.exempt
 def today_improovers():
     query = f"SELECT DISTINCT c.ticker, " \
-            f"c.company_name, " \
+            f"c.company_name_fmp, " \
             f"lst.algotrader_rank as last_rank, " \
             f"(lst.algotrader_rank - pre.algotrader_rank) AS change_val, " \
             f"c.logo FROM Candidates c " \
@@ -218,16 +218,16 @@ def info():
 
 def get_user_candidates():
     user_query = f"SELECT c.ticker, " \
-                 f"c.company_name, " \
-                 f"c.logo, " \
-                 f"c.sector, " \
+                 f"c.company_name_fmp, " \
+                 f"c.logo_fmp, " \
+                 f"c.sector_fmp, " \
                  f"c.reason, " \
                  f"c.enabled," \
-                 f"a.under_priced_pnt, " \
+                 f"a.under_priced_pnt_yahoo, " \
                  f"case when a.algotrader_rank IS NULL then 0 ELSE a.algotrader_rank END AS algotrader_rank, " \
-                 f"a.twelve_month_momentum, " \
-                 f"a.beta, " \
-                 f"a.max_intraday_drop_percent " \
+                 f"a.twelve_month_momentum_tr, " \
+                 f"a.beta_yahoo, " \
+                 f"a.max_intraday_drop_percent_fmp " \
                  f"FROM Candidates c " \
                  f"JOIN Tickersdata a ON a.ticker=c.ticker " \
                  f"JOIN (select Tickersdata.ticker, " \
