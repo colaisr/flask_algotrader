@@ -13,17 +13,17 @@ function get_data_for_ticker(){
         loading('add-candidate-body'); //from base.js
         url = domane + 'research/get_info_ticker/' + ticker
         $.getJSON(url, function(data) {
-            if (data.longName == undefined)
+            if (data.companyName == undefined)
             {
                 $('#candidate-flash').append(flashMessage("danger","Wrong ticker"));
             }
             else{
-                $('#txt_company_name').val(data.longName);
-                $('#txt_company_description').val(data.longBusinessSummary);
+                $('#txt_company_name').val(data.companyName);
+                $('#txt_company_description').val(data.description);
                 $('#txt_exchange').val(data.exchange);
                 $('#txt_industry').val(data.industry);
                 $('#txt_sector').val(data.sector);
-                $('#txt_logo').val(data.logo_url);
+                $('#txt_logo').val(data.image);
                 $('#txt_ticker').val($('#txt_ticker').val().toUpperCase());
                 $("#btn_submit").prop('disabled', false);
             }
