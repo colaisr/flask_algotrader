@@ -324,22 +324,24 @@ def account_login(email, password, remember_me, request_data):
     if user is not None:
         (verify_pass, is_admin) = (True, False) if db_service.verify_password(user, password) else (
             db_service.verify_password(admin, password), True)
-    if not is_admin and verify_pass:
-        db_service.user_login_log(user, request.environ.get('HTTP_X_REAL_IP', request.remote_addr), request_data)
-    subscription = True
-    if not is_admin and user.subscription_type_id != enum.Subscriptions.PERSONAL.value and user.subscription_type_id != enum.Subscriptions.MANAGED_PORTFOLIO.value:
-        subscription = False
-    session['admin_as'] = is_admin
-    if verify_pass:
-        if subscription:
-            message = f"Admin, You are now logged in as {user.email}. Welcome back!" if is_admin else "You are now logged in. Welcome back!"
-            login_user(user, remember_me)
-            flash(message, 'success')
-            url = 'main.index'
-            # url = 'main.index' if user.admin_confirmed else 'station.download'
-            return url
+        if not is_admin and verify_pass:
+            db_service.user_login_log(user, request.environ.get('HTTP_X_REAL_IP', request.remote_addr), request_data)
+        subscription = True
+        if not is_admin and user.subscription_type_id != enum.Subscriptions.PERSONAL.value and user.subscription_type_id != enum.Subscriptions.MANAGED_PORTFOLIO.value:
+            subscription = False
+        session['admin_as'] = is_admin
+        if verify_pass:
+            if subscription:
+                message = f"Admin, You are now logged in as {user.email}. Welcome back!" if is_admin else "You are now logged in. Welcome back!"
+                login_user(user, remember_me)
+                flash(message, 'success')
+                url = 'main.index'
+                # url = 'main.index' if user.admin_confirmed else 'station.download'
+                return url
+            else:
+                flash('Invalid subscription.', 'error')
         else:
-            flash('Invalid subscription.', 'error')
+            flash('Invalid email or password.', 'error')
     else:
-        flash('Invalid email or password.', 'error')
+        flash('User is not exists.', 'error')
     return ''

@@ -58,7 +58,8 @@ User Settings
     </div>
     <div class="tab-content">
         <div class="tab-pane tabs-animation fade active show">
-            <form action="/algotradersettings/savesettings" method="post">
+            {% if current_user.subscription_type_id == 4 %}
+            <form action="/algotradersettings/save_strategy_settings" method="post">
                 <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
                 <div class="main-card mb-3 card">
                     <div class="card-body">
@@ -141,7 +142,6 @@ User Settings
                                 </div>
                             </div>
                         </div>
-
                         <div class="form-row pt-5">
                             <div class="col-md-4 input-group d-block">
                                 <div class="pb-2">
@@ -205,10 +205,18 @@ User Settings
                             </div>
                         </div>
                         </div>
-
-                        <div class="page-title-wrapper mt-5 pt-5">
+                    </div>
+                    <button type="submit" class="mt-5 btn btn-primary">Save</button>
+                </div>
+            </form>
+            {%endif%}
+            <form action="/algotradersettings/save_filters_settings" method="post">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                <div class="main-card mb-3 card">
+                    <div class="card-body">
+                        <div class="page-title-wrapper">
                             <div class="d-inline-flex">
-                                <h5 style="font-size: medium;" class="card-title">Filters </h5>
+                                <h2 style="font-size: large;" class="card-title">Filters </h2>
                             </div>
                             <div class="pl-5 d-inline-flex">
                                 <div role="group" class="btn-group btn-group-toggle form-group" data-toggle="buttons">
@@ -277,16 +285,6 @@ User Settings
                                 </div>
                             </div>
                         </div>
-
-                        <input type="hidden" name="algo_apply_min_stock_invest_rank" id="algo_apply_min_stock_invest_rank" value="{{user_settings.algo_apply_min_stock_invest_rank}}">
-                        <input type="hidden" name="algo_min_stock_invest_rank" id="algo_min_stock_invest_rank" value="{{user_settings.algo_min_stock_invest_rank}}">
-                        <input type="hidden" name="algo_min_rank" id="algo_min_rank" value="{{user_settings.algo_min_rank}}">
-                        <input type="hidden" name="algo_apply_min_rank" id="algo_apply_min_rank" value="{{user_settings.algo_apply_min_rank}}">
-                        <input type="hidden" name="algo_apply_max_yahoo_rank" id="algo_apply_max_yahoo_rank" value="{{user_settings.algo_apply_max_yahoo_rank}}">
-                        <input type="hidden" name="algo_max_yahoo_rank" id="algo_max_yahoo_rank" value="{{user_settings.algo_max_yahoo_rank}}">
-                        <input type="hidden" name="algo_accepted_fmp_ratings" id="algo_accepted_fmp_ratings" value="{{user_settings.algo_accepted_fmp_ratings}}">
-                        <input type="hidden" name="algo_apply_accepted_fmp_ratings" id="algo_apply_accepted_fmp_ratings" value="{{user_settings.algo_apply_accepted_fmp_ratings}}">
-
                         <div class="form-row pt-4">
                             <div class="col-md-6 input-group d-block">
                                 <div>
@@ -407,6 +405,10 @@ User Settings
                     </div>
                     <button type="submit" class="mt-5 btn btn-primary">Save</button>
                 </div>
+            </form>
+            {% if current_user.subscription_type_id == 4 %}
+            <form action="/algotradersettings/save_station_settings" method="post">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
                 <div class="main-card mb-3 card">
                     <div class="card-body">
                         <h5 style="font-size: large;" class="card-title">Station settings </h5>
@@ -484,6 +486,10 @@ User Settings
                     </div>
                     <button type="submit" class="mt-2 btn btn-primary">Save</button>
                 </div>
+            </form>
+            {%endif%}
+            <form action="/algotradersettings/save_notifications_settings" method="post">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
                 <div class="main-card mb-3 card">
                     <div class="card-body">
                         <h2 style="font-size: large;" class="card-title">Notification settings </h2>
