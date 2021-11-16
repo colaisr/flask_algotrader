@@ -38,6 +38,19 @@
     float: right;
 }
 
+.ticker-data:hover{
+    cursor: help;
+}
+
+.page-title-actions .table th, .page-title-actions .table td {
+    padding: 0.25rem;
+}
+
+.add-candidate,
+.candidate-in-list{
+    width:65%;
+}
+
 @media only screen and (max-width: 767px){
     .left-part{
         width: 100%;
