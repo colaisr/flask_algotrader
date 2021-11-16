@@ -230,9 +230,3 @@ def closedpositions():
                            profit_class=profit_class,
                            form=None)
 
-
-@userview.route('portfoliostatistics', methods=['GET', 'POST'])
-@login_required
-def portfoliostatistics():
-    """Display a user's account information."""
-    return render_template('userview/portfoliostatistics.html', user=current_user, form=None)
