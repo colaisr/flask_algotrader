@@ -51,7 +51,7 @@ Market data
                         <button type="button" onclick="update_market_data('{{ m.ticker }}')"><i class="fa fa-refresh"></i></button>
                     </td>
                     <td>
-                        <a href="{{url_for('candidates.info')}}?ticker_to_show={{ m.ticker }}">
+                        <a href="/candidates/info/{{ m.ticker }}">
                             {{ m.ticker }}
                         </a>
                     </td>

@@ -189,8 +189,8 @@ def enabledisable():
 
 
 @csrf.exempt
-@candidates.route('/info', methods=['GET'])
-def info():
+@candidates.route('/info/<ticker>', methods=['GET'])
+def info(ticker):
     # # Test
     # user = User.query.filter_by(email='liliana.isr@gmail.com').first()
     # send_email(recipient='liliana.isr@gmail.com',
@@ -199,9 +199,11 @@ def info():
     #            template='account/email/black_swan')
     # # End Test
 
-    ticker = request.args['ticker_to_show']
+    # ticker = request.args['ticker_to_show']
     candidate = Candidate.query.filter_by(ticker=ticker).first()
     m_data = TickerData.query.filter_by(ticker=ticker).order_by(TickerData.updated_server_time.desc()).first()
+    last_update = m_data.updated_server_time.date()
+    bg_upd_color = "badge-success" if datetime.now().date() == last_update else "badge-warning"
     user_settings = UserSetting.query.filter_by(email=current_user.email).first()
     td_history = TickerData.query.filter_by(ticker=ticker).order_by(TickerData.updated_server_time.asc()).all()
     hist_dates = []
@@ -213,7 +215,9 @@ def info():
                            candidate=candidate,
                            market_data=m_data,
                            hist_dates=hist_dates,
-                           hist_algo_ranks=hist_algo_ranks)
+                           hist_algo_ranks=hist_algo_ranks,
+                           last_update=last_update,
+                           bg_upd_color=bg_upd_color)
 
 
 def get_user_candidates():

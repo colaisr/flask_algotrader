@@ -1,7 +1,8 @@
 {% extends 'layouts/base.html' %}
 {% block page_title %}
-Algotrader|today
+Algotrader | Today
 {% endblock %}
+
 {% block content %}
 
 <div class="app-main__inner today-page">
@@ -207,7 +208,7 @@ Algotrader|today
                 <tr>
                     <td><img src="{{ m.logo }}" width="20" height="20"></td>
                     <td>
-                        <a href="{{url_for('candidates.info')}}?ticker_to_show={{ m.ticker }}">
+                        <a href="/candidates/info/{{ m.ticker }}">
                             {{ m.ticker }}
                         </a>
                         <div class="text-small">{{m.company_name}}</div>

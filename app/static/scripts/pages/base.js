@@ -74,7 +74,7 @@ function add_row_to_personal_candidates(c, tbl_class, is_modal){
     var tr = $('<tr title="' + c.reason + '"></tr>');
     var td_logo =$('<td class="text-center"><img src="' + c.logo + '" width="20" height="20"></td>');
     tr.append(td_logo);
-    var td_company = $('<td><a href="/candidates/info?ticker_to_show=' + c.ticker + '">' + c.ticker + '</a><div class="text-small">' + c.company_name + '</div></td>');
+    var td_company = $('<td><a href="/candidates/info/' + c.ticker + '">' + c.ticker + '</a><div class="text-small">' + c.company_name + '</div></td>');
     tr.append(td_company);
     if(is_modal){
         var td_remove = $('<td class="text-center"><button id="remove-' + c.ticker +'" type="submit" data-ticker="' + c.ticker + '" class="bord-none remove-candidate"><i class="fa fa-trash"></i></button></td>');

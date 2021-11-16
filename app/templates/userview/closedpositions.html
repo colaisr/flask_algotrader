@@ -164,7 +164,7 @@ Performance
                 {% for m in positions | sort(attribute='closed' , reverse = True) %}
                 <tr>
                     <td>
-                        <a href="{{url_for('candidates.info')}}?ticker_to_show={{ m.ticker }}">
+                        <a href="/candidates/info/{{ m.ticker }}">
                             {{ m.ticker }}
                         </a>
                     </td>

@@ -132,7 +132,7 @@ function add_row_to_today_improovers(c, tbl_class){
     var tr = $('<tr></tr>');
     var td_logo =$('<td class="text-center"><img src="' + c.logo + '" width="20" height="20"></td>');
     tr.append(td_logo);
-    var td_company = $('<td><a href="/candidates/info?ticker_to_show=' + c.ticker + '">' + c.ticker + '</a><div class="text-small">' + c.company_name + '</div></td>');
+    var td_company = $('<td><a href="/candidates/info/' + c.ticker + '">' + c.ticker + '</a><div class="text-small">' + c.company_name + '</div></td>');
     tr.append(td_company);
     var td_score = $('<td class="text-center">' + score + '</td>');
     tr.append(td_score);
@@ -168,7 +168,7 @@ function add_row_to_telegram_signals(c, tbl_class, is_modal){
     var tr = $('<tr></tr>');
     var td_logo =$('<td class="text-center"><img src="' + c.logo + '" width="20" height="20"></td>');
     tr.append(td_logo);
-    var td_company = $('<td><a href="/candidates/info?ticker_to_show=' + c.ticker + '">' + c.ticker + '</a><div class="text-small">' + c.company_name + '</div></td>');
+    var td_company = $('<td><a href="/candidates/info/' + c.ticker + '">' + c.ticker + '</a><div class="text-small">' + c.company_name + '</div></td>');
     tr.append(td_company);
 
     var td_price = $('<td class="text-center">'+price+'</td>');

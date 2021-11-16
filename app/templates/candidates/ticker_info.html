@@ -1,21 +1,37 @@
 {% extends 'layouts/base.html' %}
 {% block page_title %}
-Stock info
+Algotrader | Stock Info
 {% endblock %}
+
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='styles/ticker_info.css') }}">
+{% endblock %}
+
 {% block content %}
 <div class="app-main__inner">
     <div class="app-page-title">
         <div class="page-title-wrapper">
-            <div class="page-title-heading">
+            <div>
+                <a class="ticker-web" target="_blank" href="{{candidate.website}}">
+                    <div class="page-title-heading">
+                        <div>
+                            <img src="{{candidate.logo}}" style="height:60px;padding-right: 10px;">
+                        </div>
+                        <div>
+                            {{candidate.ticker}}
+                            <div class="page-title-subheading">
+                                {{candidate.company_name}}
+                            </div>
+                        </div>
+                    </div>
+                </a>
                 <div>
-                    <img src="{{candidate.logo}}" style="height:60px;padding-right: 10px;">
-                    </i>
-                </div>
-                <div>{{candidate.ticker}}
-                    <div class="page-title-subheading">{{candidate.company_name}}
+                    <div class="mt-2 mr-2 badge {{bg_upd_color}} badge-pill">Last Update(UTC) :
+                        {{last_update}}
                     </div>
                 </div>
             </div>
+
             <div class="page-title-actions">
 
             </div>
@@ -31,11 +47,7 @@ Stock info
                             <span class="badge badge-pill badge-light">{{market_data.algotrader_rank}}</span>
                         </button>
                     </div>
-                    <div class="col-md-6">
-                        <div class="mt-2 mr-2 badge badge-pill badge-secondary">Last Update(UTC) :
-                            {{market_data.updated_server_time}}
-                        </div>
-                    </div>
+
                 </div>
                 <div class="d-flex">
                     <div class="col-md-6">
