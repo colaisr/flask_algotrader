@@ -39,29 +39,28 @@ Algotrader | Stock Info
                     </div>
                 </div>
             </div>
-
-
             <div class="page-title-actions">
-                <div class="d-flex">
-                    <div class="col-md-6">
-                        <button class="w-100 mb-2 mr-2 btn
-                        {% if market_data.under_priced_pnt is not none and user_settings.algo_min_underprice is not none and market_data.under_priced_pnt >= user_settings.algo_min_underprice %}
-                        btn-success
-                        {% else %}
-                        btn-warning
-                        {% endif %}">Underpriced
-                            <span class="badge badge-pill badge-light">{{market_data.under_priced_pnt}}</span>
-                        </button>
+                <div>
+                    <div class="ticker-data mt-2 mr-2 badge {% if market_data.beta is not none and user_settings.algo_min_beta is not none and market_data.beta >= user_settings.algo_min_beta %}
+                    btn-success
+                    {% else %}
+                    btn-warning
+                    {% endif %}">Beta
+                        <span class="badge badge-pill badge-light">{{market_data.beta | round(1)}}</span>
                     </div>
-                    <div class="col-md-6">
-                        <button class="w-100 mb-2 mr-2 btn
-                        {% if market_data.twelve_month_momentum>=user_settings.algo_min_momentum %}
-                        btn-success
-                        {% else %}
-                        btn-warning
-                        {% endif %}">12M Momentum (%)
-                            <span class="badge badge-pill badge-light">{{market_data.twelve_month_momentum*100 |round(1)}}</span>
-                        </button>
+                </div>
+                <div>
+                    <div class="ticker-data mt-2 mr-2 badge {% if market_data.under_priced_pnt is not none and user_settings.algo_min_underprice is not none and market_data.under_priced_pnt >= user_settings.algo_min_underprice %}
+                    btn-success
+                    {% else %}
+                    btn-warning
+                    {% endif %}">Underpriced
+                        <span class="badge badge-pill badge-light">{{market_data.under_priced_pnt}}</span>
+                    </div>
+                </div>
+                <div>
+                    <div class="ticker-data mt-2 mr-2 badge btn-success">Buying trigger
+                        <span class="badge badge-pill badge-light">{{market_data.buying_target_price_fmp | round(1)}}</span>
                     </div>
                 </div>
             </div>

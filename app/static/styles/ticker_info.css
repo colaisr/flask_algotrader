@@ -29,6 +29,15 @@
     font-size: medium;
 }
 
+.ticker-data{
+    width: 155px;
+    text-align: inherit;
+}
+
+.ticker-data span{
+    float: right;
+}
+
 @media only screen and (max-width: 767px){
     .left-part{
         width: 100%;
