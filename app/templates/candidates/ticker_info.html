@@ -11,44 +11,37 @@ Algotrader | Stock Info
 <div class="app-main__inner">
     <div class="app-page-title">
         <div class="page-title-wrapper">
-            <div>
-                <a class="ticker-web" target="_blank" href="{{candidate.website}}">
-                    <div class="page-title-heading">
-                        <div>
-                            <img src="{{candidate.logo}}" style="height:60px;padding-right: 10px;">
-                        </div>
-                        <div>
-                            {{candidate.ticker}}
-                            <div class="page-title-subheading">
-                                {{candidate.company_name}}
+            <div class="left-part">
+                <div>
+                    <a class="ticker-web" target="_blank" href="{{candidate.website}}">
+                        <div class="page-title-heading">
+                            <div>
+                                <img src="{{candidate.logo}}" style="height:60px;padding-right: 10px;">
+                            </div>
+                            <div>
+                                {{candidate.ticker}}
+                                <div class="page-title-subheading">
+                                    {{candidate.company_name}}
+                                </div>
                             </div>
                         </div>
+                    </a>
+                    <div>
+                        <div class="mt-2 mr-2 badge {{bg_upd_color}} badge-pill">Last Update(UTC) :
+                            {{last_update}}
+                        </div>
                     </div>
-                </a>
-                <div>
-                    <div class="mt-2 mr-2 badge {{bg_upd_color}} badge-pill">Last Update(UTC) :
-                        {{last_update}}
+                </div>
+                <div class="ticker-score">
+                    <div class="bage-score {{score_bg}}">
+                        <span class="badge badge-pill badge-light">{{market_data.algotrader_rank}}</span>
+                        <div class="score-title">Score</div>
                     </div>
                 </div>
             </div>
 
-            <div class="page-title-actions">
 
-            </div>
             <div class="page-title-actions">
-                <div class="d-flex">
-                    <div class="col-md-6">
-                        <button class="w-100 mb-2 mr-2 btn
-                            {% if market_data.algotrader_rank is not none and user_settings.algo_min_algotrader_rank is not none and market_data.algotrader_rank >= user_settings.algo_min_algotrader_rank %}
-                            btn-success
-                            {% else %}
-                            btn-warning
-                            {% endif %}">Algotrader Analytics
-                            <span class="badge badge-pill badge-light">{{market_data.algotrader_rank}}</span>
-                        </button>
-                    </div>
-
-                </div>
                 <div class="d-flex">
                     <div class="col-md-6">
                         <button class="w-100 mb-2 mr-2 btn

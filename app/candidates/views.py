@@ -205,6 +205,7 @@ def info(ticker):
     last_update = m_data.updated_server_time.date()
     bg_upd_color = "badge-success" if datetime.now().date() == last_update else "badge-warning"
     user_settings = UserSetting.query.filter_by(email=current_user.email).first()
+    score_bg = "bg-warning" if m_data.algotrader_rank < user_settings.algo_min_rank else "bg-success"
     td_history = TickerData.query.filter_by(ticker=ticker).order_by(TickerData.updated_server_time.asc()).all()
     hist_dates = []
     hist_algo_ranks = []
@@ -217,7 +218,8 @@ def info(ticker):
                            hist_dates=hist_dates,
                            hist_algo_ranks=hist_algo_ranks,
                            last_update=last_update,
-                           bg_upd_color=bg_upd_color)
+                           bg_upd_color=bg_upd_color,
+                           score_bg=score_bg)
 
 
 def get_user_candidates():
