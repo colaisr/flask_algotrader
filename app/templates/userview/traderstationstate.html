@@ -180,7 +180,7 @@ Algotrader | Trader station
                     <div class="widget-content-wrapper">
                         <div class="widget-content-left">
                             <div class="widget-heading">
-                                <a href="{{url_for('candidates.info')}}?ticker_to_show={{ key }}">
+                                <a href="/candidates/info/{{ key }}">
                                     {{ key}}
                                 </a>
 
@@ -311,7 +311,7 @@ Algotrader | Trader station
                         <tr>
                             {% endif %}
                             <td class="text-center text-muted">
-                                <a href="{{url_for('candidates.info')}}?ticker_to_show={{value['Stock']}}">
+                                <a href="/candidates/info/{{value['Stock']}}">
                                     {{value['Stock']}}
                                 </a>
                             </td>

@@ -1,0 +1,58 @@
+.ticker-web,
+.ticker-web:hover{
+    color: rgba(0,0,0,.87);
+    text-decoration: none;
+}
+
+.left-part{
+    display: flex;
+    width: 30%;
+    justify-content: space-between;
+}
+
+.ticker-score{
+    width: 87px;
+    min-height: 87px;
+}
+
+.bage-score{
+    height: 87px;
+    text-align: center;
+    padding-top: 24%;
+    font-size: x-large;
+    color: #fff;
+    border-radius: 2rem;
+}
+
+.score-title{
+    margin-top: 12%;
+    font-size: medium;
+}
+
+.ticker-data{
+    width: 155px;
+    text-align: inherit;
+}
+
+.ticker-data span{
+    float: right;
+}
+
+.ticker-data:hover{
+    cursor: help;
+}
+
+.page-title-actions .table th, .page-title-actions .table td {
+    padding: 0.25rem;
+}
+
+.add-candidate,
+.candidate-in-list{
+    width:65%;
+}
+
+@media only screen and (max-width: 767px){
+    .left-part{
+        width: 100%;
+    }
+}

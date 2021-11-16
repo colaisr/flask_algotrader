@@ -46,7 +46,7 @@ Algotrader | Telegram signals
                 <tr>
                     <td>{{ s.id }}</td>
                     <td>
-                        <a href="{{url_for('candidates.info')}}?ticker_to_show={{ s.ticker }}">
+                        <a href="/candidates/info/{{ s.ticker }}">
                             {{ s.ticker }}
                         </a>
                     </td>

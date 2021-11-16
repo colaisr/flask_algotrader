@@ -55,6 +55,18 @@ function update_candidate(){
     })
 }
 
+function add_candidate_from_ticker_info(ticker, email){
+    $('.flashes').empty();
+    url = domane + 'candidates/updatecandidate/';
+    $.post(url,{ticker: ticker, reason: "", email: email}, function(data) {
+        var data_parsed = jQuery.parseJSON(data);
+        $('.flashes').append(flashMessage(data_parsed["color_status"],data_parsed["message"]));
+        setTimeout(function(){
+            $('.flashes').empty();
+        }, 2000);
+    })
+}
+
 function update_market_data(ticker){
     url = domane + 'research/updatemarketdataforcandidate/';
     $.post(url,{ticker_to_update: ticker}, function(data) {
