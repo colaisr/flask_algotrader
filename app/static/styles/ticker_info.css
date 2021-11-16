@@ -38,11 +38,12 @@
     float: right;
 }
 
-.ticker-data:hover{
+.help-cursor{
     cursor: help;
 }
 
-.page-title-actions .table th, .page-title-actions .table td {
+.page-title-actions .table th, .page-title-actions .table td,
+.fmp-data th, .fmp-data td{
     padding: 0.25rem;
 }
 
@@ -51,8 +52,132 @@
     width:65%;
 }
 
+.fmp-data thead{
+    border-bottom: 1px solid;
+    border-color: #a29797;
+    font-size: larger;
+}
+
+.fmp-data-content .div-content {
+    top: -7%;
+    width: 15%;
+}
+
 @media only screen and (max-width: 767px){
     .left-part{
         width: 100%;
+    }
+}
+
+@media only screen and (max-width: 1280px){
+    .app-page-title .page-title-actions {
+        margin-left: 6%;
+    }
+}
+
+@media only screen and (max-width: 1100px){
+    .page-title-wrapper{
+        display: block !important;
+    }
+    .left-part {
+        width: 31% !important;
+    }
+    .fmp-data-content{
+        margin-top: -11% !important;
+        margin-left: 33% !important;
+    }
+    .fmp-data-content .div-content {
+        top: -3% !important;
+        width: 18% !important;
+    }
+    .fmp-data, .ticker-data-info table{
+        font-size: xx-small !important;
+    }
+    .div-loading{
+        height: 0px !important;
+        margin-top: 14% !important;
+        margin-left: 9% !important;
+    }
+
+    .market-data-actions{
+        margin-left: 54% !important;
+        width: 20% !important;
+        margin-top: 1% !important;
+    }
+
+    .ticker-data {
+        width: 150px !important;
+        text-align: inherit !important;
+        font-size: xx-small !important;
+    }
+
+    .ticker-data-info{
+        margin-left: 74% !important;
+        margin-top: -99px !important;
+    }
+}
+
+@media only screen and (max-width: 991.98px){
+    .app-page-title .page-title-actions.market-data-actions{
+        margin-top: -14% !important;
+    }
+}
+
+@media only screen and (max-width: 870px){
+    .app-page-title .page-title-actions.market-data-actions{
+        margin-top: 14% !important;
+        margin-left: 0px !important;
+        margin-right: 31px;
+    }
+
+    .left-part {
+        width: 55% !important;
+    }
+
+    .fmp-data-content {
+        margin-left: 75% !important;
+    }
+    .left-part .page-title-heading{
+        display: flex !important;
+    }
+
+    .ticker-data-info {
+        margin-left: 23% !important;
+        margin-top: -99px !important;
+        margin-right: 24% !important;
+    }
+}
+
+@media only screen and (max-width: 650px){
+    .fmp-data-content {
+        margin-left: 0% !important;
+        margin-top: -8% !important;
+    }
+
+    .fmp-data-content .div-content {
+        top: 27% !important;
+        width: 84% !important;
+    }
+
+    .app-page-title .page-title-actions.market-data-actions {
+        margin-top: 72% !important;
+        margin-left: 0px !important;
+        margin-right: 8px;
+    }
+
+    .ticker-data {
+        width: 128px !important;
+        text-align: inherit !important;
+        font-size: xx-small !important;
+    }
+
+    .ticker-data-info {
+        margin-left: 45% !important;
+        margin-top: -99px !important;
+        margin-right: -7% !important;
+    }
+
+    .left-part {
+        width: 96% !important;
     }
 }

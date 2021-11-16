@@ -74,6 +74,43 @@ function update_market_data(ticker){
     })
 }
 
+function get_fmp_ticker_data(ticker){
+    loading('fmp-data-content'); //from base.js
+    url = domane + 'data_hub/current_stock_price_full/' + ticker
+    $.getJSON(url, function(data) {
+        data = data[0];
+        $('.fmp-change').removeClass('text-success');
+        $('.fmp-change').removeClass('text-danger');
+        $('.fmp-pe').removeClass('text-success');
+        $('.fmp-pe').removeClass('text-warning');
+        $('.fmp-price').html(data.price.toFixed(2).toString() + '$');
+        $('.fmp-change').html(data.change.toFixed(2).toString() + ' (' + data.changesPercentage.toFixed(2).toString() + '%)');
+        if(data.change > 0){
+            $('.fmp-change').addClass('text-success');
+        }
+        else{
+            $('.fmp-change').addClass('text-danger');
+        }
+        $('.fmp-last-close').html(data.previousClose.toFixed(2));
+        $('.fmp-pe').html(data.pe.toFixed(2));
+        if(data.pe > avg_pe){
+            $('.fmp-pe').addClass('text-success');
+        }
+        else{
+            $('.fmp-pe').addClass('text-warning');
+        }
+        $('.fmp-eps').html(data.eps.toFixed(2));
+        stop_loading('fmp-data-content'); //from base.js
+    })
+}
+
+function get_avg_pe_from_fmp(sector){
+    url = domane + 'data_hub/average_sector_pe_today/' + sector
+    $.getJSON(url, function(data) {
+        avg_pe=parseFloat(data.pe); //avg_pe - global from ticker_info
+    })
+}
+
 
 
 
