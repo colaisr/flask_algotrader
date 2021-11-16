@@ -1,6 +1,10 @@
 $(document).ready(function () {
 
-    ticker=$( "#ticker" )[0].value;
+//    ticker=$("#ticker")[0].value;
+
+    $('.add-candidate').on('click', function(){
+        add_candidate_from_ticker_info(ticker, user_email) //from spyder_project.js
+    })
 
     fill_container_ticker_info(ticker);
 
