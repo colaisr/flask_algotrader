@@ -253,6 +253,25 @@ def signals_check():
 
     return "Signals checked"
 
+@connections.route('signals_create', methods=['GET'])
+@csrf.exempt
+def signals_create():
+    minimal_rank=9.3
+    query_text = "select a.* from Tickersdata a join (  select Tickersdata.`ticker`, max(Tickersdata.`updated_server_time`) as updated_server_time  from Tickersdata group by Tickersdata.`ticker`) b on b.`ticker`=a.`ticker` and b.`updated_server_time`=a.`updated_server_time`"
+    marketdata = db.session.query(TickerData).from_statement(text(query_text)).all()
+    all_reports = Report.query.all()
+    all_prices_reported = {}
+    for r in all_reports:
+        candidates_live = json.loads(r.candidates_live_json)
+        for k, c in candidates_live.items():
+            all_prices_reported[c['Stock']] = c['Bid']
+    for s in marketdata:
+        if s.ticker in all_prices_reported:
+            if s.target_price is not None:
+                check_signal_for_target_riched(s, all_prices_reported[s.ticker])
+
+    return "Signals checked"
+
 
 def check_for_signals(candidates_live_json):
     candidates_live = json.loads(candidates_live_json)
