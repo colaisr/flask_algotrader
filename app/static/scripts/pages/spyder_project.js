@@ -1,5 +1,5 @@
-var domane = 'https://colak.eu.pythonanywhere.com/';
-//var domane = 'http://localhost:8000/';
+//var domane = 'https://colak.eu.pythonanywhere.com/';
+var domane = 'http://localhost:8000/';
 
 function get_data_for_ticker(){
     $('.content-hidden').prop('hidden', true);
@@ -108,6 +108,140 @@ function get_avg_pe_from_fmp(sector){
     url = domane + 'data_hub/average_sector_pe_today/' + sector
     $.getJSON(url, function(data) {
         avg_pe=parseFloat(data.pe); //avg_pe - global from ticker_info
+    })
+}
+
+function fill_container_ticker_info(ticker){
+    url = domane + 'data_hub/historical_daily_price_full/'+ticker
+    $.getJSON(url, function(data) {
+        data=data['historical']
+        var arr = [];
+        var score_arr = [];
+        for (d of data)
+        {
+            parsed_d=Date.parse(d.date);
+            arr.push( [parsed_d , d.close ]);
+        }
+        hist_data=jQuery.parseJSON(hist_data)
+        for (t of hist_data){
+            parsed_d=Date.parse(t[0]);
+            score_arr.push( [parsed_d , t[1] ]);
+        }
+//        series.push(jQuery.parseJSON(test));
+//        var chart = draw_graph('container', ticker+' Stock Price', series, 4, true, false);
+        Highcharts.stockChart('container', {
+            chart: {
+                zoomType: 'xy'
+            },
+            rangeSelector: {
+                selected: 2
+            },
+            title: {
+                text: ticker+' Stock Price'
+            },
+            yAxis: [
+                { // Primary yAxis
+                    gridLineWidth: 1,
+                    labels: {
+                        format: '{value}$',
+                        style: {
+                            color: Highcharts.getOptions().colors[0]
+                        }
+                    },
+                    title: {
+                        text: 'Close Price',
+                        style: {
+                            color: Highcharts.getOptions().colors[0]
+                        }
+                    },
+                    opposite: true
+                },
+                {
+                    title: {
+                        text: 'Algotrader Score',
+                        style: {
+                            color: Highcharts.getOptions().colors[3]
+                        }
+                    },
+                    labels: {
+                        format: '{value}',
+                        style: {
+                            color: Highcharts.getOptions().colors[3]
+                        }
+                    },
+                    opposite: true
+                }],
+            tooltip: {
+                valueDecimals: 2,
+                shared: true
+            },
+            legend: {
+                layout: 'vertical',
+                align: 'left',
+                x: 80,
+                verticalAlign: 'top',
+                y: 55,
+                floating: true,
+                backgroundColor:
+                    Highcharts.defaultOptions.legend.backgroundColor || // theme
+                    'rgba(255,255,255,0.25)'
+            },
+            series: [
+                {
+                    name: 'Score',
+                    yAxis: 1,
+                    type: 'spline',
+                    data: score_arr,
+                    tooltip: {
+                        valueSuffix: ''
+                    },
+                    color: Highcharts.getOptions().colors[3]
+                },
+                {
+                    name: ticker,
+                    type: 'spline',
+                    data: arr.reverse(),
+                    tooltip: {
+                        valueSuffix: ' $'
+                    },
+                    color: Highcharts.getOptions().colors[0]
+
+                }],
+            responsive: {
+                rules: [
+                    {
+                        condition: {
+                            maxWidth: 500
+                        },
+                        chartOptions: {
+                            legend: {
+                                floating: false,
+                                layout: 'horizontal',
+                                align: 'center',
+                                verticalAlign: 'bottom',
+                                x: 0,
+                                y: 0
+                            },
+                            yAxis: [{
+                                labels: {
+                                    align: 'right',
+                                    x: 0,
+                                    y: -6
+                                },
+                                showLastLabel: false
+                            },
+                                {
+                                    labels: {
+                                        align: 'left',
+                                        x: 0,
+                                        y: -6
+                                    },
+                                    showLastLabel: false
+                                }]
+                        }
+                    }]
+            }
+        });
     })
 }
 
