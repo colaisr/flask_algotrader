@@ -124,11 +124,12 @@ function fill_container_ticker_info(ticker){
         }
         hist_data=jQuery.parseJSON(hist_data)
         for (t of hist_data){
-            parsed_d=Date.parse(t[0]);
-            score_arr.push( [parsed_d , t[1] ]);
+            if(t[1]>0){
+                parsed_d=Date.parse(t[0]);
+                score_arr.push( [parsed_d , t[1] ]);
+            }
         }
-//        series.push(jQuery.parseJSON(test));
-//        var chart = draw_graph('container', ticker+' Stock Price', series, 4, true, false);
+
         Highcharts.stockChart('container', {
             chart: {
                 zoomType: 'xy'
