@@ -59,8 +59,6 @@ $(document).ready(function () {
 
     })
 
-
-
     $(".show_modal_snp").on('click', function(e) {
         $(".snp-modal").show();
     });

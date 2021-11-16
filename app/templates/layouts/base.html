@@ -249,7 +249,7 @@
 <!--                                Candidates-->
 <!--                            </a>-->
 <!--                        </li>-->
-                        {% if not current_user.is_admin() and current_user.subscription_type_id == 4 and current_user.admin_confirmed and current_user.signature%}
+                        {% if not current_user.is_admin() and ((current_user.subscription_type_id == 4 and current_user.admin_confirmed and current_user.signature) or current_user.subscription_type_id == 2) %}
                         <li>
                             <a href="/algotradersettings/usersettings">
                                 <i class="metismenu-icon pe-7s-tools"></i>

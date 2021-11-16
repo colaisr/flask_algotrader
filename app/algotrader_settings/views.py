@@ -16,6 +16,7 @@ from werkzeug.utils import redirect
 from app import csrf, db
 from app.models import UserSetting, Strategy, UserStrategySettingsDefault, ClientCommand, Fgi_score, ReportStatistic
 from app.email import send_email
+import app.enums as enum
 from app.research import yahoo_research as yahoo
 
 algotradersettings = Blueprint('algotradersettings', __name__)
@@ -26,8 +27,8 @@ algotradersettings = Blueprint('algotradersettings', __name__)
 @login_required
 def usersettings():
 
-    if not current_user.admin_confirmed or not current_user.signature:
-        return redirect(url_for('station.download'))
+    if not current_user.admin_confirmed and current_user.subscription_type_id == enum.Subscriptions.MANAGED_PORTFOLIO.value:
+        return redirect(url_for('station.registration_steps', step=1))
     user_settings = UserSetting.query.filter_by(email=current_user.email).first()
     strategies = Strategy.query.filter(Strategy.id != 4).all()
     reports = ReportStatistic.query.filter_by(email=current_user.email).all()
@@ -57,9 +58,9 @@ def get_default_strategy_settings():
 @algotradersettings.route('/savesettings', methods=['POST'])
 @login_required
 def savesettings():
-    send_email(recipient='support@algotrader.company',
-               subject='testing the email',
-               template='account/email/test_message')
+    # send_email(recipient='support@algotrader.company',
+    #            subject='testing the email',
+    #            template='account/email/test_message')
     user_settings = UserSetting.query.filter_by(email=current_user.email).first()
     user_settings.algo_max_loss = request.form['algo_max_loss']
     user_settings.algo_take_profit = request.form['algo_take_profit']
@@ -186,6 +187,139 @@ def savesettings():
         user_settings.server_use_system_candidates = False
 
     user_settings.strategy_id = request.form['strategy_id']
+
+    user_settings.update_user_settings()
+    return redirect(url_for('algotradersettings.usersettings'))
+
+
+@algotradersettings.route('/save_notifications_settings', methods=['POST'])
+@login_required
+def save_notifications_settings():
+    user_settings = UserSetting.query.filter_by(email=current_user.email).first()
+
+    if "notify_buy" in request.form.keys():
+        user_settings.notify_buy = True
+    else:
+        user_settings.notify_buy = False
+
+    if "notify_sell" in request.form.keys():
+        user_settings.notify_sell = True
+    else:
+        user_settings.notify_sell = False
+
+    if "notify_trail" in request.form.keys():
+        user_settings.notify_trail = True
+    else:
+        user_settings.notify_trail = False
+
+    user_settings.update_user_settings()
+    return redirect(url_for('algotradersettings.usersettings'))
+
+
+@algotradersettings.route('/save_station_settings', methods=['POST'])
+@login_required
+def save_station_settings():
+    user_settings = UserSetting.query.filter_by(email=current_user.email).first()
+    user_settings.connection_port = request.form['connection_port']
+    user_settings.connection_account_name = request.form['connection_account_name']
+    user_settings.connection_tws_user = request.form['connection_tws_user']
+    user_settings.connection_tws_pass = request.form['connection_tws_pass']
+    user_settings.server_url = request.form['server_url']
+    user_settings.server_report_interval_sec = request.form['server_report_interval_sec']
+
+    if "server_use_system_candidates" in request.form.keys():
+        user_settings.server_use_system_candidates = True
+    else:
+        user_settings.server_use_system_candidates = False
+
+    user_settings.update_user_settings()
+    return redirect(url_for('algotradersettings.usersettings'))
+
+
+@algotradersettings.route('/save_filters_settings', methods=['POST'])
+@login_required
+def save_filters_settings():
+    user_settings = UserSetting.query.filter_by(email=current_user.email).first()
+
+    user_settings.strategy_id = request.form['strategy_id']
+
+    if "algo_apply_algotrader_rank" in request.form.keys():
+        user_settings.algo_apply_algotrader_rank = True
+    else:
+        user_settings.algo_apply_algotrader_rank = False
+    user_settings.algo_min_algotrader_rank = request.form['algo_min_algotrader_rank']
+
+    if "algo_apply_min_underprice" in request.form.keys():
+        user_settings.algo_apply_min_underprice = True
+    else:
+        user_settings.algo_apply_min_underprice = False
+    user_settings.algo_min_underprice = request.form['algo_min_underprice']
+
+    if "algo_apply_min_momentum" in request.form.keys():
+        user_settings.algo_apply_min_momentum = True
+    else:
+        user_settings.algo_apply_min_momentum = False
+    user_settings.algo_min_momentum = request.form['algo_min_momentum']
+
+    if "algo_apply_min_beta" in request.form.keys():
+        user_settings.algo_apply_min_beta = True
+    else:
+        user_settings.algo_apply_min_beta = False
+    user_settings.algo_min_beta = request.form['algo_min_beta']
+
+    if "algo_apply_max_intraday_drop_percent" in request.form.keys():
+        user_settings.algo_apply_max_intraday_drop_percent = True
+    else:
+        user_settings.algo_apply_max_intraday_drop_percent = False
+    user_settings.algo_max_intraday_drop_percent = request.form['algo_max_intraday_drop_percent']
+
+    if "algo_apply_min_emotion" in request.form.keys():
+        user_settings.algo_apply_min_emotion = True
+    else:
+        user_settings.algo_apply_min_emotion = False
+    user_settings.algo_min_emotion = request.form['algo_min_emotion']
+
+    user_settings.update_user_settings()
+    return redirect(url_for('algotradersettings.usersettings'))
+
+
+@algotradersettings.route('/save_strategy_settings', methods=['POST'])
+@login_required
+def save_strategy_settings():
+    user_settings = UserSetting.query.filter_by(email=current_user.email).first()
+    user_settings.algo_max_loss = request.form['algo_max_loss']
+    user_settings.algo_take_profit = request.form['algo_take_profit']
+    user_settings.algo_bulk_amount_usd = request.form['algo_bulk_amount_usd']
+    user_settings.algo_trailing_percent = request.form['algo_trailing_percent']
+
+    if "algo_allow_buy" in request.form.keys():
+        user_settings.algo_allow_buy = True
+    else:
+        user_settings.algo_allow_buy = False
+
+    if "algo_allow_sell" in request.form.keys():
+        user_settings.algo_allow_sell = True
+    else:
+        user_settings.algo_allow_sell = False
+
+    if "algo_allow_margin" in request.form.keys():
+        user_settings.algo_allow_margin = True
+    else:
+        user_settings.algo_allow_margin = False
+
+    user_settings.algo_portfolio_stoploss = request.form['algo_portfolio_stoploss']
+
+    if "algo_sell_on_swan" in request.form.keys():
+        user_settings.algo_sell_on_swan = True
+    else:
+        user_settings.algo_sell_on_swan = False
+    user_settings.algo_positions_for_swan = request.form['algo_positions_for_swan']
+
+    if "algo_apply_max_hold" in request.form.keys():
+        user_settings.algo_apply_max_hold = True
+    else:
+        user_settings.algo_apply_max_hold = False
+    user_settings.algo_max_hold_days = request.form['algo_max_hold_days']
 
     user_settings.update_user_settings()
     return redirect(url_for('algotradersettings.usersettings'))

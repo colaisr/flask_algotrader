@@ -31,7 +31,7 @@ Algotrader | Subscriptions
                         {% else %}
                         <a href="{{url_for('account.change_subscription', id=s.id)}}"
                            role="button"
-                           class="btn-transition btn registration {% if s.id == 3 %} disabled {%endif%}">
+                           class="btn-transition btn registration {% if s.id == 3 or s.id == user_subscription %} disabled {%endif%}">
                             {% if s.id == 3 %}
                             {{s.price}}
                             {% elif s.id == user_subscription %}
