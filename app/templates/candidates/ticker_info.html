@@ -8,7 +8,7 @@ Algotrader | Stock Info
 {% endblock %}
 
 {% block content %}
-<div class="app-main__inner">
+<div class="app-main__inner ticker-info">
     <div class="app-page-title">
         <div class="page-title-wrapper">
             <div class="page-logo">
@@ -105,69 +105,125 @@ Algotrader | Stock Info
         </div>
     </div>
     <div class="column">
-        <div class="row">
-            <div id="container" style="width:100%; height:400px;"></div>
-            <div>
-                <script> var hist_data = '{{ hist_data|tojson }}'; </script>
-                <script> var ticker = '{{ candidate.ticker }}'; </script>
-                <script> var user_email = '{{ current_user.email }}'; </script>
+        <div class="row ticket-chart">
+            <div class="col-lg-12">
+                <div class="main-card mb-1 card">
+                    <div class="card-body">
+                        <div id="container" style="width:100%; height:380px;"></div>
+                        <div>
+                            <script> var hist_data = '{{ hist_data|tojson }}'; </script>
+                            <script> var ticker = '{{ candidate.ticker }}'; </script>
+                            <script> var user_email = '{{ current_user.email }}'; </script>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="divider mt-0" style="margin-bottom: 30px;"></div>
-        <div class="row">
-            <div class="col-lg-6">
-                <div class="main-card mb-3 card">
-                    <div class="card-body"><h5 class="card-title">INFO</h5>
-                        <div class="scroll-area-sm">
-                            <div class="scrollbar-container ps--active-y ps">
-                                {{ candidate.full_description }}
-                                <div class="ps__rail-x" style="left: 0px; bottom: -160px;">
-                                    <div class="ps__thumb-x" tabindex="0" style="left: 0px; width: 0px;"></div>
-                                </div>
-                                <div class="ps__rail-y" style="top: 160px; height: 200px; right: 0px;">
-                                    <div class="ps__thumb-y" tabindex="0" style="top: 32px; height: 40px;"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="main-card mb-3 card">
-                    <div class="card-body"><h5 class="card-title">WHY</h5>
-                        <div class="scroll-area-sm">
-                            <div class="scrollbar-container ps--active-y ps">
-                                {{ candidate.reason }}
-                                <div class="ps__rail-x" style="left: 0px; bottom: -160px;">
-                                    <div class="ps__thumb-x" tabindex="0" style="left: 0px; width: 0px;"></div>
-                                </div>
-                                <div class="ps__rail-y" style="top: 160px; height: 200px; right: 0px;">
-                                    <div class="ps__thumb-y" tabindex="0" style="top: 32px; height: 40px;"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-            <div class="col-lg-6">
-                <div class="main-card mb-3 card">
-                    <div class="card-body"><h5 class="card-title">SPECS</h5>
-                        <ul class="list-group">
-                            <li class="list-group-item">Sector: {{candidate.sector}}</li>
-                            <li class="list-group-item">Industry: {{candidate.industry}}</li>
-                            <li class="list-group-item">Exchange: {{candidate.exchange}}</li>
-                            <li class="list-group-item">Av. daily drop: {{market_data.yahoo_avdropP|round(1, 'floor')}}
-                                %
+        <div class="row ticket-info-tabs">
+            <div class="col-lg-12">
+                <div class="mb-1 card">
+                    <div class="card-header card-header-tab-animation">
+                        <ul class="nav nav-justified">
+                            <li class="nav-item">
+                                <a data-toggle="tab" href="#tab-news" class="nav-link show active">
+                                    News
+                                </a>
                             </li>
-                            <li class="list-group-item">Av. daily spread:{{market_data.yahoo_avdropP|round(1, 'floor')}}
-                                %
+                            <li class="nav-item">
+                                <a data-toggle="tab" href="#tab-analysts" class="nav-link show">
+                                    Analysts
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a data-toggle="tab" href="#tab-social" class="nav-link show">
+                                    Social
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a data-toggle="tab" href="#tab-insiders" class="nav-link show">
+                                    Insiders
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a data-toggle="tab" href="#tab-technical" class="nav-link show">
+                                    Technical
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a data-toggle="tab" href="#tab-fundamentals" class="nav-link show">
+                                    Fundamentals
+                                </a>
                             </li>
                         </ul>
+                    </div>
+                    <div class="card-body">
+                        <div class="tab-content">
+                            <div class="tab-pane show active" id="tab-news" role="tabpanel">
+                                <div class="main-card mb-3 card">
+                                    <div class="card-header">
+                                        Last articles:
+                                        <div role="group" class="btn-group-sm btn-group btn-group-toggle ml-5" data-toggle="buttons">
+                                            <label class="btn btn-primary active">
+                                                <input class="news-btn" type="radio" name="options" data-limit="10" id="option1" autocomplete="off" checked="">
+                                                10
+                                            </label>
+                                            <label class="btn btn-primary">
+                                                <input class="news-btn" type="radio" name="options" data-limit="20" id="option2" autocomplete="off">
+                                                20
+                                            </label>
+                                            <label class="btn btn-primary">
+                                                <input class="news-btn" type="radio" name="options" data-limit="50" id="option3" autocomplete="off">
+                                                50
+                                            </label>
+                                            <label class="btn btn-primary">
+                                                <input class="news-btn" type="radio" name="options" data-limit="100" id="option4" autocomplete="off">
+                                                100
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane show" id="tab-analysts" role="tabpanel">
+                                <p>
+                                    srddddddddddddddddddddddddddddddd
+                                </p>
+                            </div>
+                            <div class="tab-pane show" id="tab-social" role="tabpanel">
+                                <p>
+                                    Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a
+                                type specimen book. It has
+                                survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.
+                                </p>
+                            </div>
+                            <div class="tab-pane show" id="tab-insiders" role="tabpanel">
+                                <p>
+                                    It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing
+                                software like Aldus PageMaker
+                                including versions of Lorem Ipsum.
+                                </p>
+                            </div>
+                            <div class="tab-pane show" id="tab-technical" role="tabpanel">
+                                <p>
+                                    errrrtjgkikikikikikikikikikikikikikikikikiki
+                                </p>
+                            </div>
+                            <div class="tab-pane show" id="tab-fundamentals" role="tabpanel">
+                                <p>
+                                    Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a
+                                type specimen book. It has
+                                survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.
+                                </p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
 </div>
 
 {% endblock %}

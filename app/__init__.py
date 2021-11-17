@@ -22,6 +22,7 @@ db = SQLAlchemy()
 csrf = CSRFProtect()
 compress = Compress()
 migrate = Migrate()
+env = os.getenv('ENV', 'PROD')
 
 # Set up Flask-Login
 login_manager = LoginManager()
@@ -55,6 +56,7 @@ def create_app(config):
         mysql_user = os.getenv('MYSQL_USER', 'default')
         mysql_password = os.getenv('MYSQL_PASSWORD', 'default')
         sql_name = 'colak$algotrader' if 'colakamornik' in app.static_folder else 'colak$algotrader_test'
+        env = 'PROD' if 'colakamornik' in app.static_folder else 'DEV'
 
         tunnel = sshtunnel.SSHTunnelForwarder(
             (ssh_url), ssh_username=ssh_user, ssh_password=ssh_password,
@@ -126,6 +128,9 @@ def create_app(config):
 
     from .candidates import candidates as candidates_blueprint
     app.register_blueprint(candidates_blueprint, url_prefix='/candidates')
+
+    from .api_service import api as api_blueprint
+    app.register_blueprint(api_service.api, url_prefix='/api')
 
     return app
 

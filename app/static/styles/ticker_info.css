@@ -102,6 +102,72 @@
     height: 1.5rem;
 }
 
+.ticker-info{
+    padding: 0px 30px 0 !important;
+}
+
+.ticker-info .app-page-title {
+    padding: 10px !important;
+    margin: -30px 0px 15px !important;
+}
+
+.ticket-info-tabs .card-header ul{
+    font-size: large;
+}
+
+.text-small{
+    font-size: smaller;
+}
+
+#tab-news .btn-primary {
+    background-color: #5d87f4;
+    border-color: #5d87f4;
+}
+
+#tab-news .btn-primary.active{
+    background-color: #2651be;
+    border-color: #244cb3;
+}
+
+#tab-news .btn-group label{
+    width: 50px;
+}
+
+.menu__link {
+    font-size: 18px;
+    line-height: 27px;
+    font-weight: 500;
+    color: #23262E;
+    letter-spacing: 0.02em;
+    text-decoration: none;
+    position: relative;
+}
+
+.menu__link::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    opacity: 0;
+    height: 2px;
+    bottom: -5px;
+    left: 0;
+    background: #2F327D;
+    transition: width 0.2s 0s linear, opacity 0.2s 0.2s linear;
+}
+
+.menu__link:hover::after {
+    content: '';
+    position: absolute;
+    color: #23262E;
+    width: 100%;
+    opacity: 1;
+    height: 2px;
+    bottom: -5px;
+    left: 0;
+    background: #2F327D;
+    transition: width 0.2s 0.2s linear, opacity 0.2s 0.2s linear;
+}
+
 @media only screen and (max-width: 991.80px){
     .app-page-title .page-title-heading, .app-page-title .page-title-wrapper {
         margin: 0 auto;
