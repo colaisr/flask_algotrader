@@ -258,46 +258,75 @@ def signals_check():
 
 
 def process_signals_candidates(ready_data):
-    m=2
+    for k,v in ready_data.items():
+        if v['current_price']<=v['buying_target_price_fmp']:
+            rank=str(v['algotrader_rank'])
+            under_priced=str(v['under_priced_pnt'])
+            target=str(v['target_mean_price'])
+            ticker = k
+            signal = TelegramSignal.query.filter_by(target_met=None, ticker=ticker).order_by(
+                TelegramSignal.id.desc()).first()
+            if signal is not None:
+                signal_date = signal.received.date()
+                today = datetime.utcnow().date()
+                if signal_date != today:     #there was no same signal today
+                    signal = TelegramSignal()
+                    signal.ticker = ticker
+                    signal.received = datetime.today().date()
+                    signal.transmitted = True
+                    signal.signal_price = v['current_price']
+                    try:
+                        signal.target_price = target
+                        added = signal.add_signal()
+                        if added:
+                            send_telegram_signal_message(str(signal.id) + "\n" +
+                                                         "Time to buy: " + signal.ticker + "\n" +
+                                                         "it crossed the trigger of " + str(
+                                round(v['buying_target_price_fmp'], 2)) + " USD \n" +
+                                                         "Algotrader Rank: " + str(rank) + "\n" +
+                                                         "Expected to reach the target of: " + str(target) + " USD"
+                                                         )
+                    except:
+                        print("Error in signal for : " + signal.ticker)
+
 
 
 @connections.route('signals_create', methods=['GET'])
 @csrf.exempt
 def signals_create():
-    minimal_rank=9.3
-    query_text = f"select a.* from Tickersdata a join (  select Tickersdata.`ticker`, max(Tickersdata.`updated_server_time`) as updated_server_time  from Tickersdata where algotrader_rank = {minimal_rank} group by Tickersdata.`ticker`) b on b.`ticker`=a.`ticker` and b.`updated_server_time`=a.`updated_server_time`"
-    relevant_tickers = db.session.query(TickerData).from_statement(text(query_text)).all()
-    tickers_string=''
-    for t in relevant_tickers:
-        tickers_string+=','+t.ticker
-    tickers_string=tickers_string[1:]
-    url='https://colak.eu.pythonanywhere.com/data_hub/current_stock_price_short/'+tickers_string
+    minimal_rank=9.0
+    url='https://colak.eu.pythonanywhere.com/data_hub/current_market_operation/'   #checking market is open
     context = ssl.create_default_context(cafile=certifi.where())
     response = urlopen(url, context=context)
     data = response.read().decode("utf-8")
-    prices=json.loads(data)
-    ready_data={}
-    for t in relevant_tickers:
-        filtered = filter(lambda price: price["symbol"] == t.ticker, prices)
-        price=list(filtered)[0]
-        ready_data[t.ticker]={'algotrader_rank':t.algotrader_rank,
-                              'buying_target_price_fmp':t.buying_target_price_fmp,
-                              'under_priced_pnt':t.under_priced_pnt,
-                              'target_mean_price':t.target_mean_price}
-    process_signals_candidates(ready_data)
-
-    # all_reports = Report.query.all()
-    # all_prices_reported = {}
-    # for r in all_reports:
-    #     candidates_live = json.loads(r.candidates_live_json)
-    #     for k, c in candidates_live.items():
-    #         all_prices_reported[c['Stock']] = c['Bid']
-    # for s in marketdata:
-    #     if s.ticker in all_prices_reported:
-    #         if s.target_price is not None:
-    #             check_signal_for_target_riched(s, all_prices_reported[s.ticker])
-
-    return "Signals checked"
+    data = json.loads(data)
+    if data['isTheStockMarketOpen']==True:
+        query_text=f"SELECT a.* FROM Tickersdata a JOIN (SELECT ticker, MAX(updated_server_time) AS updated_server_time FROM Tickersdata GROUP BY ticker) b ON b.ticker=a.ticker AND b.updated_server_time=a.updated_server_time WHERE a.algotrader_rank >= "+str(minimal_rank)
+        relevant_tickers = db.session.query(TickerData).from_statement(text(query_text)).all()
+        tickers_string=''
+        for t in relevant_tickers:
+            tickers_string+=','+t.ticker
+        tickers_string=tickers_string[1:]
+        url='https://colak.eu.pythonanywhere.com/data_hub/current_stock_price_short/'+tickers_string
+        context = ssl.create_default_context(cafile=certifi.where())
+        response = urlopen(url, context=context)
+        data = response.read().decode("utf-8")
+        prices=json.loads(data)
+        ready_data={}
+        for t in relevant_tickers:
+            filtered = filter(lambda price: price["symbol"] == t.ticker, prices)
+            filtered_price=list(filtered)
+            if len(filtered_price)>0:   #only those who have prices
+                price=filtered_price[0]
+                ready_data[t.ticker]={'algotrader_rank':t.algotrader_rank,
+                                      'buying_target_price_fmp':t.buying_target_price_fmp,
+                                      'under_priced_pnt':t.under_priced_pnt,
+                                      'target_mean_price':t.target_mean_price,
+                                      'current_price':price['price']}
+        process_signals_candidates(ready_data)
+        return "Signals checked"
+    else:
+        return "Market is closed - not checking signals"
 
 
 def check_for_signals(candidates_live_json):
@@ -372,7 +401,7 @@ def logreport():
             if report.market_state == "Open":  # can be none .... in not taken from api...tws not yet connected on first run
                 check_stop_loss(logged_user, report.net_liquidation)
                 check_if_market_fall(logged_user)
-                check_for_signals(report.candidates_live_json)
+                #check_for_signals(report.candidates_live_json)
 
         return "Report snapshot stored at server"
     else:
