@@ -39,9 +39,40 @@ Algotrader | Stock Info
                     </div>
                 </div>
             </div>
-            <div class="page-title-actions">
+            <div class="page-title-actions fmp-data-content" style="width: 15%;">
+                <div class="div-content">
+                    <table class="mb-0 table table-borderless fmp-data">
+                        <thead>
+                            <tr>
+                                <th>Price:</th>
+                                <th class="float-right fmp-price text-primary"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <th scope="row">Change:</th>
+                                <td class="float-right fmp-change"></td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Last Close:</th>
+                                <td class="float-right fmp-last-close"></td>
+                            </tr>
+                            <tr class="help-cursor" title="A high P/E ratio could mean that a company's stock is overvalued, or else that investors are expecting high growth rates in the future">
+                                <th scope="row">P/E:</th>
+                                <td class="float-right fmp-pe font-weight-bold"></td>
+                            </tr>
+                            <tr class="help-cursor" title="A higher EPS indicates greater value">
+                                <th scope="row">EPS:</th>
+                                <td class="float-right fmp-eps"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                {% include 'layouts/loader.html' %}
+            </div>
+            <div class="page-title-actions market-data-actions">
                 <div>
-                    <div title="Volatility of a stock in relation to the overall market. 12M" class="ticker-data mt-2 mr-2 badge {% if market_data.beta is not none and user_settings.algo_min_beta is not none and market_data.beta >= user_settings.algo_min_beta %}
+                    <div title="Volatility of a stock in relation to the overall market. 12M" class="help-cursor ticker-data mt-2 mr-2 badge {% if market_data.beta is not none and user_settings.algo_min_beta is not none and market_data.beta >= user_settings.algo_min_beta %}
                     btn-success
                     {% else %}
                     btn-warning
@@ -50,7 +81,7 @@ Algotrader | Stock Info
                     </div>
                 </div>
                 <div>
-                    <div title="Lower than cheapest analyst prediction" class="ticker-data mt-2 mr-2 badge {% if market_data.under_priced_pnt is not none and user_settings.algo_min_underprice is not none and market_data.under_priced_pnt >= user_settings.algo_min_underprice %}
+                    <div title="Lower than cheapest analyst prediction" class="help-cursor ticker-data mt-2 mr-2 badge {% if market_data.under_priced_pnt is not none and user_settings.algo_min_underprice is not none and market_data.under_priced_pnt >= user_settings.algo_min_underprice %}
                     btn-success
                     {% else %}
                     btn-warning
@@ -59,13 +90,13 @@ Algotrader | Stock Info
                     </div>
                 </div>
                 <div>
-                    <div title="Todays good entry point. Based on 1 last year intraday volatility" class="ticker-data mt-2 mr-2 badge btn-success">Buying trigger
+                    <div title="Todays good entry point. Based on 1 last year intraday volatility" class="help-cursor ticker-data mt-2 mr-2 badge btn-success">Buying trigger
                         <span class="badge badge-pill badge-light">{{market_data.buying_target_price_fmp | round(1)}}</span>
                     </div>
                 </div>
             </div>
 
-            <div class="page-title-actions">
+            <div class="page-title-actions ticker-data-info">
                 <table class="mb-0 table table-borderless">
                     <tbody>
                         <tr>
@@ -74,7 +105,7 @@ Algotrader | Stock Info
                         </tr>
                         <tr>
                             <th scope="row">Sector:</th>
-                            <td>{{candidate.sector}}</td>
+                            <td class="ticker-sector-val" data-sector="{{candidate.sector}}">{{candidate.sector}}</td>
                         </tr>
                         <tr>
                             <th scope="row">Industry:</th>
@@ -101,19 +132,12 @@ Algotrader | Stock Info
         <div class="row">
             <div id="container" style="width:100%; height:400px;"></div>
             <div>
+                <script> var hist_data = '{{ hist_data|tojson }}'; </script>
                 <script> var ticker = '{{ candidate.ticker }}'; </script>
                 <script> var user_email = '{{ current_user.email }}'; </script>
-                <script> var hist_dates = {{ hist_dates|tojson }}; </script>
-                <script> var hist_algo_ranks = {{ hist_algo_ranks|tojson }}; </script>
-
             </div>
         </div>
-        <div class="row">
-            <canvas id="myChart" style="width:100%; height:400px;"></canvas>
-
-        </div>
         <div class="divider mt-0" style="margin-bottom: 30px;"></div>
-
         <div class="row">
             <div class="col-lg-6">
                 <div class="main-card mb-3 card">

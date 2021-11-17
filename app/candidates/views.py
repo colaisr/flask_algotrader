@@ -200,20 +200,17 @@ def info(ticker):
     user_settings = UserSetting.query.filter_by(email=current_user.email).first()
     score_bg = "bg-warning" if m_data.algotrader_rank < user_settings.algo_min_algotrader_rank else "bg-success"
     td_history = TickerData.query.filter_by(ticker=ticker).order_by(TickerData.updated_server_time.asc()).all()
-    hist_dates = []
-    hist_algo_ranks = []
+    hist_data=[]
     for td in td_history:
-        hist_dates.append(td.updated_server_time.strftime("%d %b, %Y"))
-        hist_algo_ranks.append(td.algotrader_rank)
+        hist_data.append([td.updated_server_time.strftime("%Y-%m-%d"), td.algotrader_rank])
     return render_template('candidates/ticker_info.html', user_settings=user_settings,
                            candidate=candidate,
                            market_data=m_data,
-                           hist_dates=hist_dates,
-                           hist_algo_ranks=hist_algo_ranks,
                            last_update=last_update,
                            bg_upd_color=bg_upd_color,
                            score_bg=score_bg,
-                           in_list=in_list)
+                           in_list=in_list,
+                           hist_data=hist_data)
 
 
 def get_user_candidates():

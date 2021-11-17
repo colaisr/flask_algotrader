@@ -74,6 +74,178 @@ function update_market_data(ticker){
     })
 }
 
+function get_fmp_ticker_data(ticker){
+    loading('fmp-data-content'); //from base.js
+    url = domane + 'data_hub/current_stock_price_full/' + ticker
+    $.getJSON(url, function(data) {
+        data = data[0];
+        $('.fmp-change').removeClass('text-success');
+        $('.fmp-change').removeClass('text-danger');
+        $('.fmp-pe').removeClass('text-success');
+        $('.fmp-pe').removeClass('text-warning');
+        $('.fmp-price').html(data.price.toFixed(2).toString() + '$');
+        $('.fmp-change').html(data.change.toFixed(2).toString() + ' (' + data.changesPercentage.toFixed(2).toString() + '%)');
+        if(data.change > 0){
+            $('.fmp-change').addClass('text-success');
+        }
+        else{
+            $('.fmp-change').addClass('text-danger');
+        }
+        $('.fmp-last-close').html(data.previousClose.toFixed(2));
+        $('.fmp-pe').html(data.pe.toFixed(2));
+        if(data.pe > avg_pe){
+            $('.fmp-pe').addClass('text-success');
+        }
+        else{
+            $('.fmp-pe').addClass('text-warning');
+        }
+        $('.fmp-eps').html(data.eps.toFixed(2));
+        stop_loading('fmp-data-content'); //from base.js
+    })
+}
+
+function get_avg_pe_from_fmp(sector){
+    url = domane + 'data_hub/average_sector_pe_today/' + sector
+    $.getJSON(url, function(data) {
+        avg_pe=parseFloat(data.pe); //avg_pe - global from ticker_info
+    })
+}
+
+function fill_container_ticker_info(ticker){
+    url = domane + 'data_hub/historical_daily_price_full/'+ticker
+    $.getJSON(url, function(data) {
+        data=data['historical']
+        var arr = [];
+        var score_arr = [];
+        for (d of data)
+        {
+            parsed_d=Date.parse(d.date);
+            arr.push( [parsed_d , d.close ]);
+        }
+        hist_data=jQuery.parseJSON(hist_data)
+        for (t of hist_data){
+            if(t[1]>0){
+                parsed_d=Date.parse(t[0]);
+                score_arr.push( [parsed_d , t[1] ]);
+            }
+        }
+
+        Highcharts.stockChart('container', {
+            chart: {
+                zoomType: 'xy'
+            },
+            rangeSelector: {
+                selected: 2
+            },
+            title: {
+                text: ticker+' Stock Price'
+            },
+            yAxis: [
+                { // Primary yAxis
+                    gridLineWidth: 1,
+                    labels: {
+                        format: '{value}$',
+                        style: {
+                            color: Highcharts.getOptions().colors[0]
+                        }
+                    },
+                    title: {
+                        text: 'Close Price',
+                        style: {
+                            color: Highcharts.getOptions().colors[0]
+                        }
+                    },
+                    opposite: true
+                },
+                {
+                    title: {
+                        text: 'Algotrader Score',
+                        style: {
+                            color: Highcharts.getOptions().colors[3]
+                        }
+                    },
+                    labels: {
+                        format: '{value}',
+                        style: {
+                            color: Highcharts.getOptions().colors[3]
+                        }
+                    },
+                    opposite: true
+                }],
+            tooltip: {
+                valueDecimals: 2,
+                shared: true
+            },
+            legend: {
+                layout: 'vertical',
+                align: 'left',
+                x: 80,
+                verticalAlign: 'top',
+                y: 55,
+                floating: true,
+                backgroundColor:
+                    Highcharts.defaultOptions.legend.backgroundColor || // theme
+                    'rgba(255,255,255,0.25)'
+            },
+            series: [
+                {
+                    name: 'Score',
+                    yAxis: 1,
+                    type: 'spline',
+                    data: score_arr,
+                    tooltip: {
+                        valueSuffix: ''
+                    },
+                    color: Highcharts.getOptions().colors[3]
+                },
+                {
+                    name: ticker,
+                    type: 'spline',
+                    data: arr.reverse(),
+                    tooltip: {
+                        valueSuffix: ' $'
+                    },
+                    color: Highcharts.getOptions().colors[0]
+
+                }],
+            responsive: {
+                rules: [
+                    {
+                        condition: {
+                            maxWidth: 500
+                        },
+                        chartOptions: {
+                            legend: {
+                                floating: false,
+                                layout: 'horizontal',
+                                align: 'center',
+                                verticalAlign: 'bottom',
+                                x: 0,
+                                y: 0
+                            },
+                            yAxis: [{
+                                labels: {
+                                    align: 'right',
+                                    x: 0,
+                                    y: -6
+                                },
+                                showLastLabel: false
+                            },
+                                {
+                                    labels: {
+                                        align: 'left',
+                                        x: 0,
+                                        y: -6
+                                    },
+                                    showLastLabel: false
+                                }]
+                        }
+                    }]
+            }
+        });
+    })
+}
+
 
 
 
