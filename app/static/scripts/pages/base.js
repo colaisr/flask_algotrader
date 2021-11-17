@@ -123,8 +123,9 @@ function upload_personal_list(){
     });
 }
 
-function loading(parrent_div){
-    $('.' + parrent_div + ' .div-content').css('opacity', 0.2);
+function loading(parrent_div, opacity){
+    if(opacity == undefined){opacity = 0.2;}
+    $('.' + parrent_div + ' .div-content').css('opacity', opacity);
     var height = $('.' + parrent_div).height();
     $('.' + parrent_div + ' .div-loading').css('height', height);
 

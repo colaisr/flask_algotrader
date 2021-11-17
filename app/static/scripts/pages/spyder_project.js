@@ -55,12 +55,20 @@ function update_candidate(){
     })
 }
 
-function add_candidate_from_ticker_info(ticker, email){
+function add_candidate_from_ticker_info(){
+    loading('ticker-action', 0); //from base.js
     $('.flashes').empty();
     url = domane + 'candidates/updatecandidate/';
-    $.post(url,{ticker: ticker, reason: "", email: email}, function(data) {
+    $.post(url,{ticker: ticker, reason: "", email: user_email}, function(data) {
         var data_parsed = jQuery.parseJSON(data);
         $('.flashes').append(flashMessage(data_parsed["color_status"],data_parsed["message"]));
+        if(data_parsed["color_status"] == "success"){
+            var button = $('<button type="button" class="btn btn-outline-success candidate-in-list"><i class="metismenu-icon fa fa-check"></i></button>');
+            $('.ticker-action .ticket-info-val').empty();
+            $('.ticker-action .ticket-info-val').append(button);
+            $('.candidate-in-list').on('click',remove_candidate);
+        }
+        stop_loading('ticker-action'); //from base.js
         setTimeout(function(){
             $('.flashes').empty();
         }, 2000);
@@ -75,7 +83,7 @@ function update_market_data(ticker){
 }
 
 function get_fmp_ticker_data(ticker){
-    loading('fmp-data-content'); //from base.js
+    loading('page-fmp-data'); //from base.js
     url = domane + 'data_hub/current_stock_price_full/' + ticker
     $.getJSON(url, function(data) {
         data = data[0];
@@ -100,7 +108,7 @@ function get_fmp_ticker_data(ticker){
             $('.fmp-pe').addClass('text-warning');
         }
         $('.fmp-eps').html(data.eps.toFixed(2));
-        stop_loading('fmp-data-content'); //from base.js
+        stop_loading('page-fmp-data'); //from base.js
     })
 }
 
@@ -124,10 +132,12 @@ function fill_container_ticker_info(ticker){
         }
         hist_data=jQuery.parseJSON(hist_data)
         for (t of hist_data){
-            if(t[1]>0){
-                parsed_d=Date.parse(t[0]);
-                score_arr.push( [parsed_d , t[1] ]);
-            }
+//            if(t[1]>0){
+//                parsed_d=Date.parse(t[0]);
+//                score_arr.push( [parsed_d , t[1] ]);
+//            }
+            parsed_d=Date.parse(t[0]);
+            score_arr.push( [parsed_d , t[1] ]);
         }
 
         Highcharts.stockChart('container', {

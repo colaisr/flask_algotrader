@@ -32,7 +32,7 @@ def index():
     central = general.utc_datetime_to_local(last_update_date)
     system_status['last_update_date'] = central.strftime("%d %b, %Y")
 
-    all_users = User.query.all()
+    all_users = User.query.filter(User.role_id == enum.UserRole.USER.value).all()
     personal_users = list(filter(lambda p: p.subscription_type_id == enum.Subscriptions.PERSONAL.value, all_users))
     managed_users = list(filter(lambda p: p.subscription_type_id == enum.Subscriptions.MANAGED_PORTFOLIO.value, all_users))
     system_status['users_registered'] = len(all_users)

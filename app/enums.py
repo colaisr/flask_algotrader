@@ -6,3 +6,8 @@ class Subscriptions(Enum):
     PERSONAL = 2
     CORPORATE = 3
     MANAGED_PORTFOLIO = 4
+
+
+class UserRole(Enum):
+    USER = 1
+    ADMINISTRATOR = 2
