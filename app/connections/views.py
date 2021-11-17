@@ -295,42 +295,38 @@ def process_signals_candidates(ready_data):
 @csrf.exempt
 def signals_create():
     minimal_rank=9.0
-    query_text=f"SELECT a.* FROM Tickersdata a JOIN (SELECT ticker, MAX(updated_server_time) AS updated_server_time FROM Tickersdata GROUP BY ticker) b ON b.ticker=a.ticker AND b.updated_server_time=a.updated_server_time WHERE a.algotrader_rank >= "+str(minimal_rank)
-    relevant_tickers = db.session.query(TickerData).from_statement(text(query_text)).all()
-    tickers_string=''
-    for t in relevant_tickers:
-        tickers_string+=','+t.ticker
-    tickers_string=tickers_string[1:]
-    url='https://colak.eu.pythonanywhere.com/data_hub/current_stock_price_short/'+tickers_string
+    url='https://colak.eu.pythonanywhere.com/data_hub/current_market_operation/'   #checking market is open
     context = ssl.create_default_context(cafile=certifi.where())
     response = urlopen(url, context=context)
     data = response.read().decode("utf-8")
-    prices=json.loads(data)
-    ready_data={}
-    for t in relevant_tickers:
-        filtered = filter(lambda price: price["symbol"] == t.ticker, prices)
-        filtered_price=list(filtered)
-        if len(filtered_price)>0:   #only those who have prices
-            price=filtered_price[0]
-            ready_data[t.ticker]={'algotrader_rank':t.algotrader_rank,
-                                  'buying_target_price_fmp':t.buying_target_price_fmp,
-                                  'under_priced_pnt':t.under_priced_pnt,
-                                  'target_mean_price':t.target_mean_price,
-                                  'current_price':price['price']}
-    process_signals_candidates(ready_data)
-
-    # all_reports = Report.query.all()
-    # all_prices_reported = {}
-    # for r in all_reports:
-    #     candidates_live = json.loads(r.candidates_live_json)
-    #     for k, c in candidates_live.items():
-    #         all_prices_reported[c['Stock']] = c['Bid']
-    # for s in marketdata:
-    #     if s.ticker in all_prices_reported:
-    #         if s.target_price is not None:
-    #             check_signal_for_target_riched(s, all_prices_reported[s.ticker])
-
-    return "Signals checked"
+    data = json.loads(data)
+    if data['isTheStockMarketOpen']==True:
+        query_text=f"SELECT a.* FROM Tickersdata a JOIN (SELECT ticker, MAX(updated_server_time) AS updated_server_time FROM Tickersdata GROUP BY ticker) b ON b.ticker=a.ticker AND b.updated_server_time=a.updated_server_time WHERE a.algotrader_rank >= "+str(minimal_rank)
+        relevant_tickers = db.session.query(TickerData).from_statement(text(query_text)).all()
+        tickers_string=''
+        for t in relevant_tickers:
+            tickers_string+=','+t.ticker
+        tickers_string=tickers_string[1:]
+        url='https://colak.eu.pythonanywhere.com/data_hub/current_stock_price_short/'+tickers_string
+        context = ssl.create_default_context(cafile=certifi.where())
+        response = urlopen(url, context=context)
+        data = response.read().decode("utf-8")
+        prices=json.loads(data)
+        ready_data={}
+        for t in relevant_tickers:
+            filtered = filter(lambda price: price["symbol"] == t.ticker, prices)
+            filtered_price=list(filtered)
+            if len(filtered_price)>0:   #only those who have prices
+                price=filtered_price[0]
+                ready_data[t.ticker]={'algotrader_rank':t.algotrader_rank,
+                                      'buying_target_price_fmp':t.buying_target_price_fmp,
+                                      'under_priced_pnt':t.under_priced_pnt,
+                                      'target_mean_price':t.target_mean_price,
+                                      'current_price':price['price']}
+        process_signals_candidates(ready_data)
+        return "Signals checked"
+    else:
+        return "Market is closed - not checking signals"
 
 
 def check_for_signals(candidates_live_json):
