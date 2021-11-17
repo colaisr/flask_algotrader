@@ -1,0 +1,1 @@
+from app.api_service.views import api  # noqa

@@ -16,6 +16,8 @@ from app.models import TickerData, Candidate, UserSetting, Fgi_score, LastUpdate
 from sqlalchemy import text
 
 
+
+
 candidates = Blueprint('candidates', __name__)
 
 
@@ -71,7 +73,7 @@ def today():
 @candidates.route('/telegram_signals', methods=['GET'])
 @csrf.exempt
 def telegram_signals():
-    signals_query = f"SELECT s.ticker, " \
+    signals_query = f"SELECT distinct s.ticker, " \
                     f"s.signal_price, " \
                     f"s.target_price, " \
                     f"s.profit_percent, " \
@@ -236,6 +238,9 @@ def get_user_candidates():
     candidates_res = db.engine.execute(text(user_query))
     candidates = [dict(r.items()) for r in candidates_res]
     return candidates
+
+
+
 
 
 

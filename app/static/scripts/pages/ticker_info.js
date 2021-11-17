@@ -3,6 +3,14 @@ avg_pe = 0;
 $(document).ready(function () {
 
     get_avg_pe_from_fmp($('.ticker-sector-val').data('sector'));
+    get_fmp_ticker_data(ticker);
+    get_stock_news(10);
+    fill_container_ticker_info(ticker); //from spider_project.js
+
+    setInterval(function(){
+       get_fmp_ticker_data(ticker);
+    }, 15000);
+
 
     $('.add-candidate').on('click', function(){
         add_candidate_from_ticker_info() //from spyder_project.js
@@ -12,13 +20,10 @@ $(document).ready(function () {
         remove_candidate();
     })
 
-    get_fmp_ticker_data(ticker);
-
-    setInterval(function(){
-       get_fmp_ticker_data(ticker);
-    }, 15000);
-
-    fill_container_ticker_info(ticker); //from spider_project.js
+    $('.news-btn').on('change',function(){
+        var limit = $(this).data('limit');
+        get_stock_news(limit);
+    })
 
 })
 
@@ -36,6 +41,13 @@ function remove_candidate(){
         setTimeout(function(){
             $('.flashes').empty();
         }, 2000);
+    })
+}
+
+function get_stock_news(limit){
+    $.getJSON("/api/stock_news",{tickers: ticker, limit: limit}, function(data) {
+        $('#tab-news .card-body').empty();
+        $('#tab-news .card-body').append($(data.data));
     })
 }
 
