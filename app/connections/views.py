@@ -294,7 +294,7 @@ def process_signals_candidates(ready_data):
 @connections.route('signals_create', methods=['GET'])
 @csrf.exempt
 def signals_create():
-    minimal_rank=9.0
+    minimal_rank=9.1
     url='https://colak.eu.pythonanywhere.com/data_hub/current_market_operation/'   #checking market is open
     context = ssl.create_default_context(cafile=certifi.where())
     response = urlopen(url, context=context)
@@ -316,7 +316,7 @@ def signals_create():
         for t in relevant_tickers:
             filtered = filter(lambda price: price["symbol"] == t.ticker, prices)
             filtered_price=list(filtered)
-            if len(filtered_price)>0:   #only those who have prices
+            if len(filtered_price)>0 and t.buying_target_price_fmp is not None:   #only those who have prices
                 price=filtered_price[0]
                 ready_data[t.ticker]={'algotrader_rank':t.algotrader_rank,
                                       'buying_target_price_fmp':t.buying_target_price_fmp,

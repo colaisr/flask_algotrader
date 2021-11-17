@@ -9,5 +9,8 @@ server_url = "https://www.algotrader.company/"
 url = server_url + "connections/signals_check"
 context = ssl._create_unverified_context()
 response = urllib.request.urlopen(url,context=context)
-r=2
+url = server_url + "connections/signals_create"
+context = ssl._create_unverified_context()
+response = urllib.request.urlopen(url,context=context)
+
 
