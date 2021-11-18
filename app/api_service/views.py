@@ -37,6 +37,16 @@ def insider_actions():
     return jsonify({'data': render_template('partial/ticket_info_insiders.html', data=json.loads(data))})
 
 
+@api.route('/press_relises', methods=['GET'])
+@csrf.exempt
+def press_relises():
+    ticker = request.args.get('ticker')
+    url = (
+            f"{spyder_url}/data_hub/press_relises/{ticker}")
+    data = api_request(url)
+    return jsonify({'data': render_template('partial/ticket_info_press_relises.html', data=json.loads(data))})
+
+
 def api_request(url):
     context = ssl.create_default_context(cafile=certifi.where())
     response = urlopen(url, context=context)
