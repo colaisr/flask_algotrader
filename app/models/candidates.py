@@ -17,6 +17,7 @@ class Candidate(db.Model):
     full_description = db.Column('full_description', db.String)
     logo = db.Column('logo', db.String)
     website = db.Column('website', db.String)
+    isActivelyTrading_fmp = db.Column('isActivelyTrading_fmp', db.Boolean)
 
     enabled = db.Column('enabled', db.Boolean)
 
@@ -29,6 +30,7 @@ class Candidate(db.Model):
             candidate.ticker = self.ticker
             candidate.reason = self.reason
             candidate.enabled = self.enabled
+            candidate.isActivelyTrading_fmp = self.isActivelyTrading_fmp
             candidate.company_name = self.company_name
             candidate.exchange = self.exchange
             candidate.exchange_short = self.exchange_short
