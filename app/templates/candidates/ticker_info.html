@@ -140,11 +140,11 @@ Algotrader | Stock Info
 <!--                                    Social-->
 <!--                                </a>-->
 <!--                            </li>-->
-<!--                            <li class="nav-item">-->
-<!--                                <a data-toggle="tab" href="#tab-insiders" class="nav-link show">-->
-<!--                                    Insiders-->
-<!--                                </a>-->
-<!--                            </li>-->
+                            <li class="nav-item">
+                                <a data-toggle="tab" href="#tab-insiders" class="nav-link show">
+                                    Insiders
+                                </a>
+                            </li>
 <!--                            <li class="nav-item">-->
 <!--                                <a data-toggle="tab" href="#tab-technical" class="nav-link show">-->
 <!--                                    Technical-->
@@ -182,8 +182,9 @@ Algotrader | Stock Info
                                             </label>
                                         </div>
                                     </div>
-                                    <div class="card-body">
-
+                                    <div class="card-body tab-news-card" style="position: relative;">
+                                        <div class="div-content" ></div>
+                                        {% include 'layouts/loader.html' %}
                                     </div>
                                 </div>
                             </div>
@@ -199,13 +200,14 @@ Algotrader | Stock Info
 <!--                                survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.-->
 <!--                                </p>-->
 <!--                            </div>-->
-<!--                            <div class="tab-pane show" id="tab-insiders" role="tabpanel">-->
-<!--                                <p>-->
-<!--                                    It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing-->
-<!--                                software like Aldus PageMaker-->
-<!--                                including versions of Lorem Ipsum.-->
-<!--                                </p>-->
-<!--                            </div>-->
+                            <div class="tab-pane show" id="tab-insiders" role="tabpanel">
+                                <div class="main-card mb-3 card">
+                                    <div class="card-body tab-insiders-card" style="position: relative;">
+                                        <div class="div-content" ></div>
+                                        {% include 'layouts/loader.html' %}
+                                    </div>
+                                </div>
+                            </div>
 <!--                            <div class="tab-pane show" id="tab-technical" role="tabpanel">-->
 <!--                                <p>-->
 <!--                                    errrrtjgkikikikikikikikikikikikikikikikikiki-->

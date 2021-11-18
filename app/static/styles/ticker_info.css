@@ -134,7 +134,7 @@
 }
 
 .menu__link {
-    font-size: 18px;
+    font-size: 16px;
     line-height: 27px;
     font-weight: 500;
     color: #23262E;
@@ -166,6 +166,29 @@
     left: 0;
     background: #2F327D;
     transition: width 0.2s 0.2s linear, opacity 0.2s 0.2s linear;
+}
+
+
+.ticket-info-tabs .div-loading{
+    height: 100%;
+    position: absolute;
+    display: block;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    top: 0;
+    left: 50%;
+    opacity: 0.7;
+    z-index: 99;
+}
+
+.ticket-info-tabs  .div-content{
+    position: relative;
+}
+
+.menu__link.article-link{
+    font-size: 11px;
+    color: #4183c4;
 }
 
 @media only screen and (max-width: 991.80px){
