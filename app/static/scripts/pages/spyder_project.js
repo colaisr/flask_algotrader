@@ -13,9 +13,9 @@ function get_data_for_ticker(){
         loading('add-candidate-body'); //from base.js
         url = domane + 'research/get_info_ticker/' + ticker
         $.getJSON(url, function(data) {
-            if (data.companyName == undefined)
+            if (data.cik == undefined || data.cik=="") //etfs and funds have no cik
             {
-                $('#candidate-flash').append(flashMessage("danger","Wrong ticker"));
+                $('#candidate-flash').append(flashMessage("danger","Not Actively traded stock"));
             }
             else{
                 $('#txt_company_name').val(data.companyName);
