@@ -64,7 +64,14 @@ Algotrader | Stock Info
                         {% else %}
                         btn-warning
                         {% endif %}">
-                        Beta <span class="badge badge-pill badge-light">{{market_data.beta | round(1)}}</span>
+                        Beta
+                        <span class="badge badge-pill badge-light">
+                            {% if market_data.beta is not none%}
+                            {{market_data.beta | round(1)}}
+                            {% else %}
+                            0
+                            {% endif %}
+                        </span>
                     </div>
                     <div title="Lower than cheapest analyst prediction" class="help-cursor ticker-data mt-2 mr-2 badge {% if market_data.under_priced_pnt is not none and user_settings.algo_min_underprice is not none and market_data.under_priced_pnt >= user_settings.algo_min_underprice %}
                         btn-success
