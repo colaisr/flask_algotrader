@@ -1,3 +1,5 @@
+var EXCHANGES = ['NYSE','NASDAQ','AMEX']
+
 $(document).ready(function () {
 
     $(window).resize(function() {

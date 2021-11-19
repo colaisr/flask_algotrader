@@ -1,5 +1,5 @@
-var domane = 'https://colak.eu.pythonanywhere.com/';
-//var domane = 'http://localhost:8000/';
+//var domane = 'https://colak.eu.pythonanywhere.com/';
+var domane = 'http://localhost:8000/';
 
 function get_data_for_ticker(){
     $('.content-hidden').prop('hidden', true);
@@ -13,7 +13,12 @@ function get_data_for_ticker(){
         loading('add-candidate-body'); //from base.js
         url = domane + 'research/get_info_ticker/' + ticker
         $.getJSON(url, function(data) {
-            if (data.cik == undefined || data.cik=="") //etfs and funds have no cik
+            if (data.length == 0 ||
+                data.cik == undefined ||
+                data.cik == null ||
+                data.cik=="" ||
+                data.isEtf ||
+                !data.isActivelyTrading) //etfs and funds have no cik //cik - num of company
             {
                 $('#candidate-flash').append(flashMessage("danger","Not Actively traded stock"));
             }
