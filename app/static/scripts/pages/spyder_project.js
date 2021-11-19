@@ -105,12 +105,17 @@ function get_fmp_ticker_data(ticker){
             $('.fmp-change').addClass('text-danger');
         }
         $('.fmp-last-close').html(data.previousClose.toFixed(2));
-        $('.fmp-pe').html(data.pe.toFixed(2));
-        if(data.pe > avg_pe){
-            $('.fmp-pe').addClass('text-success');
+        if(data.pe != null){
+            $('.fmp-pe').html(data.pe.toFixed(2));
+            if(data.pe > avg_pe){
+                $('.fmp-pe').addClass('text-success');
+            }
+            else{
+                $('.fmp-pe').addClass('text-warning');
+            }
         }
         else{
-            $('.fmp-pe').addClass('text-warning');
+            $('.fmp-pe').html('-');
         }
         $('.fmp-eps').html(data.eps.toFixed(2));
         stop_loading('page-fmp-data'); //from base.js
