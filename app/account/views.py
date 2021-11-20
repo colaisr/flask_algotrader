@@ -39,11 +39,10 @@ from dateutil.relativedelta import relativedelta
 
 account = Blueprint('account', __name__)
 
-# GOOGLE_CLIENT_ID = os.environ.get("GOOGLE_CLIENT_ID", None)
-GOOGLE_CLIENT_ID = "522889896001-nc04epa6n7s7n02hofi9f9t0m021t1lk.apps.googleusercontent.com"
+GOOGLE_CLIENT_ID = os.environ.get("GOOGLE_CLIENT_ID", None)
 
-# GOOGLE_CLIENT_SECRET = os.environ.get("GOOGLE_CLIENT_SECRET", None)
-GOOGLE_CLIENT_SECRET ="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"
+GOOGLE_CLIENT_SECRET = os.environ.get("GOOGLE_CLIENT_SECRET", None)
+
 client = WebApplicationClient(GOOGLE_CLIENT_ID)
 
 GOOGLE_DISCOVERY_URL = "https://accounts.google.com/.well-known/openid-configuration"
@@ -125,7 +124,9 @@ def callback():
         unique_id = userinfo_response.json()["sub"]
         users_email = userinfo_response.json()["email"]
         picture = userinfo_response.json()["picture"]
-        users_name = userinfo_response.json()["given_name"]
+        users_first_name = userinfo_response.json()["given_name"]
+        users_last_name = userinfo_response.json()["family_name"]
+        print("googleIdentified:"+users_email)#to check on server
         # forLily
         t=2
     else:
