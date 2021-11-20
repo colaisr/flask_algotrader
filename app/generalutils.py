@@ -1,5 +1,7 @@
 import json
 import ssl
+import certifi
+import urllib
 from dateutil import tz
 from pytz import timezone
 from sqlalchemy.ext.declarative import DeclarativeMeta
@@ -69,6 +71,19 @@ def is_market_open():
     except:
         pass
     return state
+
+
+def api_request_get(url):
+    context = ssl.create_default_context(cafile=certifi.where())
+    response = urlopen(url, context=context)
+    return response.read().decode("utf-8")
+
+
+def api_request_post(url, request_data):
+    data = urllib.parse.urlencode(request_data)
+    data = data.encode('ascii')
+    response = urllib.request.urlopen(url, data)
+    return response.read()
 
 
 class JsonEncoder(json.JSONEncoder):

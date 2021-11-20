@@ -6,7 +6,7 @@ $(document).ready(function () {
     get_fmp_ticker_data(ticker);
     get_stock_news(10);
     get_insider_actions();
-    get_insider_actions();
+    get_press_relises();
     fill_container_ticker_info(ticker); //from spider_project.js
 
     setInterval(function(){
@@ -70,7 +70,7 @@ function get_insider_actions(){
     })
 }
 
-function get_insider_actions(){
+function get_press_relises(){
     loading('tab-press-relises-card');
     $('.tab-press-relises-card .div-loading').css('height', 0);
     $('.tab-press-relises-card .spinner-border').css('margin-right', '9%');

@@ -13,7 +13,12 @@ function get_data_for_ticker(){
         loading('add-candidate-body'); //from base.js
         url = domane + 'research/get_info_ticker/' + ticker
         $.getJSON(url, function(data) {
-            if (data.cik == undefined || data.cik=="") //etfs and funds have no cik
+            if (data.length == 0 ||
+                data.cik == undefined ||
+                data.cik == null ||
+                data.cik=="" ||
+                data.isEtf ||
+                !data.isActivelyTrading) //etfs and funds have no cik //cik - num of company
             {
                 $('#candidate-flash').append(flashMessage("danger","Not Actively traded stock"));
             }
@@ -100,12 +105,17 @@ function get_fmp_ticker_data(ticker){
             $('.fmp-change').addClass('text-danger');
         }
         $('.fmp-last-close').html(data.previousClose.toFixed(2));
-        $('.fmp-pe').html(data.pe.toFixed(2));
-        if(data.pe > avg_pe){
-            $('.fmp-pe').addClass('text-success');
+        if(data.pe != null){
+            $('.fmp-pe').html(data.pe.toFixed(2));
+            if(data.pe > avg_pe){
+                $('.fmp-pe').addClass('text-success');
+            }
+            else{
+                $('.fmp-pe').addClass('text-warning');
+            }
         }
         else{
-            $('.fmp-pe').addClass('text-warning');
+            $('.fmp-pe').html('-');
         }
         $('.fmp-eps').html(data.eps.toFixed(2));
         stop_loading('page-fmp-data'); //from base.js

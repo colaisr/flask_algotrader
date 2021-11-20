@@ -10,7 +10,7 @@ from flask import (
 
 from flask_login import login_required, current_user
 
-from app import csrf, db
+from app import csrf, db, env
 from datetime import datetime
 from app.models import TickerData, Candidate, UserSetting, Fgi_score, LastUpdateSpyderData
 from sqlalchemy import text
@@ -19,6 +19,7 @@ from sqlalchemy import text
 
 
 candidates = Blueprint('candidates', __name__)
+spyder_url = 'http://localhost:8000' if env == 'DEV' else 'https://colak.eu.pythonanywhere.com'
 
 
 @candidates.route('today', methods=['GET', 'POST'])
@@ -193,7 +194,18 @@ def enabledisable():
 @candidates.route('/info/<ticker>', methods=['GET'])
 @login_required
 def info(ticker):
+    ticker = ticker.upper()
     candidate = Candidate.query.filter_by(ticker=ticker).first()
+    if candidate is None:
+        url = (
+            f"{spyder_url}/candidates/add_by_spider")
+        result = general.api_request_post(url, {'ticker_to_add': ticker})
+        if b'success' not in result:
+            return f"We have no data for {ticker}. If you think it should be added please contact support@algotrader.company"
+        else:
+            # db.session.commit()
+            return redirect(url_for('candidates.info', ticker=ticker))
+
     candidate_in_list = Candidate.query.filter_by(ticker=ticker, email=current_user.email).first()
     in_list = candidate_in_list is not None
     m_data = TickerData.query.filter_by(ticker=ticker).order_by(TickerData.updated_server_time.desc()).first()

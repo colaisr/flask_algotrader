@@ -1,6 +1,5 @@
-import ssl
+import app.generalutils as general
 import json
-import certifi
 
 from flask import (
     Blueprint,
@@ -9,7 +8,6 @@ from flask import (
     request
 )
 from app import csrf, env
-from urllib.request import urlopen
 
 
 api = Blueprint('api', __name__)
@@ -23,7 +21,7 @@ def stock_news():
     limit = request.args.get('limit')
     url = (
             f"{spyder_url}/data_hub/stock_news?tickers={tickers}&limit={limit}")
-    data = api_request(url)
+    data = general.api_request_get(url)
     return jsonify({'data': render_template('partial/ticket_info_news.html', data=json.loads(data))})
 
 
@@ -33,7 +31,7 @@ def insider_actions():
     ticker = request.args.get('ticker')
     url = (
             f"{spyder_url}/data_hub/insider_actions/{ticker}")
-    data = api_request(url)
+    data = general.api_request_get(url)
     return jsonify({'data': render_template('partial/ticket_info_insiders.html', data=json.loads(data))})
 
 
@@ -43,11 +41,7 @@ def press_relises():
     ticker = request.args.get('ticker')
     url = (
             f"{spyder_url}/data_hub/press_relises/{ticker}")
-    data = api_request(url)
+    data = general.api_request_get(url)
     return jsonify({'data': render_template('partial/ticket_info_press_relises.html', data=json.loads(data))})
 
 
-def api_request(url):
-    context = ssl.create_default_context(cafile=certifi.where())
-    response = urlopen(url, context=context)
-    return response.read().decode("utf-8")
