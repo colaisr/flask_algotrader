@@ -72,6 +72,8 @@ def google_login():
     # Use library to construct the request for Google login and provide
     # scopes that let you retrieve user's profile from Google
     ru=request.base_url.replace("/account/google_login","") + "/account/callback"
+    if "http:" in ru and "127.0.0.1" not in ru:                                       #only for production
+        ru=ru.replace("http:","https:")
     print("ru1:"+ru)
     request_uri = client.prepare_request_uri(
         authorization_endpoint,
