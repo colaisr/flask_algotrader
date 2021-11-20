@@ -93,8 +93,8 @@ def callback():
         ar=ar.replace("http:","https:")
 
     ru=request.base_url
-    # if "http:" in ru:
-    #     ru=ru.replace("http:","https:")
+    if "http:" in ru:
+        ru=ru.replace("http:","https:")
     # ru=ru.replace("/account/google_login","") + "/account/callback"
     token_url, headers, body = client.prepare_token_request(
         token_endpoint,
