@@ -190,8 +190,8 @@ def enabledisable():
     return redirect(url_for('candidates.usercandidates'))
 
 
-@csrf.exempt
 @candidates.route('/info/<ticker>', methods=['GET'])
+@login_required
 def info(ticker):
     candidate = Candidate.query.filter_by(ticker=ticker).first()
     candidate_in_list = Candidate.query.filter_by(ticker=ticker, email=current_user.email).first()

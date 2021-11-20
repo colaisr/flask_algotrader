@@ -284,7 +284,8 @@ def process_signals_candidates(ready_data):
                                                          "it crossed the trigger of " + str(
                                 round(v['buying_target_price_fmp'], 2)) + " USD \n" +
                                                          "Algotrader Rank: " + str(rank) + "\n" +
-                                                         "Expected to reach the target of: " + str(target) + " USD"
+                                                         "Expected to reach the target of: " + str(target) + " USD"+"\n" +
+                                                         "https://www.algotrader.company/candidates/info/"+signal.ticker
                                                          )
                     except:
                         print("Error in signal for : " + signal.ticker)
@@ -301,7 +302,7 @@ def signals_create():
     data = response.read().decode("utf-8")
     data = json.loads(data)
     if data['isTheStockMarketOpen']==True:
-        query_text=f"SELECT a.* FROM Tickersdata a JOIN (SELECT ticker, MAX(updated_server_time) AS updated_server_time FROM Tickersdata GROUP BY ticker) b ON b.ticker=a.ticker AND b.updated_server_time=a.updated_server_time WHERE a.algotrader_rank >= "+str(minimal_rank)
+        query_text=f"SELECT a.* FROM Tickersdata a JOIN (SELECT ticker, MAX(updated_server_time) AS updated_server_time FROM Tickersdata GROUP BY ticker) b ON b.ticker=a.ticker AND b.updated_server_time=a.updated_server_time WHERE a.algotrader_rank >= "+str(minimal_rank)+" AND a.under_priced_pnt > 0"
         relevant_tickers = db.session.query(TickerData).from_statement(text(query_text)).all()
         tickers_string=''
         for t in relevant_tickers:
