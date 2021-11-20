@@ -1,3 +1,5 @@
+import os
+from oauthlib.oauth2 import WebApplicationClient
 from flask import current_app
 from flask_login import AnonymousUserMixin, UserMixin
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
