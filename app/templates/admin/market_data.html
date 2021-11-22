@@ -56,7 +56,13 @@ Algotrader | Market data
                         </a>
                     </td>
                     <td>{{ m.yahoo_avdropP }}</td>
-                    <td>{{ m.yahoo_avspreadP|round(1, 'floor') }}</td>
+                    <td>
+                        {% if m.yahoo_avspreadP is not none %}
+                        {{ m.yahoo_avspreadP|round(1, 'floor') }}
+                        {% else %}
+                        0
+                        {% endif %}
+                    </td>
                     <td>{{ m.algotrader_rank }}</td>
                     <td>{{ m.under_priced_pnt }}</td>
                     <td>{{ m.twelve_month_momentum }}</td>
