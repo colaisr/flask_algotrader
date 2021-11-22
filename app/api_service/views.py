@@ -45,3 +45,13 @@ def press_relises():
     return jsonify({'data': render_template('partial/ticket_info_press_relises.html', data=json.loads(data))})
 
 
+@api.route('/search', methods=['GET'])
+@csrf.exempt
+def search():
+    query = request.args.get('query')
+    url = (
+            f"{spyder_url}/data_hub/search/{query}")
+    data = general.api_request_get(url)
+    return data
+
+
