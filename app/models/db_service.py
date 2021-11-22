@@ -34,7 +34,7 @@ def register_new_user(first_name, last_name, email, password, terms_agree, subsc
     return user
 
 
-def register_new_google_user(first_name, last_name, email, google_id, google_img, terms_agree, role=1):
+def register_new_google_user(first_name, last_name, email, google_id, google_img, terms_agree, subscription, role=1):
     user = User(
         role_id=role,
         first_name=first_name,
@@ -45,7 +45,7 @@ def register_new_google_user(first_name, last_name, email, google_id, google_img
         signature=terms_agree,
         signature_full_name=f"{first_name} {last_name}",
         registration_date=datetime.utcnow(),
-        subscription_type_id=enum.Subscriptions.PERSONAL.value,
+        subscription_type_id=subscription,
         subscription_start_date=datetime.utcnow(),
         subscription_end_date=datetime.utcnow() + relativedelta(years=1),
         confirmed=True)

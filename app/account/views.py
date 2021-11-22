@@ -1,6 +1,6 @@
 import json
 import os
-
+import base64
 import requests
 from flask import (
     Blueprint,
@@ -66,7 +66,8 @@ def login():
 
 
 @account.route('/google_login')
-def google_login():
+@account.route('/google_login/<subscription>')
+def google_login(subscription=None):
     """Log in via Google"""
     # Find out what URL to hit for Google login
     google_provider_cfg = get_google_provider_cfg()
@@ -74,11 +75,18 @@ def google_login():
 
     # Use library to construct the request for Google login and provide
     # scopes that let you retrieve user's profile from Google
-    ru = request.base_url.replace("/account/google_login", "") + "/account/callback"
+    ru = request.base_url.replace(f"/account/google_login", "") + "/account/callback"
+    if subscription is not None:
+        ru = ru.replace(f"/{subscription}", "")
+    stateStr = json.dumps({"subscription": subscription})
+    encodedBytes = base64.b64encode(stateStr.encode("utf-8"))
+    encodedStr = str(encodedBytes, "utf-8")
+    # stateString = base64.encode(f'{"subscription" : "{subscription}" }');
     request_uri = client.prepare_request_uri(
         authorization_endpoint,
         redirect_uri=ru,
         scope=["openid", "email", "profile"],
+        state=encodedStr
     )
     return redirect(request_uri)
 
@@ -87,6 +95,8 @@ def google_login():
 def callback():
     # Get authorization code Google sent back to you
     code = request.args.get("code")
+    state_str = base64.b64decode(request.args.get("state"))
+    state = json.loads(state_str.decode("utf-8"))
     # Find out what URL to hit to get tokens that allow you to ask for
     # things on behalf of a user
     google_provider_cfg = get_google_provider_cfg()
@@ -132,6 +142,7 @@ def callback():
         print("googleIdentified:" + users_email)  # to check on server
 
         user = db_service.get_user_by_email_or_googleid(users_email, unique_id)
+        subscription = enum.Subscriptions.PERSONAL.value if state['subscription'] is None else int(state['subscription'])
         if user is None:
             user = db_service.register_new_google_user(users_first_name,
                                                        users_last_name,
@@ -139,6 +150,7 @@ def callback():
                                                        unique_id,
                                                        picture,
                                                        True,
+                                                       subscription,
                                                        enum.UserRole.USER.value)
             send_email(recipient='support@algotrader.company',
                        subject='Algotrader Server: new GOOGLE account registered',
