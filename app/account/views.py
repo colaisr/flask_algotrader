@@ -188,7 +188,7 @@ def register(subscription):
         url = account_login(form.email.data, form.password.data, True, request)
         if url:
             return redirect(request.args.get('next') or url_for(url))
-    return render_template('account/register_new.html', form=form)
+    return render_template('account/register_new.html', subscription=subscription, form=form)
 
 
 @account.route('/subscriptions', methods=['GET'])
