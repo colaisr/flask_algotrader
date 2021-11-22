@@ -286,7 +286,12 @@ input[type=range]:focus::-webkit-slider-runnable-track {
 .improovers_modal .improovers-modal-tbl th,
 .signals_modal .signals-modal-tbl th {
   border:0;
-  font-size: small;
+  font-size: x-small;
+}
+
+.info-icon{
+    opacity: 0.4;
+    cursor: help;
 }
 
 .personal-list .personal-tbl th,

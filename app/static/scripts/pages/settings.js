@@ -13,6 +13,12 @@ reports =jQuery.parseJSON(reports);
 var days_num = 0;
 
 $(document).ready(function () {
+
+//        new jBox('Modal', {
+//      attach: '.jb-tooltip',
+//      title: 'Hurray!',
+//      content: 'This is my modal window'
+//    });
 //    get_snp_data($('#algo_positions_for_swan').val());
     get_candidates_by_filter();
     fill_emotion_and_snp_graphs(emotion_settings, true, main_snp, main_emotion, main_reports_emotion, main_reports, reports);

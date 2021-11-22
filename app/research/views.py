@@ -1,10 +1,12 @@
+import json
 from flask import (
     Blueprint
 )
 
 from app import csrf
-from app.models import ReportStatistic, Report
+from app.models import db_service, ReportStatistic, Report
 from datetime import datetime
+import app.generalutils as general
 
 research = Blueprint('research', __name__)
 
@@ -39,6 +41,13 @@ def update_reports_statistic():
     except:
         print('problem with update reports statistic')
         return "update reports statistic failed"
+
+
+@research.route('/get_tooltips',  methods=['GET'])
+@csrf.exempt
+def get_tooltips():
+    tooltips = db_service.get_tooltips()
+    return json.dumps(tooltips, cls=general.JsonEncoder)
 
 
 

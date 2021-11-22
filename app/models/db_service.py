@@ -2,7 +2,8 @@ import app.enums as enum
 from app.models import (
     User,
     Subscription,
-    UserSetting
+    UserSetting,
+    Tooltip
 )
 from app.models.user_login import User_login
 from datetime import datetime
@@ -70,6 +71,10 @@ def change_email(user, token):
     return user.change_email(token)
 
 
+def generate_password_reset_token(user):
+    return user.generate_password_reset_token()
+
+
 def confirm_account(user, token):
     return user.confirm_account(token)
 
@@ -123,6 +128,11 @@ def get_user_settings(email):
 
 def update_user_settings(settings):
     settings.update_user_settings()
+
+
+#TOOLTIPS
+def get_tooltips():
+    return Tooltip.query.all()
 
 
 

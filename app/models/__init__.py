@@ -13,3 +13,4 @@ from .fgi_score import *
 from .user_settings import *
 from .client_command import *
 from .telegram_signal import *
+from .tooltips import *
