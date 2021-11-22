@@ -233,8 +233,11 @@ def check_signal_for_target_riched(s, bid_price):
                                      s.ticker + " reached target of " + str(s.target_price) + "\n" +
                                      "in " + str(s.days_to_get) + " days, with profit of " + str(round(s.profit_percent, 2)) + " %"+ "\n" +
                                     "by https://www.algotrader.company"
-
                                      )
+        # print("Confirmation for : " + str(s.id) + "\n" +
+        #                              s.ticker + " reached target of " + str(s.target_price) + "\n" +
+        #                              "in " + str(s.days_to_get) + " days, with profit of " + str(round(s.profit_percent, 2)) + " %"+ "\n" +
+        #                             "by https://www.algotrader.company")
 
     pass
 
@@ -243,16 +246,28 @@ def check_signal_for_target_riched(s, bid_price):
 @csrf.exempt
 def signals_check():
     signals = TelegramSignal.query.filter_by(target_met=None).all()
-    all_reports = Report.query.all()
     all_prices_reported = {}
-    for r in all_reports:
-        candidates_live = json.loads(r.candidates_live_json)
-        for k, c in candidates_live.items():
-            all_prices_reported[c['Stock']] = c['Bid']
+
+    tickers_string = ''
+    tickers_list=[]
+    for t in signals:
+        tickers_list.append(t.ticker)
+    tickers_list=list(set(tickers_list))
+    for s in tickers_list:
+        tickers_string += ',' + s
+    tickers_string = tickers_string[1:]
+    url = 'https://colak.eu.pythonanywhere.com/data_hub/current_stock_price_short/' + tickers_string
+    context = ssl.create_default_context(cafile=certifi.where())
+    response = urlopen(url, context=context)
+    data = response.read().decode("utf-8")
+    prices = json.loads(data)
+    prices_dict={}
+    for p in prices:
+        prices_dict[p['symbol']]=p['price']
     for s in signals:
-        if s.ticker in all_prices_reported:
+        if s.ticker in prices_dict:
             if s.target_price is not None:
-                check_signal_for_target_riched(s, all_prices_reported[s.ticker])
+                check_signal_for_target_riched(s, prices_dict[s.ticker])
 
     return "Signals checked"
 
