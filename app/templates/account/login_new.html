@@ -35,7 +35,6 @@ Algotrader | LogIn
     <div class="login-container">
         <div class="login-grid">
             <h2 class="">Log in</h2>
-            <a class="button" href="/account/google_login">Google Login</a>
 
             {% set flashes = {
             'error': get_flashed_messages(category_filter=['form-error']),
@@ -62,6 +61,17 @@ Algotrader | LogIn
             {{ f.form_message(flashes['success'], header='Success!', class='success') }}
 
             {{ f.render_form_field(form.submit) }}
+            <div class="or-container">
+                <div class="line-separator"></div>
+                <div class="or-label">or</div>
+                <div class="line-separator"></div>
+            </div>
+            <div class="field social-field">
+                <a class="btn-google" href="/account/google_login"><img src="https://img.icons8.com/color/16/000000/google-logo.png"> Log In With Google</a>
+            </div>
+            <div class="terms-agree">
+                * Clicking the Login button You accept or <a href="/station/terms_of_use/en" target="_blank" class="menu__link">Terms of Use</a> and <a href="/station/privacy_policy/en" target="_blank" class="menu__link">Privacy Policy</a>
+            </div>
             {{ f.end_form(form) }}
         </div>
     </div>
