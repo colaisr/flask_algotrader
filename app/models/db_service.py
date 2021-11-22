@@ -1,3 +1,4 @@
+import app.enums as enum
 from app.models import (
     User,
     Subscription,
@@ -7,6 +8,7 @@ from app.models.user_login import User_login
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
 from app import db
+from sqlalchemy import text, or_, and_
 
 
 #USERS
@@ -23,6 +25,30 @@ def register_new_user(first_name, last_name, email, password, terms_agree, subsc
         subscription_type_id=subscription,
         subscription_start_date=datetime.utcnow(),
         subscription_end_date=datetime.utcnow() + relativedelta(years=1))
+
+    db.session.add(user)
+    user_settings = UserSetting(email)
+    db.session.add(user_settings)
+    db.session.commit()
+
+    return user
+
+
+def register_new_google_user(first_name, last_name, email, google_id, google_img, terms_agree, role=1):
+    user = User(
+        role_id=role,
+        first_name=first_name,
+        last_name=last_name,
+        email=email,
+        google_id=google_id,
+        google_account_img=google_img,
+        signature=terms_agree,
+        signature_full_name=f"{first_name} {last_name}",
+        registration_date=datetime.utcnow(),
+        subscription_type_id=enum.Subscriptions.PERSONAL.value,
+        subscription_start_date=datetime.utcnow(),
+        subscription_end_date=datetime.utcnow() + relativedelta(years=1),
+        confirmed=True)
 
     db.session.add(user)
     user_settings = UserSetting(email)
@@ -63,6 +89,10 @@ def update_user_data(user):
 
 def get_user_by_email(email):
     return User.query.filter_by(email=email).first()
+
+
+def get_user_by_email_or_googleid(email, googleid):
+    return User.query.filter(or_(User.email == email, User.google_id == googleid)).first()
 
 
 def get_user_by_id(user_id):

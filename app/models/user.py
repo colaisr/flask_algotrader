@@ -76,6 +76,8 @@ class User(UserMixin, db.Model):
     subscription_type_id = db.Column(db.Integer, db.ForeignKey('Subscriptions.id'))
     subscription_start_date = db.Column(db.DateTime)
     subscription_end_date = db.Column(db.DateTime)
+    google_id = db.Column(db.String(100))
+    google_account_img = db.Column(db.String(250))
 
     def __init__(self, **kwargs):
         super(User, self).__init__(**kwargs)

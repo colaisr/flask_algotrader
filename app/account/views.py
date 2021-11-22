@@ -46,6 +46,8 @@ GOOGLE_CLIENT_SECRET = os.environ.get("GOOGLE_CLIENT_SECRET", None)
 client = WebApplicationClient(GOOGLE_CLIENT_ID)
 
 GOOGLE_DISCOVERY_URL = "https://accounts.google.com/.well-known/openid-configuration"
+
+
 def get_google_provider_cfg():
     return requests.get(GOOGLE_DISCOVERY_URL).json()
 
@@ -62,6 +64,7 @@ def login():
             return redirect(request.args.get('next') or url_for(url))
     return render_template('account/login_new.html', form=form)
 
+
 @account.route('/google_login')
 def google_login():
     """Log in via Google"""
@@ -71,13 +74,14 @@ def google_login():
 
     # Use library to construct the request for Google login and provide
     # scopes that let you retrieve user's profile from Google
-    ru=request.base_url.replace("/account/google_login","") + "/account/callback"
+    ru = request.base_url.replace("/account/google_login", "") + "/account/callback"
     request_uri = client.prepare_request_uri(
         authorization_endpoint,
         redirect_uri=ru,
         scope=["openid", "email", "profile"],
     )
     return redirect(request_uri)
+
 
 @account.route("/callback")
 def callback():
@@ -89,11 +93,11 @@ def callback():
     token_endpoint = google_provider_cfg["token_endpoint"]
     # Prepare and send a request to get tokens! Yay tokens!
 
-    ar=request.url
+    ar = request.url
     if "http:" in ar:
-        ar=ar.replace("http:","https:")
+        ar = ar.replace("http:", "https:")
 
-    ru=request.base_url
+    ru = request.base_url
 
     token_url, headers, body = client.prepare_token_request(
         token_endpoint,
@@ -125,9 +129,23 @@ def callback():
         picture = userinfo_response.json()["picture"]
         users_first_name = userinfo_response.json()["given_name"]
         users_last_name = userinfo_response.json()["family_name"]
-        print("googleIdentified:"+users_email)#to check on server
-        # forLily
-        t=2
+        print("googleIdentified:" + users_email)  # to check on server
+
+        user = db_service.get_user_by_email_or_googleid(users_email, unique_id)
+        if user is None:
+            user = db_service.register_new_google_user(users_first_name,
+                                                       users_last_name,
+                                                       users_email,
+                                                       unique_id,
+                                                       picture,
+                                                       True,
+                                                       enum.UserRole.USER.value)
+            send_email(recipient='support@algotrader.company',
+                       subject='Algotrader Server: new GOOGLE account registered',
+                       template='account/email/new_account_registered',
+                       user=user)
+        login_user(user, True)
+        return redirect(request.args.get('next') or url_for('main.index'))
     else:
         return "User email not available or not verified by Google.", 400
 
@@ -168,7 +186,8 @@ def subscriptions():
         user_subscription = 0
     else:
         user_subscription = current_user.subscription_type_id
-    return render_template('account/subscriptions_new.html', subscriptions=subscriptions, user_subscription=user_subscription)
+    return render_template('account/subscriptions_new.html', subscriptions=subscriptions,
+                           user_subscription=user_subscription)
 
 
 @account.route('/change_subscription/<id>', methods=['GET'])
