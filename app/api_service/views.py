@@ -5,13 +5,16 @@ from flask import (
     Blueprint,
     render_template,
     jsonify,
-    request
+    request,
+    redirect,
+    url_for
 )
 from app import csrf, env
 
 
 api = Blueprint('api', __name__)
 spyder_url = 'http://localhost:8000' if env == 'DEV' else 'https://colak.eu.pythonanywhere.com'
+# spyder_url = 'https://colak.eu.pythonanywhere.com'
 
 
 @api.route('/stock_news', methods=['GET'])
@@ -54,4 +57,17 @@ def search():
     data = general.api_request_get(url)
     return data
 
+
+@api.route('/add_candidate')
+@csrf.exempt
+def add_candidate():
+    ticker = request.args.get('ticker')
+    url = (
+        f"{spyder_url}/candidates/add_by_spider")
+    result = general.api_request_post(url, {'ticker_to_add': ticker})
+    # resultJSON = json.loads(result.decode("utf-8"))
+    if b'success' not in result:
+        return f"We have no data for {ticker}. If you think it should be added please contact support@algotrader.company"
+    else:
+        return redirect(url_for('candidates.info', ticker=ticker))
 

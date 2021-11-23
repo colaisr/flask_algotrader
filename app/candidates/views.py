@@ -9,17 +9,12 @@ from flask import (
 )
 
 from flask_login import login_required, current_user
-
 from app import csrf, db, env
 from datetime import datetime
 from app.models import TickerData, Candidate, UserSetting, Fgi_score, LastUpdateSpyderData
 from sqlalchemy import text
 
-
-
-
 candidates = Blueprint('candidates', __name__)
-spyder_url = 'http://localhost:8000' if env == 'DEV' else 'https://colak.eu.pythonanywhere.com'
 
 
 @candidates.route('today', methods=['GET', 'POST'])
@@ -147,7 +142,8 @@ def usercandidates():
     if user_settings.server_use_system_candidates:
         admin_candidates = Candidate.query.filter_by(email='support@algotrader.company', enabled=True).all()
     return render_template('candidates/usercandidates.html', admin_candidates=admin_candidates, candidates=candidates,
-                           user=current_user, market_emotion=market_emotion, fgi_text_color=fgi_text_color, algo_rank=algo_rank,  form=None)
+                           user=current_user, market_emotion=market_emotion, fgi_text_color=fgi_text_color,
+                           algo_rank=algo_rank, form=None)
 
 
 @candidates.route('/removecandidate', methods=['POST'])
@@ -197,14 +193,7 @@ def info(ticker):
     ticker = ticker.upper()
     candidate = Candidate.query.filter_by(ticker=ticker).first()
     if candidate is None:
-        url = (
-            f"{spyder_url}/candidates/add_by_spider")
-        result = general.api_request_post(url, {'ticker_to_add': ticker})
-        if b'success' not in result:
-            return f"We have no data for {ticker}. If you think it should be added please contact support@algotrader.company"
-        else:
-            # db.session.commit()
-            return redirect(url_for('candidates.info', ticker=ticker))
+        return redirect(url_for('api.add_candidate', ticker=ticker), code=307)
 
     candidate_in_list = Candidate.query.filter_by(ticker=ticker, email=current_user.email).first()
     in_list = candidate_in_list is not None
@@ -212,9 +201,9 @@ def info(ticker):
     last_update = m_data.updated_server_time.date()
     bg_upd_color = "badge-success" if datetime.now().date() == last_update else "badge-warning"
     user_settings = UserSetting.query.filter_by(email=current_user.email).first()
-    score_bg = "bg-warning" if m_data.algotrader_rank < user_settings.algo_min_algotrader_rank else "bg-success"
+    score_bg = "bg-warning" if m_data.algotrader_rank is None or m_data.algotrader_rank < user_settings.algo_min_algotrader_rank else "bg-success"
     td_history = TickerData.query.filter_by(ticker=ticker).order_by(TickerData.updated_server_time.asc()).all()
-    hist_data=[]
+    hist_data = []
     for td in td_history:
         hist_data.append([td.updated_server_time.strftime("%Y-%m-%d"), td.algotrader_rank])
     return render_template('candidates/ticker_info.html', user_settings=user_settings,
@@ -250,12 +239,3 @@ def get_user_candidates():
     candidates_res = db.engine.execute(text(user_query))
     candidates = [dict(r.items()) for r in candidates_res]
     return candidates
-
-
-
-
-
-
-
-
-

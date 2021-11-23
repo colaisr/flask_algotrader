@@ -63,7 +63,7 @@ function update_candidate(){
 function add_candidate_from_ticker_info(){
     loading('ticker-action', 0); //from base.js
     $('.flashes').empty();
-    url = domane + 'candidates/updatecandidate/';
+    url = domane + 'candidates/add_candidate';
     $.post(url,{ticker: ticker, reason: "", email: user_email}, function(data) {
         var data_parsed = jQuery.parseJSON(data);
         $('.flashes').append(flashMessage(data_parsed["color_status"],data_parsed["message"]));

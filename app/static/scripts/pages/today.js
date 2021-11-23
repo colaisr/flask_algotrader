@@ -1,20 +1,31 @@
 $(document).ready(function () {
 
+    $('#search-tickers').keypress(function (e) {
+        var key = e.which;
+        if(key == 13)  // the enter key code
+        {
+            var href = $('.ui-autocomplete li:first a').attr("href");
+            if(href != undefined && $(this).val() != '' && $(this).val() != undefined){
+                window.location.href = window.location.origin + href;
+            }
+        }
+    });
 
     $( "#search-tickers" ).autocomplete({
-      source: function( request, response ) {
-        $.getJSON("/api/search",{query: request.term}, function(data) {
-            response(data);
-        })
-      },
-      create: function () {
-        $(this).data('ui-autocomplete')._renderItem = function (ul, item) {
-            ul.addClass('list-group');
-            var li = '<div class="widget-content p-0" style="width: 100%;"><div class="widget-content-wrapper"><div class="widget-content-left mr-3">' + item.symbol + '</div><div class="widget-content-right">'  + item.name + '</div></div></div>'
-//            $("ul.ui-autocomplete li:first>.ui-menu-item-wrapper").addClass("ui-state-active");
-            return $('<li class="list-group-item">')
-                .append(li)
-                .appendTo(ul);
+        source: function( request, response ) {
+            $.getJSON("/api/search",{query: request.term}, function(data) {
+                response(data);
+            })
+        },
+        create: function () {
+            $(this).data('ui-autocomplete')._renderItem = function (ul, item) {
+                ul.addClass('list-group');
+                var div = '<a href="/candidates/info/' + item.symbol + '"><div class="widget-content p-0" style="width: 100%;"><div class="widget-content-wrapper"><div class="widget-content-left mr-3">' + item.symbol + '</div><div class="widget-content-right">'  + item.name + '</div></div></div></a>';
+                var li = $('<li data-ticker="' + item.symbol + '" class="list-group-item">')
+                        .append(div)
+                        .appendTo(ul);
+                $('.ui-autocomplete li:first .ui-menu-item-wrapper').addClass('ui-state-active');
+                return li;
             };
         }
     });
@@ -90,26 +101,6 @@ $(document).ready(function () {
     });
 
 })
-
-
-function tickets_autocomplite(request, response){
-
-     $.getJSON("/api/search",{query: request.term}, function(data) {
-        response(data);
-    })
-
-//    $.ajax({
-//          url: "http://gd.geobytes.com/AutoCompleteCity",
-//          dataType: "jsonp",
-//          data: {
-//            q: request.term
-//          },
-//          success: function( data ) {
-//            response( data );
-//          }
-//        });
-}
-
 
 function change_enabled(ticker, enabled){
     $('#personal-list-flash').empty();
