@@ -29,6 +29,25 @@ $(document).ready(function () {
 
 })
 
+
+function add_candidate_from_ticker_info(){
+    loading('ticker-action', 0); //from base.js
+    $('.flashes').empty();
+    url = '/candidates/add_candidate_ajax';
+    $.post(url,{ticker: ticker}, function(data) {
+        var data_parsed = jQuery.parseJSON(data);
+        $('.flashes').append(flashMessage("success","Ticker added to your list"));
+        var button = $('<button type="button" class="btn btn-outline-success candidate-in-list"><i class="metismenu-icon fa fa-check"></i>Remove from list</button>');
+        $('.ticker-action .ticket-info-val').empty();
+        $('.ticker-action .ticket-info-val').append(button);
+        $('.candidate-in-list').on('click',remove_candidate);
+        stop_loading('ticker-action'); //from base.js
+        setTimeout(function(){
+            $('.flashes').empty();
+        }, 2000);
+    })
+}
+
 function remove_candidate(){
     loading('ticker-action', 0); //from base.js
     $('.flashes').empty();

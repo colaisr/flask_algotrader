@@ -155,6 +155,30 @@ def removecandidate():
     return redirect(url_for('candidates.usercandidates'))
 
 
+@candidates.route('/add_candidate_ajax', methods=['POST'])
+@csrf.exempt
+def add_candidate_ajax():
+    ticker = request.form['ticker']
+    candidate = Candidate.query.filter_by(ticker=ticker).first()
+    user_candidate = Candidate();
+    user_candidate.email = current_user.email
+    user_candidate.ticker = ticker
+    user_candidate.reason = ''
+    user_candidate.enabled = 1
+    user_candidate.company_name = candidate.company_name
+    user_candidate.exchange = candidate.exchange
+    user_candidate.industry = candidate.industry
+    user_candidate.full_description = candidate.full_description
+    user_candidate.logo = candidate.logo
+    user_candidate.sector = candidate.sector
+    user_candidate.exchange_short = candidate.exchange_short
+    user_candidate.website = candidate.website
+    user_candidate.isActivelyTrading_fmp = candidate.isActivelyTrading_fmp
+    user_candidate.update_candidate()
+    candidates = get_user_candidates()
+    return json.dumps(candidates, cls=general.JsonEncoder)
+
+
 @candidates.route('/removecandidate_ajax', methods=['POST'])
 @csrf.exempt
 def removecandidate_ajax():
