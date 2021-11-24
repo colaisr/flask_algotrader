@@ -1,3 +1,4 @@
+from . import TickerData, Fgi_score
 from .. import db
 
 
@@ -15,9 +16,8 @@ class TelegramSignal(db.Model):
 
     def add_signal(self):
         signal = TelegramSignal.query.filter((TelegramSignal.ticker == self.ticker) & (TelegramSignal.received == self.received)).first()
-        # signal = TelegramSignal.query.filter((TelegramSignal.ticker == self.ticker)).first()
-
         if signal is None:
+            self.add_market_info()
             db.session.add(self)
             db.session.commit()
             return True
@@ -26,3 +26,9 @@ class TelegramSignal(db.Model):
 
     def update_signal(self):
         db.session.commit()
+
+    def add_market_info(self):
+        last_market_data = TickerData.query.filter_by(ticker=self.ticker).order_by(TickerData.updated_server_time.desc()).first()
+        market_emotion = Fgi_score.query.order_by(Fgi_score.score_time.desc()).first()
+
+        pass
