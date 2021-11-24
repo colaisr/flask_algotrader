@@ -1,5 +1,5 @@
 var EXCHANGES = ['NYSE','NASDAQ','AMEX']
-
+TOOLTIPS = jQuery.parseJSON(TOOLTIPS)
 $(document).ready(function () {
 
     $(window).resize(function() {
@@ -42,6 +42,13 @@ $(document).ready(function () {
             $('td.user.role').not(':contains(' + value + ')').closest('tr').addClass('hidden').hide();
         }
     });
+
+    create_simple_tooltip();
+
+    $('.nav-justified .nav-item').on('click', function(){
+        $('.nav-item a').removeClass('active');
+        $(this).find('a').addClass('active');
+    })
 
 });
 

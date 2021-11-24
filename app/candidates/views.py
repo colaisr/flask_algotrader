@@ -11,7 +11,7 @@ from flask import (
 from flask_login import login_required, current_user
 from app import csrf, db, env
 from datetime import datetime
-from app.models import TickerData, Candidate, UserSetting, Fgi_score, LastUpdateSpyderData
+from app.models import db_service, TickerData, Candidate, UserSetting, Fgi_score, LastUpdateSpyderData
 from sqlalchemy import text
 
 candidates = Blueprint('candidates', __name__)
@@ -228,6 +228,7 @@ def info(ticker):
     score_bg = "bg-warning" if m_data.algotrader_rank is None or m_data.algotrader_rank < user_settings.algo_min_algotrader_rank else "bg-success"
     td_history = TickerData.query.filter_by(ticker=ticker).order_by(TickerData.updated_server_time.asc()).all()
     hist_data = []
+    tooltips = db_service.get_tooltips()
     for td in td_history:
         hist_data.append([td.updated_server_time.strftime("%Y-%m-%d"), td.algotrader_rank])
     return render_template('candidates/ticker_info.html', user_settings=user_settings,
@@ -237,7 +238,8 @@ def info(ticker):
                            bg_upd_color=bg_upd_color,
                            score_bg=score_bg,
                            in_list=in_list,
-                           hist_data=hist_data)
+                           hist_data=hist_data,
+                           tooltips=json.dumps(tooltips, cls=general.JsonEncoder))
 
 
 def get_user_candidates():

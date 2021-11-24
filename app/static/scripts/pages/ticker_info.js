@@ -1,7 +1,6 @@
 avg_pe = 0;
 
 $(document).ready(function () {
-
     get_avg_pe_from_fmp($('.ticker-sector-val').data('sector'));
     get_fmp_ticker_data(ticker);
     get_stock_news(10);
@@ -13,7 +12,6 @@ $(document).ready(function () {
     setInterval(function(){
        get_fmp_ticker_data(ticker);
     }, 15000);
-
 
     $('.add-candidate').on('click', function(){
         add_candidate_from_ticker_info() //from spyder_project.js
@@ -27,6 +25,12 @@ $(document).ready(function () {
         var limit = $(this).data('limit');
         get_stock_news(limit);
     })
+
+    var tooltip_ids = []
+    $('.jb-tooltip-info').each(function( index ) {
+      tooltip_ids.push($( this ).data('tooltip-id'));
+    });
+    create_info_tooltip(tooltip_ids);
 
 })
 
@@ -110,6 +114,11 @@ function get_fundamentals_summary(){
     $.getJSON("/api/fundamentals_summary",{ticker: ticker}, function(data) {
         $('.tab-fundamentals-summary-card .div-content').empty();
         $('.tab-fundamentals-summary-card .div-content').append($(data.data));
+        var tooltip_ids = []
+        $('.tab-fundamentals-summary-card .jb-tooltip-info').each(function( index ) {
+          tooltip_ids.push($( this ).data('tooltip-id'));
+        });
+        create_info_tooltip(tooltip_ids);
         stop_loading('tab-fundamentals-summary-card'); //from base.js
     })
 }
