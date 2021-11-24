@@ -18,7 +18,7 @@ $(document).ready(function () {
                 content += '<div class="jb-tooltip-footer"><a href="' + val.url + '" target="_blank">More...</a></div>';
             }
             new jBox('Tooltip', {
-              attach: '#jb-info-'+ val.id,
+              attach: '.jb-info-'+ val.id,
               content: content,
               delayOpen: 500,
               delayClose: 1000,
@@ -28,3 +28,7 @@ $(document).ready(function () {
         })
     })
 })
+
+function create_info_tooltip(){
+
+}

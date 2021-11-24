@@ -44,10 +44,10 @@ Algotrader | Stock Info
                     </div>
                     <div class="fmp-pne-eps">
                         <div class="help-cursor">
-                            P/E <i class="fas fa-info-circle info-icon pl-1 pr-1" id="jb-info-4"></i> <span class="fmp-pe font-weight-bold"></span>
+                            P/E <i class="fas fa-info-circle info-icon pl-1 pr-1 jb-info-4"></i> <span class="fmp-pe font-weight-bold"></span>
                         </div>
                         <div class="help-cursor">
-                            EPS <i class="fas fa-info-circle info-icon pl-1 pr-1" id="jb-info-3"></i> <span class="fmp-eps"></span>
+                            EPS <i class="fas fa-info-circle info-icon pl-1 pr-1 jb-info-3"></i> <span class="fmp-eps"></span>
                         </div>
                     </div>
                 </div>
@@ -102,7 +102,7 @@ Algotrader | Stock Info
                         <button type="button" class="btn btn-outline-info add-candidate">Add</button>
                         {% else %}
                         <button type="button" class="btn btn-outline-success candidate-in-list">
-                            <i class="metismenu-icon fa fa-check"></i>
+                            <i class="metismenu-icon fa fa-check">Remove from list</i>
                         </button>
                         {% endif %}
                     </div>
@@ -162,11 +162,11 @@ Algotrader | Stock Info
 <!--                                    Technical-->
 <!--                                </a>-->
 <!--                            </li>-->
-<!--                            <li class="nav-item">-->
-<!--                                <a data-toggle="tab" href="#tab-fundamentals" class="nav-link show">-->
-<!--                                    Fundamentals-->
-<!--                                </a>-->
-<!--                            </li>-->
+                            <li class="nav-item">
+                                <a data-toggle="tab" href="#tab-fundamentals" class="nav-link show">
+                                    Fundamentals
+                                </a>
+                            </li>
                         </ul>
                     </div>
                     <div class="card-body">
@@ -233,13 +233,17 @@ Algotrader | Stock Info
 <!--                                    errrrtjgkikikikikikikikikikikikikikikikikiki-->
 <!--                                </p>-->
 <!--                            </div>-->
-<!--                            <div class="tab-pane show" id="tab-fundamentals" role="tabpanel">-->
-<!--                                <p>-->
-<!--                                    Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a-->
-<!--                                type specimen book. It has-->
-<!--                                survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.-->
-<!--                                </p>-->
-<!--                            </div>-->
+                            <div class="tab-pane show" id="tab-fundamentals" role="tabpanel">
+                                <div class="main-card mb-3 card">
+                                    <div class="card-body tab-fundamentals-summary-card" style="position: relative;">
+                                        <div class="card-header">
+                                            Fundamentals (12 Month)
+                                        </div>
+                                        <div class="div-content row pt-2"></div>
+                                        {% include 'layouts/loader.html' %}
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

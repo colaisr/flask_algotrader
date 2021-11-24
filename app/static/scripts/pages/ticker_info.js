@@ -7,6 +7,7 @@ $(document).ready(function () {
     get_stock_news(10);
     get_insider_actions();
     get_press_relises();
+    get_fundamentals_summary();
     fill_container_ticker_info(ticker); //from spider_project.js
 
     setInterval(function(){
@@ -98,6 +99,18 @@ function get_press_relises(){
         $('.tab-press-relises-card .div-content').empty();
         $('.tab-press-relises-card .div-content').append($(data.data));
         stop_loading('tab-press-relises-card'); //from base.js
+    })
+}
+
+function get_fundamentals_summary(){
+    loading('tab-fundamentals-summary-card');
+    $('.tab-fundamentals-summary-card .div-loading').css('height', 0);
+    $('.tab-fundamentals-summary-card .spinner-border').css('margin-right', '9%');
+
+    $.getJSON("/api/fundamentals_summary",{ticker: ticker}, function(data) {
+        $('.tab-fundamentals-summary-card .div-content').empty();
+        $('.tab-fundamentals-summary-card .div-content').append($(data.data));
+        stop_loading('tab-fundamentals-summary-card'); //from base.js
     })
 }
 

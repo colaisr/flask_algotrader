@@ -1,6 +1,6 @@
 import app.generalutils as general
 import json
-
+import app.api_service.api_mapping as map
 from flask import (
     Blueprint,
     render_template,
@@ -70,4 +70,20 @@ def add_candidate():
         return f"We have no data for {ticker}. If you think it should be added please contact support@algotrader.company"
     else:
         return redirect(url_for('candidates.info', ticker=ticker))
+
+
+@api.route('/fundamentals_summary', methods=['GET'])
+@csrf.exempt
+def fundamentals_summary():
+    ticker = request.args.get('ticker')
+    url = (
+            f"{spyder_url}/data_hub/financial_ttm/{ticker}")
+    data = general.api_request_get(url)
+    data_json = json.loads(data)
+    property_list = map.financial_ttm_mapping(data_json[0])
+    return jsonify({'data': render_template('partial/ticker_info_fundamentals.html', data=property_list)})
+
+
+
+
 
