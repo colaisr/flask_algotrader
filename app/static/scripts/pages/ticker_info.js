@@ -7,6 +7,7 @@ $(document).ready(function () {
     get_insider_actions();
     get_press_relises();
     get_fundamentals_summary();
+    get_fundamentals_feed();
     fill_container_ticker_info(ticker); //from spider_project.js
 
     setInterval(function(){
@@ -120,6 +121,18 @@ function get_fundamentals_summary(){
         });
         create_info_tooltip(tooltip_ids);
         stop_loading('tab-fundamentals-summary-card'); //from base.js
+    })
+}
+
+function get_fundamentals_feed(){
+//    loading('tab-fundamentals-feed-card');
+//    $('.tab-fundamentals-feed-card .div-loading').css('height', 0);
+//    $('.tab-fundamentals-feed-card .spinner-border').css('margin-right', '9%');
+
+    $.getJSON("/api/fundamentals_feed",{ticker: ticker}, function(data) {
+        $('.tab-fundamentals-feed-card').empty();
+        $('.tab-fundamentals-feed-card').append($(data.data));
+        stop_loading('tab-fundamentals-feed-card'); //from base.js
     })
 }
 

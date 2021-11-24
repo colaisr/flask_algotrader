@@ -1,0 +1,59 @@
+{% for d in data %}
+<div class="col-md-4">
+    <div style="border: 1px solid rgba(26,54,126,0.125);" class="m-1">
+        <div class="card-header" style="justify-content: space-between; background: rgb(210 214 226 / 13%);">
+            <div style="font-size: smaller;">{{d['date']}}</div>
+            <div>{{d['calendarYear']}} - {{d['period']}}</div>
+        </div>
+        <div class="div-content pt-2">
+            <div style="font-size: small; display: flex; justify-content: space-between; padding-top: 0.5%; border-bottom: 1px solid rgba(26,54,126,0.125);">
+                <div class="col-md-7">
+                    Revenue
+                </div>
+                <div class="col-md-5" style="text-align: right;">
+                    {{d['revenue']}}
+                </div>
+            </div>
+            <div style="font-size: small; display: flex; justify-content: space-between; padding-top: 0.5%; border-bottom: 1px solid rgba(26,54,126,0.125);">
+                <div class="col-md-7">
+                    NET Income
+                </div>
+                <div class="col-md-5" style="text-align: right;">
+                    {{d['netIncome']}}
+                </div>
+            </div>
+            <div style="font-size: small; display: flex; justify-content: space-between; padding-top: 0.5%; border-bottom: 1px solid rgba(26,54,126,0.125);">
+                <div class="col-md-7">
+                    EPS
+                </div>
+                <div class="col-md-5" style="text-align: right;">
+                    {{d['eps']|round(2)}}
+                </div>
+            </div>
+            <div style="font-size: small; display: flex; justify-content: space-between; padding-top: 0.5%; border-bottom: 1px solid rgba(26,54,126,0.125);">
+                <div class="col-md-7">
+                    EBITDA ratio
+                </div>
+                <div class="col-md-5" style="text-align: right;">
+                    {{d['ebitdaratio']|round(2)}}
+                </div>
+            </div>
+            <div style="font-size: small; display: flex; justify-content: space-between; padding-top: 0.5%; border-bottom: 1px solid rgba(26,54,126,0.125);">
+                <div class="col-md-7">
+                    Gross Profit ratio
+                </div>
+                <div class="col-md-5" style="text-align: right;">
+                    {{d['grossProfitRatio']|round(2)}}
+                </div>
+            </div>
+            <div style="display: flex; justify-content: space-between; padding-top: 3.5%;">
+                <div class="col-md-7">
+                    <a href="{{d['finalLink']}}" target="_blank" class="article-link">
+                        <ins>See full</ins>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endfor %}
