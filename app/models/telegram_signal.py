@@ -1,5 +1,6 @@
 from . import TickerData, Fgi_score
 from .. import db
+from app.api_service import api_service
 
 
 class TelegramSignal(db.Model):
@@ -31,6 +32,8 @@ class TelegramSignal(db.Model):
         last_market_data = TickerData.query.filter_by(ticker=self.ticker).order_by(TickerData.updated_server_time.desc()).first()
         market_emotion = Fgi_score.query.order_by(Fgi_score.score_time.desc()).first()
         # forlili
+        # api_service.company_info(ticker) import added
+        #api_service => api_service.py
 
 
         pass

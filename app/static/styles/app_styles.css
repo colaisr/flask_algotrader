@@ -404,6 +404,11 @@ input[type=range]:focus::-webkit-slider-runnable-track {
     margin-top: 23%;
 }
 
+#search-tickers::placeholder{
+    color: #3f6ad8;
+    opacity: 0.7;
+}
+
 .div-content{
     position: absolute;
 }
