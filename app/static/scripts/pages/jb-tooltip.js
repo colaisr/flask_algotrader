@@ -11,8 +11,8 @@ function create_simple_tooltip(){
 function create_info_tooltip(tooltip_ids){
     var tooltips = get_tooltips(tooltip_ids);
     $.each(tooltips, function (index, val) {
-        var title = ': ' + val.title ? val.title != null : '';
-        var content = '<div class="jb-tooltip-title" style="font-weight: 900;">' + val.short_name + val.title + '</div><div class="jb-tooltip-content">' + val.content + '</div>';
+        var title = val.title != null ? ': ' + val.title : '';
+        var content = '<div class="jb-tooltip-title" style="font-weight: 900;">' + val.short_name + title + '</div><div class="jb-tooltip-content">' + val.content + '</div>';
         if(val.url != null){
             content += '<div class="jb-tooltip-footer"><a href="' + val.url + '" target="_blank">More...</a></div>';
         }

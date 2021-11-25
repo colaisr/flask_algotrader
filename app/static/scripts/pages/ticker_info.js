@@ -125,13 +125,18 @@ function get_fundamentals_summary(){
 }
 
 function get_fundamentals_feed(){
-//    loading('tab-fundamentals-feed-card');
-//    $('.tab-fundamentals-feed-card .div-loading').css('height', 0);
-//    $('.tab-fundamentals-feed-card .spinner-border').css('margin-right', '9%');
+    loading('tab-fundamentals-feed-card');
+    $('.tab-fundamentals-feed-card .div-loading').css('height', 0);
+    $('.tab-fundamentals-feed-card .spinner-border').css('margin-right', '9%');
 
     $.getJSON("/api/fundamentals_feed",{ticker: ticker}, function(data) {
         $('.tab-fundamentals-feed-card').empty();
         $('.tab-fundamentals-feed-card').append($(data.data));
+        var tooltip_ids = []
+        $('.tab-fundamentals-feed-card .jb-tooltip-info').each(function( index ) {
+          tooltip_ids.push($( this ).data('tooltip-id'));
+        });
+        create_info_tooltip(tooltip_ids);
         stop_loading('tab-fundamentals-feed-card'); //from base.js
     })
 }

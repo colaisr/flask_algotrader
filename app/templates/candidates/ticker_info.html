@@ -134,7 +134,12 @@ Algotrader | Stock Info
                     <div class="card-header card-header-tab-animation">
                         <ul class="nav nav-justified">
                             <li class="nav-item">
-                                <a data-toggle="tab" href="#tab-news" class="nav-link show active">
+                                <a data-toggle="tab" href="#tab-fundamentals" class="nav-link show active">
+                                    Fundamentals
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a data-toggle="tab" href="#tab-news" class="nav-link show">
                                     News
                                 </a>
                             </li>
@@ -163,16 +168,25 @@ Algotrader | Stock Info
 <!--                                    Technical-->
 <!--                                </a>-->
 <!--                            </li>-->
-                            <li class="nav-item">
-                                <a data-toggle="tab" href="#tab-fundamentals" class="nav-link show">
-                                    Fundamentals
-                                </a>
-                            </li>
                         </ul>
                     </div>
                     <div class="card-body">
                         <div class="tab-content">
-                            <div class="tab-pane show active" id="tab-news" role="tabpanel">
+                            <div class="tab-pane show active" id="tab-fundamentals" role="tabpanel">
+                                <div class="main-card mb-3 card">
+                                    <div class="card-body tab-fundamentals-summary-card" style="position: relative;">
+                                        <div class="card-header">
+                                            Fundamentals (12 Month)
+                                        </div>
+                                        <div class="div-content row pt-2"></div>
+                                        {% include 'layouts/loader.html' %}
+                                    </div>
+                                </div>
+                                <div class="main-card mb-3 card">
+                                    <div class="card-body tab-fundamentals-feed-card row" style="position: relative;"></div>
+                                </div>
+                            </div>
+                            <div class="tab-pane show" id="tab-news" role="tabpanel">
                                 <div class="main-card mb-3 card">
                                     <div class="card-header">
                                         Last articles:
@@ -234,22 +248,6 @@ Algotrader | Stock Info
 <!--                                    errrrtjgkikikikikikikikikikikikikikikikikiki-->
 <!--                                </p>-->
 <!--                            </div>-->
-                            <div class="tab-pane show" id="tab-fundamentals" role="tabpanel">
-                                <div class="main-card mb-3 card">
-                                    <div class="card-body tab-fundamentals-summary-card" style="position: relative;">
-                                        <div class="card-header">
-                                            Fundamentals (12 Month)
-                                        </div>
-                                        <div class="div-content row pt-2"></div>
-                                        {% include 'layouts/loader.html' %}
-                                    </div>
-                                </div>
-                                <div class="main-card mb-3 card">
-                                    <div class="card-body tab-fundamentals-feed-card row" style="position: relative;">
-
-                                    </div>
-                                </div>
-                            </div>
                         </div>
                     </div>
                 </div>
