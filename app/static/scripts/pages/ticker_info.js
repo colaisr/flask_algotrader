@@ -9,11 +9,19 @@ $(document).ready(function () {
     get_press_relises();
     get_fundamentals_summary();
     get_fundamentals_feed();
+    get_company_info();
     fill_container_ticker_info(ticker); //from spider_project.js
 
     setInterval(function(){
        get_fmp_ticker_data(ticker);
     }, 15000);
+
+    var ticker_modal = new jBox('Modal', {
+        attach: '.page-title-heading',
+        title: ticker+': '+company_name,
+        width: 1000,
+        content: $('#ticker-info-modal')
+    });
 
     $('.add-candidate').on('click', function(){
         add_candidate_from_ticker_info() //from spyder_project.js
@@ -139,6 +147,13 @@ function get_fundamentals_feed(){
         });
         create_info_tooltip(tooltip_ids);
         stop_loading('tab-fundamentals-feed-card'); //from base.js
+    })
+}
+
+function get_company_info(){
+    $.getJSON("/api/company_info",{ticker: ticker}, function(data) {
+        $('#ticker-info-modal').empty();
+        $('#ticker-info-modal').append($(data.data));
     })
 }
 

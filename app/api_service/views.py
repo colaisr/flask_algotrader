@@ -94,6 +94,16 @@ def fundamentals_feed():
     return jsonify({'data': render_template('partial/ticker_info_fundamentals_feed.html', data=json.loads(data))})
 
 
+@api.route('/company_info', methods=['GET'])
+@csrf.exempt
+def company_info():
+    ticker = request.args.get('ticker')
+    url = (
+        f"{spyder_url}/research/get_info_ticker/{ticker}")
+    data = general.api_request_get(url)
+    return jsonify({'data': render_template('partial/ticker_info_company_info.html', data=json.loads(data))})
+
+
 
 
 
