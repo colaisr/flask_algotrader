@@ -30,5 +30,7 @@ class TelegramSignal(db.Model):
     def add_market_info(self):
         last_market_data = TickerData.query.filter_by(ticker=self.ticker).order_by(TickerData.updated_server_time.desc()).first()
         market_emotion = Fgi_score.query.order_by(Fgi_score.score_time.desc()).first()
+        # forlili
+
 
         pass
