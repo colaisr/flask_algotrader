@@ -66,7 +66,7 @@ def financial_ttm_mapping(obj):
     property_list.append(p)
     p = {"priority": 1, "field_name": "Cash Per Share", "value": obj["cashPerShareTTM"], "tooltip": 37}
     property_list.append(p)
-    p = {"priority": 1, "field_name": "Free Cash Flow to Operating Cash Flow Ratio ", "value": obj["freeCashFlowOperatingCashFlowRatioTTM"], "tooltip": 38}
+    p = {"priority": 1, "field_name": "Free Cash Flow to Operating Cash Flow", "value": obj["freeCashFlowOperatingCashFlowRatioTTM"], "tooltip": 38}
     property_list.append(p)
     p = {"priority": 1, "field_name": "Price-To-Book", "value": obj["priceToBookRatioTTM"], "tooltip": 39}
     property_list.append(p)
