@@ -1,4 +1,5 @@
 avg_pe = 0;
+TOOLTIPS = jQuery.parseJSON(TOOLTIPS)
 
 $(document).ready(function () {
     get_avg_pe_from_fmp($('.ticker-sector-val').data('sector'));

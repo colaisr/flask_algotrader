@@ -80,7 +80,20 @@ Algotrader | Today
             </div>
         </div>
     </div>
-
+    <!--    SEARCH    -->
+    <div class="column">
+        <div class="ui menu today-search-tab">
+            <div class="ui search item div-content">
+                <div class="ui transparent icon input">
+                    <input id="search-tickers" type="text" placeholder="Search in all candidates">
+                    <i class="search icon"></i>
+                </div>
+            </div>
+            {% include 'layouts/loader.html' %}
+        </div>
+        <input type="hidden" id="user_email" value="{{ user.email }}">
+    </div>
+<!--    END SEARCH    -->
     <div class="row today-cards">
         <div class="col-md-3 improovers">
             <div class="mb-3 card">
@@ -171,93 +184,6 @@ Algotrader | Today
             </div>
         </div>
     </div>
-
-<!--    ALL CANDIDATES-->
-    <div class="column">
-        <div class="ui menu">
-            <div class="ui search item">
-                <div class="ui transparent icon input">
-                    <input id="search-tickers" type="text" placeholder="Search in all candidates">
-                    <i class="search icon"></i>
-                </div>
-            </div>
-        </div>
-        <input type="hidden" id="user_email" value="{{ user.email }}">
-
-<!--        <div class="divider mt-0" style="margin-bottom: 30px;"></div>-->
-        {% if admin_candidates|length != 0 %}
-        <div class="admin-candidates" style="overflow-x: scroll;">
-            <div class="page-title-subheading">
-                ALL CANDIDATES:
-            </div>
-            <table class="ui searchable sortable unstackable selectable celled table admin-candidates-tbl">
-                <thead>
-                <tr>
-                    <th></th>
-                    <th>Company</th>
-                    <th class="sorted descending">Score</th>
-                    <th>Sector</th>
-                    <th>Underprice(%)</th>
-                    <th>12M Momentum</th>
-                    <th>Beta</th>
-                    <th>Max Intraday Drop %</th>
-                </tr>
-                </thead>
-                <tbody>
-                {% for m in admin_candidates | sort(attribute='algotrader_rank', reverse = True) %}
-                <tr>
-                    <td><img src="{{ m.logo }}" width="20" height="20"></td>
-                    <td>
-                        <a href="/candidates/info/{{ m.ticker }}">
-                            {{ m.ticker }}
-                        </a>
-                        <div class="text-small">{{m.company_name}}</div>
-                    </td>
-                    <td>
-                        {% if m.algotrader_rank is none %}
-                        0
-                        {% else %}
-                        {{m.algotrader_rank}}
-                        {% endif%}
-                    </td>
-                    <td>{{m.sector}}</td>
-                    <td class="text-center">
-                        {% if m.under_priced_pnt is none %}
-                        0
-                        {% else %}
-                        {{m.under_priced_pnt|round(2)}}
-                        {% endif%}
-                    </td>
-                    <td class="text-center">
-                        {% if m.twelve_month_momentum is none %}
-                        0
-                        {% else %}
-                        {{m.twelve_month_momentum|round(2)}}
-                        {% endif%}
-                    </td>
-                    <td class="text-center">
-                        {% if m.beta is none %}
-                        0
-                        {% else %}
-                        {{m.beta|round(2)}}
-                        {% endif%}
-                    </td>
-                    <td class="text-center">
-                        {% if m.max_intraday_drop_percent is none %}
-                        0
-                        {% else %}
-                        {{m.max_intraday_drop_percent|round(2)}}
-                        {% endif%}
-                    </td>
-
-                </tr>
-                {% endfor %}
-                </tbody>
-            </table>
-        </div>
-        {% endif %}
-    </div>
-<!--    END ALL CANDIDATES-->
 </div>
 {% endblock %}
 

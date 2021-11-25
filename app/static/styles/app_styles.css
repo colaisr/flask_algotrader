@@ -337,7 +337,7 @@ input[type=range]:focus::-webkit-slider-runnable-track {
 }
 
 .today-page .search.item{
-    width: 70%;
+    width: 49%;
     box-shadow: 0 1px 2px 0 rgb(34 36 38 / 15%);
     background: #fff !important;
 }
@@ -390,6 +390,18 @@ input[type=range]:focus::-webkit-slider-runnable-track {
 
 .today-page  .page-title-actions{
     margin-top: -19px;
+}
+
+.today-search-tab .div-loading{
+    position: relative !important;
+    right: 44%;
+    width: 0.1% !important;
+}
+
+.today-search-tab .div-loading .spinner-border{
+    width: 1.5rem !important;
+    height: 1.5rem !important;
+    margin-top: 23%;
 }
 
 .div-content{

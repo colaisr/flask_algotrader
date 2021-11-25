@@ -1,5 +1,4 @@
 var EXCHANGES = ['NYSE','NASDAQ','AMEX']
-TOOLTIPS = jQuery.parseJSON(TOOLTIPS)
 $(document).ready(function () {
 
     $(window).resize(function() {

@@ -34,25 +34,6 @@ def today():
     else:
         fgi_text_color = 'success'
 
-    admin_query = "SELECT c.ticker, " \
-                  "c.company_name, " \
-                  "c.logo, c.sector, " \
-                  "a.under_priced_pnt, " \
-                  "case when a.algotrader_rank IS NULL then 0 ELSE a.algotrader_rank END AS algotrader_rank, " \
-                  "a.twelve_month_momentum, " \
-                  "a.beta, " \
-                  "a.max_intraday_drop_percent " \
-                  "FROM (SELECT * FROM Candidates " \
-                  "WHERE enabled=1 GROUP BY ticker) c " \
-                  "JOIN Tickersdata a ON a.ticker=c.ticker " \
-                  "JOIN (select Tickersdata.ticker, " \
-                  "max(Tickersdata.`updated_server_time`) as updated_server_time " \
-                  "from Tickersdata group by Tickersdata.ticker ) b on b.ticker=a.ticker " \
-                  "and b.updated_server_time=a.updated_server_time"
-
-    admin_candidates_res = db.engine.execute(text(admin_query))
-    admin_candidates = [dict(r.items()) for r in admin_candidates_res]
-
     return render_template('candidates/today.html',
                            user=current_user,
                            market_emotion=market_emotion,
@@ -62,7 +43,6 @@ def today():
                            trading_session_state=trading_session_state,
                            last_update_date=last_update.last_update_date.strftime("%d %b %H:%M"),
                            bg_upd_color=bg_upd_color,
-                           admin_candidates=admin_candidates,
                            form=None)
 
 

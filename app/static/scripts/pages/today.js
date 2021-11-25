@@ -13,11 +13,14 @@ $(document).ready(function () {
 
     $( "#search-tickers" ).autocomplete({
         source: function( request, response ) {
+            loading('today-search-tab');
             $.getJSON("/api/search",{query: request.term}, function(data) {
                 response(data);
+                stop_loading('today-search-tab');
             })
         },
         create: function () {
+            loading('search-tab');
             $(this).data('ui-autocomplete')._renderItem = function (ul, item) {
                 ul.addClass('list-group');
                 var div = '<a href="/candidates/info/' + item.symbol + '"><div class="widget-content p-0" style="width: 100%;"><div class="widget-content-wrapper"><div class="widget-content-left mr-3">' + item.symbol + '</div><div class="widget-content-right">'  + item.name + '</div></div></div></a>';
@@ -27,6 +30,7 @@ $(document).ready(function () {
                 $('.ui-autocomplete li:first .ui-menu-item-wrapper').addClass('ui-state-active');
                 return li;
             };
+            stop_loading('search-tab');
         }
     });
 
