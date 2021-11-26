@@ -274,6 +274,18 @@ def signals_check():
 
 def process_signals_candidates(ready_data):
     for k,v in ready_data.items():
+        #testing
+        # ticker = k
+        # target = str(v['target_mean_price'])
+        # signal = TelegramSignal()
+        # signal.ticker = ticker
+        # signal.received = datetime.today().date()
+        # signal.transmitted = True
+        # signal.signal_price = v['current_price']
+        # signal.target_price = target
+        # added = signal.add_signal()
+        #end of testing
+
         if v['current_price']<=v['buying_target_price_fmp']:
             rank=str(v['algotrader_rank'])
             under_priced=str(v['under_priced_pnt'])
