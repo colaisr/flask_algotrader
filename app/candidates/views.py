@@ -33,7 +33,7 @@ def today():
         fgi_text_color = 'danger'
     else:
         fgi_text_color = 'success'
-
+    db_service.user_login_log(current_user, request.environ.get('HTTP_X_REAL_IP', request.remote_addr), request)
     return render_template('candidates/today.html',
                            user=current_user,
                            market_emotion=market_emotion,
