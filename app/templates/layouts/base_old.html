@@ -1,0 +1,276 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-PT4L2HXNL9"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-PT4L2HXNL9');
+</script>
+
+
+<!--    for Google sighn in -->
+    <meta name="google-signin-scope" content="profile email">
+    <meta name="google-signin-client_id" content="522889896001-nc04epa6n7s7n02hofi9f9t0m021t1lk.apps.googleusercontent.com">
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+<!--    end of google sign in-->
+
+    <link rel="shortcut icon" href="#"/>
+    <meta name="charset" content="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block page_title %}{{ config.APP_NAME }}{% endblock %}</title>
+    {# Any templates that extend this template can set custom_head_tags to add scripts to their page #}
+    <!--    {% block custom_head_tags %}{% endblock %}-->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="Content-Language" content="en">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <!--    <title>Algotrader-Server</title>-->
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, shrink-to-fit=no"/>
+    <meta name="description" content="Algotrader server dashboard">
+    <meta name="msapplication-tap-highlight" content="no">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/app_styles.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/arch_ui.css') }}">
+    <link href="{{ url_for('static', filename='styles/base_app.scss') }}">
+
+<!--    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.1/css/bootstrap.min.css" />-->
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/semantic.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='font-icons/css/pe-icon-7-stroke.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='font-icons/css/helper.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='font-awesome/css/font-awesome.min.css') }}">
+
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.13.0/themes/base/jquery-ui.css">
+    <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/gh/StephanWagner/jBox@v1.3.2/dist/jBox.all.min.css" rel="stylesheet">
+    {% block styles %}{% endblock %}
+</head>
+
+<body>
+<!--<style>-->
+<!--      &lt;!&ndash;to solve a popping error&ndash;&gt;-->
+<!--    .tab-content > .tab-pane:not(.active) { display: block; height: 0; overflow-y: hidden; }-->
+
+<div id="dpi" style="height: 1in; width: 1in; left: 100%; position: fixed; top: 100%;"></div>
+<!--</style>-->
+<div class="app-container app-theme-white body-tabs-shadow fixed-sidebar fixed-header closed-sidebar">
+    <div class="app-header header-shadow">
+        {% if current_user.is_authenticated and current_user.confirmed%}
+        <div class="app-header__logo">
+            <!--            <div class="logo-src"></div>-->
+            <div class="header__pane ms-auto">
+                <div>
+                    <button type="button" class="hamburger close-sidebar-btn hamburger--elastic"
+                            data-class="closed-sidebar">
+                            <span class="hamburger-box">
+                                <span class="hamburger-inner"></span>
+                            </span>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="app-header__mobile-menu">
+            <div>
+                <button type="button" class="hamburger hamburger--elastic mobile-toggle-nav">
+                        <span class="hamburger-box">
+                            <span class="hamburger-inner"></span>
+                        </span>
+                </button>
+            </div>
+        </div>
+        {% endif %}
+        <div class="app-header__menu">
+            <span>
+                <button type="button"
+                        class="btn-icon btn-icon-only btn btn-primary btn-sm mobile-toggle-header-nav">
+                    <span class="btn-icon-wrapper">
+                        <i class="fa fa-ellipsis-v fa-w-6"></i>
+                    </span>
+                </button>
+            </span>
+        </div>
+        <div style="order: 2">
+            <ul class="header-menu nav">
+                {% if current_user.is_admin() %}
+                    <li class="btn-group nav-item">
+                        <a href="/admin/" class="nav-link">
+                            <i class="nav-link-icon fa fa-cogs"></i>
+                            Administrator Dashboard
+                        </a>
+                    </li>
+                {% endif %}
+            </ul>
+        </div>
+        <div class="app-header__content">
+            <div class="app-header-left" style="width: 50%;">
+                <div class="header-btn-lg pr-0">
+                    <div class="widget-content p-0">
+                        <div class="widget-content-wrapper">
+                            <ul class="header-menu nav">
+                                <li class="btn-group" style="width: 30%">
+                                    <a href="/" class="nav-link">
+                                        <img class="logo-img" style="width: 93%;"
+                                             src="../../static/images/Logos_New/logo_transparent_background.png">
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="app-header-right">
+                <div class="header-btn-lg pr-0">
+                    <div class="widget-content p-0">
+                        <div class="widget-content-wrapper">
+                            <ul class="header-menu nav">
+                                {% if current_user.is_authenticated %}
+                                <li class="btn-group nav-item">
+                                    <a href="https://t.me/Algotrader_signals"  target="_blank" class="nav-link">
+                                    <i class="fa fa-telegram pr-1"></i>
+                                    Telegram
+                                </a>
+                                </li>
+                                <li class="btn-group nav-item">
+                                    <a href="/account/subscriptions" class="nav-link text-end">
+                                    <i class="fa fa-dollar-sign pr-1"></i>
+                                    Change plan
+                                </a>
+                                </li>
+                                <li class="btn-group nav-item">
+                                    <a href="/account/manage/info" class="nav-link">
+                                        <i class="nav-link-icon fa fa-user-circle"></i>
+                                        {% if session['admin_as'] %}
+                                        <span class="text-danger pr-2">Admin as </span>
+                                        {% endif %}
+                                         {{current_user.first_name}} {{current_user.last_name}}
+                                    </a>
+                                </li>
+                                <li class="btn-group nav-item">
+                                    <a href="/account/logout" class="nav-link">
+                                        <i class="nav-link-icon fa fa-sign-out "></i>
+                                        Log Out
+                                    </a>
+                                </li>
+                                {% else %}
+                                <li class="btn-group nav-item">
+                                    <a href="/account/register" class="nav-link">
+                                        <i class="nav-link-icon fa fa-user-plus"></i>
+                                        Register
+                                    </a>
+                                </li>
+                                <li class="btn-group nav-item">
+                                    <a href="/account/login" class="nav-link">
+                                        <i class="nav-link-icon fa fa-sign-in"></i>
+                                        Log In
+                                    </a>
+                                </li>
+                                {% endif %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="app-main">
+        {% if current_user.is_authenticated and current_user.confirmed %}
+        <div class="app-sidebar sidebar-shadow">
+            <div class="app-header__logo">
+                <div class="logo-src">more</div>
+                <div class="header__pane ml-auto">
+                    <div>
+                        <button type="button" class="hamburger close-sidebar-btn hamburger--elastic"
+                                data-class="closed-sidebar">
+                                    <span class="hamburger-box">
+                                        <span class="hamburger-inner"></span>
+                                    </span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="app-header__mobile-menu">
+                <div>
+                    <button type="button" class="hamburger hamburger--elastic mobile-toggle-nav">
+                                <span class="hamburger-box">
+                                    <span class="hamburger-inner"></span>
+                                </span>
+                    </button>
+                </div>
+            </div>
+            <div class="app-header__menu">
+                <span>
+                    <button type="button"
+                            class="btn-icon btn-icon-only btn btn-primary btn-sm mobile-toggle-header-nav">
+                        <span class="btn-icon-wrapper">
+                            <i class="fa fa-ellipsis-v fa-w-6"></i>
+                        </span>
+                    </button>
+                </span>
+            </div>
+            <div class="scrollbar-sidebar">
+            </div>
+        </div>
+        {% endif %}
+        <div class="app-main__outer mt-5">
+            {% macro render_flashes(class) %}
+            {% with msgs = get_flashed_messages(category_filter=[class]) %}
+            {% for msg in msgs %}
+            <div class="ui {{ class }} message" data-autohide="5">
+                <i class="close icon"></i>
+                {{ msg }}
+            </div>
+            {% endfor %}
+            {% endwith %}
+            {% endmacro %}
+
+            <div class="ui text container">
+                <div class="flashes">
+                    {{ render_flashes('error') }}
+                    {{ render_flashes('warning') }}
+                    {{ render_flashes('info') }}
+                    {{ render_flashes('success') }}
+                </div>
+            </div>
+            {% block content %}
+                {% block loader %}{%endblock%}
+            {% endblock %}
+        </div>
+        <!--        <script src="http://maps.google.com/maps/api/js?sensor=true"></script>-->
+    </div>
+</div>
+
+
+{# Implement CSRF protection for site #}
+{% if csrf_token()|safe %}
+<div style="visibility: hidden; display: none">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token()|safe }}">
+</div>
+{% endif %}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/StephanWagner/jBox@v1.3.2/dist/jBox.all.min.js"></script>
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.1/js/bootstrap.min.js"></script>
+<script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+<script type="text/javascript">
+            $.fn.bsModal = $.fn.modal.noConflict();
+</script>
+<script type="text/javascript" src="{{ url_for('static', filename='scripts/packages/arch_ui.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='scripts/packages/base_app.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='scripts/packages/semantic.min.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='scripts/packages/tablesort.min.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='scripts/packages/zxcvbn.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='scripts/pages/base.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='scripts/pages/jb-tooltip.js') }}"></script>
+<!--page specific script includes-->
+{% block scripting %}
+{% endblock %}
+{% block modal %}
+{% endblock %}
+</body>
+</html>
+

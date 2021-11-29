@@ -2,55 +2,41 @@
 {% block page_title %}
 Algotrader | Administration
 {% endblock %}
-{% macro dashboard_option(title, endpoint, description=None, icon=None) %}
-<a class="column" href="{{ url_for(endpoint) }}">
-    <div class="ui padded segment">
-        <h3 class="ui header">
-            {% if icon is not none %}
-            <i class="{{ icon }}"></i>
-            {% endif %}
-            <div class="content">
-                {{ title }}
-                {% if description is not none %}
-                <div class="sub header">
-                    {{ description }}
-                </div>
-                {% endif %}
-            </div>
-        </h3>
-    </div>
-</a>
-{% endmacro %}
-
 {% block content %}
-<div class="ui stackable centered grid container">
-    <div class="wide column">
-        <h2 class="ui header">
-            Admin Dashboard
-        </h2>
-        <div class="ui three column stackable grid">
-            {{ dashboard_option('Registered Users', 'admin.registered_users',
-            description='View and manage user accounts', icon='users icon') }}
-            {{ dashboard_option('Pending Approval', 'admin.pending_approval',
-            description='Admin approval for new user', icon='check circle icon') }}
-            {{ dashboard_option('Market Data', 'admin.market_data',
-            description='Stored Market data') }}
+<!--title row-->
+<div class="row">
+    <div class="col">
+        <div class="card mt-lg-4 mb-3">
+            <div class="bg-holder d-none d-lg-block bg-card" >
+            </div>
+            <!--/.bg-holder-->
 
-            {{ dashboard_option('Add New User', 'admin.new_user',
-            description='Create a new user account', icon='add user icon') }}
-            {{ dashboard_option('Users Monitor', 'admin.users_monitor',
-            description='Monitoring users data', icon='laptop icon') }}
-            {{ dashboard_option('Client Commands', 'admin.clientcommands',
-            description='Station commands') }}
-
-            {{ dashboard_option('Invite New User', 'admin.invite_user',
-            description='Invites a new user to create their own account', icon='paper plane icon') }}
-            {{ dashboard_option('Spider Statistic', 'admin.spider_statistic',
-            description='Spider process data', icon='bug icon') }}
-            {{ dashboard_option('Telegram signals', 'admin.signals_status',
-            description='All issued signals', icon='satellite-dish icon') }}
-
+            <div class="card-body position-relative">
+              <div class="row">
+                <div class="col-lg-8">
+                  <h3>Algotrader administration</h3>
+                  <p class="mb-0">System</p>
+                </div>
+              </div>
+            </div>
         </div>
     </div>
 </div>
+
+<!--Main part row-->
+<div class="row">
+    <div class="mb-2">
+        <div class="card">
+            <div class="card-header border-bottom">
+                Algotrader Settings
+            </div>
+            <div class="card-body pt-0">
+                Table
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
 {% endblock %}
