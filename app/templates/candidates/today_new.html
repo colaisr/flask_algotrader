@@ -51,21 +51,21 @@ Algotrader | Today
                         <p class="mb-0 text-center fs--2 text-400">{{ market_emotion.score_time.strftime("%d %b, %Y %H:%M:%S") }}</p>
                     </div>
                 </div>
-                <div class="col-md-auto w-50 p-3 d-none d-lg-inline">
+                <div class="col-md-auto p-3 d-none d-lg-inline" data-bs-toggle="modal" data-bs-target="#emotion-modal">
+                    <div class="chart-container pt-2 today_emotion_box" style="position: relative; height:100px; width:120px;">
+                        <canvas class="mt-n3" id="marketEmotion" width="90" height="90"></canvas>
+                        <p class="mb-0 text-center fs--4 mt-n5 text-{{fgi_text_color}}">{{ market_emotion.fgi_value}}</p>
+                        <p class="mb-0 text-center fs--2 text-800">Market Emotion</p>
+                        <p class="mb-0 text-center fs--2 text-400">{{ market_emotion.score_time.strftime("%d %b, %Y %H:%M:%S") }}</p>
+                    </div>
+                </div>
+                <div class="col-md-auto w-25 p-3 d-none d-lg-inline">
                     <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-tickers.js" async>
                   {
                       "symbols": [
                         {
                           "proName": "FOREXCOM:SPXUSD",
                           "title": "S&P 500"
-                        },
-                        {
-                          "proName": "FOREXCOM:NSXUSD",
-                          "title": "Nasdaq 100"
-                        },
-                        {
-                          "proName": "BITSTAMP:BTCUSD",
-                          "title": "BTC/USD"
                         }
                       ],
                       "colorTheme": "light",
@@ -74,14 +74,6 @@ Algotrader | Today
                       "locale": "en"
                   }
               </script>
-                </div>
-                <div class="col-md-auto p-3 d-none d-lg-inline" data-bs-toggle="modal" data-bs-target="#emotion-modal">
-                    <div class="chart-container pt-2 today_emotion_box" style="position: relative; height:100px; width:120px;">
-                        <canvas class="mt-n3" id="marketEmotion" width="90" height="90"></canvas>
-                        <p class="mb-0 text-center fs--4 mt-n5 text-{{fgi_text_color}}">{{ market_emotion.fgi_value}}</p>
-                        <p class="mb-0 text-center fs--2 text-800">Market Emotion</p>
-                        <p class="mb-0 text-center fs--2 text-400">{{ market_emotion.score_time.strftime("%d %b, %Y %H:%M:%S") }}</p>
-                    </div>
                 </div>
                 <div class="col-md-auto p-3">
                     <div class="mb-1 mr-1 badge bg-info d-block">EST:  {{ current_est_time }}</div>
@@ -253,7 +245,7 @@ docReady(marketEmotionMobileInit);
         crossorigin="anonymous"></script>
 <script type="text/javascript" src="{{ url_for('static', filename='scripts/pages/snp_graph.js') }}"></script>
 <script type="text/javascript" src="{{ url_for('static', filename='scripts/pages/spyder_project.js') }}"></script>
-<script type="text/javascript" src="{{ url_for('static', filename='scripts/pages/today.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='scripts/pages/today_new.js') }}"></script>
 {% endblock %}
 
 {% block modal %}

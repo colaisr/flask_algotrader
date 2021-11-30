@@ -22,7 +22,7 @@ candidates = Blueprint('candidates', __name__)
 def today():
     last_update = db.session.query(LastUpdateSpyderData).order_by(
         LastUpdateSpyderData.start_process_time.desc()).first()
-    bg_upd_color = "success" if datetime.now().date() == last_update.last_update_date.date() and not last_update.error_status else "danger"
+    bg_upd_color = "badge-success" if datetime.now().date() == last_update.last_update_date.date() and not last_update.error_status else "badge-danger"
     current_est_time = general.get_by_timezone('US/Eastern').time().strftime("%H:%M")
     trading_session_state = general.is_market_open()
     user_settings = UserSetting.query.filter_by(email=current_user.email).first()
@@ -254,7 +254,7 @@ def get_user_candidates():
 def today_new():
     last_update = db.session.query(LastUpdateSpyderData).order_by(
         LastUpdateSpyderData.start_process_time.desc()).first()
-    bg_upd_color = "badge-success" if datetime.now().date() == last_update.last_update_date.date() and not last_update.error_status else "badge-danger"
+    bg_upd_color = "success" if datetime.now().date() == last_update.last_update_date.date() and not last_update.error_status else "danger"
     current_est_time = general.get_by_timezone('US/Eastern').time().strftime("%H:%M")
     trading_session_state = general.is_market_open()
     user_settings = UserSetting.query.filter_by(email=current_user.email).first()
