@@ -213,6 +213,81 @@
                 </span>
             </div>
             <div class="scrollbar-sidebar">
+                <div class="app-sidebar__inner">
+                    <ul class="vertical-nav-menu">
+                        <li class="app-sidebar__heading">Dashboards</li>
+                        <li>
+                            <a href="/candidates/today">
+                                <i class="metismenu-icon pe-7s-like"></i>
+                                Today
+                            </a>
+                        </li>
+                        {% if not current_user.is_admin() and current_user.subscription_type_id == 4 and not current_user.admin_confirmed%}
+                        <li>
+                            <a href="/station/registration_steps/1">
+                                <i class="metismenu-icon pe-7s-users"></i>
+                                Registration Confirmation
+                            </a>
+                        </li>
+                        {%endif%}
+                        {% if not current_user.is_admin() and current_user.subscription_type_id == 4 and current_user.admin_confirmed and current_user.signature%}
+                        <li>
+                            <a href="/userview/traderstationstate">
+                                <i class="metismenu-icon pe-7s-display1"></i>
+                                Trader Station
+                            </a>
+                        </li>
+                        {%elif current_user.is_admin()%}
+                        <li>
+                            <a href="/admin/">
+                                <i class="metismenu-icon pe-7s-tools"></i>
+                                Administrator Dashboard
+                            </a>
+                        </li>
+                        {%endif%}
+<!--                        <li>-->
+<!--                            <a href="/candidates/usercandidates">-->
+<!--                                <i class="metismenu-icon pe-7s-like"></i>-->
+<!--                                Candidates-->
+<!--                            </a>-->
+<!--                        </li>-->
+                        {% if not current_user.is_admin() and ((current_user.subscription_type_id == 4 and current_user.admin_confirmed and current_user.signature) or current_user.subscription_type_id == 2) %}
+                        <li>
+                            <a href="/algotradersettings/usersettings">
+                                <i class="metismenu-icon pe-7s-tools"></i>
+                                Algotrader Settings
+                            </a>
+                        </li>
+                        {%endif%}
+                        {% if current_user.subscription_type_id != 2 and current_user.admin_confirmed %}
+                        <li class="app-sidebar__heading">Analytics</li>
+                        {% endif %}
+                        {% if current_user.is_admin()%}
+                        <li>
+                            <a target="_blank"
+                               href="https://www.interactivebrokers.co.uk/portal/?action=ACCT_MGMT_MAIN&loginType=1&clt=0&RL=1#/portfolio/performance">
+                                <i class="metismenu-icon pe-7s-graph2"></i>
+                                Portfolio performance
+                            </a>
+                        </li>
+                        {% elif current_user.subscription_type_id == 4 and current_user.admin_confirmed and current_user.signature%}
+                        <li>
+                            <a href="/userview/closedpositions">
+                                <i class="metismenu-icon pe-7s-wallet"></i>
+                                My Performance
+                            </a>
+                        </li>
+                        {%endif%}
+                        {% if current_user.is_admin() %}
+                        <li>
+                            <a href="/station/requirements">
+                                <i class="metismenu-icon pe-7s-box1"></i>
+                                Requirements
+                            </a>
+                        </li>
+                        {%endif%}
+                    </ul>
+                </div>
             </div>
         </div>
         {% endif %}
@@ -273,4 +348,3 @@
 {% endblock %}
 </body>
 </html>
-

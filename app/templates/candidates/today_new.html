@@ -1,0 +1,282 @@
+{% extends 'layouts/base.html' %}
+{% block page_title %}
+Algotrader | Today
+{% endblock %}
+
+{% block user_styles %}
+<style>
+    .card-header, .card-title {
+    text-transform: uppercase;
+    color: rgba(13,27,62,0.7);
+    font-weight: bold;
+    font-size: .88rem;
+}
+
+.today_emotion_box
+{
+    cursor: pointer;
+    width: 25%;
+    margin-left: 3%;
+    margin-right: 3%;
+    margin-top: -17px;
+}
+</style>
+
+<!--<link rel="stylesheet" href="{{ url_for('static', filename='styles/app_styles.css') }}">-->
+{% endblock %}
+
+{% block content %}
+<input type="hidden" id="user_email" value="{{ user.email }}">
+<input type="hidden" id="user-emotion" value={{user_fgi}}>
+
+<!--title row-->
+<div class="row mb-3">
+    <div class="col">
+        <div class="card bg-100 shadow-none border">
+            <div class="row gx-0 flex-between-center">
+                <div class="col-sm-auto d-flex align-items-center justify-content-between">
+                    <div class="d-flex align-items-center">
+                        <i class="far fa-newspaper fa-4x p-3"></i>
+                        <div>
+                            <h4 class="fw-bold mb-0">
+                                Today
+                            </h4>
+                            <p class="fs--1 mb-0 text-500">Market State</p>
+                        </div>
+                    </div>
+                    <div class="chart-container pt-3 d-lg-none today_emotion_box" data-bs-toggle="modal" data-bs-target="#emotion-modal" style="right: 5%; position: relative; height:75px; width:115px">
+                        <canvas class="mt-n3" id="marketEmotion-mobile" width="90" height="90"></canvas>
+                        <p class="mb-0 text-center fs--4 mt-n5 text-{{fgi_text_color}}">{{ market_emotion.fgi_value}}</p>
+                        <p class="mb-0 text-center fs--2 text-800">Market Emotion</p>
+                        <p class="mb-0 text-center fs--2 text-400">{{ market_emotion.score_time.strftime("%d %b, %Y %H:%M:%S") }}</p>
+                    </div>
+                </div>
+                <div class="col-md-auto w-50 p-3 d-none d-lg-inline">
+                    <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-tickers.js" async>
+                  {
+                      "symbols": [
+                        {
+                          "proName": "FOREXCOM:SPXUSD",
+                          "title": "S&P 500"
+                        },
+                        {
+                          "proName": "FOREXCOM:NSXUSD",
+                          "title": "Nasdaq 100"
+                        },
+                        {
+                          "proName": "BITSTAMP:BTCUSD",
+                          "title": "BTC/USD"
+                        }
+                      ],
+                      "colorTheme": "light",
+                      "isTransparent": true,
+                      "showSymbolLogo": true,
+                      "locale": "en"
+                  }
+              </script>
+                </div>
+                <div class="col-md-auto p-3 d-none d-lg-inline" data-bs-toggle="modal" data-bs-target="#emotion-modal">
+                    <div class="chart-container pt-2 today_emotion_box" style="position: relative; height:100px; width:120px;">
+                        <canvas class="mt-n3" id="marketEmotion" width="90" height="90"></canvas>
+                        <p class="mb-0 text-center fs--4 mt-n5 text-{{fgi_text_color}}">{{ market_emotion.fgi_value}}</p>
+                        <p class="mb-0 text-center fs--2 text-800">Market Emotion</p>
+                        <p class="mb-0 text-center fs--2 text-400">{{ market_emotion.score_time.strftime("%d %b, %Y %H:%M:%S") }}</p>
+                    </div>
+                </div>
+                <div class="col-md-auto p-3">
+                    <div class="mb-1 mr-1 badge bg-info d-block">EST:  {{ current_est_time }}</div>
+                    <div class="mb-1 mr-1 badge bg-info d-block">US market:  {{ trading_session_state }}</div>
+                    <div class="mb-1 mr-1 badge bg-{{ bg_upd_color }} d-block"  data-toggle="tooltip" data-placement="bottom" title="Market Data last update">Upd:  {{ last_update_date }}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--movements and updates-->
+<div class="row">
+    <div class="mb-1 col-md-4">
+        <div class="card ">
+            <div class="card-header border-bottom">
+                Movers
+            </div>
+            <div class="card-body pt-0">
+                Table
+            </div>
+        </div>
+    </div>
+    <div class="mb-1 col-md-4">
+        <div class="card">
+            <div class="card-header border-bottom">
+                Favorites
+            </div>
+            <div class="card-body pt-0">
+                Table
+            </div>
+        </div>
+    </div>
+    <div class="mb-1 col-md-4">
+        <div class="card ">
+            <div class="card-header border-bottom">
+                Signals
+            </div>
+            <div class="card-body pt-0">
+                Table
+            </div>
+        </div>
+    </div>
+</div>
+<!--big search-->
+<div class="row justify-content-center my-3">
+    <div class="col-md-8 ">
+            <div class="search">
+                <input id="search-tickers" class="form-control search-input fuzzy-search" type="search" placeholder="Search..." aria-label="Search" />
+            </div>
+    </div>
+</div>
+<!--news and tops-->
+<div class="row">
+    <div class="mb-1 col-md-3">
+        <div class="card ">
+            <div class="card-header border-bottom">
+                Top 10 Scores
+            </div>
+            <div class="card-body pt-0">
+                Table
+            </div>
+        </div>
+    </div>
+    <div class="mb-1 col-md-6">
+        <div class="card">
+            <div class="card-header border-bottom">
+                Top by Sectors
+            </div>
+            <div class="card-body pt-0">
+                Table
+            </div>
+        </div>
+    </div>
+    <div class="mb-1 col-md-3">
+        <div class="card ">
+            <div class="card-header border-bottom">
+                News
+            </div>
+            <div class="card-body pt-0">
+                Table
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block scripting %}
+
+<script>
+    var marketEmotionInit = function marketEmotionInit() {
+  var marketEmotionElement = document.getElementById('marketEmotion');
+
+  var getOptions = function getOptions() {
+    return {
+      type: 'doughnut',
+      data: {
+        labels: ['Emotion',''],
+        datasets: [{
+          data: [{{ market_emotion.fgi_value}}, 100 - {{ market_emotion.fgi_value}}],
+          backgroundColor: [utils.getColor('{{fgi_text_color}}'), utils.getColor('300')],
+          borderColor: [utils.getColor('{{fgi_text_color}}'), utils.getColor('300')]
+        }]
+      },
+      options: {
+        tooltips: {
+       enabled: false
+    },
+    responsive: true,
+    maintainAspectRatio: false,
+        rotation: -90,
+        circumference: '180',
+        cutout: '80%',
+        plugins: {
+          legend: {
+            display: false
+          }
+        }
+      }
+    };
+  };
+
+  chartJsInit(marketEmotionElement, getOptions);
+};
+
+    var marketEmotionMobileInit = function marketEmotionMobileInit() {
+  var marketEmotionMobileElement = document.getElementById('marketEmotion-mobile');
+
+  var getMobileOptions = function getOptions() {
+    return {
+      type: 'doughnut',
+      data: {
+        labels: ['Emotion',''],
+        datasets: [{
+          data: [{{ market_emotion.fgi_value}}, 100 - {{ market_emotion.fgi_value}}],
+          backgroundColor: [utils.getColor('{{fgi_text_color}}'), utils.getColor('300')],
+          borderColor: [utils.getColor('{{fgi_text_color}}'), utils.getColor('300')]
+        }]
+      },
+      options: {
+        tooltips: {
+       enabled: false
+    },
+    responsive: true,
+    maintainAspectRatio: false,
+        rotation: -90,
+        circumference: '180',
+        cutout: '80%',
+        plugins: {
+          legend: {
+            display: false
+          }
+        }
+      }
+    };
+  };
+
+  chartJsInit(marketEmotionMobileElement, getMobileOptions);
+};
+docReady(marketEmotionInit);
+docReady(marketEmotionMobileInit);
+</script>
+<script src="https://code.highcharts.com/stock/highstock.js"></script>
+<script src="https://code.highcharts.com/stock/modules/data.js"></script>
+<script src="https://code.highcharts.com/stock/modules/exporting.js"></script>
+<script src="https://code.highcharts.com/stock/modules/export-data.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.2.0/chart.min.js"
+        integrity="sha512-VMsZqo0ar06BMtg0tPsdgRADvl0kDHpTbugCBBrL55KmucH6hP9zWdLIWY//OTfMnzz6xWQRxQqsUFefwHuHyg=="
+        crossorigin="anonymous"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='scripts/pages/snp_graph.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='scripts/pages/spyder_project.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='scripts/pages/today.js') }}"></script>
+{% endblock %}
+
+{% block modal %}
+<div class="modal fade emotion-modal" id="emotion-modal" data-bs-keyboard="false" data-bs-backdrop="static" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg mt-6" role="document">
+    <div class="modal-content border-0">
+      <div class="position-absolute top-0 end-0 mt-3 me-3 z-index-1">
+        <button class="btn-close btn btn-sm btn-circle d-flex flex-center transition-base" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body p-0">
+        <div class="bg-light rounded-top-lg py-3 ps-4 pe-6">
+          <h4 class="mb-1" id="staticBackdropLabel">S&P with Market Emotion</h4>
+        </div>
+        <div class="p-4">
+            <div id="container_sp500" style="width:100%; height:300px;"></div>
+                <div id="container_emotion" style="width:100%; height:300px;"></div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" onclick="go_to_cnn()" class="btn btn-secondary" >Description</button>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+

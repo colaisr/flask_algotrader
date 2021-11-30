@@ -22,7 +22,7 @@ candidates = Blueprint('candidates', __name__)
 def today():
     last_update = db.session.query(LastUpdateSpyderData).order_by(
         LastUpdateSpyderData.start_process_time.desc()).first()
-    bg_upd_color = "badge-success" if datetime.now().date() == last_update.last_update_date.date() and not last_update.error_status else "badge-danger"
+    bg_upd_color = "success" if datetime.now().date() == last_update.last_update_date.date() and not last_update.error_status else "danger"
     current_est_time = general.get_by_timezone('US/Eastern').time().strftime("%H:%M")
     trading_session_state = general.is_market_open()
     user_settings = UserSetting.query.filter_by(email=current_user.email).first()
@@ -245,3 +245,34 @@ def get_user_candidates():
     candidates_res = db.engine.execute(text(user_query))
     candidates = [dict(r.items()) for r in candidates_res]
     return candidates
+
+
+###### OLD ######
+
+@candidates.route('today_new', methods=['GET', 'POST'])
+@login_required
+def today_new():
+    last_update = db.session.query(LastUpdateSpyderData).order_by(
+        LastUpdateSpyderData.start_process_time.desc()).first()
+    bg_upd_color = "badge-success" if datetime.now().date() == last_update.last_update_date.date() and not last_update.error_status else "badge-danger"
+    current_est_time = general.get_by_timezone('US/Eastern').time().strftime("%H:%M")
+    trading_session_state = general.is_market_open()
+    user_settings = UserSetting.query.filter_by(email=current_user.email).first()
+    user_fgi = user_settings.algo_min_emotion
+
+    market_emotion = Fgi_score.query.order_by(Fgi_score.score_time.desc()).first()
+    if market_emotion.fgi_value < user_settings.algo_min_emotion:
+        fgi_text_color = 'danger'
+    else:
+        fgi_text_color = 'success'
+    db_service.user_login_log(current_user, request.environ.get('HTTP_X_REAL_IP', request.remote_addr), request)
+    return render_template('candidates/today_new.html',
+                           user=current_user,
+                           market_emotion=market_emotion,
+                           user_fgi=user_fgi,
+                           fgi_text_color=fgi_text_color,
+                           current_est_time=current_est_time,
+                           trading_session_state=trading_session_state,
+                           last_update_date=last_update.last_update_date.strftime("%d %b %H:%M"),
+                           bg_upd_color=bg_upd_color,
+                           form=None)

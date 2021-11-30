@@ -84,7 +84,7 @@
     width: 30%;
 }
 
-#today_emotion_box {
+#today_emotion_box, .today_emotion_box {
     width: 25%;
     margin-left: 3%;
     margin-right: 3%;

@@ -51,11 +51,6 @@
 
       <!--    Stylesheets from old site-->
 
-
-
-
-
-    {% block styles %}{% endblock %}
     <script>
       var isRTL = JSON.parse(localStorage.getItem('isRTL'));
       if (isRTL) {
@@ -71,6 +66,7 @@
         userLinkRTL.setAttribute('disabled', true);
       }
     </script>
+    {% block user_styles %}{% endblock %}
   </head>
 
 
@@ -99,10 +95,15 @@
           </script>
           <div class="d-flex align-items-center">
             <div class="toggle-icon-wrapper">
-              <button class="btn navbar-toggler-humburger-icon navbar-vertical-toggle" data-bs-toggle="tooltip" data-bs-placement="left" title="Toggle Navigation"><span class="navbar-toggle-icon"><span class="toggle-line"></span></span></button>
+              <button class="btn navbar-toggler-humburger-icon navbar-vertical-toggle" data-bs-toggle="tooltip" data-bs-placement="left" title="Toggle Navigation">
+                <span class="navbar-toggle-icon">
+                  <span class="toggle-line"></span>
+                </span>
+              </button>
             </div>
             <a class="navbar-brand d-none d-xl-block" href="/">
-              <div class="d-flex align-items-center py-1"><img class="me-2" src="../../static/images/Logos_New/logo_transparent_background.png" alt="" width="140" />
+              <div class="d-flex align-items-center py-1">
+                <img class="me-2" src="../../static/images/Logos_New/logo_transparent_background.png" alt="" width="140" />
               </div>
             </a>
           </div>
@@ -112,38 +113,60 @@
                 <li class="nav-item">
                   <!-- label-->
                   <div class="row navbar-vertical-label-wrapper mt-3 mb-2">
-                    <div class="col-auto navbar-vertical-label">Today
+                    <div class="col-auto navbar-vertical-label">
+                      Today
                     </div>
                     <div class="col ps-0">
                       <hr class="mb-0 navbar-vertical-divider" />
                     </div>
                   </div>
-                  <!-- parent pages--><a class="nav-link" href="/candidates/today" role="button" aria-expanded="false">
-                    <div class="d-flex align-items-center"><span class="nav-link-icon"><span class="fas fa-flag"></span></span><span class="nav-link-text ps-1">News</span>
+                  <!-- parent pages-->
+                  <a class="nav-link" href="/candidates/today" role="button" aria-expanded="false">
+                    <div class="d-flex align-items-center">
+                      <span class="nav-link-icon">
+                        <span class="fas fa-flag"></span>
+                      </span>
+                      <span class="nav-link-text ps-1">News</span>
                     </div>
                   </a>
                 </li>
                 <li class="nav-item">
                   <!-- label-->
                   <div class="row navbar-vertical-label-wrapper mt-3 mb-2">
-                    <div class="col-auto navbar-vertical-label">Personal
+                    <div class="col-auto navbar-vertical-label">
+                      Personal
                     </div>
                     <div class="col ps-0">
                       <hr class="mb-0 navbar-vertical-divider" />
                     </div>
                   </div>
-                    <!-- parent pages--><a class="nav-link" href="/userview/traderstationstate" role="button" aria-expanded="false">
-                    <div class="d-flex align-items-center"><span class="nav-link-icon"><span class="far fa-window-restore"></span></span><span class="nav-link-text ps-1">Trader Station</span>
+                    <!-- parent pages-->
+                  <a class="nav-link" href="/userview/traderstationstate" role="button" aria-expanded="false">
+                    <div class="d-flex align-items-center">
+                      <span class="nav-link-icon">
+                        <span class="far fa-window-restore"></span>
+                      </span>
+                      <span class="nav-link-text ps-1">Trader Station</span>
                     </div>
-                    </a>
-                    <!-- parent pages--><a class="nav-link" href="/userview/closedpositions" role="button" aria-expanded="false">
-                    <div class="d-flex align-items-center"><span class="nav-link-icon"><span class="fas fa-coins"></span></span><span class="nav-link-text ps-1">Performance</span>
+                  </a>
+                    <!-- parent pages-->
+                  <a class="nav-link" href="/userview/closedpositions" role="button" aria-expanded="false">
+                    <div class="d-flex align-items-center">
+                      <span class="nav-link-icon">
+                        <span class="fas fa-coins"></span>
+                      </span>
+                      <span class="nav-link-text ps-1">Performance</span>
                     </div>
-                    </a>
-                    <!-- parent pages--><a class="nav-link" href="/algotradersettings/usersettings" role="button" aria-expanded="false">
-                    <div class="d-flex align-items-center"><span class="nav-link-icon"><span class="fas fa-wrench"></span></span><span class="nav-link-text ps-1">Personal settings</span>
+                  </a>
+                    <!-- parent pages-->
+                  <a class="nav-link" href="/algotradersettings/usersettings" role="button" aria-expanded="false">
+                    <div class="d-flex align-items-center">
+                      <span class="nav-link-icon">
+                        <span class="fas fa-wrench"></span>
+                      </span>
+                      <span class="nav-link-text ps-1">Personal settings</span>
                     </div>
-                    </a>
+                  </a>
                 </li>
               </ul>
             </div>
@@ -152,9 +175,14 @@
         <div class="content">
           <!--        small_screen_navigation-->
           <nav class="navbar navbar-light navbar-glass navbar-top navbar-expand">
-            <button class="btn navbar-toggler-humburger-icon navbar-toggler me-1 me-sm-3" type="button" data-bs-toggle="collapse" data-bs-target="#navbarVerticalCollapse" aria-controls="navbarVerticalCollapse" aria-expanded="false" aria-label="Toggle Navigation"><span class="navbar-toggle-icon"><span class="toggle-line"></span></span></button>
+            <button class="btn navbar-toggler-humburger-icon navbar-toggler me-1 me-sm-3" type="button" data-bs-toggle="collapse" data-bs-target="#navbarVerticalCollapse" aria-controls="navbarVerticalCollapse" aria-expanded="false" aria-label="Toggle Navigation">
+              <span class="navbar-toggle-icon">
+                <span class="toggle-line"></span>
+              </span>
+            </button>
             <a class="navbar-brand me-1 me-sm-3 d-none " href="index.html">
-              <div class="d-flex align-items-center "><img  src="../../static/images/Logos_New/logo_transparent_background.png" alt="" width="140" />
+              <div class="d-flex align-items-center ">
+                <img  src="../../static/images/Logos_New/logo_transparent_background.png" alt="" width="140" />
               </div>
             </a>
             <ul class="navbar-nav align-items-center d-lg-block">
@@ -163,71 +191,91 @@
                   <form class="position-relative" data-bs-toggle="search" data-bs-display="static">
                     <input class="form-control search-input fuzzy-search" type="search" placeholder="Search..." aria-label="Search" />
                     <span class="fas fa-search search-box-icon"></span>
-
                   </form>
                   <div class="btn-close-falcon-container position-absolute end-0 top-50 translate-middle shadow-none" data-bs-dismiss="search">
                     <div class="btn-close-falcon" aria-label="Close"></div>
                   </div>
                   <div class="dropdown-menu border font-base start-0 mt-2 py-0 overflow-hidden w-100">
                     <div class="scrollbar list py-3" style="max-height: 24rem;">
-                      <h6 class="dropdown-header fw-medium text-uppercase px-card fs--2 pt-0 pb-2">Recently Browsed</h6><a class="dropdown-item fs--1 px-card py-1 hover-primary" href="app/events/event-detail.html">
+                      <h6 class="dropdown-header fw-medium text-uppercase px-card fs--2 pt-0 pb-2">Recently Browsed</h6>
+                      <a class="dropdown-item fs--1 px-card py-1 hover-primary" href="app/events/event-detail.html">
                         <div class="d-flex align-items-center">
                           <span class="fas fa-circle me-2 text-300 fs--2"></span>
-
-                          <div class="fw-normal title">Pages <span class="fas fa-chevron-right mx-1 text-500 fs--2" data-fa-transform="shrink-2"></span> Events</div>
+                          <div class="fw-normal title">
+                            Pages
+                            <span class="fas fa-chevron-right mx-1 text-500 fs--2" data-fa-transform="shrink-2"></span>
+                            Events
+                          </div>
                         </div>
                       </a>
                       <a class="dropdown-item fs--1 px-card py-1 hover-primary" href="app/e-commerce/customers.html">
                         <div class="d-flex align-items-center">
                           <span class="fas fa-circle me-2 text-300 fs--2"></span>
-
-                          <div class="fw-normal title">E-commerce <span class="fas fa-chevron-right mx-1 text-500 fs--2" data-fa-transform="shrink-2"></span> Customers</div>
+                          <div class="fw-normal title">
+                            E-commerce
+                            <span class="fas fa-chevron-right mx-1 text-500 fs--2" data-fa-transform="shrink-2"></span>
+                            Customers
+                          </div>
                         </div>
                       </a>
 
                       <hr class="bg-200 dark__bg-900" />
-                      <h6 class="dropdown-header fw-medium text-uppercase px-card fs--2 pt-0 pb-2">Suggested Filter</h6><a class="dropdown-item px-card py-1 fs-0" href="app/e-commerce/customers.html">
-                        <div class="d-flex align-items-center"><span class="badge fw-medium text-decoration-none me-2 badge-soft-warning">customers:</span>
+                      <h6 class="dropdown-header fw-medium text-uppercase px-card fs--2 pt-0 pb-2">Suggested Filter</h6>
+                      <a class="dropdown-item px-card py-1 fs-0" href="app/e-commerce/customers.html">
+                        <div class="d-flex align-items-center">
+                          <span class="badge fw-medium text-decoration-none me-2 badge-soft-warning">customers:</span>
                           <div class="flex-1 fs--1 title">All customers list</div>
                         </div>
                       </a>
                       <a class="dropdown-item px-card py-1 fs-0" href="app/events/event-detail.html">
-                        <div class="d-flex align-items-center"><span class="badge fw-medium text-decoration-none me-2 badge-soft-success">events:</span>
+                        <div class="d-flex align-items-center">
+                          <span class="badge fw-medium text-decoration-none me-2 badge-soft-success">events:</span>
                           <div class="flex-1 fs--1 title">Latest events in current month</div>
                         </div>
                       </a>
                       <a class="dropdown-item px-card py-1 fs-0" href="app/e-commerce/product/product-grid.html">
-                        <div class="d-flex align-items-center"><span class="badge fw-medium text-decoration-none me-2 badge-soft-info">products:</span>
+                        <div class="d-flex align-items-center">
+                          <span class="badge fw-medium text-decoration-none me-2 badge-soft-info">products:</span>
                           <div class="flex-1 fs--1 title">Most popular products</div>
                         </div>
                       </a>
 
                       <hr class="bg-200 dark__bg-900" />
-                      <h6 class="dropdown-header fw-medium text-uppercase px-card fs--2 pt-0 pb-2">Files</h6><a class="dropdown-item px-card py-2" href="#!">
+                      <h6 class="dropdown-header fw-medium text-uppercase px-card fs--2 pt-0 pb-2">Files</h6>
+                      <a class="dropdown-item px-card py-2" href="#!">
                         <div class="d-flex align-items-center">
-                          <div class="file-thumbnail me-2"><img class="border h-100 w-100 fit-cover rounded-3" src="assets/img/products/3-thumb.png" alt="" /></div>
+                          <div class="file-thumbnail me-2">
+                            <img class="border h-100 w-100 fit-cover rounded-3" src="assets/img/products/3-thumb.png" alt="" />
+                          </div>
                           <div class="flex-1">
                             <h6 class="mb-0 title">iPhone</h6>
-                            <p class="fs--2 mb-0 d-flex"><span class="fw-semi-bold">Antony</span><span class="fw-medium text-600 ms-2">27 Sep at 10:30 AM</span></p>
+                            <p class="fs--2 mb-0 d-flex">
+                              <span class="fw-semi-bold">Antony</span>
+                              <span class="fw-medium text-600 ms-2">27 Sep at 10:30 AM</span></p>
                           </div>
                         </div>
                       </a>
                       <a class="dropdown-item px-card py-2" href="#!">
                         <div class="d-flex align-items-center">
-                          <div class="file-thumbnail me-2"><img class="img-fluid" src="assets/img/icons/zip.png" alt="" /></div>
+                          <div class="file-thumbnail me-2">
+                            <img class="img-fluid" src="assets/img/icons/zip.png" alt="" />
+                          </div>
                           <div class="flex-1">
                             <h6 class="mb-0 title">Falcon v1.8.2</h6>
-                            <p class="fs--2 mb-0 d-flex"><span class="fw-semi-bold">John</span><span class="fw-medium text-600 ms-2">30 Sep at 12:30 PM</span></p>
+                            <p class="fs--2 mb-0 d-flex">
+                              <span class="fw-semi-bold">John</span>
+                              <span class="fw-medium text-600 ms-2">30 Sep at 12:30 PM</span>
+                            </p>
                           </div>
                         </div>
                       </a>
 
                       <hr class="bg-200 dark__bg-900" />
-                      <h6 class="dropdown-header fw-medium text-uppercase px-card fs--2 pt-0 pb-2">Members</h6><a class="dropdown-item px-card py-2" href="pages/user/profile.html">
+                      <h6 class="dropdown-header fw-medium text-uppercase px-card fs--2 pt-0 pb-2">Members</h6>
+                      <a class="dropdown-item px-card py-2" href="pages/user/profile.html">
                         <div class="d-flex align-items-center">
                           <div class="avatar avatar-l status-online me-2">
                             <img class="rounded-circle" src="assets/img/team/1.jpg" alt="" />
-
                           </div>
                           <div class="flex-1">
                             <h6 class="mb-0 title">Anna Karinina</h6>
@@ -239,7 +287,6 @@
                         <div class="d-flex align-items-center">
                           <div class="avatar avatar-l me-2">
                             <img class="rounded-circle" src="assets/img/team/2.jpg" alt="" />
-
                           </div>
                           <div class="flex-1">
                             <h6 class="mb-0 title">Antony Hopkins</h6>
@@ -251,7 +298,6 @@
                         <div class="d-flex align-items-center">
                           <div class="avatar avatar-l me-2">
                             <img class="rounded-circle" src="assets/img/team/3.jpg" alt="" />
-
                           </div>
                           <div class="flex-1">
                             <h6 class="mb-0 title">Emma Watson</h6>
@@ -259,7 +305,6 @@
                           </div>
                         </div>
                       </a>
-
                     </div>
                     <div class="text-center mt-n3">
                       <p class="fallback fw-bold fs-1 d-none">No Result Found.</p>
@@ -269,57 +314,58 @@
               </li>
             </ul>
             <ul class="navbar-nav navbar-nav-icons ms-auto flex-row align-items-center">
-                                {% if current_user.is_authenticated %}
-                                <li class="btn-group nav-item">
-                                    <a href="https://t.me/Algotrader_signals"  target="_blank" class="nav-link" >
-                                    <i class="fab fa-telegram-plane pr-1" ></i>
-                                      <div class="d-none d-lg-inline" >Telegram</div>
-
-                                </a>
-                                </li>
-                                <li class="btn-group nav-item">
-                                    <a href="/account/subscriptions" class="nav-link text-end" >
-                                    <i class="fa fa-dollar-sign pr-1" ></i>
-                                      <div class="d-none d-lg-inline" >Change Plan</div>
-                                </a>
-                                </li>
-                                <li class="btn-group nav-item">
-                                    <a href="/account/manage/info" class="nav-link" >
-                                        <i class="nav-link-icon fa fa-user-circle"></i>
-                                        {% if session['admin_as'] %}
-                                        <span class="text-danger pr-2">Admin as </span>
-                                        {% endif %}
-                                         {{current_user.first_name}} {{current_user.last_name}}
-                                    </a>
-                                </li>
-                                <li class="btn-group nav-item" >
-                                    <a href="/account/logout" class="nav-link" >
-                                        <i class="fas fa-sign-out-alt pr-1" ></i>
-                                        <div class="d-none d-lg-inline" >Log Out</div>
-                                    </a>
-                                </li>
-                                {% else %}
-                                <li class="btn-group nav-item">
-                                    <a href="/account/register" class="nav-link" >
-                                        <i class="nav-link-icon fa fa-user-plus" ></i>
-                                        <div class="d-none d-lg-inline" >Register</div>
-                                    </a>
-                                </li>
-                                <li class="btn-group nav-item">
-                                    <a href="/account/login" class="nav-link" >
-                                        <i class="nav-link-icon fa fa-sign-in" ></i>
-                                        <div class="d-none d-lg-inline" >Login</div>
-                                    </a>
-                                </li>
-                                {% endif %}
-                              {% if current_user.is_admin() %}
-                                <li class="btn-group nav-item">
-                        <a href="/admin/" class="nav-link" >
-                            <i class="nav-link-icon fa fa-cogs" ></i>
-                          <div class="d-none d-lg-inline" >Admin dashboard</div>
-                        </a>
-                    </li>
-                              {% endif %}
+              {% if current_user.is_authenticated %}
+                <li class="btn-group nav-item">
+                  <a href="https://t.me/Algotrader_signals"  target="_blank" class="nav-link" >
+                    <i class="fab fa-telegram-plane pr-1" ></i>
+                    <div class="d-none d-lg-inline" >Telegram</div>
+                  </a>
+                </li>
+                <li class="btn-group nav-item">
+                  <a href="/account/subscriptions" class="nav-link text-end" >
+                    <i class="fa fa-dollar-sign pr-1" ></i>
+                    <div class="d-none d-lg-inline" >Change Plan</div>
+                  </a>
+                </li>
+                <li class="btn-group nav-item">
+                  <a href="/account/manage/info" class="nav-link" >
+                    <i class="nav-link-icon fa fa-user-circle"></i>
+                    <div class="d-none d-lg-inline">
+                      {% if session['admin_as'] %}
+                      <span class="text-danger pr-2">Admin as </span>
+                    {% endif %}
+                    {{current_user.first_name}} {{current_user.last_name}}
+                    </div>
+                  </a>
+                </li>
+                <li class="btn-group nav-item" >
+                  <a href="/account/logout" class="nav-link" >
+                    <i class="fas fa-sign-out-alt pr-1" ></i>
+                    <div class="d-none d-lg-inline" >Log Out</div>
+                  </a>
+                </li>
+              {% else %}
+                <li class="btn-group nav-item">
+                  <a href="/account/register" class="nav-link" >
+                    <i class="nav-link-icon fa fa-user-plus" ></i>
+                    <div class="d-none d-lg-inline" >Register</div>
+                  </a>
+                </li>
+                <li class="btn-group nav-item">
+                  <a href="/account/login" class="nav-link" >
+                    <i class="nav-link-icon fa fa-sign-in" ></i>
+                    <div class="d-none d-lg-inline" >Login</div>
+                  </a>
+                </li>
+              {% endif %}
+              {% if current_user.is_admin() %}
+                <li class="btn-group nav-item">
+                  <a href="/admin/" class="nav-link" >
+                    <i class="nav-link-icon fa fa-cogs" ></i>
+                    <div class="d-none d-lg-inline" >Admin dashboard</div>
+                  </a>
+                </li>
+              {% endif %}
             </ul>
           </nav>
 <!--            content-->
@@ -330,7 +376,11 @@
           <footer class="footer">
             <div class="row g-0 justify-content-between fs--1 mt-4 mb-3">
               <div class="col-12 col-sm-auto text-center">
-                <p class="mb-0 text-600">Agotrader LTD <span class="d-none d-sm-inline-block">| </span><br class="d-sm-none" /> 2021 &copy; <a href="mailto:support@algotrader.company">Contact Us</a></p>
+                <p class="mb-0 text-600">
+                  Agotrader LTD <span class="d-none d-sm-inline-block">| </span>
+                  <br class="d-sm-none" /> 2021 &copy;
+                  <a href="mailto:support@algotrader.company">Contact Us</a>
+                </p>
               </div>
             </div>
           </footer>
@@ -395,10 +445,13 @@
     <!-- ===============================================-->
     <!--    JavaScripts-->
     <!-- ===============================================-->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"></script>
     <script src="{{ url_for('static', filename='falcon/vendors/popper/popper.min.js') }}"></script>
     <script src="{{ url_for('static', filename='falcon/vendors/bootstrap/bootstrap.min.js') }}"></script>
     <script src="{{ url_for('static', filename='falcon/vendors/anchorjs/anchor.min.js') }}"></script>
     <script src="{{ url_for('static', filename='falcon/vendors/is/is.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='falcon/vendors/chart/chart.min.js') }}"></script>
     <script src="{{ url_for('static', filename='falcon/vendors/echarts/echarts.min.js') }}"></script>
     <script src="{{ url_for('static', filename='falcon/vendors/fontawesome/all.min.js') }}"></script>
     <script src="{{ url_for('static', filename='falcon/vendors/lodash/lodash.min.js') }}"></script>
@@ -407,10 +460,8 @@
     <script src="{{ url_for('static', filename='falcon/assets/js/theme.js') }}"></script>
 
     <!--    JavaScripts from old site-->
-<!--    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>-->
-<!--    <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"></script>-->
 <!--    <script src="https://cdn.jsdelivr.net/gh/StephanWagner/jBox@v1.3.2/dist/jBox.all.min.js"></script>-->
-<!--    <script type="text/javascript" src="{{ url_for('static', filename='scripts/pages/base.js') }}"></script>-->
+    <script type="text/javascript" src="{{ url_for('static', filename='scripts/pages/base_new.js') }}"></script>
 <!--    <script type="text/javascript" src="{{ url_for('static', filename='scripts/pages/jb-tooltip.js') }}"></script>-->
 
 
