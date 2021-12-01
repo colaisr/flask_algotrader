@@ -163,8 +163,9 @@ def callback():
 
 
 @csrf.exempt
+@account.route('/register', methods=['GET', 'POST'])
 @account.route('/register/<subscription>', methods=['GET', 'POST'])
-def register(subscription):
+def register(subscription=enum.Subscriptions.PERSONAL.value):
     """Register a new user, and send them a confirmation email."""
     form = RegistrationForm()
     if form.validate_on_submit():

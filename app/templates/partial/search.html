@@ -1,0 +1,17 @@
+<div class="search-box w-100" data-list='{"valueNames":["title"]}'>
+  <form id="{{id}}-search" class="position-relative search-form" data-bs-toggle="search" data-bs-display="static">
+    <input class="form-control search-input" type="search" placeholder="Search..." aria-label="Search" />
+    <span class="fas fa-search search-box-icon"></span>
+  </form>
+  <div class="btn-close-falcon-container position-absolute end-0 top-50 translate-middle shadow-none" data-bs-dismiss="search">
+    <div class="btn-close-falcon" aria-label="Close"></div>
+  </div>
+  <div class="dropdown-menu border font-base start-0 mt-2 py-0 overflow-hidden w-100">
+    <div id="{{id}}-search-results" class="search_results scrollbar list py-3" style="max-height: 24rem;">
+      <h6  class="dropdown-header fw-medium text-uppercase px-card fs--2 pt-0 pb-2">Tickers</h6>
+    </div>
+    <div class="text-center mt-n3">
+      <p class="{{id}}-search fallback fw-bold fs-1 d-none">No Result Found.</p>
+    </div>
+  </div>
+</div>

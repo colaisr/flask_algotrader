@@ -24,13 +24,14 @@ Algotrader | Today
 .link {
     cursor: pointer;
 }
+
 </style>
 
 <!--<link rel="stylesheet" href="{{ url_for('static', filename='styles/app_styles.css') }}">-->
 {% endblock %}
 
 {% block content %}
-<input type="hidden" id="user_email" value="{{ user.email }}">
+<input type="hidden" id="user-email" value="{{ user.email }}">
 <input type="hidden" id="user-emotion" value={{user_fgi}}>
 
 <!--title row-->
@@ -42,9 +43,9 @@ Algotrader | Today
                     <div class="d-flex align-items-center">
                         <i class="far fa-newspaper fa-4x p-3"></i>
                         <div>
-                            <h4 class="fw-bold mb-0">
+                            <h5 class="fw-bold mb-0">
                                 Today
-                            </h4>
+                            </h5>
                             <p class="fs--1 mb-0 text-500">Market State</p>
                         </div>
                     </div>
@@ -91,19 +92,19 @@ Algotrader | Today
 <!--movements and updates-->
 <div class="row">
     <div class="mb-1 col-md-3">
-        <div class="card improovers" style="min-height: 538px;">
-            <div class="card-header border-bottom">
+        <div class="card improovers" style="min-height: 320px;">
+            <div class="card-header border-bottom p-2">
                 Movers
             </div>
-            <div class="card-body improovers-card-body">
+            <div class="card-body improovers-card-body p-2 pt-3">
                     <div class="div-content table-responsive mt-n3">
                         <table class="mb-0 table improovers-tbl table-hover">
                             <thead>
                                 <tr>
-                                    <th scope="col"></th>
-                                    <th scope="col" class="fs--2">Company</th>
-                                    <th scope="col" class="fs--2 text-center">Score</th>
-                                    <th scope="col" class="fs--2 text-center">Change</th>
+                                    <th scope="col" class="p-0"></th>
+                                    <th scope="col" class="fs--2 p-0 pb-1 pt-1">Company</th>
+                                    <th scope="col" class="fs--2 text-center p-0 pb-1 pt-1">Score</th>
+                                    <th scope="col" class="fs--2 text-center p-0 pb-1 pt-1">Change</th>
                                 </tr>
                             </thead>
                             <tbody></tbody>
@@ -111,32 +112,38 @@ Algotrader | Today
                     </div>
                     {% include 'layouts/loader.html' %}
                 </div>
-            <div class="card-footer">
-                <a class="text-primary pe-1 ps-2 link-primary font-weight-bold show_improovers_modal d-block" href="#!" data-bs-toggle="modal" data-bs-target="#improovers-modal">
-                    View All
-                </a>
+            <div class="card-footer p-2">
+<!--                <a class="text-primary pe-1 ps-2 link-primary font-weight-bold show_improovers_modal d-block" href="#!" data-bs-toggle="modal" data-bs-target="#improovers-modal">-->
+<!--                    More-->
+<!--                </a>-->
+                <button class="btn btn-falcon-primary btn-sm" data-bs-toggle="modal" data-bs-target="#improovers-modal"><i class="far fa-eye pe"></i><span class="ps-2">All</span></button>
             </div>
         </div>
     </div>
     <div class="mb-1 col-md-6">
-        <div class="card personal-list" style="min-height: 538px;">
-            <div class="card-header border-bottom">
+        <div class="card personal-list" style="min-height: 320px;">
+            <div class="card-header border-bottom p-2">
                 Favorites
             </div>
-            <div class="card-body pt-0 personal-list-card-body">
+            <div class="card-body p-2 pt-0 personal-list-card-body">
+                <div class="row align-items-center add-tickers-card d-none">
+                    <div class="col-lg-6"><img width="300" class="img-fluid" src="/static/falcon/assets/img/icons/spot-illustrations/21.png" alt=""></div>
+                    <div class="col-lg-6 ps-lg-4 my-5 text-center text-lg-start">
+                      <h3 class="text-primary">It's empty here...</h3>
+                      <p class="lead">Try following a few stocks</p>
+                        <button class="btn btn-falcon-primary" data-bs-toggle="modal" data-bs-target="#add-candidate-modal">Add Candidate</button>
+                    </div>
+                </div>
                 <div class="div-content table-responsive">
                     <table class="mb-0 table personal-tbl table-hover overflow-hidden" >
                         <thead>
                             <tr>
-                                <th scope="col"></th>
-                                <th scope="col" class="fs--2">Company</th>
-                                <th scope="col" class="fs--2 text-center">Score</th>
-                                <th scope="col" class="fs--2 text-center">Sector</th>
-                                <th scope="col" class="fs--2 pe-1 ps-0">Underprice(%)</th>
-                                <th scope="col" class="fs--2 pe-0 ps-0 text-center">Momentum</th>
-                                <th scope="col" class="fs--2 pe-0 ps-0 text-center">Beta</th>
-                                <th scope="col" class="fs--2 pe-0 ps-0 text-center">Drop %</th>
-                                <th class="text-end fs--2 pe-0 ps-0" scope="col">Actions</th>
+                                <th scope="col" class="p-0 pb-1 pt-1"></th>
+                                <th scope="col" class="fs--2 p-0 pb-1 pt-1">Company</th>
+                                <th scope="col" class="fs--2 text-center p-0 pb-1 pt-1">Score</th>
+                                <th scope="col" class="fs--2 text-center p-0 pb-1 pt-1">Sector</th>
+                                <th scope="col" class="fs--2 p-0 pb-1 pt-1 text-center">Drop %</th>
+                                <th class="text-end fs--2 p-0 pb-1 pt-1" scope="col">Actions</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -146,70 +153,88 @@ Algotrader | Today
                 </div>
                 {% include 'layouts/loader.html' %}
             </div>
-            <div class="card-footer justify-content-between d-flex">
-                <a class="text-primary pe-1 ps-2 link-primary font-weight-bold show_personal_modal" href="#!" data-bs-toggle="modal" data-bs-target="#personal-modal">
-                    More
-                </a>
-                <button type="button" id="btnAddCandidate" class="btn btn-primary">
+            <div class="card-footer justify-content-between d-flex p-1 d-none">
+<!--                <a class="text-primary pe-1 ps-2 link-primary font-weight-bold show_personal_modal" href="#!" data-bs-toggle="modal" data-bs-target="#personal-modal">-->
+<!--                    More-->
+<!--                </a>-->
+                <button class="btn btn-falcon-primary btn-sm" data-bs-toggle="modal" data-bs-target="#personal-modal"><i class="far fa-eye pe"></i><span class="ps-2">All</span></button>
+                <button type="button" id="btnAddCandidate" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#add-candidate-modal">
                     Add Candidate
                 </button>
             </div>
         </div>
     </div>
     <div class="mb-1 col-md-3">
-        <div class="card signals" style="min-height: 538px;">
-            <div class="card-header border-bottom">
+        <div class="card signals" style="min-height: 320px;">
+            <div class="card-header border-bottom p-2">
                 Signals
             </div>
-            <div class="card-body pt-0">
-                Table
+            <div class="card-body signals-card-body p-2 pt-3">
+                    <div class="div-content table-responsive mt-n3">
+                        <table class="mb-0 table signals-tbl table-hover">
+                            <thead>
+                                <tr>
+                                    <th scope="col" class="p-0"></th>
+                                    <th scope="col" class="fs--2 p-0 pb-1 pt-1">Company</th>
+                                    <th scope="col" class="fs--2 text-center p-0 pb-1 pt-1">Price</th>
+                                    <th scope="col" class="fs--2 text-center p-0 pb-1 pt-1">Target</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                    {% include 'layouts/loader.html' %}
+                </div>
+            <div class="card-footer p-2">
+<!--                <a class="text-primary pe-1 ps-2 link-primary font-weight-bold show_signals_modal d-block" href="#!" data-bs-toggle="modal" data-bs-target="#signals-modal">-->
+<!--                    More-->
+<!--                </a>-->
+                <button class="btn btn-falcon-primary btn-sm" data-bs-toggle="modal" data-bs-target="#signals-modal"><i class="far fa-eye pe"></i><span class="ps-2">All</span></button>
             </div>
         </div>
     </div>
 </div>
 <!--big search-->
 <div class="row justify-content-center my-3">
-    <div class="col-md-8 position-absolute search-input">
-            <div class="search">
-                <input id="search-tickers" class="form-control search-input fuzzy-search" type="search" placeholder="Search..." aria-label="Search" />
-            </div>
+    <div class="col-md-8 search-input">
+        {% with id='today' %}
+        {% include 'partial/search.html' %}
+        {% endwith %}
     </div>
-    <div class="invisible col-md-7 position-relative loading-element"><span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>Loading...</div>
-
 </div>
 <!--news and tops-->
-<div class="row mt-4">
-    <div class="mb-1 col-md-3">
-        <div class="card ">
-            <div class="card-header border-bottom">
-                Top 10 Scores
-            </div>
-            <div class="card-body pt-0">
-                Table
-            </div>
-        </div>
-    </div>
-    <div class="mb-1 col-md-6">
-        <div class="card">
-            <div class="card-header border-bottom">
-                Top by Sectors
-            </div>
-            <div class="card-body pt-0">
-                Table
-            </div>
-        </div>
-    </div>
-    <div class="mb-1 col-md-3">
-        <div class="card ">
-            <div class="card-header border-bottom">
-                News
-            </div>
-            <div class="card-body pt-0">
-                Table
-            </div>
-        </div>
-    </div>
-</div>
+<!--<div class="row mt-4">-->
+<!--    <div class="mb-1 col-md-3">-->
+<!--        <div class="card ">-->
+<!--            <div class="card-header border-bottom">-->
+<!--                Top 10 Scores-->
+<!--            </div>-->
+<!--            <div class="card-body pt-0">-->
+<!--                Table-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--    <div class="mb-1 col-md-6">-->
+<!--        <div class="card">-->
+<!--            <div class="card-header border-bottom">-->
+<!--                Top by Sectors-->
+<!--            </div>-->
+<!--            <div class="card-body pt-0">-->
+<!--                Table-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--    <div class="mb-1 col-md-3">-->
+<!--        <div class="card ">-->
+<!--            <div class="card-header border-bottom">-->
+<!--                News-->
+<!--            </div>-->
+<!--            <div class="card-body pt-0">-->
+<!--                Table-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</div>-->
 
 {% endblock %}
 
@@ -331,13 +356,13 @@ docReady(marketEmotionMobileInit);
       <div class="modal-body p-0">
         <div class="p-4">
             <div class="improovers-modal-tbl table-responsive mt-n3">
-                <table class="mb-0 table improovers-tbl table-hover">
+                <table class="mb-0 table table-hover">
                     <thead>
                         <tr>
-                            <th scope="col"></th>
-                            <th scope="col" class="fs--2 pe-0 ps-0">Company</th>
-                            <th scope="col" class="fs--2 pe-0 ps-0 text-center">Score</th>
-                            <th scope="col" class="fs--2 pe-0 ps-0 text-center">Change</th>
+                            <th scope="col" class="p-0 pb-1 pt-1"></th>
+                            <th scope="col" class="fs--2 p-0 pb-1 pt-1">Company</th>
+                            <th scope="col" class="fs--2 p-0 pb-1 pt-1 text-center">Score</th>
+                            <th scope="col" class="fs--2 p-0 pb-1 pt-1 text-center">Change</th>
                         </tr>
                     </thead>
                     <tbody></tbody>
@@ -362,17 +387,17 @@ docReady(marketEmotionMobileInit);
                 <table class="mb-0 table personal-modal-tbl table-hover">
                     <thead>
                         <tr>
-                            <th scope="col"></th>
-                            <th scope="col" class="fs--2 pe-0 ps-0">Company</th>
-                            <th scope="col"></th>
-                            <th scope="col"></th>
-                            <th scope="col" class="fs--2 pe-0 ps-0 text-center">Enabled</th>
-                            <th scope="col" class="fs--2 pe-0 ps-0 text-center">Score</th>
-                            <th scope="col" class="fs--2 pe-0 ps-0 text-center">Sector</th>
-                            <th scope="col" class="fs--2 pe-0 ps-0 text-center">Underprice(%)</th>
-                            <th scope="col" class="fs--2 pe-0 ps-0 text-center">12M Momentum</th>
-                            <th scope="col" class="fs--2 pe-0 ps-0 text-center">Beta</th>
-                            <th scope="col" class="fs--2 pe-0 ps-0 text-center">Max Intraday Drop %</th>
+                            <th scope="col" class="p-0 pb-1 pt-1"></th>
+                            <th scope="col" class="fs--2 p-0 pb-1 pt-1">Company</th>
+                            <th scope="col" class="p-0 pb-1 pt-1"></th>
+                            <th scope="col" class="p-0 pb-1 pt-1"></th>
+                            <th scope="col" class="fs--2 p-0 pb-1 pt-1 text-center">Enabled</th>
+                            <th scope="col" class="fs--2 p-0 pb-1 pt-1 text-center">Score</th>
+                            <th scope="col" class="fs--2 p-0 pb-1 pt-1 text-center">Sector</th>
+                            <th scope="col" class="fs--2 p-0 pb-1 pt-1 text-center">Underprice(%)</th>
+                            <th scope="col" class="fs--2 p-0 pb-1 pt-1 text-center">12M Momentum</th>
+                            <th scope="col" class="fs--2 p-0 pb-1 pt-1 text-center">Beta</th>
+                            <th scope="col" class="fs--2 p-0 pb-1 pt-1 text-center">Max Intraday Drop %</th>
                         </tr>
                     </thead>
                     <tbody></tbody>
@@ -383,5 +408,95 @@ docReady(marketEmotionMobileInit);
     </div>
   </div>
 </div>
+
+<div class="modal fade add-candidate-modal" id="add-candidate-modal" tabindex="-1" role="dialog" aria-labelledby="add-candidate-modal-labe" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-scrollable" role="document" style="max-width: 500px">
+    <div class="modal-content border-0">
+        <div class="modal-header bg-light rounded-top-lg py-3 ps-4 pe-4">
+            <h4 class="mb-1" id="add-candidate-modal-labe">Add to Favorites</h4>
+            <button type="button" class="btn-close btn btn-sm btn-circle d-flex flex-center transition-base" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+      <div class="modal-body p-0">
+        <div class="p-4 pb-0">
+            <div class="mb-3">
+              <label class="col-form-label">Ticker</label>
+              {% with id='modal' %}
+                {% include 'partial/search.html' %}
+                {% endwith %}
+            </div>
+            <div class="mb-3">
+              <label class="col-form-label" for="txt_reason">Reason</label>
+              <textarea class="form-control" id="txt_reason" name="txt_reason"></textarea>
+            </div>
+        </div>
+          <div class="p-4 pb-3 candidate-bottom" hidden>
+            <div class="form-group">
+                <label class="form-label" for="txt_company_name">Name</label>
+                <input required id="txt_company_name" name="txt_company_name" type="text" disabled
+                       class="form-control ticker-desc">
+            </div>
+            <div class="form-group">
+                <label class="form-label" for="txt_company_description">Description</label>
+                <textarea required class="form-control ticker-desc" name="txt_company_description" disabled
+                          id="txt_company_description" rows="3"></textarea>
+            </div>
+            <div class="form-group">
+                <label class="form-label" for="txt_exchange">Exchange</label>
+                <input required id="txt_exchange" name="txt_exchange" type="text" class="form-control ticker-desc"
+                       disabled>
+            </div>
+            <div class="form-group">
+                <label class="form-label" for="txt_industry">Sector</label>
+                <input required id="txt_sector" name="txt_sector" type="text" class="form-control ticker-desc"
+                       disabled>
+            </div>
+            <div class="form-group">
+                <label class="form-label" for="txt_industry">Industry</label>
+                <input required id="txt_industry" name="txt_industry" type="text" class="form-control ticker-desc"
+                       disabled>
+            </div>
+          </div>
+          <div class="loading-section ps-4 text-primary d-none">
+              <span class="spinner-border spinner-border-sm loading" role="status" aria-hidden="true"></span>
+              Loading...
+            </div>
+      </div>
+      <div class="modal-footer">
+        <button id="btn-submit" class="btn btn-primary disabled" onclick="update_candidate()" type="button">Submit </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade improovers-modal" id="signals-modal" tabindex="-1" aria-labelledby="signals-modal-label" aria-hidden="true">
+  <div class="modal-dialog modal-lg mt-6 modal-dialog-scrollable" role="document">
+    <div class="modal-content border-0">
+        <div class="modal-header bg-light rounded-top-lg py-3 ps-4 pe-4">
+            <h4 class="mb-1" id="signals-modal-label">Movers</h4>
+            <button type="button" class="btn-close btn btn-sm btn-circle d-flex flex-center transition-base" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+      <div class="modal-body p-0">
+        <div class="p-4">
+            <div class="signals-modal-tbl table-responsive mt-n3">
+                <table class="mb-0 table table-hover">
+                    <thead>
+                        <tr>
+                            <th scope="col" class="p-0 pb-1 pt-1"></th>
+                            <th scope="col" class="fs--2 p-0 pb-1 pt-1">Company</th>
+                            <th scope="col" class="fs--2 p-0 pb-1 pt-1 text-center">Price</th>
+                            <th scope="col" class="fs--2 p-0 pb-1 pt-1 text-center">Target</th>
+                            <th scope="col" class="fs--2 p-0 pb-1 pt-1 text-center">Profit</th>
+                            <th scope="col" class="fs--2 p-0 pb-1 pt-1 text-center">Days</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 {% endblock %}
 

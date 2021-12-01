@@ -73,6 +73,10 @@ function isFloat(n){
     return Number(n) === n && n % 1 !== 0;
 }
 
+function isStringEmpty(str){
+    return str.trim() == '' || str == null || str == undefined;
+}
+
 function add_row_to_personal_candidates(c, tbl_class, is_modal){
     var score = c.algotrader_rank || 0;
     var under_priced_pnt = c.under_priced_pnt != null ? c.under_priced_pnt.toFixed(2) : 0;

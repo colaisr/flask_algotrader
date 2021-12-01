@@ -1,5 +1,5 @@
 import app.generalutils as general
-import json
+from flask_login import current_user
 from app.api_service import api_service
 import app.api_service.api_mapping as map
 from flask import (
@@ -51,6 +51,14 @@ def search():
     return data
 
 
+@api.route('/search_quick', methods=['GET'])
+@csrf.exempt
+def search_quick():
+    text_to_search = request.args.get('text_to_search')
+    data = api_service.search_api(text_to_search)
+    return data
+
+
 @api.route('/add_candidate')
 @csrf.exempt
 def add_candidate():
@@ -60,6 +68,14 @@ def add_candidate():
         return redirect(url_for('candidates.info', ticker=ticker))
     else:
         return result
+
+
+@api.route('/add_favorite_candidate')
+@csrf.exempt
+def add_favorite_candidate():
+    ticker = request.args.get('ticker')
+    result = api_service.add_favorite_candidate_api(ticker, current_user.email)
+    return result
 
 
 @api.route('/fundamentals_summary', methods=['GET'])
@@ -85,6 +101,13 @@ def company_info():
     ticker = request.args.get('ticker')
     data = api_service.company_info_api(ticker)
     return jsonify({'data': render_template('partial/ticker_info_company_info.html', data=data)})
+
+
+@api.route('/ticker_info/<ticker>', methods=['GET'])
+@csrf.exempt
+def ticker_info(ticker):
+    data = api_service.company_info_api(ticker)
+    return data
 
 
 

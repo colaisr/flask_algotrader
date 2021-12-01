@@ -22,7 +22,7 @@ candidates = Blueprint('candidates', __name__)
 def today():
     last_update = db.session.query(LastUpdateSpyderData).order_by(
         LastUpdateSpyderData.start_process_time.desc()).first()
-    bg_upd_color = "badge-success" if datetime.now().date() == last_update.last_update_date.date() and not last_update.error_status else "badge-danger"
+    bg_upd_color = "success" if datetime.now().date() == last_update.last_update_date.date() and not last_update.error_status else "danger"
     current_est_time = general.get_by_timezone('US/Eastern').time().strftime("%H:%M")
     trading_session_state = general.is_market_open()
     user_settings = UserSetting.query.filter_by(email=current_user.email).first()
@@ -34,7 +34,7 @@ def today():
     else:
         fgi_text_color = 'success'
     db_service.user_login_log(current_user, request.environ.get('HTTP_X_REAL_IP', request.remote_addr), request)
-    return render_template('candidates/today.html',
+    return render_template('candidates/today_new.html',
                            user=current_user,
                            market_emotion=market_emotion,
                            user_fgi=user_fgi,
@@ -58,7 +58,7 @@ def telegram_signals():
                     f"c.logo " \
                     f"FROM TelegramSignals s " \
                     f"JOIN Candidates c ON c.ticker=s.ticker " \
-                    f"WHERE DATE(s.received) = DATE(NOW())"
+                    f"WHERE DATE(s.received) > DATE_ADD(DATE(NOW()), INTERVAL -3 DAY)"
     signals_res = db.engine.execute(text(signals_query))
     signals = [dict(r.items()) for r in signals_res]
     return json.dumps(signals, cls=general.JsonEncoder)
@@ -266,7 +266,7 @@ def today_new():
     else:
         fgi_text_color = 'success'
     db_service.user_login_log(current_user, request.environ.get('HTTP_X_REAL_IP', request.remote_addr), request)
-    return render_template('candidates/today_new.html',
+    return render_template('candidates/today.html',
                            user=current_user,
                            market_emotion=market_emotion,
                            user_fgi=user_fgi,
