@@ -1,5 +1,8 @@
-//var domane = 'https://colak.eu.pythonanywhere.com/';
-var domane = 'http://localhost:8000/';
+var domane = 'https://colak.eu.pythonanywhere.com/';
+
+if(window.location.hostname == '127.0.0.1'){
+    domane = 'http://localhost:8000/';
+}
 
 function get_data_for_ticker(){
     $('.content-hidden').prop('hidden', true);

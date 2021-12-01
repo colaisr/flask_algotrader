@@ -1,5 +1,7 @@
-//var SPYDER_API = 'https://colak.eu.pythonanywhere.com/';
-var SPYDER_API = 'http://localhost:8000/';
+var SPYDER_API = 'https://colak.eu.pythonanywhere.com/';
+if(window.location.hostname == '127.0.0.1'){
+    SPYDER_API = 'http://localhost:8000/';
+}
 
 $(document).ready(function () {
     $('.toasts-block').empty();
