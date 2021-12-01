@@ -18,10 +18,12 @@ $(document).ready(function () {
 })
 
 function set_min_height_to_divs(){
-    var height = Math.max($('.improovers').height(), $('.personal-list').height(), $('.signals').height());
-    $('.personal-list').css('min-height', height);
-    $('.signals').css('min-height', height);
-    $('.improovers').css('min-height', height);
+    if(screen.width > 767){
+        var height = Math.max($('.improovers').height(), $('.personal-list').height(), $('.signals').height());
+        $('.personal-list').css('min-height', height);
+        $('.signals').css('min-height', height);
+        $('.improovers').css('min-height', height);
+    }
 }
 
 function upload_today_improovers_data(){
