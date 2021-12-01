@@ -521,10 +521,10 @@ def check_if_market_fall():
                                user=us.email,
                                subject='Algotrader: Market failed below '+str(minimal_intraday_allowed)+'%  to '+str(current_snp_change)+'within a day',
                                template='account/email/black_swan')
-
-                    client_command = ClientCommand.query.filter_by(email=us.email).first()
-                    client_command.set_close_all_positions()
-                    print("blackswon notification was issued for"+us.email)
+            #enable after testing
+                    # client_command = ClientCommand.query.filter_by(email=us.email).first()
+                    # client_command.set_close_all_positions()
+                    # print("blackswon notification was issued for"+us.email)
 
 
 
@@ -543,9 +543,9 @@ def notify_closed(position, logged_user):
 
     if user_settings.notify_sell:
         if position.profit > 0:
-            text_for_message = 'Algotrader: closed position for ' + position.ticker + " with Profit"
+            text_for_message = 'Algotrader:Profit closed position for ' + position.ticker
         else:
-            text_for_message = 'Algotrader: closed position for ' + position.ticker + "with Loss"
+            text_for_message = 'Algotrader:Loss closed position for ' + position.ticker
         send_email(recipient=logged_user,
                    subject=text_for_message,
                    template='account/email/position_close',
