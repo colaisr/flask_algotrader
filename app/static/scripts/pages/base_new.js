@@ -26,3 +26,18 @@ $.getJSON( "https://colak.eu.pythonanywhere.com/data_hub/search_quick/"+text_to_
 function isFloat(n){
     return Number(n) === n && n % 1 !== 0;
 }
+
+function loading(parrent_div, opacity){
+    if(opacity == undefined){opacity = 0.2;}
+    $('.' + parrent_div + ' .div-content').css('opacity', opacity);
+    var height = $('.' + parrent_div).height();
+    $('.' + parrent_div + ' .div-loading').css('height', height);
+
+    $('.' + parrent_div + ' .div-loading').prop('hidden',false);
+}
+
+function stop_loading(parrent_div){
+    $('.' + parrent_div + ' .div-content').css('opacity', 1);
+    $('.' + parrent_div + ' .div-loading').prop('hidden',true);
+}
+
