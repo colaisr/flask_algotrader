@@ -428,7 +428,7 @@ def logreport():
         if report.api_connected:
             if report.market_state == "Open":  # can be none .... in not taken from api...tws not yet connected on first run
                 check_stop_loss(logged_user, report.net_liquidation)
-                check_if_market_fall(logged_user)
+                #check_if_market_fall(logged_user)
                 #check_for_signals(report.candidates_live_json)
 
         return "Report snapshot stored at server"
@@ -495,23 +495,38 @@ def check_stop_loss(logged_user, net_liquidation):
         client_command.set_close_all_positions()
 
 
-def check_if_market_fall(logged_user):
-    user_settings = UserSetting.query.filter_by(email=logged_user).first()
-    user = User.query.filter_by(email=logged_user).first()
-    if user_settings.algo_sell_on_swan:
-        snp = yahoo.get_current_snp_change_percents()
-        if user_settings.algo_positions_for_swan >= snp:
-            # more than 3 positions closed same day on profit negative - stop buying option and notify
-            user_settings = UserSetting.query.filter_by(email=logged_user).first()
-            user_settings.algo_allow_buy = False
-            user_settings.update_user_settings()
-            send_email(recipient=logged_user,
-                       user=user,
-                       subject='Algotrader: Black Swan is suspected!',
-                       template='account/email/black_swan')
+@connections.route('market_fall_check', methods=['GET'])
+@csrf.exempt
+def check_if_market_fall():
+    url='https://colak.eu.pythonanywhere.com/data_hub/current_snp/'   #checking market is open
+    context = ssl.create_default_context(cafile=certifi.where())
+    response = urlopen(url, context=context)
+    data = response.read().decode("utf-8")
+    data = json.loads(data)
+    current_snp_change=data[0]['changesPercentage']
+    all_users=UserSetting.query.all()
+    for us in all_users:
+        if us.algo_sell_on_swan:
+            minimal_intraday_allowed=us.algo_positions_for_swan
+            if current_snp_change > minimal_intraday_allowed:
+                last_notification=us.last_market_fall_notification
+                if last_notification is not None:
+                    last_notification=last_notification.date()
+                today=datetime.utcnow().date()
+                if last_notification!=today:     #check if notification allready issued
+                    us.algo_allow_buy = False
+                    us.last_market_fall_notification=datetime.utcnow()
+                    us.update_user_settings()
+                    send_email(recipient=us.email,
+                               user=us.email,
+                               subject='Algotrader: Market failed below '+str(minimal_intraday_allowed)+'%  to '+str(current_snp_change)+'within a day',
+                               template='account/email/black_swan')
 
-            client_command = ClientCommand.query.filter_by(email=logged_user).first()
-            client_command.set_close_all_positions()
+                    client_command = ClientCommand.query.filter_by(email=us.email).first()
+                    client_command.set_close_all_positions()
+                    print("blackswon notification was issued for"+us.email)
+
+
 
 
 def notify_open(position, logged_user):

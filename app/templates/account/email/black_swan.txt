@@ -1,5 +1,5 @@
-Dear {{user.first_name}}, 3 Positions from Your portfolio were closed on LOSS trigger.
+Dear user, today S & P dropped below a value You configured in Your settings.
 The trigger for potential MARKET DROP was activated.
-Algotrader have closed all open positions and disabled a Buy option.
+On Managed Account Algotrader have closed all open positions and disabled a Buy option.
 
 To enable the BUY manually please follow: https://www.algotrader.company/algotradersettings/usersettings

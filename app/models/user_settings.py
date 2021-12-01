@@ -42,6 +42,7 @@ class UserStrategySettingsDefault(db.Model):
     algo_apply_max_intraday_drop_percent = db.Column('algo_apply_max_intraday_drop_percent', db.Boolean)
     algo_apply_algotrader_rank = db.Column('algo_apply_algotrader_rank', db.Boolean)
     algo_min_algotrader_rank = db.Column('algo_min_algotrader_rank', db.Float)
+    last_market_fall_notification = db.Column('last_market_fall_notification', db.DateTime)
 
 
 class UserSetting(db.Model):
@@ -95,6 +96,7 @@ class UserSetting(db.Model):
     strategy_id = db.Column('strategy_id', db.Integer)
     algo_apply_algotrader_rank = db.Column('algo_apply_algotrader_rank', db.Boolean)
     algo_min_algotrader_rank = db.Column('algo_min_algotrader_rank', db.Float)
+    last_market_fall_notification = db.Column('last_market_fall_notification', db.DateTime)
 
     def __init__(self, email, **kwargs):
         super(UserSetting, self).__init__(**kwargs)
