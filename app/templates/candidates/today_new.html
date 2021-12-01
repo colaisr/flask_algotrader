@@ -20,6 +20,10 @@ Algotrader | Today
     margin-right: 3%;
     margin-top: -17px;
 }
+
+.link {
+    cursor: pointer;
+}
 </style>
 
 <!--<link rel="stylesheet" href="{{ url_for('static', filename='styles/app_styles.css') }}">-->
@@ -86,28 +90,74 @@ Algotrader | Today
 </div>
 <!--movements and updates-->
 <div class="row">
-    <div class="mb-1 col-md-4">
-        <div class="card ">
+    <div class="mb-1 col-md-3">
+        <div class="card improovers" style="min-height: 538px;">
             <div class="card-header border-bottom">
                 Movers
             </div>
-            <div class="card-body pt-0">
-                Table
+            <div class="card-body improovers-card-body">
+                    <div class="div-content table-responsive mt-n3">
+                        <table class="mb-0 table improovers-tbl table-hover">
+                            <thead>
+                                <tr>
+                                    <th scope="col"></th>
+                                    <th scope="col" class="fs--2">Company</th>
+                                    <th scope="col" class="fs--2 text-center">Score</th>
+                                    <th scope="col" class="fs--2 text-center">Change</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                    {% include 'layouts/loader.html' %}
+                </div>
+            <div class="card-footer">
+                <a class="text-primary pe-1 ps-2 link-primary font-weight-bold show_improovers_modal d-block" href="#!" data-bs-toggle="modal" data-bs-target="#improovers-modal">
+                    View All
+                </a>
             </div>
         </div>
     </div>
-    <div class="mb-1 col-md-4">
-        <div class="card">
+    <div class="mb-1 col-md-6">
+        <div class="card personal-list" style="min-height: 538px;">
             <div class="card-header border-bottom">
                 Favorites
             </div>
-            <div class="card-body pt-0">
-                Table
+            <div class="card-body pt-0 personal-list-card-body">
+                <div class="div-content table-responsive">
+                    <table class="mb-0 table personal-tbl table-hover overflow-hidden" >
+                        <thead>
+                            <tr>
+                                <th scope="col"></th>
+                                <th scope="col" class="fs--2">Company</th>
+                                <th scope="col" class="fs--2 text-center">Score</th>
+                                <th scope="col" class="fs--2 text-center">Sector</th>
+                                <th scope="col" class="fs--2 pe-1 ps-0">Underprice(%)</th>
+                                <th scope="col" class="fs--2 pe-0 ps-0 text-center">Momentum</th>
+                                <th scope="col" class="fs--2 pe-0 ps-0 text-center">Beta</th>
+                                <th scope="col" class="fs--2 pe-0 ps-0 text-center">Drop %</th>
+                                <th class="text-end fs--2 pe-0 ps-0" scope="col">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                        </tbody>
+                    </table>
+                </div>
+                {% include 'layouts/loader.html' %}
+            </div>
+            <div class="card-footer justify-content-between d-flex">
+                <a class="text-primary pe-1 ps-2 link-primary font-weight-bold show_personal_modal" href="#!" data-bs-toggle="modal" data-bs-target="#personal-modal">
+                    More
+                </a>
+                <button type="button" id="btnAddCandidate" class="btn btn-primary">
+                    Add Candidate
+                </button>
             </div>
         </div>
     </div>
-    <div class="mb-1 col-md-4">
-        <div class="card ">
+    <div class="mb-1 col-md-3">
+        <div class="card signals" style="min-height: 538px;">
             <div class="card-header border-bottom">
                 Signals
             </div>
@@ -119,14 +169,16 @@ Algotrader | Today
 </div>
 <!--big search-->
 <div class="row justify-content-center my-3">
-    <div class="col-md-8 ">
+    <div class="col-md-8 position-absolute search-input">
             <div class="search">
                 <input id="search-tickers" class="form-control search-input fuzzy-search" type="search" placeholder="Search..." aria-label="Search" />
             </div>
     </div>
+    <div class="invisible col-md-7 position-relative loading-element"><span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>Loading...</div>
+
 </div>
 <!--news and tops-->
-<div class="row">
+<div class="row mt-4">
     <div class="mb-1 col-md-3">
         <div class="card ">
             <div class="card-header border-bottom">
@@ -249,16 +301,14 @@ docReady(marketEmotionMobileInit);
 {% endblock %}
 
 {% block modal %}
-<div class="modal fade emotion-modal" id="emotion-modal" data-bs-keyboard="false" data-bs-backdrop="static" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+<div class="modal fade emotion-modal" id="emotion-modal" data-bs-keyboard="false" data-bs-backdrop="static" tabindex="-1" aria-labelledby="emotion-modal-label" aria-hidden="true">
   <div class="modal-dialog modal-lg mt-6" role="document">
     <div class="modal-content border-0">
-      <div class="position-absolute top-0 end-0 mt-3 me-3 z-index-1">
-        <button class="btn-close btn btn-sm btn-circle d-flex flex-center transition-base" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body p-0">
-        <div class="bg-light rounded-top-lg py-3 ps-4 pe-6">
-          <h4 class="mb-1" id="staticBackdropLabel">S&P with Market Emotion</h4>
+      <div class="modal-header bg-light rounded-top-lg py-3 ps-4 pe-4">
+            <h4 class="mb-1" id="emotion-modal-label">S&P with Market Emotion</h4>
+            <button type="button" class="btn-close btn btn-sm btn-circle d-flex flex-center transition-base" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
+      <div class="modal-body p-0">
         <div class="p-4">
             <div id="container_sp500" style="width:100%; height:300px;"></div>
                 <div id="container_emotion" style="width:100%; height:300px;"></div>
@@ -266,6 +316,69 @@ docReady(marketEmotionMobileInit);
       </div>
       <div class="modal-footer">
         <button type="button" onclick="go_to_cnn()" class="btn btn-secondary" >Description</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade improovers-modal" id="improovers-modal" tabindex="-1" aria-labelledby="improovers-modal-label" aria-hidden="true">
+  <div class="modal-dialog modal-lg mt-6 modal-dialog-scrollable" role="document">
+    <div class="modal-content border-0">
+        <div class="modal-header bg-light rounded-top-lg py-3 ps-4 pe-4">
+            <h4 class="mb-1" id="improovers-modal-label">Movers</h4>
+            <button type="button" class="btn-close btn btn-sm btn-circle d-flex flex-center transition-base" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+      <div class="modal-body p-0">
+        <div class="p-4">
+            <div class="improovers-modal-tbl table-responsive mt-n3">
+                <table class="mb-0 table improovers-tbl table-hover">
+                    <thead>
+                        <tr>
+                            <th scope="col"></th>
+                            <th scope="col" class="fs--2 pe-0 ps-0">Company</th>
+                            <th scope="col" class="fs--2 pe-0 ps-0 text-center">Score</th>
+                            <th scope="col" class="fs--2 pe-0 ps-0 text-center">Change</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade personal-modal" id="personal-modal" tabindex="-1" aria-labelledby="personal-modal-label" aria-hidden="true">
+  <div class="modal-dialog modal-lg mt-6 modal-dialog-scrollable" role="document">
+    <div class="modal-content border-0">
+        <div class="modal-header bg-light rounded-top-lg py-3 ps-4 pe-4">
+            <h4 class="mb-1" id="personal-modal-label">Favorites</h4>
+            <button type="button" class="btn-close btn btn-sm btn-circle d-flex flex-center transition-base" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+      <div class="modal-body p-0">
+        <div class="p-4">
+            <div class="table-responsive mt-n3">
+                <table class="mb-0 table personal-modal-tbl table-hover">
+                    <thead>
+                        <tr>
+                            <th scope="col"></th>
+                            <th scope="col" class="fs--2 pe-0 ps-0">Company</th>
+                            <th scope="col"></th>
+                            <th scope="col"></th>
+                            <th scope="col" class="fs--2 pe-0 ps-0 text-center">Enabled</th>
+                            <th scope="col" class="fs--2 pe-0 ps-0 text-center">Score</th>
+                            <th scope="col" class="fs--2 pe-0 ps-0 text-center">Sector</th>
+                            <th scope="col" class="fs--2 pe-0 ps-0 text-center">Underprice(%)</th>
+                            <th scope="col" class="fs--2 pe-0 ps-0 text-center">12M Momentum</th>
+                            <th scope="col" class="fs--2 pe-0 ps-0 text-center">Beta</th>
+                            <th scope="col" class="fs--2 pe-0 ps-0 text-center">Max Intraday Drop %</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
       </div>
     </div>
   </div>
