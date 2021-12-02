@@ -124,21 +124,6 @@ function draw_today_improovers_tbl(data){
     })
 }
 
-function add_row_to_today_improovers(c, tbl_class){
-    var score = c.last_rank || 0;
-    var change = c.change_val != null ? c.change_val.toFixed(2) : 0;
-    var tr = $('<tr></tr>');
-    var td_logo =$('<td class="text-center p-0 pt-2 pe-2"><img src="' + c.logo + '" onerror="this.src=\'/static/images/default_ticker.png\'" width="20" height="20"></td>');
-    tr.append(td_logo);
-    var td_company = $('<td class="p-0"><a class="fs--1" href="/candidates/info/' + c.ticker + '">' + c.ticker + '</a><div class="fs--2">' + c.company_name + '</div></td>');
-    tr.append(td_company);
-    var td_score = $('<td class="text-center p-0 pt-2">' + score + '</td>');
-    tr.append(td_score);
-    var td_change = $('<td class="text-center text-success p-0 pt-2">' + change + '</td>');
-    tr.append(td_change);
-    $('.' + tbl_class + ' tbody').append(tr);
-}
-
 function draw_telegram_signals_tbl(data){
     $('.signals-tbl tbody').empty();
     $('.signals-modal-tbl tbody').empty();
@@ -148,32 +133,6 @@ function draw_telegram_signals_tbl(data){
         }
         add_row_to_telegram_signals(c, 'signals-modal-tbl', true)
     })
-}
-
-function add_row_to_telegram_signals(c, tbl_class, is_modal){
-    var price = c.signal_price != null ? c.signal_price.toFixed(2) : 0;
-    var target = c.target_price != null ? c.target_price.toFixed(2) : 0;
-
-    var tr = $('<tr></tr>');
-    var td_logo =$('<td class="text-center p-0 pt-2 pe-2"><img src="' + c.logo + '" onerror="this.src=\'/static/images/default_ticker.png\'" width="20" height="20"></td>');
-    tr.append(td_logo);
-    var td_company = $('<td class="p-0"><a class="fs--1" href="/candidates/info/' + c.ticker + '">' + c.ticker + '</a><div class="fs--2">' + c.company_name + '</div></td>');
-    tr.append(td_company);
-
-    var td_price = $('<td class="text-center p-0 pt-2 fs--1">'+price+'</td>');
-    tr.append(td_price);
-    var td_target = $('<td class="text-center p-0 pt-2 fs--1">' + target + '</td>');
-    tr.append(td_target);
-
-    if(is_modal){
-        var profit = c.tprofit_percent != null ? c.profit_percent.toFixed(2) : 0;
-        var days = c.days_to_get != null ? c.days_to_get.toString() : '--';
-        var td_profit = $('<td class="text-center p-0 pt-2">' + profit + '</td>');
-        tr.append(td_profit);
-        var td_days = $('<td class="text-center p-0 pt-2">' + days + '</td>');
-        tr.append(td_days);
-    }
-    $('.' + tbl_class + ' tbody').append(tr);
 }
 
 function draw_user_candidates_tbl(data){
@@ -215,10 +174,10 @@ function add_row_to_personal_candidates(c, tbl_class, is_modal){
 
     var td_score = $('<td class="text-center p-0 pt-2">'+score+'</td>');
     tr.append(td_score);
-    var td_sector = $('<td class="p-0 pt-2 text-center fs--1">' + c.sector + '</td>');
-    tr.append(td_sector);
 
     if(is_modal){
+        var td_sector = $('<td class="p-0 pt-2 text-center fs--1">' + c.sector + '</td>');
+        tr.append(td_sector);
         var td_under_price = $('<td class="text-center p-0 pt-2">' + under_priced_pnt + '</td>');
         tr.append(td_under_price);
         var td_momentum = $('<td class="text-center p-0 pt-2">' + twelve_month_momentum + '</td>');
@@ -253,7 +212,44 @@ function add_row_to_personal_candidates(c, tbl_class, is_modal){
     $('#enabled-' + c.ticker).prop('checked', c.enabled);
 }
 
-function update_candidate(){
+function add_row_to_telegram_signals(c, tbl_class, is_modal){
+    var price = c.signal_price != null ? c.signal_price.toFixed(2) : 0;
+    var target = c.target_price != null ? c.target_price.toFixed(2) : 0;
+
+    var tr = $('<tr></tr>');
+    var td_logo =$('<td class="text-center p-0 pt-2 pe-2"><img src="' + c.logo + '" onerror="this.src=\'/static/images/default_ticker.png\'" width="20" height="20"></td>');
+    tr.append(td_logo);
+    var td_company = $('<td class="p-0"><a class="fs--1" href="/candidates/info/' + c.ticker + '">' + c.ticker + '</a><div class="fs--2">' + c.company_name + '</div></td>');
+    tr.append(td_company);
+
+    var td_price = $('<td class="text-center p-0 pt-2 fs--1">'+price+'</td>');
+    tr.append(td_price);
+    var td_target = $('<td class="text-center p-0 pt-2 fs--1">' + target + '</td>');
+    tr.append(td_target);
+
+    if(is_modal){
+        var td_received = $('<td class="text-center p-0 pt-2 fs--1">' + c.received + '</td>');
+        tr.append(td_received);
+    }
+    $('.' + tbl_class + ' tbody').append(tr);
+}
+
+function add_row_to_today_improovers(c, tbl_class){
+    var score = c.last_rank || 0;
+    var change = c.change_val != null ? c.change_val.toFixed(2) : 0;
+    var tr = $('<tr></tr>');
+    var td_logo =$('<td class="text-center p-0 pt-2 pe-2"><img src="' + c.logo + '" onerror="this.src=\'/static/images/default_ticker.png\'" width="20" height="20"></td>');
+    tr.append(td_logo);
+    var td_company = $('<td class="p-0"><a class="fs--1" href="/candidates/info/' + c.ticker + '">' + c.ticker + '</a><div class="fs--2">' + c.company_name + '</div></td>');
+    tr.append(td_company);
+    var td_score = $('<td class="text-center p-0 pt-2">' + score + '</td>');
+    tr.append(td_score);
+    var td_change = $('<td class="text-center text-success p-0 pt-2">' + change + '</td>');
+    tr.append(td_change);
+    $('.' + tbl_class + ' tbody').append(tr);
+}
+
+function add_update_candidate(){
 //    loading('add-candidate-body'); //from base.js
     $('.candidate-bottom').prop('hidden', true);
     $('.loading-section').removeClass('d-none');

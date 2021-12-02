@@ -1,5 +1,5 @@
 var SPYDER_API = 'https://colak.eu.pythonanywhere.com/';
-if(window.location.hostname == '127.0.0.1' && window.email == 'liliana.isr@gmail.com'){
+if(window.location.hostname == '127.0.0.1'){
     SPYDER_API = 'http://localhost:8000/';
 }
 

@@ -55,10 +55,11 @@ def telegram_signals():
                     f"s.profit_percent, " \
                     f"s.days_to_get, " \
                     f"c.company_name, " \
-                    f"c.logo " \
+                    f"c.logo, " \
+                    f"DATE_FORMAT(s.received, '%Y-%m-%d') as received " \
                     f"FROM TelegramSignals s " \
                     f"JOIN Candidates c ON c.ticker=s.ticker " \
-                    f"WHERE DATE(s.received) > DATE_ADD(DATE(NOW()), INTERVAL -3 DAY)"
+                    f"WHERE DATE(s.received) > DATE_ADD(DATE(NOW()), INTERVAL -3 DAY) order by s.received desc"
     signals_res = db.engine.execute(text(signals_query))
     signals = [dict(r.items()) for r in signals_res]
     return json.dumps(signals, cls=general.JsonEncoder)

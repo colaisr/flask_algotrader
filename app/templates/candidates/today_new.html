@@ -4,30 +4,7 @@ Algotrader | Today
 {% endblock %}
 
 {% block user_styles %}
-<style>
-    .card-header, .card-title {
-    text-transform: uppercase;
-    color: rgba(13,27,62,0.7);
-    font-weight: bold;
-    font-size: .88rem;
-}
-
-.today_emotion_box
-{
-    cursor: pointer;
-    width: 25%;
-    margin-left: 3%;
-    margin-right: 3%;
-    margin-top: -17px;
-}
-
-.link {
-    cursor: pointer;
-}
-
-</style>
-
-<!--<link rel="stylesheet" href="{{ url_for('static', filename='styles/app_styles.css') }}">-->
+<link rel="stylesheet" href="{{ url_for('static', filename='styles/styles.css') }}">
 {% endblock %}
 
 {% block content %}
@@ -91,7 +68,7 @@ Algotrader | Today
 </div>
 <!--movements and updates-->
 <div class="row">
-    <div class="mb-1 col-md-3">
+    <div class="mb-1 col-md-4">
         <div class="card improovers" style="min-height: 320px;">
             <div class="card-header border-bottom p-2">
                 Movers
@@ -101,7 +78,7 @@ Algotrader | Today
                         <table class="mb-0 table improovers-tbl table-hover">
                             <thead>
                                 <tr>
-                                    <th scope="col" class="p-0"></th>
+                                    <th scope="col" class="p-0  pb-1 pt-1"></th>
                                     <th scope="col" class="fs--2 p-0 pb-1 pt-1">Company</th>
                                     <th scope="col" class="fs--2 text-center p-0 pb-1 pt-1">Score</th>
                                     <th scope="col" class="fs--2 text-center p-0 pb-1 pt-1">Change</th>
@@ -113,35 +90,31 @@ Algotrader | Today
                     {% include 'layouts/loader.html' %}
                 </div>
             <div class="card-footer p-2">
-<!--                <a class="text-primary pe-1 ps-2 link-primary font-weight-bold show_improovers_modal d-block" href="#!" data-bs-toggle="modal" data-bs-target="#improovers-modal">-->
-<!--                    More-->
-<!--                </a>-->
                 <button class="btn btn-falcon-primary btn-sm" data-bs-toggle="modal" data-bs-target="#improovers-modal"><i class="far fa-eye pe"></i><span class="ps-2">All</span></button>
             </div>
         </div>
     </div>
-    <div class="mb-1 col-md-6">
-        <div class="card personal-list" style="min-height: 320px;">
+    <div class="mb-1 col-md-4">
+        <div class="card personal-list" style="min-height: 325px;">
             <div class="card-header border-bottom p-2">
                 Favorites
             </div>
-            <div class="card-body p-2 pt-0 personal-list-card-body">
+            <div class="card-body p-2 pt-3 personal-list-card-body">
                 <div class="row align-items-center add-tickers-card d-none">
                     <div class="col-lg-6"><img width="300" class="img-fluid" src="/static/falcon/assets/img/icons/spot-illustrations/21.png" alt=""></div>
                     <div class="col-lg-6 ps-lg-4 my-5 text-center text-lg-start">
-                      <h3 class="text-primary">It's empty here...</h3>
+                      <h4 class="text-primary">It's empty here...</h4>
                       <p class="lead">Try following a few stocks</p>
-                        <button class="btn btn-falcon-primary" data-bs-toggle="modal" data-bs-target="#add-candidate-modal">Add Candidate</button>
+                        <button class="btn btn-falcon-primary btn-sm" data-bs-toggle="modal" data-bs-target="#add-candidate-modal">Add Candidate</button>
                     </div>
                 </div>
-                <div class="div-content table-responsive">
-                    <table class="mb-0 table personal-tbl table-hover overflow-hidden" >
+                <div class="div-content table-responsive mt-n3">
+                    <table class="mb-0 table personal-tbl table-hover" >
                         <thead>
                             <tr>
                                 <th scope="col" class="p-0 pb-1 pt-1"></th>
                                 <th scope="col" class="fs--2 p-0 pb-1 pt-1">Company</th>
                                 <th scope="col" class="fs--2 text-center p-0 pb-1 pt-1">Score</th>
-                                <th scope="col" class="fs--2 text-center p-0 pb-1 pt-1">Sector</th>
                                 <th scope="col" class="fs--2 p-0 pb-1 pt-1 text-center">Drop %</th>
                                 <th class="text-end fs--2 p-0 pb-1 pt-1" scope="col">Actions</th>
                             </tr>
@@ -153,18 +126,12 @@ Algotrader | Today
                 </div>
                 {% include 'layouts/loader.html' %}
             </div>
-            <div class="card-footer justify-content-between d-flex p-1 d-none">
-<!--                <a class="text-primary pe-1 ps-2 link-primary font-weight-bold show_personal_modal" href="#!" data-bs-toggle="modal" data-bs-target="#personal-modal">-->
-<!--                    More-->
-<!--                </a>-->
+            <div class="card-footer p-2 d-none">
                 <button class="btn btn-falcon-primary btn-sm" data-bs-toggle="modal" data-bs-target="#personal-modal"><i class="far fa-eye pe"></i><span class="ps-2">All</span></button>
-                <button type="button" id="btnAddCandidate" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#add-candidate-modal">
-                    Add Candidate
-                </button>
             </div>
         </div>
     </div>
-    <div class="mb-1 col-md-3">
+    <div class="mb-1 col-md-4">
         <div class="card signals" style="min-height: 320px;">
             <div class="card-header border-bottom p-2">
                 Signals
@@ -174,7 +141,7 @@ Algotrader | Today
                         <table class="mb-0 table signals-tbl table-hover">
                             <thead>
                                 <tr>
-                                    <th scope="col" class="p-0"></th>
+                                    <th scope="col" class="p-0  pb-1 pt-1"></th>
                                     <th scope="col" class="fs--2 p-0 pb-1 pt-1">Company</th>
                                     <th scope="col" class="fs--2 text-center p-0 pb-1 pt-1">Price</th>
                                     <th scope="col" class="fs--2 text-center p-0 pb-1 pt-1">Target</th>
@@ -186,9 +153,6 @@ Algotrader | Today
                     {% include 'layouts/loader.html' %}
                 </div>
             <div class="card-footer p-2">
-<!--                <a class="text-primary pe-1 ps-2 link-primary font-weight-bold show_signals_modal d-block" href="#!" data-bs-toggle="modal" data-bs-target="#signals-modal">-->
-<!--                    More-->
-<!--                </a>-->
                 <button class="btn btn-falcon-primary btn-sm" data-bs-toggle="modal" data-bs-target="#signals-modal"><i class="far fa-eye pe"></i><span class="ps-2">All</span></button>
             </div>
         </div>
@@ -462,13 +426,13 @@ docReady(marketEmotionMobileInit);
             </div>
       </div>
       <div class="modal-footer">
-        <button id="btn-submit" class="btn btn-primary disabled" onclick="update_candidate()" type="button">Submit </button>
+        <button id="btn-submit" class="btn btn-primary disabled" onclick="add_update_candidate()" type="button">Submit </button>
       </div>
     </div>
   </div>
 </div>
 
-<div class="modal fade improovers-modal" id="signals-modal" tabindex="-1" aria-labelledby="signals-modal-label" aria-hidden="true">
+<div class="modal fade signals-modal" id="signals-modal" tabindex="-1" aria-labelledby="signals-modal-label" aria-hidden="true">
   <div class="modal-dialog modal-lg mt-6 modal-dialog-scrollable" role="document">
     <div class="modal-content border-0">
         <div class="modal-header bg-light rounded-top-lg py-3 ps-4 pe-4">
@@ -485,8 +449,7 @@ docReady(marketEmotionMobileInit);
                             <th scope="col" class="fs--2 p-0 pb-1 pt-1">Company</th>
                             <th scope="col" class="fs--2 p-0 pb-1 pt-1 text-center">Price</th>
                             <th scope="col" class="fs--2 p-0 pb-1 pt-1 text-center">Target</th>
-                            <th scope="col" class="fs--2 p-0 pb-1 pt-1 text-center">Profit</th>
-                            <th scope="col" class="fs--2 p-0 pb-1 pt-1 text-center">Days</th>
+                            <th scope="col" class="fs--2 p-0 pb-1 pt-1 text-center">Received</th>
                         </tr>
                     </thead>
                     <tbody></tbody>

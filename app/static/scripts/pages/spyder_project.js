@@ -1,6 +1,6 @@
 var domane = 'https://colak.eu.pythonanywhere.com/';
 
-if(window.location.hostname == '127.0.0.1' && window.email == 'liliana.isr@gmail.com'){
+if(window.location.hostname == '127.0.0.1'){
     domane = 'http://localhost:8000/';
 }
 
