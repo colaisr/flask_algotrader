@@ -152,3 +152,7 @@ function create_toast(header_color, title, message, time_str=''){
     $('.toasts-block').append(toast);
     toast.toast('show');
 }
+
+function go_to_cnn(){
+    window.open("https://money.cnn.com/data/fear-and-greed/", "_blank");
+}
