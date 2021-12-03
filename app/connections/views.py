@@ -232,12 +232,12 @@ def check_signal_for_target_riched(s, bid_price):
         send_telegram_signal_message("Confirmation for : " + str(s.id) + "\n" +
                                      s.ticker + " reached target of " + str(s.target_price) + "\n" +
                                      "in " + str(s.days_to_get) + " days, with profit of " + str(round(s.profit_percent, 2)) + " %"+ "\n" +
-                                    "by https://www.algotrader.company"
+                                    "by https://www.stockscore.company"
                                      )
         # print("Confirmation for : " + str(s.id) + "\n" +
         #                              s.ticker + " reached target of " + str(s.target_price) + "\n" +
         #                              "in " + str(s.days_to_get) + " days, with profit of " + str(round(s.profit_percent, 2)) + " %"+ "\n" +
-        #                             "by https://www.algotrader.company")
+        #                             "by https://www.stockscore.company")
 
     pass
 
@@ -310,9 +310,9 @@ def process_signals_candidates(ready_data):
                                                          "Time to buy: " + signal.ticker + "\n" +
                                                          "it crossed the trigger of " + str(
                                 round(v['buying_target_price_fmp'], 2)) + " USD \n" +
-                                                         "Algotrader Rank: " + str(rank) + "\n" +
+                                                         "Stock Score Rank: " + str(rank) + "\n" +
                                                          "Expected to reach the target of: " + str(target) + " USD"+"\n" +
-                                                         "https://www.algotrader.company/candidates/info/"+signal.ticker
+                                                         "https://www.stockscore.company/candidates/info/"+signal.ticker
                                                          )
                     except:
                         print("Error in signal for : " + signal.ticker)

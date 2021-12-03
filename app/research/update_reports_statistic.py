@@ -10,7 +10,7 @@ from datetime import datetime
 #***************************************
 
 # server_url = "http://127.0.0.1:5000/"
-server_url = "https://www.algotrader.company/"
+server_url = "https://www.stockscore.company/"
 
 now = datetime.now()
 print("****Starting update reports statistic process  " + now.strftime("%d/%m/%Y %H:%M:%S") + "****")

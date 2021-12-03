@@ -120,7 +120,7 @@ class UserSetting(db.Model):
         self.station_interval_ui_sec = 1
         self.station_interval_worker_sec = 60
         self.station_autorestart = True
-        self.server_url = 'https://www.algotrader.company'
+        self.server_url = 'https://www.stockscore.company'
         self.server_report_interval_sec = 30
         self.server_use_system_candidates = True
         self.notify_buy = True

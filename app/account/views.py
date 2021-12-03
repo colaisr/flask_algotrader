@@ -153,7 +153,7 @@ def callback():
                                                        subscription,
                                                        enum.UserRole.USER.value)
             send_email(recipient='support@stockscore.company',
-                       subject='Algotrader Server: new GOOGLE account registered',
+                       subject='Stock Score Server: new GOOGLE account registered',
                        template='account/email/new_account_registered',
                        user=user)
         login_user(user, True)
@@ -181,7 +181,7 @@ def register(subscription=enum.Subscriptions.PERSONAL.value):
                    confirm_link=confirm_link)
 
         send_email(recipient='support@stockscore.company',
-                   subject='Algotrader Server: new account registered',
+                   subject='Stock Score Server: new account registered',
                    template='account/email/new_account_registered',
                    user=user)
 

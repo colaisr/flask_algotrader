@@ -16,7 +16,7 @@ def send_email(recipient, subject, template, **kwargs):
             {
                 "From": {
                     "Email": "support@stockscore.company",
-                    "Name": "Algotrader"
+                    "Name": "Stock Score"
                 },
                 "To": [
                     {

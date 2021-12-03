@@ -162,7 +162,7 @@ function fill_container_ticker_info(ticker){
                 },
                 {
                     title: {
-                        text: 'Algotrader Score',
+                        text: 'Stock Score Score',
                         style: {
                             color: Highcharts.getOptions().colors[3]
                         }

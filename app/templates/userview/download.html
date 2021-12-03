@@ -1,6 +1,6 @@
 {% extends 'layouts/base_old.html' %}
 {% block page_title %}
-Algotrader | Package
+Stock Score | Package
 {% endblock %}
 {% block content %}
 <div class="app-main__inner" xmlns="http://www.w3.org/1999/html">
@@ -19,7 +19,7 @@ Algotrader | Package
                 <div>
                     <a href="/station/downloadzip" download>
                         <i class="nav-link-icon fa fa-download pl-5"> </i>
-                        AlgoTrader Package
+                        Stock Score Package
                     </a>
                 </div>
                 {%endif%}
@@ -59,7 +59,7 @@ Algotrader | Package
         <img style="width: 800px;" src="/static/images/Requirements/sls_optout.png">
 
 
-        <p>You may use TWS +Algotrader pair on Your personal computer. if You decide to do so - please follow the
+        <p>You may use TWS +Stock Score pair on Your personal computer. if You decide to do so - please follow the
             instruction below. </br>
             Otherwise we <b>set everything for You </b> when we deploy a dedicated Virtual Machine</p>
 
@@ -75,10 +75,10 @@ Algotrader | Package
         <p>7.Bypass order precautions on API Oredrs</p>
         <img style="width: 600px;" src="/static/images/Requirements/tws3.png">
 
-        <h1>Algotrader Client </h1>
+        <h1>Stock Score Client </h1>
         <h2>Windows</h2>
 
-        <h3>Algotrader installation</h3>
+        <h3>Stock Score installation</h3>
 
         1. Download and install TWS Trader station. (Gateway can be used - but it have no AutoUpdate feature)<br>
         <a href="https://www.interactivebrokers.com/en/index.php?f=16040" target="_blank"><i
@@ -88,8 +88,8 @@ Algotrader | Package
         3. Install Python 3.9 if needed <br>
         <a href="https://www.python.org/downloads/release/python-392/" target="_blank"><i
                 class="nav-link-icon fa fa-download"> </i>Python 3.9</a><br>
-        4. Download Algotrader package<br>
-        <a href="/station/downloadzip" download><i class="nav-link-icon fa fa-download"> </i>AlgoTrader Package</a><br>
+        4. Download Stock Score package<br>
+        <a href="/station/downloadzip" download><i class="nav-link-icon fa fa-download"> </i>Stock Score Package</a><br>
         5. Unzip where feels good :)<br>
         6. Go to forder "twsapi" run : installWindows.bat<br>
         7. Ready! Launch with "win_start_all.bat"<br>
@@ -109,13 +109,13 @@ Algotrader | Package
 
         <h2>Linux</h2>
 
-        <h3>Algotrader installation</h3>
+        <h3>Stock Score installation</h3>
 
         1. Download and install TWS Trader station. (Gateway can be used - but it have no AutoUpdate feature)<br>
         <a href="https://www.interactivebrokers.com/en/index.php?f=16040" target="_blank"><i
                 class="nav-link-icon fa fa-download"> </i>Download TWS</a><br>
         2. Make sure to open API and set port as in the settings, remove precauctious message<br>
-        4. Download Algotrader package<br>
+        4. Download Stock Score package<br>
         <a href="/station/downloadzip" download><i class="nav-link-icon fa fa-download"> </i>AlgoTrader Package</a><br>
         5. Unzip <br>
         6. Go to forder "twsapi" make linux_install.sh executable<br>
@@ -131,7 +131,7 @@ Algotrader | Package
         5. 0 16 * * * /sbin/shutdown -r<br>
         6. 0 10 * * * /sbin/shutdown -r<br>
         7. */5 * * * * /home/su/Downloads/algotrader-station/algotrader/linux_watch_dog_sh <br>
-        8. it configures 2 daily restarts : mornig and before trade, and watchdog app to check if algotrader is running
+        8. it configures 2 daily restarts : mornig and before trade, and watchdog app to check if Stock Score is running
         - every 5 minutes.<br>
         9.Ready<br>
 

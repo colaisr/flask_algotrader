@@ -345,7 +345,7 @@ def userapprove():
     user.admin_confirmed = 1
     user.update_user()
     send_email(recipient=user.email,
-               subject='Hello ' + user.last_name + ' ' + user.first_name + ',your Algotrader account is ready!',
+               subject='Hello ' + user.last_name + ' ' + user.first_name + ',your Stock Score account is ready!',
                template='account/email/account_is_ready',
                user=user)
     return redirect(url_for('admin.pending_approval'))
