@@ -3,9 +3,6 @@
 Algotrader | Today
 {% endblock %}
 
-{% block user_styles %}
-<link rel="stylesheet" href="{{ url_for('static', filename='styles/styles.css') }}">
-{% endblock %}
 
 {% block content %}
 <input type="hidden" id="user-email" value="{{ user.email }}">

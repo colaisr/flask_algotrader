@@ -14,3 +14,17 @@
     margin-top: -17px;
 }
 
+.menu__link.article-link {
+    font-size: 15px;
+    color: #4183c4;
+}
+
+.menu__link {
+    font-size: 18px;
+    line-height: 27px;
+    font-weight: 500;
+    color: #4183c4;
+    letter-spacing: 0.02em;
+    text-decoration: none;
+    position: relative; }
+

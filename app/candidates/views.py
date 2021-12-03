@@ -277,3 +277,34 @@ def today_new():
                            last_update_date=last_update.last_update_date.strftime("%d %b %H:%M"),
                            bg_upd_color=bg_upd_color,
                            form=None)
+
+
+@candidates.route('/info_new/<ticker>', methods=['GET'])
+@login_required
+def info_new(ticker):
+    ticker = ticker.upper()
+    candidate = Candidate.query.filter_by(ticker=ticker).first()
+    if candidate is None:
+        return redirect(url_for('api.add_candidate', ticker=ticker), code=307)
+
+    candidate_in_list = Candidate.query.filter_by(ticker=ticker, email=current_user.email).first()
+    in_list = candidate_in_list is not None
+    m_data = TickerData.query.filter_by(ticker=ticker).order_by(TickerData.updated_server_time.desc()).first()
+    last_update = m_data.updated_server_time.date()
+    bg_upd_color = "success" if datetime.now().date() == last_update else "warning"
+    user_settings = UserSetting.query.filter_by(email=current_user.email).first()
+    score_bg = "bg-warning" if m_data.algotrader_rank is None or m_data.algotrader_rank < user_settings.algo_min_algotrader_rank else "bg-success"
+    td_history = TickerData.query.filter_by(ticker=ticker).order_by(TickerData.updated_server_time.asc()).all()
+    hist_data = []
+    tooltips = db_service.get_tooltips()
+    for td in td_history:
+        hist_data.append([td.updated_server_time.strftime("%Y-%m-%d"), td.algotrader_rank])
+    return render_template('candidates/ticker_info_new.html', user_settings=user_settings,
+                           candidate=candidate,
+                           market_data=m_data,
+                           last_update=last_update,
+                           bg_upd_color=bg_upd_color,
+                           score_bg=score_bg,
+                           in_list=in_list,
+                           hist_data=hist_data,
+                           tooltips=json.dumps(tooltips, cls=general.JsonEncoder))

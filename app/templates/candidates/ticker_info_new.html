@@ -1,4 +1,4 @@
-{% extends 'layouts/base_old.html' %}
+{% extends 'layouts/base.html' %}
 {% block page_title %}
 Algotrader | Stock Info
 {% endblock %}
@@ -8,18 +8,42 @@ Algotrader | Stock Info
 
 {% block content %}
 <!--title row-->
-<div class="row">
+<div class="row mb-3">
     <div class="col">
-        <div class="card mt-lg-4 mb-3">
-            <div class="bg-holder d-none d-lg-block bg-card" >
-            </div>
-            <div class="card-body position-relative">
-              <div class="row">
-                <div class="col-lg-8">
-                  <h3>Ticker information</h3>
-                  <p class="mb-0">same as now</p>
+        <div class="card bg-100 shadow-none border">
+            <div class="row gx-0 p-2 flex-between-center">
+                <div class="col-sm-auto align-items-center">
+                    <div class="d-flex mb-1 align-items-center justify-content-between">
+                        <div class="d-flex mb-1 align-items-center">
+                            <img class="img-fluid d-none d-md-inline" src="{{candidate.logo}}" width="80">
+<!--                        for mobile      -->
+                            <img class="img-fluid d-md-none" src="{{candidate.logo}}" width="50">
+                            <div class="ps-2">
+                                <h5 class="fw-bold mb-0">
+                                    {{candidate.ticker}}
+                                </h5>
+                                <p class="fs--1 mb-0 text-500">{{candidate.company_name}}</p>
+                            </div>
+                        </div>
+                        <div class="me-2 badge bg-info rounded-pill d-md-none"><i class="fas fa-plus me-1"></i>Follow</div>
+                    </div>
+                    <div class="me-2 badge bg-{{bg_upd_color}} rounded-pill d-none d-md-inline">Last Update(UTC) :
+                        {{last_update}}
+                    </div>
+                    <div class="d-none d-md-block ps-1 pt-1"><a class="ticker-web menu__link article-link" target="_blank" href="{{candidate.website}}">Go to website</a></div>
                 </div>
-              </div>
+                <div class="col-md-auto p-3">
+                    aaaa
+                </div>
+                <div class="col-md-auto p-3">
+                    bbbbbbbbb
+                </div>
+                <div class="col-md-auto p-3">
+                    ccccccccccc
+                </div>
+                <div class="col-md-auto p-3">
+                    ddddddddddddd
+                </div>
             </div>
         </div>
     </div>
