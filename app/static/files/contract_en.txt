@@ -113,6 +113,6 @@ You agree to indemnify and hold harmless us and our officers, directors, employe
 Sections 1 ("Acknowledgment"), 5 ("Automatic Updates"), 7 ("Notifications, third-Party Materials"), 8 ("Collection Of Anonymous Information"), 9 ("Changing Your Internet Browser Settings"), 10 ("Disclosure of Information"), 11 ("Developer Privacy"), 12 ("Abuse Report") and 14 ("Limitation Of Liability and Warranty") of the Extension End User License Agreement are hereby incorporated to the Developer license agreement by reference and to the extent of any conflict between the provisions of the Developer license agreement and the above sections, the above sections of the Extension End User License Agreement shall prevail.
 Note: Algotrader paid memberships are recurring subscriptions that involve automatic renewals. Depending on the membership, automatic renewals can occur on a monthly or yearly basis and will involve another charge to the user.
 Algotrader Ltd.
-support@algotrader.company
+support@stockscore.company
 
 

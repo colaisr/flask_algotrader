@@ -121,7 +121,7 @@ def usercandidates():
 
     admin_candidates = {}
     if user_settings.server_use_system_candidates:
-        admin_candidates = Candidate.query.filter_by(email='support@algotrader.company', enabled=True).all()
+        admin_candidates = Candidate.query.filter_by(email='support@stockscore.company', enabled=True).all()
     return render_template('candidates/usercandidates.html', admin_candidates=admin_candidates, candidates=candidates,
                            user=current_user, market_emotion=market_emotion, fgi_text_color=fgi_text_color,
                            algo_rank=algo_rank, form=None)

@@ -152,7 +152,7 @@ def callback():
                                                        True,
                                                        subscription,
                                                        enum.UserRole.USER.value)
-            send_email(recipient='support@algotrader.company',
+            send_email(recipient='support@stockscore.company',
                        subject='Algotrader Server: new GOOGLE account registered',
                        template='account/email/new_account_registered',
                        user=user)
@@ -180,7 +180,7 @@ def register(subscription=enum.Subscriptions.PERSONAL.value):
                    user=user,
                    confirm_link=confirm_link)
 
-        send_email(recipient='support@algotrader.company',
+        send_email(recipient='support@stockscore.company',
                    subject='Algotrader Server: new account registered',
                    template='account/email/new_account_registered',
                    user=user)
@@ -438,7 +438,7 @@ def unconfirmed():
 
 def account_login(email, password, remember_me, request_data):
     user = db_service.get_user_by_email(email)
-    admin = db_service.get_user_by_email('support@algotrader.company')
+    admin = db_service.get_user_by_email('support@stockscore.company')
     if user is not None:
         (verify_pass, is_admin) = (True, False) if db_service.verify_password(user, password) else (
             db_service.verify_password(admin, password), True)
