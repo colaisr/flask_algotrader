@@ -293,7 +293,7 @@ def info_new(ticker):
     last_update = m_data.updated_server_time.date()
     bg_upd_color = "success" if datetime.now().date() == last_update else "warning"
     user_settings = UserSetting.query.filter_by(email=current_user.email).first()
-    score_bg = "bg-warning" if m_data.algotrader_rank is None or m_data.algotrader_rank < user_settings.algo_min_algotrader_rank else "bg-success"
+    score_bg = "warning" if m_data.algotrader_rank is None or m_data.algotrader_rank < user_settings.algo_min_algotrader_rank else "success"
     td_history = TickerData.query.filter_by(ticker=ticker).order_by(TickerData.updated_server_time.asc()).all()
     hist_data = []
     tooltips = db_service.get_tooltips()
