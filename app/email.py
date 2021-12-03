@@ -15,8 +15,8 @@ def send_email(recipient, subject, template, **kwargs):
         'Messages': [
             {
                 "From": {
-                    "Email": "support@algotrader.company",
-                    "Name": "Algotrader"
+                    "Email": "support@stockscore.company",
+                    "Name": "Stock Score"
                 },
                 "To": [
                     {
@@ -42,7 +42,7 @@ def send_email(recipient, subject, template, **kwargs):
 
 def send_email_send_grid(recipient, subject, template, **kwargs):
     message = Mail(
-        from_email='support@algotrader.company',
+        from_email='support@stockscore.company',
         to_emails=recipient,
         subject=subject,
         html_content=render_template(template + '.html', **kwargs))

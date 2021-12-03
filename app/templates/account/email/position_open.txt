@@ -1,11 +1,11 @@
 New position was open for {{ position.ticker }}
-    Algotrader bought {{ position.stocks|string}} stocks by {{ position.open_price|string }} each.
+    Stock Score bought {{ position.stocks|string}} stocks by {{ position.open_price|string }} each.
     At open :
-    algotrader rank: {{ position.buying_algotrader_rank }}
+    Stock Score rank: {{ position.buying_algotrader_rank }}
     underprice: {{ position.buying_underprice }}
     12 momentum: {{ position.buying_twelve_month_momentum }}
-    average drop: {{ position.buying_average_drop }}
-    average spread: {{ position.buying_average_spread }}
+    average Drop: {{ position.buying_average_drop }}
+    average Spread: {{ position.buying_average_spread }}
     current Emotion: {{ position.emotion_on_buy }}
 
 

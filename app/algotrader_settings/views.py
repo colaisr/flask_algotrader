@@ -58,7 +58,7 @@ def get_default_strategy_settings():
 @algotradersettings.route('/savesettings', methods=['POST'])
 @login_required
 def savesettings():
-    # send_email(recipient='support@algotrader.company',
+    # send_email(recipient='support@stockscore.company',
     #            subject='testing the email',
     #            template='account/email/test_message')
     user_settings = UserSetting.query.filter_by(email=current_user.email).first()
@@ -352,7 +352,7 @@ def saverequirementssettings():
 
             url = url_for('admin.pending_approval', _external=True)
 
-            send_email(recipient='support@algotrader.company',
+            send_email(recipient='support@stockscore.company',
                        subject='Algotrader Server: user provided all the details',
                        template='account/email/user_data_provided',
                        user=current_user,
