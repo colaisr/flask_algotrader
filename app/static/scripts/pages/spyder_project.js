@@ -71,7 +71,6 @@ function update_market_data(ticker){
 }
 
 function get_fmp_ticker_data(ticker){
-    loading('page-fmp-data'); //from base.js
     url = domane + 'data_hub/current_stock_price_full/' + ticker
     $.getJSON(url, function(data) {
         data = data[0];
@@ -101,7 +100,6 @@ function get_fmp_ticker_data(ticker){
             $('.fmp-pe').html('-');
         }
         $('.fmp-eps').html(data.eps.toFixed(2));
-        stop_loading('page-fmp-data'); //from base.js
     })
 }
 
