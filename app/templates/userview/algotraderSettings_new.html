@@ -1,4 +1,4 @@
-{% extends 'layouts/base_old.html' %}
+{% extends 'layouts/base.html' %}
 {% block page_title %}
 Stock Score | Settings
 {% endblock %}
@@ -16,8 +16,8 @@ Stock Score | Settings
             <div class="card-body position-relative">
               <div class="row">
                 <div class="col-lg-8">
-                  <h3>Today</h3>
-                  <p class="mb-0">Market State</p>
+                  <h3>User settings</h3>
+                  <p class="mb-0">Notifications and user preferences</p>
                 </div>
               </div>
             </div>
@@ -25,48 +25,419 @@ Stock Score | Settings
     </div>
 </div>
 
-<!--Trading settings -managed account row-->
+{%if account_type_id==2%}
+<!--Alert filers-->
 <div class="row">
     <div class="mb-2">
         <div class="card">
             <div class="card-header border-bottom">
-                Trading
+                Alert filers
             </div>
             <div class="card-body pt-0">
                 Table
+            </div>
+        </div>
+    </div>
+</div>
+{%else%}
+<!--Candidate filers-->
+<div class="row">
+    <div class="mb-2">
+        <div class="card">
+            <div class="card-header border-bottom">
+                Candidate filters
+            </div>
+            <div class="card-body pt-1">
+                <form action="/algotradersettings/save_filters_settings" method="post">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-12 pt-2 d-flex justify-content-center">
+                                <div class="ps-2">
+                                    <div class="form-check form-switch mb-0 lh-1 d-flex align-items-center">
+                                      <input class="form-check-input " type="checkbox"
+                                             id="server_use_system_candidates"
+                                             name="server_use_system_candidates" {%if
+                                           user_settings.server_use_system_candidates%}
+                                           checked
+                                           {% endif %} />
+                                      <span class="ps-2">All US Stocks</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6 pt-2">
+                                <h6 class="fw-bold">Minimal Score<span title="Minimal Score allowed" class="fs--2 ms-1 text-primary" data-bs-toggle="tooltip" data-bs-placement="top" >
+                                <span class="fas fa-question-circle"></span></span></h6>
+                                <div class="ps-2">
+                                    <div class="form-check form-switch mb-0 lh-1 d-flex align-items-center">
+                                      <input name="algo_apply_algotrader_rank"
+                                             id="algo_apply_algotrader_rank"
+                                             {%if user_settings.algo_apply_algotrader_rank%}checked{% endif %} class="form-check-input " type="checkbox"   />
+                                        <input name="algo_min_algotrader_rank"
+                                               id="algo_min_algotrader_rank"
+                                               value="{{user_settings.algo_min_algotrader_rank}}"
+                                               class="form-control ms-2"  type="number" step="0.1" min="1" max="10"  />
+
+                                        <label class="text-muted small filter-comment">
+                                            <span class="loading">a</span>
+                                            <span class="text-primary algo-rank-filter num-candidates">b</span>
+                                            <span class="fixed-filter-text pl-2">c</span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6 pt-2">
+                                <h6 class="fw-bold">Minimal underprice level %<span title="Underpriced below Average analysts prediction in %" class="fs--2 ms-1 text-primary" data-bs-toggle="tooltip" data-bs-placement="top" >
+                                <span class="fas fa-question-circle"></span></span></h6>
+                                <div class="ps-2">
+                                    <div class="form-check form-switch mb-0 lh-1 d-flex align-items-center">
+                                      <input name="algo_apply_min_underprice"
+                                             id="algo_apply_min_underprice"
+                                             {%if user_settings.algo_apply_min_underprice%}checked{% endif %} class="form-check-input " type="checkbox"   />
+                                        <input name="algo_min_underprice"
+                                               id="algo_min_underprice"
+                                               value="{{user_settings.algo_min_underprice}}"
+                                               class="form-control ms-2"  type="number" step="1" min="0" max="100"  />
+
+                                        <label class="text-muted small filter-comment">
+                                            <span class="loading">a</span>
+                                            <span class="text-primary underprice-filter num-candidates">b</span>
+                                            <span class="fixed-filter-text pl-2">c</span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6 pt-2">
+                                <h6 class="fw-bold">Minimal Momentum %<span title="Last 12 Month momentum: stock got more expensive than 1Y ago in %" class="fs--2 ms-1 text-primary" data-bs-toggle="tooltip" data-bs-placement="top" >
+                                <span class="fas fa-question-circle"></span></span></h6>
+                                <div class="ps-2">
+                                    <div class="form-check form-switch mb-0 lh-1 d-flex align-items-center">
+                                      <input name="algo_apply_min_momentum"
+                                             id="algo_apply_min_momentum"
+                                             {%if user_settings.algo_apply_min_momentum%}checked{% endif %} class="form-check-input " type="checkbox"   />
+                                        <input name="algo_min_momentum"
+                                               id="algo_min_momentum"
+                                               value="{{user_settings.algo_min_momentum}}"
+                                               class="form-control ms-2"  type="number" step="1" min="-100" max="100"  />
+
+                                        <label class="text-muted small filter-comment">
+                                            <span class="loading"></span>
+                                            <span class="text-primary momentum-filter num-candidates"></span>
+                                            <span class="fixed-filter-text pl-2"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6 pt-2">
+                                <h6 class="fw-bold">Minimal Betta<span title="Minimal Betta allowed" class="fs--2 ms-1 text-primary" data-bs-toggle="tooltip" data-bs-placement="top" >
+                                <span class="fas fa-question-circle"></span></span></h6>
+                                <div class="ps-2">
+                                    <div class="form-check form-switch mb-0 lh-1 d-flex align-items-center">
+                                      <input name="algo_apply_min_beta"
+                                             id="algo_apply_min_beta"
+                                             {%if user_settings.algo_apply_min_beta%}checked{% endif %} class="form-check-input " type="checkbox"   />
+                                        <input name="algo_min_beta"
+                                               id="algo_min_beta"
+                                               value="{{user_settings.algo_min_beta}}"
+                                               class="form-control ms-2"  type="number" step="0.1" min="0" max="100"  />
+
+                                        <label class="text-muted small filter-comment">
+                                            <span class="loading"></span>
+                                            <span class="text-primary beta-filter num-candidates"></span>
+                                            <span class="fixed-filter-text pl-2"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6 pt-2">
+                                <h6 class="fw-bold">Max intraday drop %<span title="Maximal intraday fall of last year for stock allowed" class="fs--2 ms-1 text-primary" data-bs-toggle="tooltip" data-bs-placement="top" >
+                                <span class="fas fa-question-circle"></span></span></h6>
+                                <div class="ps-2">
+                                    <div class="form-check form-switch mb-0 lh-1 d-flex align-items-center">
+                                      <input name="algo_apply_max_intraday_drop_percent"
+                                             id="algo_apply_max_intraday_drop_percent"
+                                             {%if user_settings.algo_apply_max_intraday_drop_percent%}checked{% endif %} class="form-check-input " type="checkbox"   />
+                                        <input name="algo_max_intraday_drop_percent"
+                                               id="algo_max_intraday_drop_percent"
+                                               value="{{user_settings.algo_max_intraday_drop_percent}}"
+                                               class="form-control ms-2"  type="number" step="1" min="0" max="100"  />
+
+                                        <label class="text-muted small filter-comment">
+                                            <span class="loading"></span>
+                                            <span class="text-primary intraday-filter num-candidates"></span>
+                                            <span class="fixed-filter-text pl-2"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6 pt-2">
+                                <h6 class="fw-bold">Minimal Emotion<span title="Minimal market Emotion allowed" class="fs--2 ms-1 text-primary" data-bs-toggle="tooltip" data-bs-placement="top" >
+                                <span class="fas fa-question-circle"></span></span></h6>
+                                <div class="ps-2">
+                                    <div class="form-check form-switch mb-0 lh-1 d-flex align-items-center">
+                                      <input name="algo_apply_min_emotion"
+                                             id="algo_apply_min_emotion"
+                                             {%if user_settings.algo_apply_min_emotion%}checked{% endif %} class="form-check-input " type="checkbox"   />
+                                        <input name="algo_min_emotion"
+                                               id="algo_min_emotion"
+                                               value="{{user_settings.algo_min_emotion}}"
+                                               class="form-control ms-2"  type="number" step="1" min="1" max="100"  />
+                                        <label class="text-muted small filter-comment col-md-3">
+                                        <span class="emotion-loading"></span>
+                                        <span class="text-primary stretched-link emotion-filter font-weight-bold"></span>
+                                        <span class="emotion-fixed-filter-text pl-2"></span>
+                                    </label>
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+                            <div class="w-100"></div>
+                            <div id="all_summary" class="col-12 pt-2 d-flex justify-content-center">
+                                    <div>
+                                        <label class="text-muted h5 filter-comment">
+                                            <span class="loading">loadin</span>
+                                            <span class="text-primary total-filter num-candidates">10</span>
+                                            <span class="fixed-total-filter-text">cand</span>
+                                        </label>
+                                    </div>
+                                </div>
+                            <div class="w-100"></div>
+                            <div class="col-12 pt-2 d-flex justify-content-center">
+                                <button type="submit" class="btn btn-primary">Save</button>
+                            </div>
+
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!--Trading strategy-->
+<div class="row">
+    <div class="mb-2">
+        <div class="card">
+            <div class="card-header border-bottom">
+                Trading strategy
+            </div>
+            <div class="card-body pt-0">
+                <form action="/algotradersettings/save_strategy_settings" method="post">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-12 col-md-6 pt-2">
+                                <h6 class="fw-bold">Max loss in %<span title="STOPLOSS for position" class="fs--2 ms-1 text-primary" data-bs-toggle="tooltip" data-bs-placement="top" >
+                                <span class="fas fa-question-circle"></span></span></h6>
+                                <div >
+                                    <div class="mb-0 lh-1 d-flex align-items-center">
+                                        <input name="algo_max_loss"
+                                               id="algo_max_loss"
+                                               value="{{user_settings.algo_max_loss}}"
+                                               class="form-control"  type="number" step="1" min="-100" max="-1"  />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6 pt-2">
+                                <h6 class="fw-bold">Take profit in %<span title="TACKEPROFIT for position" class="fs--2 ms-1 text-primary" data-bs-toggle="tooltip" data-bs-placement="top" >
+                                <span class="fas fa-question-circle"></span></span></h6>
+                                <div >
+                                    <div class="mb-0 lh-1 d-flex align-items-center">
+                                        <input name="algo_take_profit"
+                                               id="algo_take_profit"
+                                               value="{{user_settings.algo_take_profit}}"
+                                               class="form-control"  type="number" step="1" min="1" max="100"  />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6 pt-2">
+                                <h6 class="fw-bold">Batch size in USD<span title="Maximal size of a batch to buy" class="fs--2 ms-1 text-primary" data-bs-toggle="tooltip" data-bs-placement="top" >
+                                <span class="fas fa-question-circle"></span></span></h6>
+                                <div >
+                                    <div class="mb-0 lh-1 d-flex align-items-center">
+                                        <input name="algo_bulk_amount_usd"
+                                               id="algo_bulk_amount_usd"
+                                               value="{{user_settings.algo_bulk_amount_usd}}"
+                                               class="form-control"  type="number" step="1" min="1"   />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6 pt-2">
+                                <h6 class="fw-bold">Trail in %<span title="Trailing with this percent when Profit is taken" class="fs--2 ms-1 text-primary" data-bs-toggle="tooltip" data-bs-placement="top" >
+                                <span class="fas fa-question-circle"></span></span></h6>
+                                <div >
+                                    <div class="mb-0 lh-1 d-flex align-items-center">
+                                        <input name="algo_trailing_percent"
+                                               id="algo_trailing_percent"
+                                               value="{{user_settings.algo_trailing_percent}}"
+                                               class="form-control"  type="number" step="1" min="0" max="20"  />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6 pt-2">
+                                <h6 class="fw-bold">Minimal NET allowed (Portfolio Stop Loss):<span title="Minimal amount  for account - if less, all positions will be closed" class="fs--2 ms-1 text-primary" data-bs-toggle="tooltip" data-bs-placement="top" >
+                                <span class="fas fa-question-circle"></span></span></h6>
+                                <div >
+                                    <div class="mb-0 lh-1 d-flex align-items-center">
+                                        <input name="algo_portfolio_stoploss"
+                                               id="algo_portfolio_stoploss"
+                                               value="{{user_settings.algo_portfolio_stoploss}}"
+                                               class="form-control"  type="number" step="1"   />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6 pt-2">
+                                <h6 class="fw-bold">Maximal holding period (days):<span title="Sell if longer then configured perion and profit more than 2%" class="fs--2 ms-1 text-primary" data-bs-toggle="tooltip" data-bs-placement="top" >
+                                <span class="fas fa-question-circle"></span></span></h6>
+                                <div class="ps-2">
+                                    <div class="form-check form-switch mb-0 lh-1 d-flex align-items-center">
+                                      <input name="algo_apply_max_hold"
+                                             id="algo_apply_max_hold"
+                                             {%if user_settings.algo_apply_max_hold%}checked{% endif %} class="form-check-input " type="checkbox"   />
+                                        <input name="algo_max_hold_days"
+                                               id="algo_max_hold_days"
+                                               value="{{user_settings.algo_max_hold_days}}"
+                                               class="form-control ms-2"  type="number" step="1" min="1"   />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6 pt-2">
+                                <h6 class="fw-bold">Market fall safety<span title="If during a day the S&P500 will fall lower than set in % - all the positions will be closed" class="fs--2 ms-1 text-primary" data-bs-toggle="tooltip" data-bs-placement="top" >
+                                <span class="fas fa-question-circle"></span></span></h6>
+                                <div class="ps-2">
+                                    <div class="form-check form-switch mb-0 lh-1 d-flex align-items-center">
+                                      <input name="algo_sell_on_swan"
+                                             id="algo_sell_on_swan"
+                                             {%if user_settings.algo_sell_on_swan%}checked{% endif %} class="form-check-input " type="checkbox"   />
+                                        <input name="algo_positions_for_swan"
+                                               id="algo_positions_for_swan"
+                                               value="{{user_settings.algo_positions_for_swan}}"
+                                               class="form-control ms-2"  type="number" step="0.1" min="-100" max="0"  />
+                                    </div>
+                                    <div>
+                                        <label class="pt-2 text-muted small filter-comment">
+                                        With
+                                        <span class="text-primary pr-2 pl-2 blackswan-min">{{user_settings.algo_positions_for_swan}}%</span>
+                                        selected there were :
+                                        <span class="text-primary pr-1 pl-2 stretched-link font-weight-bold show_modal_snp"><span class="bsw-loading"></span><span class="blackswan-events pr-1"></span> events in last 5 Years</span>
+                                    </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6 pt-2">
+                                <h6 class="fw-bold">Allowance's<span title="Major options" class="fs--2 ms-1 text-primary" data-bs-toggle="tooltip" data-bs-placement="top" >
+                                <span class="fas fa-question-circle"></span></span></h6>
+                                <div class="m-2 row">
+                                    <div class="col form-check form-switch mb-0 lh-1">
+                                      <input class="form-check-input" type="checkbox" name="algo_allow_buy"
+                                             id="algo_allow_buy" {%if user_settings.algo_allow_buy%}checked{% endif %} />
+                                      <label class="form-check-label mb-0" for="algo_allow_buy">Allow Buy</label>
+                                    </div>
+                                    <div class="col form-check form-switch mb-0 lh-1">
+                                      <input class="form-check-input" type="checkbox" name="algo_allow_sell"
+                                             id="algo_allow_sell" {%if user_settings.algo_allow_sell%}checked{% endif %} />
+                                      <label class="form-check-label mb-0" for="algo_allow_sell">Allow Sell</label>
+                                    </div>
+                                    <div class="col form-check form-switch mb-0 lh-1">
+                                      <input class="form-check-input" type="checkbox" name="algo_allow_margin"
+                                             id="algo_allow_margin" {%if user_settings.algo_allow_margin%}checked{% endif %} />
+                                      <label class="form-check-label mb-0" for="algo_allow_margin">Allow Margin</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="w-100"></div>
+                            <div class="col-12 pt-2 d-flex justify-content-center">
+                                <button type="submit" class="btn btn-primary">Save</button>
+                            </div>
+
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!--Connection settings-->
+<div class="row">
+    <div class="mb-2">
+        <div class="card">
+            <div class="card-header border-bottom">
+                Connection settings
+            </div>
+            <div class="card-body pt-0">
+                <form action="/algotradersettings/save_station_settings" method="post">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-12 col-md-6 pt-2">
+                                <h6 class="fw-bold">TWS port<span title="Connect to TWS via that port- configured in TWS settings" class="fs--2 ms-1 text-primary" data-bs-toggle="tooltip" data-bs-placement="top" >
+                                <span class="fas fa-question-circle"></span></span></h6>
+                                <div >
+                                    <div class="mb-0 lh-1 d-flex align-items-center">
+                                        <input name="connection_port"
+                                               id="connection_port"
+                                               value="{{user_settings.connection_port}}"
+                                               class="form-control"  type="text"   />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="w-100"></div>
+                            <div class="col-12 col-md-6 pt-2">
+                                <h6 class="fw-bold">IBKR account<span title="Account name- can be seen at IBKR.com" class="fs--2 ms-1 text-primary" data-bs-toggle="tooltip" data-bs-placement="top" >
+                                <span class="fas fa-question-circle"></span></span></h6>
+                                <div >
+                                    <div class="mb-0 lh-1 d-flex align-items-center">
+                                        <input name="connection_account_name"
+                                               id="connection_account_name"
+                                               value="{{user_settings.connection_account_name}}"
+                                               class="form-control"  type="text"   />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="w-100"></div>
+                            <div class="col-12 col-md-6 pt-2">
+                                <h6 class="fw-bold">TWS user<span title="User name - to login to TWS automatically on restarts" class="fs--2 ms-1 text-primary" data-bs-toggle="tooltip" data-bs-placement="top" >
+                                <span class="fas fa-question-circle"></span></span></h6>
+                                <div >
+                                    <div class="mb-0 lh-1 d-flex align-items-center">
+                                        <input name="connection_tws_user"
+                                               id="connection_tws_user"
+                                               value="{{user_settings.connection_tws_user}}"
+                                               class="form-control"  type="text"   />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="w-100"></div>
+                            <div class="col-12 col-md-6 pt-2">
+                                <h6 class="fw-bold">TWS password<span title="Password - to login to TWS automatically on restarts" class="fs--2 ms-1 text-primary" data-bs-toggle="tooltip" data-bs-placement="top" >
+                                <span class="fas fa-question-circle"></span></span></h6>
+                                <div >
+                                    <div class="mb-0 lh-1 d-flex align-items-center">
+                                        <input name="connection_tws_pass"
+                                               id="connection_tws_pass"
+                                               value="{{user_settings.connection_tws_pass}}"
+                                               class="form-control"  type="password"   />
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="w-100"></div>
+                            <div class="col-12 pt-2 d-flex justify-content-center">
+                                <button type="submit" class="btn btn-primary">Save</button>
+                            </div>
+
+                        </div>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
 
 </div>
-<!--Trading connection settings -managed account row-->
-<div class="row">
-    <div class="mb-2">
-        <div class="card">
-            <div class="card-header border-bottom">
-                Connection
-            </div>
-            <div class="card-body pt-0">
-                Table
-            </div>
-        </div>
-    </div>
-</div>
-<!--Trading Notification fiter -everyone row-->
-<div class="row">
-    <div class="mb-2">
-        <div class="card">
-            <div class="card-header border-bottom">
-                Alert filter
-            </div>
-            <div class="card-body pt-0">
-                Table
-            </div>
-        </div>
-    </div>
-
-</div>
-<!--notification -everyone row-->
+<!--Notification-->
 <div class="row">
     <div class="mb-2">
         <div class="card">
@@ -74,18 +445,163 @@ Stock Score | Settings
                 Notification
             </div>
             <div class="card-body pt-0">
-                Table
+                <form action="/algotradersettings/save_notifications_settings" method="post">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-12 col-md-6 pt-2">
+                                <h6 class="fw-bold">Trading notifications<span title="Trades notification options" class="fs--2 ms-1 text-primary" data-bs-toggle="tooltip" data-bs-placement="top" >
+                                <span class="fas fa-question-circle"></span></span></h6>
+                                <div class="m-2 row">
+                                    <div class="col form-check form-switch mb-0 lh-1">
+                                      <input class="form-check-input" type="checkbox" name="notify_buy"
+                                             id="notify_buy" {%if user_settings.notify_buy%}checked{% endif %} />
+                                      <label class="form-check-label mb-0" for="notify_buy">Notify buying</label>
+                                    </div>
+                                    <div class="col form-check form-switch mb-0 lh-1">
+                                      <input class="form-check-input" type="checkbox" name="notify_sell"
+                                             id="notify_sell" {%if user_settings.notify_sell%}checked{% endif %} />
+                                      <label class="form-check-label mb-0" for="notify_sell">Notify selling</label>
+                                    </div>
+                                    <div class="col form-check form-switch mb-0 lh-1">
+                                      <input class="form-check-input" type="checkbox" name="notify_trail"
+                                             id="notify_trail" {%if user_settings.notify_trail%}checked{% endif %} />
+                                      <label class="form-check-label mb-0" for="notify_trail">Notify trailing</label>
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+                            <div class="w-100"></div>
+                            <div class="col-12 pt-2 d-flex justify-content-center">
+                                <button type="submit" class="btn btn-primary">Save</button>
+                            </div>
+
+                        </div>
+                    </div>
+                </form>
+
             </div>
         </div>
     </div>
 
 </div>
+{%endif%}
+    <script>
+    var reports = {{ reports|tojson }};
+    var bsw_global = {{ global_snp|tojson }};
+    </script>
 {% endblock %}
 
 {% block scripting %}
-
+<script src="https://code.highcharts.com/stock/highstock.js"></script>
+<script src="https://code.highcharts.com/stock/modules/data.js"></script>
+<script src="https://code.highcharts.com/stock/modules/exporting.js"></script>
+<script src="https://code.highcharts.com/stock/modules/export-data.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.2.0/chart.min.js"
+        integrity="sha512-VMsZqo0ar06BMtg0tPsdgRADvl0kDHpTbugCBBrL55KmucH6hP9zWdLIWY//OTfMnzz6xWQRxQqsUFefwHuHyg=="
+        crossorigin="anonymous"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='scripts/pages/snp_graph.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='scripts/pages/settings.js') }}"></script>
 {% endblock %}
 
 {% block modal %}
+<div class="modal snp-modal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-bigger">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="blackswanModalTitle">S&P in last 5 years</h5>
+                <button type="button" class="snp-modal-close close" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="snp-flash"></div>
+                <div class="mb-3 card">
+                    <div class="card-header">
+                        <ul class="nav nav-justified">
+                            <li class="nav-item"><a data-toggle="tab" href="#snp-500-tab" class="nav-link active show">S&P 500</a></li>
+                            <li class="nav-item"><a data-toggle="tab" href="#my-data-tab" class="nav-link">Portfolio Performance</a></li>
+                        </ul>
+                    </div>
+                    <div class="card-body">
+                        <div class="tab-content">
+                            <div class="tab-pane active show" id="snp-500-tab" role="tabpanel">
+                                <div class="text-muted filter-comment col-md-3">
+                                    <span class="text-primary blackswan-filter font-weight-bold"></span>
+                                    <span class="blackswan-fixed-filter-text pl-2"></span>
+                                </div>
+                                <div id="blackswan_sp500" class="height-resize" style="width:100%;"></div>
+                            </div>
 
+                            <div class="tab-pane" id="my-data-tab" role="tabpanel">
+                                <div id="reports_blackswan_sp500" class="height-resize" style="width:100%;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="blackswan-range-div" style="width:100%;">
+                                    <label class="form-label" for="range">Market fall safety (Black Swan)</label>
+                                    <div class="range-wrap">
+                                        <div class="range-value" id="bsw-rangeV"></div>
+                                        <input style="width:100%;" id="bsw-range" type="range" min="-8" max="0" value="{{user_settings.algo_positions_for_swan}}" step="0.1">
+                                    </div>
+                                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" onclick="save_black_swan()" class="btn btn-secondary btn-lg btn-block">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal emotion-modal" tabindex="-1" role="dialog" aria-hidden="true" >
+    <div class="modal-dialog modal-bigger">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="emotionModalTitle">S&P with Market Emotion</h5>
+                <button type="button" class="emotion-modal-close close" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="flash"></div>
+                <div class="mb-3 card">
+                    <div class="card-header">
+                        <ul class="nav nav-justified">
+                            <li class="nav-item"><a data-toggle="tab" href="#emotion-tab" class="nav-link active show">S&P 500</a></li>
+                            <li class="nav-item"><a data-toggle="tab" href="#emotion-reports-tab" class="nav-link">Portfolio Performance</a></li>
+                        </ul>
+                    </div>
+                    <div class="card-body">
+                        <div class="tab-content">
+                            <div class="tab-pane active show" id="emotion-tab" role="tabpanel">
+                                <div class="text-muted filter-comment col-md-3">
+                    <span class="text-primary emotion-filter font-weight-bold"></span>
+                    <span class="emotion-fixed-filter-text pl-2"></span>
+                </div>
+                                <div id="container_sp500" class="height-resize" style="width:100%;"></div>
+                            </div>
+
+                            <div class="tab-pane" id="emotion-reports-tab" role="tabpanel">
+                                <div id="reports_emotion" class="height-resize" style="width:100%;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="emotion-range-div" style="width:100%;">
+                    <label class="form-label" for="range">Emotion</label>
+                    <div class="range-wrap">
+                        <div class="range-value" id="rangeV"></div>
+                        <input style="width:100%;" id="range" type="range" min="0" max="100" value="{{user_settings.algo_min_emotion}}" step="1">
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" onclick="save_emotion()" class="btn btn-secondary btn-lg btn-block">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}

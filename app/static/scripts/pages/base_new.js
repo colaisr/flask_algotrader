@@ -156,3 +156,15 @@ function create_toast(header_color, title, message, time_str=''){
 function go_to_cnn(){
     window.open("https://money.cnn.com/data/fear-and-greed/", "_blank");
 }
+function range_set_value(rangeid,range_v_id){
+    var range = $('#'+rangeid);
+    var rangeV = $('#'+range_v_id);
+    var value = parseFloat(range.val());
+    var max = parseFloat(range.prop('max'));
+    var min = parseFloat(range.prop('min'));
+
+    var newValue = (value - min) * 100 / (max - min);
+    var newPosition = 10 - (newValue * 0.2);
+    rangeV.html('<span>' + value + '</span>');
+    rangeV.css('left','calc(' + newValue + '% + (' + newPosition + 'px))');
+}

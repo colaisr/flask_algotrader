@@ -38,8 +38,10 @@ def usersettings():
     # jhistory = df.to_dict(orient='records')
     jhistory = df.to_json(orient="index", date_format='iso')
     global_snp = jsonify(symbol='^GSPC', historical=jhistory)
+    account_type_id=current_user.subscription_type_id
 
-    return render_template('userview/algotraderSettings.html',
+    return render_template('userview/algotraderSettings_new.html',
+                           account_type_id=account_type_id,
                            user_settings=user_settings,
                            strategies=strategies,
                            reports=json.dumps(reports, cls=general.JsonEncoder),
@@ -224,13 +226,8 @@ def save_station_settings():
     user_settings.connection_account_name = request.form['connection_account_name']
     user_settings.connection_tws_user = request.form['connection_tws_user']
     user_settings.connection_tws_pass = request.form['connection_tws_pass']
-    user_settings.server_url = request.form['server_url']
-    user_settings.server_report_interval_sec = request.form['server_report_interval_sec']
 
-    if "server_use_system_candidates" in request.form.keys():
-        user_settings.server_use_system_candidates = True
-    else:
-        user_settings.server_use_system_candidates = False
+
 
     user_settings.update_user_settings()
     return redirect(url_for('algotradersettings.usersettings'))
@@ -241,7 +238,7 @@ def save_station_settings():
 def save_filters_settings():
     user_settings = UserSetting.query.filter_by(email=current_user.email).first()
 
-    user_settings.strategy_id = request.form['strategy_id']
+    # user_settings.strategy_id = request.form['strategy_id']
 
     if "algo_apply_algotrader_rank" in request.form.keys():
         user_settings.algo_apply_algotrader_rank = True
@@ -278,6 +275,11 @@ def save_filters_settings():
     else:
         user_settings.algo_apply_min_emotion = False
     user_settings.algo_min_emotion = request.form['algo_min_emotion']
+
+    if "server_use_system_candidates" in request.form.keys():
+        user_settings.server_use_system_candidates = True
+    else:
+        user_settings.server_use_system_candidates = False
 
     user_settings.update_user_settings()
     return redirect(url_for('algotradersettings.usersettings'))
