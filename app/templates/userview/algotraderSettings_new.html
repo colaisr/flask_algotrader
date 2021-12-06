@@ -169,7 +169,7 @@ Stock Score | Settings
                                                class="form-control ms-2"  type="number" step="1" min="1" max="100"  />
                                         <label class="text-muted small filter-comment m-2">
                                         <span class="emotion-loading"></span>
-                                        <div class="text-primary link emotion-filter font-weight-bold"></div>
+                                        <div class="text-primary link emotion-filter font-weight-bold" data-bs-toggle="modal" data-bs-target="#emotional-modal"></div>
                                         <span class="emotion-fixed-filter-text pl-2"></span>
                                     </label>
                                     </div>
@@ -306,7 +306,7 @@ Stock Score | Settings
                                         With
                                         <span class="text-primary pr-2 pl-2 blackswan-min">{{user_settings.algo_positions_for_swan}}%</span>
                                         selected there were :
-                                        <span class="text-primary pr-1 pl-2 link font-weight-bold show_modal_snp"><span class="bsw-loading"></span><span class="blackswan-events pr-1"></span> events in last 5 Years</span>
+                                        <span class="text-primary pr-1 pl-2 link font-weight-bold" data-bs-toggle="modal" data-bs-target="#blackswan-modal"><span class="bsw-loading"></span><span class="blackswan-events pr-1"></span> events in last 5 Years</span>
                                     </label>
                                     </div>
                                 </div>
@@ -493,16 +493,15 @@ Stock Score | Settings
 {% endblock %}
 
 {% block modal %}
-<div class="modal snp-modal" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog modal-bigger">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="blackswanModalTitle">S&P in last 5 years</h5>
-                <button type="button" class="snp-modal-close close" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
+<div class="modal fade blackswan-modal" id="blackswan-modal" tabindex="-1" aria-labelledby="blackswan-modal-label" aria-hidden="true">
+  <div class="modal-dialog modal-lg mt-6 modal-dialog-scrollable" role="document">
+    <div class="modal-content border-0">
+        <div class="modal-header bg-light rounded-top-lg py-3 ps-4 pe-4">
+            <h4 class="mb-1" id="blackswan-modal-label">Market crash protection</h4>
+            <button type="button" class="btn-close btn btn-sm btn-circle d-flex flex-center transition-base" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+      <div class="modal-body p-0">
+        <div class="p-4">
                 <div id="snp-flash"></div>
                 <div class="mb-3 card">
                     <div class="card-header">
@@ -534,24 +533,21 @@ Stock Score | Settings
                                         <input style="width:100%;" id="bsw-range" type="range" min="-8" max="0" value="{{user_settings.algo_positions_for_swan}}" step="0.1">
                                     </div>
                                 </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" onclick="save_black_swan()" class="btn btn-secondary btn-lg btn-block">Save</button>
-            </div>
-        </div>
-    </div>
-</div>
 
-<div class="modal emotion-modal" tabindex="-1" role="dialog" aria-hidden="true" >
-    <div class="modal-dialog modal-bigger">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="emotionModalTitle">S&P with Market Emotion</h5>
-                <button type="button" class="emotion-modal-close close" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade emotional-modal" id="emotional-modal" tabindex="-1" aria-labelledby="emotional-modal-label" aria-hidden="true">
+  <div class="modal-dialog modal-lg mt-6 modal-dialog-scrollable" role="document">
+    <div class="modal-content border-0">
+        <div class="modal-header bg-light rounded-top-lg py-3 ps-4 pe-4">
+            <h4 class="mb-1" id="emotional-modal-label">Market Emotion</h4>
+            <button type="button" class="btn-close btn btn-sm btn-circle d-flex flex-center transition-base" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+      <div class="modal-body p-0">
+        <div class="p-4">
                 <div id="flash"></div>
                 <div class="mb-3 card">
                     <div class="card-header">
@@ -583,11 +579,11 @@ Stock Score | Settings
                         <input style="width:100%;" id="range" type="range" min="0" max="100" value="{{user_settings.algo_min_emotion}}" step="1">
                     </div>
                 </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" onclick="save_emotion()" class="btn btn-secondary btn-lg btn-block">Save</button>
-            </div>
+
         </div>
+      </div>
     </div>
+  </div>
 </div>
+
 {% endblock %}
