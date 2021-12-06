@@ -2,7 +2,7 @@ import ssl
 import urllib
 from urllib.request import urlopen
 
-#server_url = "http://127.0.0.1:5000/"
+# server_url = "http://127.0.0.1:5000/"
 server_url = "https://www.stockscore.company/"
 
 url = server_url + "connections/market_fall_check"
