@@ -1,25 +1,38 @@
 <ul class="list-group">
     {% for d in data %}
         <li class="list-group-item">
-            <div class="row gx-0 flex-between-center flex-fill">
-                <div class="col-auto">
+            <div class="row gx-0 flex-between-center flex-fill d-flex flex-nowrap bd-highlight">
+                <div class="col-auto align-self-start">
                     <img width="100" class="rounded img-fluid" src="{{d['image']}}" alt="">
+                    <div class="align-self-start d-lg-none">
+                    <div>
+                        <a href="{{d['url']}}" target="_blank" class="fs--1">
+                            {{d['site']}}
+                        </a>
+                    </div>
+                    <div class="fs--2">{{d['publishedDate']}}</div>
+                    <div>
+                        <a href="{{d['url']}}" target="_blank" class="fs--1">
+                            Go to Article
+                        </a>
+                    </div>
                 </div>
-                <div class="col">
+                </div>
+                <div class="col ps-3 pe-2 bd-highlight">
                     <div class="card-title"><ins>{{d['title']}}</ins></div>
                     <div class="fs--1">
                         {{d['text']}}
                     </div>
                 </div>
-                <div class="col-auto">
+                <div class="col-md-auto align-self-start d-none d-lg-inline">
                     <div>
-                        <a href="{{d['url']}}" target="_blank" class="">
+                        <a href="{{d['url']}}" target="_blank" class="fs--1">
                             {{d['site']}}
                         </a>
                     </div>
-                    <div class="text-small">{{d['publishedDate']}}</div>
+                    <div class="fs--2">{{d['publishedDate']}}</div>
                     <div>
-                        <a href="{{d['url']}}" target="_blank" class="">
+                        <a href="{{d['url']}}" target="_blank" class="fs--1">
                             Go to Article
                         </a>
                     </div>
