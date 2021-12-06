@@ -4,7 +4,7 @@ TOOLTIPS = jQuery.parseJSON(TOOLTIPS)
 $(document).ready(function () {
     get_avg_pe_from_fmp($('.ticker-sector-val').data('sector'));
     get_fmp_ticker_data(ticker);
-//    get_stock_news(10);
+    get_stock_news(10);
 //    get_insider_actions();
 //    get_press_relises();
     get_fundamentals_summary();
@@ -23,10 +23,10 @@ $(document).ready(function () {
         content: $('#ticker-info-modal')
     });
 
-//    $('.news-btn').on('change',function(){
-//        var limit = $(this).data('limit');
-//        get_stock_news(limit);
-//    })
+    $('.news-btn').on('click',function(){
+        var limit = $(this).data('limit');
+        get_stock_news(limit);
+    })
 
     $('.add-candidate').on('click', function(){
         add_candidate_from_ticker_info() //from spyder_project.js
@@ -63,6 +63,14 @@ function add_candidate_from_ticker_info(){
         $('.ticker-action .ticket-info-val').append(button);
         $('.candidate-in-list').on('click',remove_candidate);
 
+        var modal_button = $('div.add-candidate');
+        modal_button.removeClass('add-candidate');
+        modal_button.removeClass('bg-info');
+        modal_button.addClass('bg-success');
+        modal_button.addClass('candidate-in-list');
+        modal_button.empty();
+        modal_button.append($('<span><i class="fas fa-check"></i>Remove from list</span>'));
+
         create_toast('success', 'Success', 'Ticker added to your list');
     })
 }
@@ -76,6 +84,14 @@ function remove_candidate(){
         $('.ticker-action .ticket-info-val').empty();
         $('.ticker-action .ticket-info-val').append(button);
         $('.add-candidate').on('click',add_candidate_from_ticker_info);
+
+        var modal_button = $('div.candidate-in-list');
+        modal_button.removeClass('candidate-in-list');
+        modal_button.removeClass('bg-success');
+        modal_button.addClass('bg-info');
+        modal_button.addClass('add-candidate');
+        modal_button.empty();
+        modal_button.append($('<span><i class="fas fa-plus"></i>Follow</span>'));
         create_toast('success', 'Success', 'Ticker removed from your list');
     })
 }
@@ -111,5 +127,17 @@ function get_fundamentals_feed(){
         });
         create_info_tooltip(tooltip_ids);
         stop_loading('tab-fundamentals-feed-card'); //from base.js
+    })
+}
+
+function get_stock_news(limit){
+    loading('tab-news-card');
+    $('.tab-news-card .div-loading').css('height', 0);
+    $('.tab-news-card .spinner-border').css('margin-right', '9%');
+
+    $.getJSON("/api/stock_news",{tickers: ticker, limit: limit}, function(data) {
+        $('.tab-news-card .div-content').empty();
+        $('.tab-news-card .div-content').append($(data.data));
+        stop_loading('tab-news-card'); //from base.js
     })
 }

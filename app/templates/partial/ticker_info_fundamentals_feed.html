@@ -6,57 +6,60 @@
             <div>{{d['calendarYear']}} - {{d['period']}}</div>
         </div>
         <div class="div-content pt-2 fs--1">
-            <div>
-                <div class="">
+            <div class="d-flex justify-content-between pe-2 ps-4">
+                <div>
                     Revenue
                 </div>
-                <div class="" >
+                <div>
                     {{d['revenue']}}
                 </div>
             </div>
-            <div>
-                <div class="">
-                    <span data-tooltip-id="55" class="info-icon pr-1 jb-tooltip-info jb-info-55">
+            <div class="d-flex justify-content-between px-2">
+                <div>
+                    <span data-tooltip-id="55" class="info-icon pe-1 jb-tooltip-info jb-info-55 text-400">
                         <i class="fas fa-info-circle"></i>
                     </span>
                     NET Income
                 </div>
-                <div class="col-md-5" style="text-align: right;">
+                <div>
                     {{d['netIncome']}}
                 </div>
             </div>
-            <div style="font-size: small; display: flex; justify-content: space-between; padding-top: 0.5%; border-bottom: 1px solid rgba(26,54,126,0.125);">
-                <div class="col-md-7">
-                    <span data-tooltip-id="3" class="info-icon pr-1 jb-tooltip-info jb-info-3">
+            <div class="d-flex justify-content-between px-2">
+                <div>
+                    <span data-tooltip-id="3" class="info-icon pe-1 jb-tooltip-info jb-info-3 text-400">
                         <i class="fas fa-info-circle"></i>
                     </span>
+                    EPS
                 </div>
-                <div class="col-md-5" style="text-align: right;">
+                <div>
                     {{d['eps']|round(2)}}
                 </div>
             </div>
-            <div style="font-size: small; display: flex; justify-content: space-between; padding-top: 0.5%; border-bottom: 1px solid rgba(26,54,126,0.125);">
-                <div class="col-md-7">
-                    <span data-tooltip-id="2" class="info-icon pr-1 jb-tooltip-info jb-info-2">
+            <div class="d-flex justify-content-between px-2">
+                <div>
+                    <span data-tooltip-id="2" class="info-icon pe-1 jb-tooltip-info jb-info-2 text-400">
                         <i class="fas fa-info-circle"></i>
                     </span>
+                    EBITDA ratio
                 </div>
-                <div class="col-md-5" style="text-align: right;">
+                <div>
                     {{d['ebitdaratio']|round(2)}}
                 </div>
             </div>
-            <div style="font-size: small; display: flex; justify-content: space-between; padding-top: 0.5%; border-bottom: 1px solid rgba(26,54,126,0.125);">
-                <div class="col-md-7">
-                    <span data-tooltip-id="54" class="info-icon pr-1 jb-tooltip-info jb-info-54">
+            <div class="d-flex justify-content-between px-2">
+                <div>
+                    <span data-tooltip-id="54" class="info-icon pe-1 jb-tooltip-info jb-info-54 text-400">
                         <i class="fas fa-info-circle"></i>
                     </span>
+                    Gross Profit ratio
                 </div>
-                <div class="col-md-5" style="text-align: right;">
+                <div>
                     {{d['grossProfitRatio']|round(2)}}
                 </div>
             </div>
-            <div style="display: flex; justify-content: space-between; padding-top: 3.5%;">
-                <div class="col-md-7">
+            <div class="d-flex justify-content-between px-2">
+                <div>
                     <a href="{{d['finalLink']}}" target="_blank" class="article-link">
                         <ins>See full</ins>
                     </a>

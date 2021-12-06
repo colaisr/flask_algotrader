@@ -23,7 +23,15 @@ Stock Score | Stock Info
                                 <p class="fs--1 mb-0 text-500">{{candidate.company_name}}</p>
                             </div>
                         </div>
-                        <div class="me-2 badge bg-info rounded-pill d-md-none"><i class="fas fa-plus me-1"></i>Follow</div>
+                        {% if not in_list %}
+                        <div class="me-2 badge bg-info rounded-pill d-md-none add-candidate">
+                            <span><i class="fas fa-plus me-1"></i>Follow</span>
+                        </div>
+                        {% else %}
+                        <div class="me-2 badge bg-success rounded-pill d-md-none candidate-in-list">
+                            <span><i class="fas fa-check"></i>Remove from list</span>
+                        </div>
+                        {% endif %}
                     </div>
                     <div class="me-2 badge bg-{{bg_upd_color}} rounded-pill d-none d-md-inline">Last Update(UTC) :
                         {{last_update}}
@@ -150,7 +158,7 @@ Stock Score | Stock Info
               <li class="nav-item"><a class="nav-link" id="press-relises-tab" data-bs-toggle="tab" href="#tab-press-relises" role="tab" aria-controls="tab-press-relises" aria-selected="false">Press Relises</a></li>
             </ul>
             <div class="tab-content border-x border-bottom p-3" id="ticker-info-tubs-content">
-              <div class="tab-pane fade show active" id="tab-fundamentals" role="tabpanel" aria-labelledby="fundamentals-tab">
+                <div class="tab-pane fade show active" id="tab-fundamentals" role="tabpanel" aria-labelledby="fundamentals-tab">
                   <div class="main-card mb-3 card">
                     <div class="card-body tab-fundamentals-summary-card" style="position: relative;">
                         <div class="card-header">
@@ -163,10 +171,34 @@ Stock Score | Stock Info
                 <div class="main-card mb-3 card">
                     <div class="card-body tab-fundamentals-feed-card row" style="position: relative;"></div>
                 </div>
-              </div>
-              <div class="tab-pane fade" id="tab-news" role="tabpanel" aria-labelledby="news-tab">Food truck fixie locavore, accusamus mcsweeney's marfa nulla single-origin coffee squid. Exercitation +1 labore velit, blog sartorial PBR leggings next level wes anderson artisan four loko farm-to-table craft beer twee. Qui photo booth letterpress, commodo enim craft beer mlkshk aliquip jean shorts ullamco ad vinyl cillum PBR. Homo nostrud organic. </div>
-              <div class="tab-pane fade" id="tab-insiders" role="tabpanel" aria-labelledby="insiders-tab">Etsy mixtape wayfarers, ethical wes anderson tofu before they sold out mcsweeney's organic lomo retro fanny pack lo-fi farm-to-table readymade. Messenger bag gentrify pitchfork tattooed craft beer, iphone skateboard locavore carles etsy salvia banksy hoodie helvetica. DIY synth PBR banksy irony. Leggings gentrify squid 8-bit cred pitchfork.</div>
-              <div class="tab-pane fade" id="tab-press-relises" role="tabpanel" aria-labelledby="press-relises-tab">Etsy mixtape wayfarers, ethical wes anderson tofu before they sold out mcsweeney's organic lomo retro fanny pack lo-fi farm-to-table readymade. Messenger bag gentrify pitchfork tattooed craft beer, iphone skateboard locavore carles etsy salvia banksy hoodie helvetica. DIY synth PBR banksy irony. Leggings gentrify squid 8-bit cred pitchfork.</div>
+                </div>
+                <div class="tab-pane fade" id="tab-news" role="tabpanel" aria-labelledby="news-tab">
+                    <div class="main-card mb-3 card">
+                        <div class="card-header d-flex">
+                            <div>Last articles:</div>
+                            <div class="ms-4">
+                                <input checked type="radio" class="btn-check" name="options" id="option1" autocomplete="off">
+                                <label class="btn btn-primary btn-sm news-btn" for="option1" data-limit="10">10</label>
+
+                                <input type="radio" class="btn-check" name="options" id="option2" autocomplete="off">
+                                <label class="btn btn-primary btn-sm news-btn" for="option2" data-limit="20">20</label>
+
+                                <input type="radio" class="btn-check" name="options" id="option3" autocomplete="off">
+                                <label class="btn btn-primary btn-sm news-btn" for="option3" data-limit="30">30</label>
+
+                                <input type="radio" class="btn-check" name="options" id="option4" autocomplete="off">
+                                <label class="btn btn-primary btn-sm news-btn" for="option4" data-limit="40">40</label>
+                            </div>
+
+                        </div>
+                        <div class="card-body tab-news-card" style="position: relative;">
+                            <div class="div-content" ></div>
+                            {% include 'layouts/loader.html' %}
+                        </div>
+                    </div>`
+                </div>
+                <div class="tab-pane fade" id="tab-insiders" role="tabpanel" aria-labelledby="insiders-tab">Etsy mixtape wayfarers, ethical wes anderson tofu before they sold out mcsweeney's organic lomo retro fanny pack lo-fi farm-to-table readymade. Messenger bag gentrify pitchfork tattooed craft beer, iphone skateboard locavore carles etsy salvia banksy hoodie helvetica. DIY synth PBR banksy irony. Leggings gentrify squid 8-bit cred pitchfork.</div>
+                <div class="tab-pane fade" id="tab-press-relises" role="tabpanel" aria-labelledby="press-relises-tab">Etsy mixtape wayfarers, ethical wes anderson tofu before they sold out mcsweeney's organic lomo retro fanny pack lo-fi farm-to-table readymade. Messenger bag gentrify pitchfork tattooed craft beer, iphone skateboard locavore carles etsy salvia banksy hoodie helvetica. DIY synth PBR banksy irony. Leggings gentrify squid 8-bit cred pitchfork.</div>
             </div>
         </div>
     </div>
