@@ -504,6 +504,7 @@ def check_if_market_fall():
     data = response.read().decode("utf-8")
     data = json.loads(data)
     current_snp_change=data[0]['changesPercentage']
+    print('snp fall checked current :'+str(current_snp_change))
     all_users=UserSetting.query.all()
     for us in all_users:
         if us.algo_sell_on_swan:
@@ -517,6 +518,7 @@ def check_if_market_fall():
                     us.algo_allow_buy = False
                     us.last_market_fall_notification=datetime.utcnow()
                     us.update_user_settings()
+                    print('blackswan for '+us.email)
                     send_email(recipient=us.email,
                                user=us.email,
                                subject='Algotrader: Market failed below '+str(minimal_intraday_allowed)+'%  to '+str(current_snp_change)+'within a day',
