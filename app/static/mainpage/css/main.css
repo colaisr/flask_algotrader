@@ -849,7 +849,7 @@ h2 {
     .analyticsItems__list {
       text-align: center; } }
   .analyticsItems__list + .analyticsItems__list {
-    margin-top: 25px; }
+    margin-top: 10px; }
   .analyticsItems__listItem {
     font-size: 14px;
     line-height: 21px;
