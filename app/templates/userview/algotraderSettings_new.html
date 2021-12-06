@@ -24,22 +24,6 @@ Stock Score | Settings
         </div>
     </div>
 </div>
-
-{%if account_type_id==2%}
-<!--Alert filers-->
-<div class="row">
-    <div class="mb-2">
-        <div class="card">
-            <div class="card-header border-bottom">
-                Alert filers
-            </div>
-            <div class="card-body pt-0">
-                Table
-            </div>
-        </div>
-    </div>
-</div>
-{%else%}
 <!--Candidate filers-->
 <div class="row">
     <div class="mb-2">
@@ -215,6 +199,8 @@ Stock Score | Settings
         </div>
     </div>
 </div>
+<!--Managed Account only-->
+{%if account_type_id==4%}
 <!--Trading strategy-->
 <div class="row">
     <div class="mb-2">
