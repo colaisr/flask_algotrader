@@ -1,59 +1,59 @@
-<div class="modal-header" style="display: flex;">
-    <div class="modal-ticker-logo" style="display: grid;">
-        <img src="{{data.image}}" style="height:150px;padding-right: 10px;">
+<div class="modal-header d-flex">
+    <div class="modal-ticker-logo align-self-start">
+        <img src="{{data.image}}">
         <a class="ticker-web menu__link article-link" target="_blank" href="{{data['website']}}">{{data['website']| replace("http://www.", "")}}</a>
     </div>
-    <div class="modal-ticker-description" style="width: 85%;">
+    <div class="modal-ticker-description">
         <div class="main-card mb-3 card">
         <div class="card-body">
             <ul class="list-group list-group-flush">
-                <li class="list-group-item">
+                <li class="list-group-item d-flex justify-content-between">
                     <div>
                         <h5 class="card-title">Sector</h5>
                     </div>
-                    <div>{{data['sector']}}</div>
+                    <div class="w-75 fs--1">{{data['sector']}}</div>
                 </li>
-                <li class="list-group-item">
+                <li class="list-group-item d-flex justify-content-between">
                     <div>
                         <h5 class="card-title">Industry</h5>
                     </div>
-                    <div>{{data['industry']}}</div>
+                    <div class="w-75 fs--1">{{data['industry']}}</div>
                 </li>
-                <li class="list-group-item">
+                <li class="list-group-item d-flex justify-content-between">
                     <div>
                         <h5 class="card-title">CEO</h5>
                     </div>
-                    <div>{{data['ceo']}}</div>
+                    <div class="w-75 fs--1">{{data['ceo']}}</div>
                 </li>
-                <li class="list-group-item">
+                <li class="list-group-item d-flex justify-content-between">
                     <div>
                         <h5 class="card-title">Employees</h5>
                     </div>
-                    <div>{{data['fullTimeEmployees']}}</div>
+                    <div class="w-75 fs--1">{{data['fullTimeEmployees']}}</div>
                 </li>
-                <li class="list-group-item">
+                <li class="list-group-item d-flex justify-content-between">
                     <div>
                         <h5 class="card-title">ISIN</h5>
                     </div>
-                    <div>{{data['isin']}}</div>
+                    <div class="w-75 fs--1">{{data['isin']}}</div>
                 </li>
-                <li class="list-group-item">
+                <li class="list-group-item d-flex justify-content-between">
                     <div>
                         <h5 class="card-title">Address</h5>
                     </div>
-                    <div>{{data['address']}}, {{data['city']}}, {{data['state']}}, {{data['zip']}}, {{data['country']}}</div>
+                    <div class="w-75 fs--1">{{data['address']}}, {{data['city']}}, {{data['state']}}, {{data['zip']}}, {{data['country']}}</div>
                 </li>
-                <li class="list-group-item">
+                <li class="list-group-item d-flex justify-content-between">
                     <div>
                         <h5 class="card-title">Exchange</h5>
                     </div>
-                    <div>{{data['exchangeShortName']}}</div>
+                    <div class="w-75 fs--1">{{data['exchangeShortName']}}</div>
                 </li>
-                <li class="list-group-item">
+                <li class="list-group-item d-flex justify-content-between">
                     <div>
                         <h5 class="card-title">Since</h5>
                     </div>
-                    <div>{{data['ipoDate']}}</div>
+                    <div class="w-75 fs--1">{{data['ipoDate']}}</div>
                 </li>
             </ul>
         </div>
@@ -61,8 +61,8 @@
     </div>
 </div>
 <div class="modal-content">
-    <div class="main-card mb-3 card">
-            <div class="card-body">
+    <div class="main-card card">
+            <div class="card-body fs--1">
                 <h5 class="card-title">Description</h5>
                 <p>
                     {{data['description']}}

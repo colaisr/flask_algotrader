@@ -1,7 +1,10 @@
 {% for d in data %}
 <div class="col-md-4" style="display: flex; justify-content: space-between; padding-top: 0.8%; border-bottom: 1px solid rgba(26,54,126,0.125);">
     <div class="col-md-9">
-        <i data-tooltip-id="{{d['tooltip']}}" class="fas fa-info-circle info-icon pr-1 jb-tooltip-info jb-info-{{d['tooltip']}}"></i> {{d['field_name']}}
+        <span class="pl-1 pr-1 info-icon jb-tooltip-info jb-info-{{d['tooltip']}} modal-cursor text-400" data-tooltip-id="{{d['tooltip']}}">
+            <i class="fas fa-info-circle info-icon"></i>
+        </span>
+        {{d['field_name']}}
     </div>
     <div class="col-md-3" style="text-align: right;">
         {% if d['value'] is not none %}

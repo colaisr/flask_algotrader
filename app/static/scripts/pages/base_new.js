@@ -134,6 +134,13 @@ function stop_loading(parrent_div){
     $('.' + parrent_div + ' .div-loading').prop('hidden',true);
 }
 
+function btn_loading(btn){
+    btn.addClass('disabled');
+    var loading =$('<span><span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>Loading...</span>');
+    btn.empty();
+    btn.append(loading);
+}
+
 
 function create_toast(header_color, title, message, time_str=''){
     /*
@@ -156,6 +163,7 @@ function create_toast(header_color, title, message, time_str=''){
 function go_to_cnn(){
     window.open("https://money.cnn.com/data/fear-and-greed/", "_blank");
 }
+
 function range_set_value(rangeid,range_v_id){
     var range = $('#'+rangeid);
     var rangeV = $('#'+range_v_id);

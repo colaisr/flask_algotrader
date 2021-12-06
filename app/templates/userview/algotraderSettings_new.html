@@ -166,7 +166,7 @@ Stock Score | Settings
                                         <input name="algo_min_emotion"
                                                id="algo_min_emotion"
                                                value="{{user_settings.algo_min_emotion}}"
-                                               class="form-control ms-2"  type="number" step="1" min="1" max="100"  />
+                                               class="form-control ms-2 emotion-change"  type="number" step="1" min="1" max="100"  />
                                         <label class="text-muted small filter-comment m-2">
                                         <span class="emotion-loading"></span>
                                         <div class="text-primary link emotion-filter font-weight-bold" data-bs-toggle="modal" data-bs-target="#emotional-modal"></div>
@@ -299,7 +299,7 @@ Stock Score | Settings
                                         <input name="algo_positions_for_swan"
                                                id="algo_positions_for_swan"
                                                value="{{user_settings.algo_positions_for_swan}}"
-                                               class="form-control ms-2"  type="number" step="0.1" min="-100" max="0"  />
+                                               class="form-control ms-2 blackswan-change"  type="number" step="0.1" min="-100" max="0"  />
                                     </div>
                                     <div>
                                         <label class="pt-2 text-muted small filter-comment">
@@ -494,79 +494,78 @@ Stock Score | Settings
 
 {% block modal %}
 <div class="modal fade blackswan-modal" id="blackswan-modal" tabindex="-1" aria-labelledby="blackswan-modal-label" aria-hidden="true">
-  <div class="modal-dialog modal-lg mt-6 modal-dialog-scrollable" role="document">
-    <div class="modal-content border-0">
-        <div class="modal-header bg-light rounded-top-lg py-3 ps-4 pe-4">
-            <h4 class="mb-1" id="blackswan-modal-label">Market crash protection</h4>
-            <button type="button" class="btn-close btn btn-sm btn-circle d-flex flex-center transition-base" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-      <div class="modal-body p-0">
-        <div class="p-4">
-                <div id="snp-flash"></div>
-                <div class="mb-3 card">
-                    <div class="card-header">
-                        <ul class="nav nav-justified">
-                            <li class="nav-item"><a data-toggle="tab" href="#snp-500-tab" class="nav-link active show">S&P 500</a></li>
-                            <li class="nav-item"><a data-toggle="tab" href="#my-data-tab" class="nav-link">Portfolio Performance</a></li>
-                        </ul>
-                    </div>
-                    <div class="card-body">
-                        <div class="tab-content">
-                            <div class="tab-pane active show" id="snp-500-tab" role="tabpanel">
-                                <div class="text-muted filter-comment col-md-3">
-                                    <span class="text-primary blackswan-filter font-weight-bold"></span>
-                                    <span class="blackswan-fixed-filter-text pl-2"></span>
+    <div class="modal-dialog modal-lg mt-6 modal-dialog-scrollable" role="document">
+        <div class="modal-content border-0">
+            <div class="modal-header bg-light rounded-top-lg py-3 ps-4 pe-4">
+                <h4 class="mb-1" id="blackswan-modal-label">Market crash protection</h4>
+                <button type="button" class="btn-close btn btn-sm btn-circle d-flex flex-center transition-base" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-0">
+                <div class="p-4">
+                    <div class="mb-3 card">
+                        <div class="card-header">
+                            <ul class="nav nav-tabs" id="snp-500-tubs" role="tablist">
+                                <li class="nav-item"><a class="nav-link active" id="tab-snp-500" data-bs-toggle="tab" href="#snp-500-tab" role="tab" aria-controls="snp-500-tab" aria-selected="true">S&P 500</a></li>
+                                <li class="nav-item"><a class="nav-link" id="tab-my-data" data-bs-toggle="tab" href="#my-data-tab" role="tab" aria-controls="my-data-tab" aria-selected="false">Portfolio Performance</a></li>
+                            </ul>
+                        </div>
+                        <div class="card-body">
+                            <div class="tab-content border-x border-bottom p-3" id="snp-500-tubs-content">
+                                <div class="tab-pane fade show active"  aria-labelledby="tab-snp-500" id="snp-500-tab" role="tabpanel">
+                                    <div class="text-muted filter-comment col-md-3">
+                                        <span class="text-primary blackswan-filter font-weight-bold"></span>
+                                        <span class="blackswan-fixed-filter-text pl-2"></span>
+                                    </div>
+                                    <div id="blackswan_sp500" class="height-resize" style="width:100%;"></div>
                                 </div>
-                                <div id="blackswan_sp500" class="height-resize" style="width:100%;"></div>
-                            </div>
-
-                            <div class="tab-pane" id="my-data-tab" role="tabpanel">
-                                <div id="reports_blackswan_sp500" class="height-resize" style="width:100%;"></div>
+                                <div class="tab-pane fade"  aria-labelledby="tab-my-data" id="my-data-tab" role="tabpanel">
+                                    <div id="reports_blackswan_sp500" class="height-resize" style="width:100%;"></div>
+                                </div>
                             </div>
                         </div>
                     </div>
+                    <div id="blackswan-range-div" style="width:100%;">
+                        <label class="form-label" for="range">Market fall safety (Black Swan)</label>
+                        <div class="range-wrap">
+                            <div class="range-value" id="bsw-rangeV"></div>
+                            <input style="width:100%;" id="bsw-range" type="range" min="-8" max="0" value="{{user_settings.algo_positions_for_swan}}" step="0.1">
+                        </div>
+                    </div>
                 </div>
-                <div id="blackswan-range-div" style="width:100%;">
-                                    <label class="form-label" for="range">Market fall safety (Black Swan)</label>
-                                    <div class="range-wrap">
-                                        <div class="range-value" id="bsw-rangeV"></div>
-                                        <input style="width:100%;" id="bsw-range" type="range" min="-8" max="0" value="{{user_settings.algo_positions_for_swan}}" step="0.1">
-                                    </div>
-                                </div>
-
+            </div>
+            <div class="modal-footer">
+                <button type="button" onclick="save_black_swan()" class="btn btn-secondary btn-lg btn-block">Save</button>
+            </div>
         </div>
-      </div>
     </div>
-  </div>
 </div>
+
 <div class="modal fade emotional-modal" id="emotional-modal" tabindex="-1" aria-labelledby="emotional-modal-label" aria-hidden="true">
-  <div class="modal-dialog modal-lg mt-6 modal-dialog-scrollable" role="document">
-    <div class="modal-content border-0">
-        <div class="modal-header bg-light rounded-top-lg py-3 ps-4 pe-4">
-            <h4 class="mb-1" id="emotional-modal-label">Market Emotion</h4>
-            <button type="button" class="btn-close btn btn-sm btn-circle d-flex flex-center transition-base" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-      <div class="modal-body p-0">
-        <div class="p-4">
-                <div id="flash"></div>
+    <div class="modal-dialog modal-lg mt-6 modal-dialog-scrollable" role="document">
+        <div class="modal-content border-0">
+            <div class="modal-header bg-light rounded-top-lg py-3 ps-4 pe-4">
+                <h4 class="mb-1" id="emotional-modal-label">Market Emotion</h4>
+                <button type="button" class="btn-close btn btn-sm btn-circle d-flex flex-center transition-base" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-0">
+            <div class="p-4">
                 <div class="mb-3 card">
                     <div class="card-header">
-                        <ul class="nav nav-justified">
-                            <li class="nav-item"><a data-toggle="tab" href="#emotion-tab" class="nav-link active show">S&P 500</a></li>
-                            <li class="nav-item"><a data-toggle="tab" href="#emotion-reports-tab" class="nav-link">Portfolio Performance</a></li>
+                        <ul class="nav nav-tabs" id="emotion-modal-tubs" role="tablist">
+                            <li class="nav-item"><a class="nav-link active" id="tab-emotion" data-bs-toggle="tab" href="#emotion-tab" role="tab" aria-controls="emotion-tab" aria-selected="false">S&P 500</a></li>
+                            <li class="nav-item"><a class="nav-link" id="tab-emotion-reports" data-bs-toggle="tab" href="#emotion-reports-tab" role="tab" aria-controls="emotion-reports-tab" aria-selected="false">Portfolio Performance</a></li>
                         </ul>
                     </div>
                     <div class="card-body">
-                        <div class="tab-content">
-                            <div class="tab-pane active show" id="emotion-tab" role="tabpanel">
+                        <div class="tab-content border-x border-bottom p-3" id="emotion-tubs-content">
+                            <div class="tab-pane fade show active" id="emotion-tab" role="tabpanel" aria-labelledby="tab-emotion">
                                 <div class="text-muted filter-comment col-md-3">
-                    <span class="text-primary emotion-filter font-weight-bold"></span>
-                    <span class="emotion-fixed-filter-text pl-2"></span>
-                </div>
+                                    <span class="text-primary emotion-filter font-weight-bold"></span>
+                                    <span class="emotion-fixed-filter-text pl-2"></span>
+                                </div>
                                 <div id="container_sp500" class="height-resize" style="width:100%;"></div>
                             </div>
-
-                            <div class="tab-pane" id="emotion-reports-tab" role="tabpanel">
+                            <div class="tab-pane fade show" id="emotion-reports-tab" role="tabpanel" aria-labelledby="tab-emotion-reports">
                                 <div id="reports_emotion" class="height-resize" style="width:100%;"></div>
                             </div>
                         </div>
@@ -579,11 +578,12 @@ Stock Score | Settings
                         <input style="width:100%;" id="range" type="range" min="0" max="100" value="{{user_settings.algo_min_emotion}}" step="1">
                     </div>
                 </div>
-
+            </div>
         </div>
-      </div>
+            <div class="modal-footer">
+                <button type="button" onclick="save_emotion()" class="btn btn-secondary btn-lg btn-block">Save</button>
+            </div>
+        </div>
     </div>
-  </div>
 </div>
-
 {% endblock %}

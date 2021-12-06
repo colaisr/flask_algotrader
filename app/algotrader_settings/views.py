@@ -383,7 +383,7 @@ def save_emotion_settings():
     user_settings = UserSetting.query.filter_by(email=current_user.email).first()
     user_settings.algo_min_emotion = int(request.form['emotion'])
     user_settings.update_user_settings()
-    flash('Emotion saved', 'success')
+    # flash('Emotion saved', 'success')
     return jsonify(success=1)
 
 

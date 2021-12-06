@@ -14,7 +14,7 @@ Stock Score | Stock Info
             <div class="row gx-0 p-2 flex-between-center">
                 <div class="col-md-auto align-items-center m-1">
                     <div class="d-flex mb-1 align-items-center justify-content-between">
-                        <div class="d-flex mb-1 align-items-center">
+                        <div class="d-flex mb-1 align-items-center page-title-heading modal-cursor">
                             <img class="img-fluid" src="{{candidate.logo}}" width="50">
                             <div class="ps-2">
                                 <h5 class="fw-bold mb-0">
@@ -42,7 +42,9 @@ Stock Score | Stock Info
                             Last Close: <span class="fmp-last-close float-end fs--2"></span>
                         </div>
                         <div class="help-cursor fmp-pne-content">
-                            P/E <i class="fas fa-info-circle info-icon pl-1 pr-1 jb-tooltip-info jb-info-4 text-400" data-tooltip-id="4"></i> <span class="fmp-pe fw-bold float-end fs--2"></span>
+                            P/E
+                            <i class="fas fa-info-circle info-icon pl-1 pr-1 jb-tooltip-info jb-info-4 text-400" data-tooltip-id="4"></i>
+                            <span class="fmp-pe fw-bold float-end fs--2"></span>
                         </div>
                         <div class="help-cursor fmp-eps-content">
                             EPS <i class="fas fa-info-circle info-icon pl-1 pr-1 jb-tooltip-info jb-info-3 text-400" data-tooltip-id="3"></i> <span class="fmp-eps float-end fs--2"></span>
@@ -117,8 +119,8 @@ Stock Score | Stock Info
                                 {% if not in_list %}
                                 <button type="button" class="btn btn-outline-info add-candidate btn-sm fs--2">Follow</button>
                                 {% else %}
-                                <button type="button" class="btn btn-outline-success candidate-in-list btn-sm fs--2">
-                                    <i class="metismenu-icon fa fa-check">Remove from list</i>
+                                <button type="button" class="btn btn-sm btn-outline-success candidate-in-list fs--2">
+                                    <i class="fas fa-check"></i>Remove from list
                                 </button>
                                 {% endif %}
                             </div>
@@ -133,18 +135,44 @@ Stock Score | Stock Info
 <div class="row">
     <div class="col">
         <div class="card mb-1">
-            Chart
+            <div id="container" style="width:100%; height:380px;"></div>
         </div>
     </div>
 </div>
-<div class="row">
+
+<div class="row ticket-info-tabs">
     <div class="col">
         <div class="card mb-1">
-            Similar companies
+            <ul class="nav nav-tabs" id="ticker-info-tubs" role="tablist">
+              <li class="nav-item"><a class="nav-link active" id="fundamentals-tab" data-bs-toggle="tab" href="#tab-fundamentals" role="tab" aria-controls="tab-fundamentals" aria-selected="true">Fundamentals</a></li>
+              <li class="nav-item"><a class="nav-link" id="news-tab" data-bs-toggle="tab" href="#tab-news" role="tab" aria-controls="tab-news" aria-selected="false">News</a></li>
+              <li class="nav-item"><a class="nav-link" id="insiders-tab" data-bs-toggle="tab" href="#tab-insiders" role="tab" aria-controls="tab-insiders" aria-selected="false">Insiders</a></li>
+              <li class="nav-item"><a class="nav-link" id="press-relises-tab" data-bs-toggle="tab" href="#tab-press-relises" role="tab" aria-controls="tab-press-relises" aria-selected="false">Press Relises</a></li>
+            </ul>
+            <div class="tab-content border-x border-bottom p-3" id="ticker-info-tubs-content">
+              <div class="tab-pane fade show active" id="tab-fundamentals" role="tabpanel" aria-labelledby="fundamentals-tab">
+                  <div class="main-card mb-3 card">
+                    <div class="card-body tab-fundamentals-summary-card" style="position: relative;">
+                        <div class="card-header">
+                            Fundamentals (12 Month)
+                        </div>
+                        <div class="div-content fundamentals-summary row pt-2"></div>
+                        {% include 'layouts/loader.html' %}
+                    </div>
+                </div>
+                <div class="main-card mb-3 card">
+                    <div class="card-body tab-fundamentals-feed-card row" style="position: relative;"></div>
+                </div>
+              </div>
+              <div class="tab-pane fade" id="tab-news" role="tabpanel" aria-labelledby="news-tab">Food truck fixie locavore, accusamus mcsweeney's marfa nulla single-origin coffee squid. Exercitation +1 labore velit, blog sartorial PBR leggings next level wes anderson artisan four loko farm-to-table craft beer twee. Qui photo booth letterpress, commodo enim craft beer mlkshk aliquip jean shorts ullamco ad vinyl cillum PBR. Homo nostrud organic. </div>
+              <div class="tab-pane fade" id="tab-insiders" role="tabpanel" aria-labelledby="insiders-tab">Etsy mixtape wayfarers, ethical wes anderson tofu before they sold out mcsweeney's organic lomo retro fanny pack lo-fi farm-to-table readymade. Messenger bag gentrify pitchfork tattooed craft beer, iphone skateboard locavore carles etsy salvia banksy hoodie helvetica. DIY synth PBR banksy irony. Leggings gentrify squid 8-bit cred pitchfork.</div>
+              <div class="tab-pane fade" id="tab-press-relises" role="tabpanel" aria-labelledby="press-relises-tab">Etsy mixtape wayfarers, ethical wes anderson tofu before they sold out mcsweeney's organic lomo retro fanny pack lo-fi farm-to-table readymade. Messenger bag gentrify pitchfork tattooed craft beer, iphone skateboard locavore carles etsy salvia banksy hoodie helvetica. DIY synth PBR banksy irony. Leggings gentrify squid 8-bit cred pitchfork.</div>
+            </div>
         </div>
     </div>
 </div>
-<div class="row">
+
+<div class="row d-none">
     <div class="col">
         <div class="card mb-1">
             Company info
@@ -161,6 +189,18 @@ var company_name = '{{ candidate.company_name }}';
 var user_email = '{{ current_user.email }}';
 var hist_data = '{{ hist_data|tojson }}';
 </script>
+<script src="https://code.highcharts.com/stock/highstock.js"></script>
+<script src="https://code.highcharts.com/stock/modules/data.js"></script>
+<script src="https://code.highcharts.com/stock/modules/exporting.js"></script>
+<script src="https://code.highcharts.com/stock/modules/export-data.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.2.0/chart.min.js"
+        integrity="sha512-VMsZqo0ar06BMtg0tPsdgRADvl0kDHpTbugCBBrL55KmucH6hP9zWdLIWY//OTfMnzz6xWQRxQqsUFefwHuHyg=="
+        crossorigin="anonymous"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='scripts/pages/snp_graph.js') }}"></script>
 <script type="text/javascript" src="{{ url_for('static', filename='scripts/pages/spyder_project.js') }}"></script>
 <script type="text/javascript" src="{{ url_for('static', filename='scripts/pages/ticker_info_new.js') }}"></script>
+{% endblock %}
+
+{% block modal %}
+<div style="display: none" id="ticker-info-modal"></div>
 {% endblock %}

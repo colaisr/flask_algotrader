@@ -28,3 +28,16 @@
     text-decoration: none;
     position: relative; }
 
+.modal-cursor{
+    cursor:pointer;
+}
+
+.modal-cursor:hover{
+    transform: scale(1.05);
+    box-shadow: 0 0.5rem 1rem rgba(var(--falcon-body-color), .15);
+}
+
+.info-icon{
+    cursor: help;
+}
+

@@ -65,21 +65,21 @@ $(document).ready(function () {
 
     })
 
-    $(".show_modal_snp").on('click', function(e) {
-        $(".snp-modal").show();
-    });
-
-    $(".snp-modal-close").on('click', function(e) {
-        $(".snp-modal").hide();
-    });
-
-    $(".emotion-filter").on('click', function(e) {
-        $(".emotion-modal").show();
-    });
-
-    $(".emotion-modal-close").on('click', function(e) {
-        $(".emotion-modal").hide();
-    });
+//    $(".show_modal_snp").on('click', function(e) {
+//        $(".snp-modal").show();
+//    });
+//
+//    $(".snp-modal-close").on('click', function(e) {
+//        $(".snp-modal").hide();
+//    });
+//
+//    $(".emotion-filter").on('click', function(e) {
+//        $(".emotion-modal").show();
+//    });
+//
+//    $(".emotion-modal-close").on('click', function(e) {
+//        $(".emotion-modal").hide();
+//    });
 
     $("#range").on('input', function(e) {
         range_set_value("range","rangeV");
@@ -111,16 +111,14 @@ $(document).ready(function () {
 function save_emotion(){
     var emotion = parseInt($('.emotion-change').val());
     $.post("/algotradersettings/save_emotion_settings",{emotion: emotion}, function(data) {
-        $('#flash').append(flashMessage("success","Emotion saved"));
-
+        create_toast('success', 'Success', 'Emotion saved');
     });
 }
 
 function save_black_swan(){
     var bsw = parseFloat($('.blackswan-change').val());
     $.post("/algotradersettings/save_black_swan",{bsw: bsw}, function(data) {
-        $('#snp-flash').append(flashMessage("success","Market fall safety saved"));
-
+        create_toast('success', 'Success', 'Market fall safety saved');
     });
 }
 
