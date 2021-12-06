@@ -27,12 +27,12 @@
     <!-- ===============================================-->
     <!--    Favicons-->
     <!-- ===============================================-->
-    <link rel="apple-touch-icon" sizes="180x180" href="{{ url_for('static', filename='falcon/assets/img/favicons/apple-touch-icon.png')}}">
-    <link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', filename='falcon/assets/img/favicons/favicon-32x32.png')}}">
-    <link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('static', filename='falcon/assets/img/favicons/favicon-16x16.png')}}">
-    <link rel="shortcut icon" type="image/x-icon" href="{{ url_for('static', filename='falcon/assets/img/favicons/favicon.ico')}}">
-    <link rel="manifest" href="{{ url_for('static', filename='falcon/assets/img/favicons/manifest.json')}}">
-    <meta name="msapplication-TileImage" content="{{ url_for('static', filename='falcon/assets/img/favicons/mstile-150x150.png')}}">
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ url_for('static', filename='images/Stock_score_logos/favicon_io/apple-touch-icon.png')}}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', filename='images/Stock_score_logos/favicon_io/favicon-32x32.png')}}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('static', filename='images/Stock_score_logos/favicon_io/favicon-16x16.png')}}">
+    <link rel="shortcut icon" type="image/x-icon" href="{{ url_for('static', filename='images/Stock_score_logos/favicon_io/favicon.ico')}}">
+    <link rel="manifest" href="{{ url_for('static', filename='images/Stock_score_logos/favicon_io/manifest.json')}}">
+    <meta name="msapplication-TileImage" content="{{ url_for('static', filename='images/Stock_score_logos/favicon_io/mstile-150x150.png')}}">
     <meta name="theme-color" content="#ffffff">
     <script src="{{ url_for('static', filename='falcon/assets/js/config.js')}}"></script>
     <script src="{{ url_for('static', filename='falcon/vendors/overlayscrollbars/OverlayScrollbars.min.js')}}"></script>
@@ -95,7 +95,7 @@
               document.querySelector('.navbar-vertical').classList.add(`navbar-${navbarStyle}`);
             }
           </script>
-          <div class="d-flex align-items-center">
+          <div class="d-flex pb-2 align-items-center">
             <div class="toggle-icon-wrapper">
               <button class="btn navbar-toggler-humburger-icon navbar-vertical-toggle" data-bs-toggle="tooltip" data-bs-placement="left" title="Toggle Navigation">
                 <span class="navbar-toggle-icon">
@@ -105,8 +105,7 @@
             </div>
             <a class="navbar-brand d-none d-xl-block" href="/">
               <div class="d-flex align-items-center py-1">
-                <img class="me-2" src="../../static/images/StockScoreLogo/rsz_logo_transparent_background.png" alt="" width="40" />
-
+                <img style="margin-left:-25px;width: 170px;"  class="me-2 mt-1" src="../../static/images/Stock_score_logos/Logo_name.png" alt=""  />
               </div>
             </a>
           </div>
@@ -217,9 +216,9 @@
                 <span class="toggle-line"></span>
               </span>
             </button>
-            <a class="navbar-brand me-1 me-sm-3 d-none " href="index.html">
+            <a class="navbar-brand me-1 me-sm-3 .d-block .d-sm-none " href="index.html">
               <div class="d-flex align-items-center ">
-                <img  src="../../static/images/Logos_New/logo_transparent_background.png" alt="" width="140" />
+                <img  class="me-2" src="../../static/images/Stock_score_logos/Logo_colour.png" width="40" alt=""  />
               </div>
             </a>
             <ul class="navbar-nav align-items-center d-lg-block">
