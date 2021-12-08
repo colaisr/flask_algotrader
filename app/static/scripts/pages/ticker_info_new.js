@@ -3,44 +3,44 @@ TOOLTIPS = jQuery.parseJSON(TOOLTIPS)
 
 $(document).ready(function () {
     get_avg_pe_from_fmp($('.ticker-sector-val').data('sector'));
-//    get_fmp_ticker_data(ticker);
+    get_fmp_ticker_data(ticker);
     get_stock_news(10);
     get_insider_actions();
-//    get_press_relises();
-//    get_fundamentals_summary();
-//    get_fundamentals_feed();
-//    get_company_info();
-//    fill_container_ticker_info(ticker); //from spider_project.js
-//
-//    setInterval(function(){
-//       get_fmp_ticker_data(ticker);
-//    }, 15000);
-//
-//    var ticker_modal = new jBox('Modal', {
-//        attach: '.page-title-heading',
-//        title: ticker+': '+company_name,
-//        width: 1000,
-//        content: $('#ticker-info-modal')
-//    });
-//
-//    $('.news-btn').on('click',function(){
-//        var limit = $(this).data('limit');
-//        get_stock_news(limit);
-//    })
-//
-//    $('.add-candidate').on('click', function(){
-//        add_candidate_from_ticker_info() //from spyder_project.js
-//    })
-//
-//    $('.candidate-in-list').on('click', function(){
-//        remove_candidate();
-//    })
-//
-//    var tooltip_ids = []
-//    $('.jb-tooltip-info').each(function( index ) {
-//      tooltip_ids.push($( this ).data('tooltip-id'));
-//    });
-//    create_info_tooltip(tooltip_ids);
+    get_press_relises();
+    get_fundamentals_summary();
+    get_fundamentals_feed();
+    get_company_info();
+    fill_container_ticker_info(ticker); //from spider_project.js
+
+    setInterval(function(){
+       get_fmp_ticker_data(ticker);
+    }, 15000);
+
+    var ticker_modal = new jBox('Modal', {
+        attach: '.page-title-heading',
+        title: ticker+': '+company_name,
+        width: 1000,
+        content: $('#ticker-info-modal')
+    });
+
+    $('.news-btn').on('click',function(){
+        var limit = $(this).data('limit');
+        get_stock_news(limit);
+    })
+
+    $('.add-candidate').on('click', function(){
+        add_candidate_from_ticker_info() //from spyder_project.js
+    })
+
+    $('.candidate-in-list').on('click', function(){
+        remove_candidate();
+    })
+
+    var tooltip_ids = []
+    $('.jb-tooltip-info').each(function( index ) {
+      tooltip_ids.push($( this ).data('tooltip-id'));
+    });
+    create_info_tooltip(tooltip_ids);
 
 
 })
