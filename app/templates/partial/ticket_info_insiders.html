@@ -1,50 +1,42 @@
-<ul class="list-group">
+<ul class="list-group list-group-flush">
     {% for d in data %}
         <li class="list-group-item">
-            <div class="widget-content p-0">
-                    <div class="widget-content-wrapper">
-                        <div class="widget-content-left mr-5"  style="width: 20%;">
-                            <div class="widget-content-left">
-                                {{d['transactionDate']}}
-                            </div>
-                        </div>
-                        <div class="widget-content-left flex mr-5" style="width: 30%;">
-                            <div class="widget-heading"><ins>{{d['reportingName']}}</ins></div>
-                            <div class="widget-subheading opacity-10">
-                                <p class="pr-2">
-                                    {{d['typeOfOwner']}}
-                                </p>
-                            </div>
-                        </div>
-                        <div class="widget-content-right mr-5" style="width: 10%;">
-                            <div style="display: flex; justify-content: space-between;">
-                                <div>
-                                    Owned:
-                                </div>
-                                <div class="pl-2">{{d['securitiesOwned']}}</div>
-                            </div>
-                            <div style="display: flex; justify-content: space-between;">
-                                <div>
-                                    Transacted:
-                                </div>
-                                <div class="pl-2">{{d['securitiesTransacted']}}</div>
-                            </div>
-                        </div>
-                        <div class="widget-content-right">
-                            <div>
-                                <p>
-                                    {{d['transactionType']}}
-                                </p>
-                            </div>
-                            <div class="text-small">{{d['acquistionOrDisposition']}}</div>
-                            <div>
-                                <a href="{{d['link']}}" target="_blank" class="menu__link article-link">
-                                    Go to Article
-                                </a>
-                            </div>
-                        </div>
+            <div class="row gx-0 flex-between-center flex-fill d-flex">
+                <div class="col-md-2 fs--1 align-self-start pt-2">
+                    {{d['transactionDate']}}
+                </div>
+                <div class="col-md-3">
+                    <div class="card-title"><ins>{{d['reportingName']}}</ins></div>
+                    <div class="fs--1">
+                        {{d['typeOfOwner']}}
                     </div>
                 </div>
+                <div class="col-md-2 fs--1">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            Owned:
+                        </div>
+                        <div>{{d['securitiesOwned']}}</div>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            Transacted:
+                        </div>
+                        <div>{{d['securitiesTransacted']}}</div>
+                    </div>
+                </div>
+                <div class="col-md-auto">
+                    <div class="fs--1">
+                        {{d['transactionType']}}
+                    </div>
+                    <div class="fs--1">{{d['acquistionOrDisposition']}}</div>
+                    <div>
+                        <a href="{{d['link']}}" target="_blank" class="fs--1">
+                            Go to Article
+                        </a>
+                    </div>
+                </div>
+            </div>
         </li>
     {% endfor %}
 </ul>

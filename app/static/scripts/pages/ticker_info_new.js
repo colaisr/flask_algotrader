@@ -5,7 +5,7 @@ $(document).ready(function () {
     get_avg_pe_from_fmp($('.ticker-sector-val').data('sector'));
     get_fmp_ticker_data(ticker);
     get_stock_news(10);
-//    get_insider_actions();
+    get_insider_actions();
 //    get_press_relises();
     get_fundamentals_summary();
     get_fundamentals_feed();
@@ -131,13 +131,18 @@ function get_fundamentals_feed(){
 }
 
 function get_stock_news(limit){
-    loading('tab-news-card');
     $('.tab-news-card .div-loading').css('height', 0);
     $('.tab-news-card .spinner-border').css('margin-right', '9%');
 
     $.getJSON("/api/stock_news",{tickers: ticker, limit: limit}, function(data) {
         $('.tab-news-card .div-content').empty();
         $('.tab-news-card .div-content').append($(data.data));
-        stop_loading('tab-news-card'); //from base.js
+    })
+}
+
+function get_insider_actions(){
+    $.getJSON("/api/insider_actions",{ticker: ticker}, function(data) {
+        $('.tab-insiders-card .div-content').empty();
+        $('.tab-insiders-card .div-content').append($(data.data));
     })
 }
