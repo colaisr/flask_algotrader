@@ -246,7 +246,7 @@ def test_email():
     users_email=current_user.email
     send_email(recipient=users_email,
                subject='testing the email',
-               template='account/email/test_message')
+               template='account/email/test_message',user=users_email)
     return render_template('account/manage.html', user=current_user, form=None)
 
 
