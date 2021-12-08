@@ -1,259 +1,137 @@
-{% extends 'layouts/base_old.html' %}
+{% extends 'layouts/base.html' %}
 {% block page_title %}
 Stock Score | Stock Info
 {% endblock %}
 
 {% block styles %}
-<link rel="stylesheet" href="{{ url_for('static', filename='styles/ticker_info.css') }}">
 {% endblock %}
 
 {% block content %}
-<div class="app-main__inner ticker-info">
-    <div class="app-page-title">
-        <div class="page-title-wrapper">
-            <div class="page-logo">
-                <div class="page-title-heading">
-                    <div>
-                        <img src="{{candidate.logo}}" style="height:60px;padding-right: 10px;">
-                    </div>
-                    <div>
-                        {{candidate.ticker}}
-                        <div class="page-title-subheading">
-                            {{candidate.company_name}}
+<!--title row-->
+<div class="row mb-3">
+    <div class="col">
+        <div class="card bg-100 shadow-none border">
+            <div class="row gx-0 p-2 flex-between-center">
+                <div class="col-md-auto align-items-center m-1">
+                    <div class="d-flex mb-1 align-items-center justify-content-between">
+                        <div class="d-flex mb-1 align-items-center page-title-heading modal-cursor">
+                            <img class="img-fluid" src="{{candidate.logo}}" width="50">
+                            <div class="ps-2">
+                                <h5 class="fw-bold mb-0">
+                                    {{candidate.ticker}}
+                                </h5>
+                                <p class="fs--1 mb-0 text-500">{{candidate.company_name}}</p>
+                            </div>
                         </div>
-                    </div>
-                </div>
-                <div>
-                    <div class="mt-2 mr-2 badge {{bg_upd_color}} badge-pill">Last Update(UTC) :
-                        {{last_update}}
-                    </div>
-                </div>
-                <div>
-                    <div class="mt-1 ml-2"><a class="ticker-web menu__link article-link" target="_blank" href="{{candidate.website}}">Go to website</a></div>
-                </div>
-            </div>
-
-            <div style="display: none" id="ticker-info-modal"></div>
-
-            <div class="page-fmp-data">
-                <div class="div-content">
-                    <div class="fmp-price-content">
-                        Price: <span class="fmp-price text-primary"></span>
-                    </div>
-                    <div class="fmp-change-content">
-                        Change: <span class="fmp-change"></span>
-                    </div>
-                    <div class="fmp-close-content">
-                        Last Close: <span class="fmp-last-close"></span>
-                    </div>
-                    <div class="fmp-pne-eps">
-                        <div class="help-cursor">
-                            P/E <i class="fas fa-info-circle info-icon pl-1 pr-1 jb-tooltip-info jb-info-4" data-tooltip-id="4"></i> <span class="fmp-pe font-weight-bold"></span>
-                        </div>
-                        <div class="help-cursor">
-                            EPS <i class="fas fa-info-circle info-icon pl-1 pr-1 jb-tooltip-info jb-info-3" data-tooltip-id="3"></i> <span class="fmp-eps"></span>
-                        </div>
-                    </div>
-                </div>
-                {% include 'layouts/loader.html' %}
-            </div>
-            <div class="page-market-data">
-                <div class="bage-score {{score_bg}}">
-                    <span class="badge badge-pill badge-light">{{market_data.algotrader_rank}}</span>
-                    <div class="score-title">Score</div>
-                </div>
-                <div class="market-data-actions">
-                    <div title="Volatility of a stock in relation to the overall market. 12M" class="help-cursor ticker-data mt-2 mr-2 badge {% if market_data.beta is not none and user_settings.algo_min_beta is not none and market_data.beta >= user_settings.algo_min_beta %}
-                        btn-success
-                        {% else %}
-                        btn-warning
-                        {% endif %}">
-                        Beta
-                        <span class="badge badge-pill badge-light">
-                            {% if market_data.beta is not none%}
-                            {{market_data.beta | round(1)}}
-                            {% else %}
-                            0
-                            {% endif %}
-                        </span>
-                    </div>
-                    <div title="Lower than cheapest analyst prediction" class="help-cursor ticker-data mt-2 mr-2 badge {% if market_data.under_priced_pnt is not none and user_settings.algo_min_underprice is not none and market_data.under_priced_pnt >= user_settings.algo_min_underprice %}
-                        btn-success
-                        {% else %}
-                        btn-warning
-                        {% endif %}">
-                        Underpriced <span class="badge badge-pill badge-light">{{market_data.under_priced_pnt}}</span>
-                    </div>
-                    <div title="Todays good entry point. Based on 1 last year intraday volatility" class="help-cursor ticker-data mt-2 mr-2 badge btn-success">
-                        Buying trigger <span class="badge badge-pill badge-light">{{market_data.buying_target_price_fmp | round(1)}}</span>
-                    </div>
-                </div>
-            </div>
-            <div class="page-ticket-info">
-                <div class="ticker-exchsnge ticket-info-row">
-                    <div class="ticket-info-title">Exchange:</div>
-                    <div class="ticker-sector-val ticket-info-val" data-sector="{{candidate.exchange_short}}">{{candidate.exchange_short}}</div>
-                </div>
-                <div class="ticker-sector ticket-info-row">
-                    <div class="ticket-info-title">Sector:</div> <div class="ticker-sector-val ticket-info-val" data-sector="{{candidate.sector}}">{{candidate.sector}}</div>
-                </div>
-                <div class="ticker-industry ticket-info-row">
-                    <div class="ticket-info-title">Industry:</div> <div class="ticket-info-val">{{candidate.industry}}</div>
-                </div>
-                <div class="ticker-action ticket-info-row">
-                    <div class="ticket-info-title">Personal List:</div>
-                    <div class="ticket-info-val div-content">
                         {% if not in_list %}
-                        <button type="button" class="btn btn-outline-info add-candidate">Add</button>
+                        <div class="me-2 badge bg-info rounded-pill d-md-none add-candidate">
+                            <span><i class="fas fa-plus me-1"></i>Follow</span>
+                        </div>
                         {% else %}
-                        <button type="button" class="btn btn-outline-success candidate-in-list">
-                            <i class="metismenu-icon fa fa-check">Remove from list</i>
-                        </button>
+                        <div class="me-2 badge bg-success rounded-pill d-md-none candidate-in-list">
+                            <span><i class="fas fa-check"></i>Remove from list</span>
+                        </div>
                         {% endif %}
                     </div>
-                    {% include 'layouts/loader.html' %}
+                    <div class="me-2 badge bg-{{bg_upd_color}} rounded-pill d-none d-md-inline">Last Update(UTC) :
+                        {{last_update}}
+                    </div>
+                    <div class="d-none d-md-block ps-1 pt-1"><a class="ticker-web menu__link article-link" target="_blank" href="{{candidate.website}}">Go to website</a></div>
                 </div>
-            </div>
-        </div>
-    </div>
-    <div class="column">
-        <div class="row ticket-chart">
-            <div class="col-lg-12">
-                <div class="main-card mb-1 card">
-                    <div class="card-body">
-                        <div id="container" style="width:100%; height:380px;"></div>
-                        <div>
-                            <script> var hist_data = '{{ hist_data|tojson }}'; </script>
-                            <script> var ticker = '{{ candidate.ticker }}'; </script>
-                            <script> var company_name = '{{ candidate.company_name }}'; </script>
-                            <script> var user_email = '{{ current_user.email }}'; </script>
-                            <script> TOOLTIPS = {{ tooltips|tojson }}; </script>
+                <div class="col-md-auto page-fmp-data d-sm-none d-lg-inline m-1">
+                    <div class="fs--1">
+                        <div class="fmp-price-content fw-bold">
+                            Price: <span class="fmp-price text-primary float-end"></span>
+                        </div>
+                        <div class="fmp-change-content">
+                            Change: <span class="fmp-change float-end ps-4 fs--2"></span>
+                        </div>
+                        <div class="fmp-close-content">
+                            Last Close: <span class="fmp-last-close float-end fs--2"></span>
+                        </div>
+                        <div class="help-cursor fmp-pne-content">
+                            P/E
+                            <i class="fas fa-info-circle info-icon pl-1 pr-1 jb-tooltip-info jb-info-4 text-400" data-tooltip-id="4"></i>
+                            <span class="fmp-pe fw-bold float-end fs--2"></span>
+                        </div>
+                        <div class="help-cursor fmp-eps-content">
+                            EPS <i class="fas fa-info-circle info-icon pl-1 pr-1 jb-tooltip-info jb-info-3 text-400" data-tooltip-id="3"></i> <span class="fmp-eps float-end fs--2"></span>
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
-        <div class="divider mt-0" style="margin-bottom: 30px;"></div>
-        <div class="row ticket-info-tabs">
-            <div class="col-lg-12">
-                <div class="mb-1 card">
-                    <div class="card-header card-header-tab-animation">
-                        <ul class="nav nav-justified">
-                            <li class="nav-item">
-                                <a data-toggle="tab" href="#tab-fundamentals" class="nav-link show active">
-                                    Fundamentals
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a data-toggle="tab" href="#tab-news" class="nav-link show">
-                                    News
-                                </a>
-                            </li>
-<!--                            <li class="nav-item">-->
-<!--                                <a data-toggle="tab" href="#tab-analysts" class="nav-link show">-->
-<!--                                    Analysts-->
-<!--                                </a>-->
-<!--                            </li>-->
-<!--                            <li class="nav-item">-->
-<!--                                <a data-toggle="tab" href="#tab-social" class="nav-link show">-->
-<!--                                    Social-->
-<!--                                </a>-->
-<!--                            </li>-->
-                            <li class="nav-item">
-                                <a data-toggle="tab" href="#tab-insiders" class="nav-link show">
-                                    Insiders
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a data-toggle="tab" href="#tab-press-relises" class="nav-link show">
-                                    Press Relises
-                                </a>
-                            </li>
-<!--                            <li class="nav-item">-->
-<!--                                <a data-toggle="tab" href="#tab-technical" class="nav-link show">-->
-<!--                                    Technical-->
-<!--                                </a>-->
-<!--                            </li>-->
-                        </ul>
+                <div class="col-md-auto d-flex m-1 me-2">
+                    <div class="bage-score bg-{{score_bg}} ms-2 rounded-3">
+                        <span class="badge rounded-pill bg-light text-dark m-2 mt-4 fs-1">{{market_data.algotrader_rank}}</span>
+                        <div class="score-title text-light text-center fs-1 fw-bold">Score</div>
                     </div>
-                    <div class="card-body">
-                        <div class="tab-content">
-                            <div class="tab-pane show active" id="tab-fundamentals" role="tabpanel">
-                                <div class="main-card mb-3 card">
-                                    <div class="card-body tab-fundamentals-summary-card" style="position: relative;">
-                                        <div class="card-header">
-                                            Fundamentals (12 Month)
-                                        </div>
-                                        <div class="div-content row pt-2"></div>
-                                        {% include 'layouts/loader.html' %}
-                                    </div>
-                                </div>
-                                <div class="main-card mb-3 card">
-                                    <div class="card-body tab-fundamentals-feed-card row" style="position: relative;"></div>
-                                </div>
+                    <div class="market-data-actions px-2 flex-fill d-flex flex-column justify-content-between">
+                        <div title="Volatility of a stock in relation to the overall market. 12M" class="justify-content-between align-items-center help-cursor ticker-data mr-2 badge {% if market_data.beta is not none and user_settings.algo_min_beta is not none and market_data.beta >= user_settings.algo_min_beta %}
+                            btn-success
+                            {% else %}
+                            btn-warning
+                            {% endif %}">
+                            <span class="float-start">
+                                Beta
+                            </span>
+                            <span class="badge rounded-pill bg-light text-dark px-3 float-end">
+                                {% if market_data.beta is not none%}
+                                {{market_data.beta | round(1)}}
+                                {% else %}
+                                0
+                                {% endif %}
+                            </span>
+                        </div>
+                        <div title="Lower than cheapest analyst prediction" class="justify-content-between align-items-center help-cursor ticker-data mr-2 badge {% if market_data.under_priced_pnt is not none and user_settings.algo_min_underprice is not none and market_data.under_priced_pnt >= user_settings.algo_min_underprice %}
+                            btn-success
+                            {% else %}
+                            btn-warning
+                            {% endif %}">
+                            <span class="float-start">
+                                Underpriced
+                            </span>
+                            <span class="badge rounded-pill bg-light text-dark px-3 float-end">
+                                {% if market_data.under_priced_pnt is not none%}
+                                {{market_data.under_priced_pnt | round(1)}}
+                                {% else %}
+                                0
+                                {% endif %}
+                            </span>
+                        </div>
+                        <div title="Todays good entry point. Based on 1 last year intraday volatility" class="justify-content-between align-items-center help-cursor ticker-data mr-2 badge btn-success">
+                            <span class="float-start me-2">
+                                Buying trigger
+                            </span>
+                            <span class="badge rounded-pill bg-light text-dark px-3 float-end">
+                                {{market_data.buying_target_price_fmp | round(1)}}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-auto m-1 d-none d-md-inline">
+                    <div class="fs--1">
+                        <div class="ticker-exchange ticket-info-row d-flex flex-between-center">
+                            <div class="ticket-info-title">Exchange:</div>
+                            <div class="ticker-sector-val ticket-info-val" data-exchange="{{candidate.exchange_short}}">{{candidate.exchange_short}}</div>
+                        </div>
+                        <div class="ticker-sector ticket-info-row d-flex flex-between-center">
+                            <div class="ticket-info-title">Sector:</div>
+                            <div class="ticker-sector-val ticket-info-val" data-sector="{{candidate.sector}}">{{candidate.sector}}</div>
+                        </div>
+                        <div class="ticker-industry ticket-info-row d-flex flex-between-center">
+                            <div class="ticket-info-title pe-5">Industry:</div>
+                            <div class="ticket-info-val ps-5">{{candidate.industry}}</div>
+                        </div>
+                        <div class="ticker-action ticket-info-row d-flex flex-between-center">
+                            <div class="ticket-info-title">Personal List:</div>
+                            <div class="ticket-info-val div-content">
+                                {% if not in_list %}
+                                <button type="button" class="btn btn-outline-info add-candidate btn-sm fs--2">Follow</button>
+                                {% else %}
+                                <button type="button" class="btn btn-sm btn-outline-success candidate-in-list fs--2">
+                                    <i class="fas fa-check"></i>Remove from list
+                                </button>
+                                {% endif %}
                             </div>
-                            <div class="tab-pane show" id="tab-news" role="tabpanel">
-                                <div class="main-card mb-3 card">
-                                    <div class="card-header">
-                                        Last articles:
-                                        <div role="group" class="btn-group-sm btn-group btn-group-toggle ml-5" data-toggle="buttons">
-                                            <label class="btn btn-primary active">
-                                                <input class="news-btn" type="radio" name="options" data-limit="10" id="option1" autocomplete="off" checked="">
-                                                10
-                                            </label>
-                                            <label class="btn btn-primary">
-                                                <input class="news-btn" type="radio" name="options" data-limit="20" id="option2" autocomplete="off">
-                                                20
-                                            </label>
-                                            <label class="btn btn-primary">
-                                                <input class="news-btn" type="radio" name="options" data-limit="50" id="option3" autocomplete="off">
-                                                50
-                                            </label>
-                                            <label class="btn btn-primary">
-                                                <input class="news-btn" type="radio" name="options" data-limit="100" id="option4" autocomplete="off">
-                                                100
-                                            </label>
-                                        </div>
-                                    </div>
-                                    <div class="card-body tab-news-card" style="position: relative;">
-                                        <div class="div-content" ></div>
-                                        {% include 'layouts/loader.html' %}
-                                    </div>
-                                </div>
-                            </div>
-<!--                            <div class="tab-pane show" id="tab-analysts" role="tabpanel">-->
-<!--                                <p>-->
-<!--                                    srddddddddddddddddddddddddddddddd-->
-<!--                                </p>-->
-<!--                            </div>-->
-<!--                            <div class="tab-pane show" id="tab-social" role="tabpanel">-->
-<!--                                <p>-->
-<!--                                    Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a-->
-<!--                                type specimen book. It has-->
-<!--                                survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.-->
-<!--                                </p>-->
-<!--                            </div>-->
-                            <div class="tab-pane show" id="tab-insiders" role="tabpanel">
-                                <div class="main-card mb-3 card">
-                                    <div class="card-body tab-insiders-card" style="position: relative;">
-                                        <div class="div-content" ></div>
-                                        {% include 'layouts/loader.html' %}
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="tab-pane show" id="tab-press-relises" role="tabpanel">
-                                <div class="main-card mb-3 card">
-                                    <div class="card-body tab-press-relises-card" style="position: relative;">
-                                        <div class="div-content" ></div>
-                                        {% include 'layouts/loader.html' %}
-                                    </div>
-                                </div>
-                            </div>
-<!--                            <div class="tab-pane show" id="tab-technical" role="tabpanel">-->
-<!--                                <p>-->
-<!--                                    errrrtjgkikikikikikikikikikikikikikikikikiki-->
-<!--                                </p>-->
-<!--                            </div>-->
                         </div>
                     </div>
                 </div>
@@ -262,8 +140,100 @@ Stock Score | Stock Info
     </div>
 </div>
 
+<div class="row">
+    <div class="col">
+        <div class="card mb-1">
+            <div id="container" style="width:100%; height:380px;"></div>
+        </div>
+    </div>
+</div>
+
+<div class="row ticket-info-tabs">
+    <div class="col">
+        <div class="card mb-1">
+            <ul class="nav nav-tabs" id="ticker-info-tubs" role="tablist">
+              <li class="nav-item"><a class="nav-link active" id="fundamentals-tab" data-bs-toggle="tab" href="#tab-fundamentals" role="tab" aria-controls="tab-fundamentals" aria-selected="true">Fundamentals</a></li>
+              <li class="nav-item"><a class="nav-link" id="news-tab" data-bs-toggle="tab" href="#tab-news" role="tab" aria-controls="tab-news" aria-selected="false">News</a></li>
+              <li class="nav-item"><a class="nav-link" id="insiders-tab" data-bs-toggle="tab" href="#tab-insiders" role="tab" aria-controls="tab-insiders" aria-selected="false">Insiders</a></li>
+              <li class="nav-item"><a class="nav-link" id="press-relises-tab" data-bs-toggle="tab" href="#tab-press-relises" role="tab" aria-controls="tab-press-relises" aria-selected="false">Press Relises</a></li>
+            </ul>
+            <div class="tab-content border-x border-bottom p-3" id="ticker-info-tubs-content">
+                <div class="tab-pane fade show active" id="tab-fundamentals" role="tabpanel" aria-labelledby="fundamentals-tab">
+                  <div class="main-card mb-3 card">
+                    <div class="card-body tab-fundamentals-summary-card" style="position: relative;">
+                        <div class="card-header">
+                            Fundamentals (12 Month)
+                        </div>
+                        <div class="div-content fundamentals-summary row pt-2"></div>
+                        {% include 'layouts/loader.html' %}
+                    </div>
+                </div>
+                <div class="main-card mb-3 card">
+                    <div class="card-body tab-fundamentals-feed-card row" style="position: relative;"></div>
+                </div>
+                </div>
+                <div class="tab-pane fade" id="tab-news" role="tabpanel" aria-labelledby="news-tab">
+                    <div class="main-card mb-3 card">
+                        <div class="card-header d-flex">
+                            <div>Last articles:</div>
+                            <div class="ms-4">
+                                <input checked type="radio" class="btn-check" name="options" id="option1" autocomplete="off">
+                                <label class="btn btn-primary btn-sm news-btn" for="option1" data-limit="10">10</label>
+
+                                <input type="radio" class="btn-check" name="options" id="option2" autocomplete="off">
+                                <label class="btn btn-primary btn-sm news-btn" for="option2" data-limit="20">20</label>
+
+                                <input type="radio" class="btn-check" name="options" id="option3" autocomplete="off">
+                                <label class="btn btn-primary btn-sm news-btn" for="option3" data-limit="30">30</label>
+
+                                <input type="radio" class="btn-check" name="options" id="option4" autocomplete="off">
+                                <label class="btn btn-primary btn-sm news-btn" for="option4" data-limit="40">40</label>
+
+                                <input type="radio" class="btn-check" name="options" id="option5" autocomplete="off">
+                                <label class="btn btn-primary btn-sm news-btn" for="option5" data-limit="100">100</label>
+                            </div>
+                        </div>
+                        <div class="card-body tab-news-card">
+                            <div class="div-content" ></div>
+                        </div>
+                    </div>`
+                </div>
+                <div class="tab-pane fade" id="tab-insiders" role="tabpanel" aria-labelledby="insiders-tab">
+                    <div class="main-card mb-3 card">
+                        <div class="card-body tab-insiders-card">
+                            <div class="div-content" ></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="tab-press-relises" role="tabpanel" aria-labelledby="press-relises-tab">
+                    <div class="main-card mb-3 card">
+                        <div class="card-body tab-press-relises-card" style="position: relative;">
+                            <div class="div-content" ></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row d-none">
+    <div class="col">
+        <div class="card mb-1">
+            Company info
+        </div>
+    </div>
+</div>
+
 {% endblock %}
 {% block scripting %}
+<script>
+var ticker = '{{ candidate.ticker }}';
+var TOOLTIPS = {{ tooltips|tojson }};
+var company_name = '{{ candidate.company_name }}';
+var user_email = '{{ current_user.email }}';
+var hist_data = '{{ hist_data|tojson }}';
+</script>
 <script src="https://code.highcharts.com/stock/highstock.js"></script>
 <script src="https://code.highcharts.com/stock/modules/data.js"></script>
 <script src="https://code.highcharts.com/stock/modules/exporting.js"></script>
@@ -273,5 +243,9 @@ Stock Score | Stock Info
         crossorigin="anonymous"></script>
 <script type="text/javascript" src="{{ url_for('static', filename='scripts/pages/snp_graph.js') }}"></script>
 <script type="text/javascript" src="{{ url_for('static', filename='scripts/pages/spyder_project.js') }}"></script>
-<script type="text/javascript" src="{{ url_for('static', filename='scripts/pages/ticker_info.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='scripts/pages/ticker_info_new.js') }}"></script>
+{% endblock %}
+
+{% block modal %}
+<div style="display: none" id="ticker-info-modal"></div>
 {% endblock %}
