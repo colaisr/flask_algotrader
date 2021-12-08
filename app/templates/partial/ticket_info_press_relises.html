@@ -1,23 +1,17 @@
-<ul class="list-group">
+<ul class="list-group list-group-flush">
     {% for d in data %}
         <li class="list-group-item">
-            <div class="widget-content p-0">
-                    <div class="widget-content-wrapper">
-                        <div class="widget-content-left mr-3" style="width: 85%;">
-                            <div class="widget-heading"><ins>{{d['title']}}</ins></div>
-                            <div class="widget-subheading">
-                                <p class="pr-2" style="font-size: smaller;">
-                                    {{d['text']}}
-                                </p>
-                            </div>
-                        </div>
-                        <div class="widget-content-right" style="width: 15%;">
-                            <div>
-                                {{d['date']}}
-                            </div>
-                        </div>
+            <div class="row gx-0 flex-between-center flex-fill d-flex">
+                <div class="col pe-5">
+                    <div class="card-title"><ins>{{d['title']}}</ins></div>
+                    <div class="fs--2">
+                        {{d['text']}}
                     </div>
                 </div>
+                <div class="col-md-auto fs--1 align-self-start pt-sm-2 pt-md-0">
+                    {{d['date']}}
+                </div>
+            </div>
         </li>
     {% endfor %}
 </ul>

@@ -6,7 +6,7 @@ $(document).ready(function () {
     get_fmp_ticker_data(ticker);
     get_stock_news(10);
     get_insider_actions();
-//    get_press_relises();
+    get_press_relises();
     get_fundamentals_summary();
     get_fundamentals_feed();
     get_company_info();
@@ -131,9 +131,6 @@ function get_fundamentals_feed(){
 }
 
 function get_stock_news(limit){
-    $('.tab-news-card .div-loading').css('height', 0);
-    $('.tab-news-card .spinner-border').css('margin-right', '9%');
-
     $.getJSON("/api/stock_news",{tickers: ticker, limit: limit}, function(data) {
         $('.tab-news-card .div-content').empty();
         $('.tab-news-card .div-content').append($(data.data));
@@ -144,5 +141,12 @@ function get_insider_actions(){
     $.getJSON("/api/insider_actions",{ticker: ticker}, function(data) {
         $('.tab-insiders-card .div-content').empty();
         $('.tab-insiders-card .div-content').append($(data.data));
+    })
+}
+
+function get_press_relises(){
+    $.getJSON("/api/press_relises",{ticker: ticker}, function(data) {
+        $('.tab-press-relises-card .div-content').empty();
+        $('.tab-press-relises-card .div-content').append($(data.data));
     })
 }
