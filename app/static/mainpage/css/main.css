@@ -704,7 +704,7 @@ h2 {
 .analytics {
   width: 100%;
   position: relative;
-  padding: 95px 0 125px; }
+  padding: 65px 0 125px; }
   @media only screen and (max-width: 768px) {
     .analytics {
       background: #eff8fe; } }
