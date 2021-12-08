@@ -19,84 +19,84 @@ Stock Score
 
 <!--                    <h1 class="analytics__title">Stock Anlytics</h1><h1 class="analytics__title">and</h1><h1 class="analytics__title"> Market Emotions</h1>-->
                 </div>
-                <div class="analytics__col analytics__col_right">
-                    <div class="analytics__items">
-                        <div class="analytics__item">
-                            <div class="analytics__insideItem">
-                                <div class="analytics__name">Users</div>
-                                <div class="analytics__desc">Registered users</div>
-                            </div>
-                            <div class="analytics__insideItem analytics__insideItem_row">
-                                <div class="analytics__value analytics__value_yellow analytics__value_textCenter">
-                                    <span>{{system_status['personal_users']}}</span>
-                                    <span>Personal</span>
-                                </div>
-                                <div class="analytics__value analytics__value_green analytics__value_textCenter">
-                                    <span>{{system_status['managed_users']}}</span>
-                                    <span>Managed</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="analytics__item">
-                            <div class="analytics__insideItem">
-                                <div class="analytics__name">Tickers</div>
-                                <div class="analytics__desc">Candidates tracked daily</div>
-                            </div>
-                            <div class="analytics__insideItem">
-                                <div class="analytics__value analytics__value_green">{{system_status['tickers_tracked']}}</div>
-                            </div>
-                        </div>
-                        <div class="analytics__item">
-                            <div class="analytics__insideItem">
-                                <div class="analytics__name">Executions</div>
-                                <div class="analytics__desc">Deals executed</div>
-                            </div>
-                            <div class="analytics__insideItem">
-                                <div class="analytics__value analytics__value_green">{{system_status['all_positions']}}</div>
-                            </div>
-                        </div>
-                        <div class="analytics__item">
-                            <div class="analytics__insideItem">
-                                <div class="analytics__name">Funds</div>
-                                <div class="analytics__desc">All users portfolio value</div>
-                            </div>
-                            <div class="analytics__insideItem">
-                                <div class="analytics__value analytics__value_yellow">{{system_status['funds'] | round |int}} $</div>
-                            </div>
-                        </div>
-                        <div class="analytics__item">
-                            <div class="analytics__insideItem">
-                                <div class="analytics__name">Last Update</div>
-                                <div class="analytics__desc">Last data update</div>
-                            </div>
-                            <div class="analytics__insideItem">
-                                <div class="analytics__value">
-                                    <p>{{system_status['last_update_date']}}</p>
-                                    <!-- <p>12:49</p> -->
-                                </div>
-                            </div>
-                        </div>
-                        <div class="analytics__item">
-                            <div class="analytics__insideItem">
-                                <div class="analytics__name">Success <br>Rate</div>
-                            </div>
-                            <div class="analytics__insideItem analytics__insideItem_row">
-                                <div class="analytics__value analytics__value_yellow analytics__value_textCenter">
-                                    <span>{{system_status['technical_positions']}}</span>
-                                    <span>Technical</span>
-                                </div>
-                                <div class="analytics__value analytics__value_green analytics__value_textCenter">
-                                    <span>{{system_status['profit_positions']}}</span>
-                                    <span>Success</span>
-                                </div>
-                                <div class="analytics__value analytics__value_red analytics__value_textCenter">
-                                    <span>{{system_status['lost_positions']}}</span>
-                                    <span>Fail</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+<!--                <div class="analytics__col analytics__col_right">-->
+<!--                    <div class="analytics__items">-->
+<!--                        <div class="analytics__item">-->
+<!--                            <div class="analytics__insideItem">-->
+<!--                                <div class="analytics__name">Users</div>-->
+<!--                                <div class="analytics__desc">Registered users</div>-->
+<!--                            </div>-->
+<!--                            <div class="analytics__insideItem analytics__insideItem_row">-->
+<!--                                <div class="analytics__value analytics__value_yellow analytics__value_textCenter">-->
+<!--                                    <span>{{system_status['personal_users']}}</span>-->
+<!--                                    <span>Personal</span>-->
+<!--                                </div>-->
+<!--                                <div class="analytics__value analytics__value_green analytics__value_textCenter">-->
+<!--                                    <span>{{system_status['managed_users']}}</span>-->
+<!--                                    <span>Managed</span>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                        <div class="analytics__item">-->
+<!--                            <div class="analytics__insideItem">-->
+<!--                                <div class="analytics__name">Tickers</div>-->
+<!--                                <div class="analytics__desc">Candidates tracked daily</div>-->
+<!--                            </div>-->
+<!--                            <div class="analytics__insideItem">-->
+<!--                                <div class="analytics__value analytics__value_green">{{system_status['tickers_tracked']}}</div>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                        <div class="analytics__item">-->
+<!--                            <div class="analytics__insideItem">-->
+<!--                                <div class="analytics__name">Executions</div>-->
+<!--                                <div class="analytics__desc">Deals executed</div>-->
+<!--                            </div>-->
+<!--                            <div class="analytics__insideItem">-->
+<!--                                <div class="analytics__value analytics__value_green">{{system_status['all_positions']}}</div>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                        <div class="analytics__item">-->
+<!--                            <div class="analytics__insideItem">-->
+<!--                                <div class="analytics__name">Funds</div>-->
+<!--                                <div class="analytics__desc">All users portfolio value</div>-->
+<!--                            </div>-->
+<!--                            <div class="analytics__insideItem">-->
+<!--                                <div class="analytics__value analytics__value_yellow">{{system_status['funds'] | round |int}} $</div>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                        <div class="analytics__item">-->
+<!--                            <div class="analytics__insideItem">-->
+<!--                                <div class="analytics__name">Last Update</div>-->
+<!--                                <div class="analytics__desc">Last data update</div>-->
+<!--                            </div>-->
+<!--                            <div class="analytics__insideItem">-->
+<!--                                <div class="analytics__value">-->
+<!--                                    <p>{{system_status['last_update_date']}}</p>-->
+<!--                                    &lt;!&ndash; <p>12:49</p> &ndash;&gt;-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                        <div class="analytics__item">-->
+<!--                            <div class="analytics__insideItem">-->
+<!--                                <div class="analytics__name">Success <br>Rate</div>-->
+<!--                            </div>-->
+<!--                            <div class="analytics__insideItem analytics__insideItem_row">-->
+<!--                                <div class="analytics__value analytics__value_yellow analytics__value_textCenter">-->
+<!--                                    <span>{{system_status['technical_positions']}}</span>-->
+<!--                                    <span>Technical</span>-->
+<!--                                </div>-->
+<!--                                <div class="analytics__value analytics__value_green analytics__value_textCenter">-->
+<!--                                    <span>{{system_status['profit_positions']}}</span>-->
+<!--                                    <span>Success</span>-->
+<!--                                </div>-->
+<!--                                <div class="analytics__value analytics__value_red analytics__value_textCenter">-->
+<!--                                    <span>{{system_status['lost_positions']}}</span>-->
+<!--                                    <span>Fail</span>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
             </div>
             <div class="analytics__row row analyticsItems">
                 <div class="analyticsItems__col analyticsItems__col_big analyticsItems__item">

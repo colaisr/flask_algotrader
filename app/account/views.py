@@ -233,7 +233,20 @@ def logout():
 @account.route('/manage/info', methods=['GET', 'POST'])
 @login_required
 def manage():
+
     """Display a user's account information."""
+    return render_template('account/manage.html', user=current_user, form=None)
+
+
+@account.route('/manage/test_email', methods=['GET', 'POST'])
+@login_required
+def test_email():
+
+    """Display a user's account information."""
+    users_email=current_user.email
+    send_email(recipient=users_email,
+               subject='testing the email',
+               template='account/email/test_message',user=users_email)
     return render_template('account/manage.html', user=current_user, form=None)
 
 
