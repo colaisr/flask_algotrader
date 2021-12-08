@@ -15,7 +15,7 @@ $(document).ready(function () {
     upload_telegram_signals();
     fill_emotion_and_snp_graphs(emotion_settings, false, main_snp, main_emotion);
 
-    echartsLineAreaChartInit();
+//    echartsLineAreaChartInit();
 
 })
 
