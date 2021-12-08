@@ -726,10 +726,11 @@ h2 {
     margin-left: 10px;
     margin-right: 10px; }
     .analytics__col_left {
-      width: calc(25% - 20px); }
+      width: calc(25% - 20px); margin-left: 40%;}
       @media only screen and (max-width: 991px) {
         .analytics__col_left {
-          width: calc(100% - 20px); } }
+          width: calc(100% - 20px);
+               margin-left: 40%;} }
     .analytics__col_right {
       width: calc(75% - 20px); }
       @media only screen and (max-width: 991px) {
