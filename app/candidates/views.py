@@ -34,7 +34,7 @@ def today():
     else:
         fgi_text_color = 'success'
     db_service.user_login_log(current_user, request.environ.get('HTTP_X_REAL_IP', request.remote_addr), request)
-    return render_template('candidates/today_new.html',
+    return render_template('candidates/today.html',
                            user=current_user,
                            market_emotion=market_emotion,
                            user_fgi=user_fgi,
@@ -250,9 +250,9 @@ def get_user_candidates():
 
 ###### OLD ######
 
-@candidates.route('today_new', methods=['GET', 'POST'])
+@candidates.route('today_old', methods=['GET', 'POST'])
 @login_required
-def today_new():
+def today_old():
     last_update = db.session.query(LastUpdateSpyderData).order_by(
         LastUpdateSpyderData.start_process_time.desc()).first()
     bg_upd_color = "success" if datetime.now().date() == last_update.last_update_date.date() and not last_update.error_status else "danger"
@@ -267,7 +267,7 @@ def today_new():
     else:
         fgi_text_color = 'success'
     db_service.user_login_log(current_user, request.environ.get('HTTP_X_REAL_IP', request.remote_addr), request)
-    return render_template('candidates/today.html',
+    return render_template('candidates/today_old.html',
                            user=current_user,
                            market_emotion=market_emotion,
                            user_fgi=user_fgi,
