@@ -7998,7 +7998,8 @@ var returningCustomerRateInit = function returningCustomerRateInit() {
           symbol: 'none',
           smooth: false,
           hoverAnimation: true
-        }, {
+        },
+        {
           name: 'Returning',
           type: 'line',
           data: monthNumbers[0],

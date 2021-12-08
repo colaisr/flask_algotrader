@@ -23,7 +23,7 @@ Stock Score | Today
                             <p class="fs--1 mb-0 text-500">Market State</p>
                         </div>
                     </div>
-                    <div class="chart-container pt-3 d-lg-none today_emotion_box" data-bs-toggle="modal" data-bs-target="#emotion-modal" style="right: 5%; position: relative; height:75px; width:115px">
+                    <div class="modal-cursor chart-container pt-3 d-lg-none today_emotion_box" data-bs-toggle="modal" data-bs-target="#emotion-modal" style="right: 5%; position: relative; height:75px; width:115px">
                         <canvas class="mt-n3" id="marketEmotion-mobile" width="90" height="90"></canvas>
                         <p class="mb-0 text-center fs--4 mt-n5 text-{{fgi_text_color}}">{{ market_emotion.fgi_value}}</p>
                         <p class="mb-0 text-center fs--2 text-800">Market Emotion</p>
@@ -31,7 +31,7 @@ Stock Score | Today
                     </div>
                 </div>
                 <div class="col-md-auto p-3 d-none d-lg-inline" data-bs-toggle="modal" data-bs-target="#emotion-modal">
-                    <div class="chart-container pt-2 today_emotion_box" style="position: relative; height:100px; width:120px;">
+                    <div class="modal-cursor chart-container pt-2 today_emotion_box" style="position: relative; height:100px; width:120px;">
                         <canvas class="mt-n3" id="marketEmotion" width="90" height="90"></canvas>
                         <p class="mb-0 text-center fs--4 mt-n5 text-{{fgi_text_color}}">{{ market_emotion.fgi_value}}</p>
                         <p class="mb-0 text-center fs--2 text-800">Market Emotion</p>

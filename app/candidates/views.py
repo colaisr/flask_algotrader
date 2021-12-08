@@ -204,9 +204,9 @@ def info(ticker):
     in_list = candidate_in_list is not None
     m_data = TickerData.query.filter_by(ticker=ticker).order_by(TickerData.updated_server_time.desc()).first()
     last_update = m_data.updated_server_time.date()
-    bg_upd_color = "badge-success" if datetime.now().date() == last_update else "badge-warning"
+    bg_upd_color = "success" if datetime.now().date() == last_update else "warning"
     user_settings = UserSetting.query.filter_by(email=current_user.email).first()
-    score_bg = "bg-warning" if m_data.algotrader_rank is None or m_data.algotrader_rank < user_settings.algo_min_algotrader_rank else "bg-success"
+    score_bg = "warning" if m_data.algotrader_rank is None or m_data.algotrader_rank < user_settings.algo_min_algotrader_rank else "success"
     td_history = TickerData.query.filter_by(ticker=ticker).order_by(TickerData.updated_server_time.asc()).all()
     hist_data = []
     tooltips = db_service.get_tooltips()
@@ -279,9 +279,9 @@ def today_new():
                            form=None)
 
 
-@candidates.route('/info_new/<ticker>', methods=['GET'])
+@candidates.route('/info_old/<ticker>', methods=['GET'])
 @login_required
-def info_new(ticker):
+def info_old(ticker):
     ticker = ticker.upper()
     candidate = Candidate.query.filter_by(ticker=ticker).first()
     if candidate is None:
@@ -291,15 +291,15 @@ def info_new(ticker):
     in_list = candidate_in_list is not None
     m_data = TickerData.query.filter_by(ticker=ticker).order_by(TickerData.updated_server_time.desc()).first()
     last_update = m_data.updated_server_time.date()
-    bg_upd_color = "success" if datetime.now().date() == last_update else "warning"
+    bg_upd_color = "badge-success" if datetime.now().date() == last_update else "badge-warning"
     user_settings = UserSetting.query.filter_by(email=current_user.email).first()
-    score_bg = "warning" if m_data.algotrader_rank is None or m_data.algotrader_rank < user_settings.algo_min_algotrader_rank else "success"
+    score_bg = "bg-warning" if m_data.algotrader_rank is None or m_data.algotrader_rank < user_settings.algo_min_algotrader_rank else "bg-success"
     td_history = TickerData.query.filter_by(ticker=ticker).order_by(TickerData.updated_server_time.asc()).all()
     hist_data = []
     tooltips = db_service.get_tooltips()
     for td in td_history:
         hist_data.append([td.updated_server_time.strftime("%Y-%m-%d"), td.algotrader_rank])
-    return render_template('candidates/ticker_info_new.html', user_settings=user_settings,
+    return render_template('candidates/ticker_info_old.html', user_settings=user_settings,
                            candidate=candidate,
                            market_data=m_data,
                            last_update=last_update,
