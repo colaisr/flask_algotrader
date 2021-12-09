@@ -147,6 +147,7 @@ Stock Score | Stock Info
         </div>
     </div>
 </div>
+<div class="echart-line-chart-example" style="min-height: 300px;" data-echart-responsive="true"></div>
 
 <div class="row ticket-info-tabs">
     <div class="col">
@@ -156,6 +157,8 @@ Stock Score | Stock Info
               <li class="nav-item"><a class="nav-link" id="news-tab" data-bs-toggle="tab" href="#tab-news" role="tab" aria-controls="tab-news" aria-selected="false">News</a></li>
               <li class="nav-item"><a class="nav-link" id="insiders-tab" data-bs-toggle="tab" href="#tab-insiders" role="tab" aria-controls="tab-insiders" aria-selected="false">Insiders</a></li>
               <li class="nav-item"><a class="nav-link" id="press-relises-tab" data-bs-toggle="tab" href="#tab-press-relises" role="tab" aria-controls="tab-press-relises" aria-selected="false">Press Relises</a></li>
+              <li class="nav-item"><a class="nav-link" id="technicals-tab" data-bs-toggle="tab" href="#tab-technicals" role="tab" aria-controls="tab-technicals" aria-selected="false">Technical</a></li>
+
             </ul>
             <div class="tab-content border-x border-bottom p-3" id="ticker-info-tubs-content">
                 <div class="tab-pane fade show active" id="tab-fundamentals" role="tabpanel" aria-labelledby="fundamentals-tab">
@@ -212,6 +215,15 @@ Stock Score | Stock Info
                         </div>
                     </div>
                 </div>
+                <div class="tab-pane fade" id="tab-technicals" role="tabpanel" aria-labelledby="technicals-tab">
+                    <div class="main-card mb-3 card">
+                        <div class="card-body tab-technicals-card" style="position: relative;">
+                            <div class="div-content" >
+                                coming soon
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -244,8 +256,12 @@ var hist_data = '{{ hist_data|tojson }}';
 <script type="text/javascript" src="{{ url_for('static', filename='scripts/pages/snp_graph.js') }}"></script>
 <script type="text/javascript" src="{{ url_for('static', filename='scripts/pages/spyder_project.js') }}"></script>
 <script type="text/javascript" src="{{ url_for('static', filename='scripts/pages/ticker_info_new.js') }}"></script>
-{% endblock %}
 
+<script src="https://unpkg.com/dayjs@1.8.21/dayjs.min.js"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='scripts/pages/echarts-example-cola.js') }}"></script>
+
+{% endblock %}
+echarts-example-tickerinfo.js
 {% block modal %}
 <div style="display: none" id="ticker-info-modal"></div>
 {% endblock %}
