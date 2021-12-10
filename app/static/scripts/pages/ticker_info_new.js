@@ -10,7 +10,7 @@ $(document).ready(function () {
     get_fundamentals_summary();
     get_fundamentals_feed();
     get_company_info();
-    fill_container_ticker_info(ticker); //from spider_project.js
+//    fill_container_ticker_info(ticker); //from spider_project.js
 
     setInterval(function(){
        get_fmp_ticker_data(ticker);

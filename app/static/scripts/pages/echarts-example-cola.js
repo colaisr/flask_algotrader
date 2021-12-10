@@ -5,146 +5,174 @@ if(window.location.hostname == '127.0.0.1'){
 }
 
 $(document).ready(function () {
-echartsLineChartInit();
+    echart_ticker_info_base();
 
 
 });
 
-function echartsLineChartInit() {
-  var $lineChartEl = document.querySelector('.echart-line-chart-example');
+function echart_ticker_info_base() {
+    var $stockChart = document.querySelector('.echart-test');
+    if($stockChart){
+        url = domane + 'data_hub/historical_daily_price_full/'+ticker
+        $.getJSON(url, function(data) {
+            data=data['historical']
+            var arr = data.reverse();
+            var score_arr = [];
+            arr = get_data_by_period(arr, 3);
+            dateList = arr.map(function (item) {
+                return item.date;
+            });
+            valueList = arr.map(function (item) {
+                return item.close.toFixed(2);
+            });
 
-  if ($lineChartEl) {
-      $.getJSON(url, function(data) {
-        data=data['historical']
-        var arr = [];
-        var score_arr = [];
-        for (d of data)
-        {
-            parsed_d=Date.parse(d.date);
-            arr.push( [parsed_d , d.close ]);
-        }
-        dateList = arr.map(function (item) {
-          return item[0];
-        });
-        valueList = arr.map(function (item) {
-          return item[1];
-        });
-//        hist_data=jQuery.parseJSON(hist_data)
-//        for (t of hist_data){
-////            if(t[1]>0){
-////                parsed_d=Date.parse(t[0]);
-////                score_arr.push( [parsed_d , t[1] ]);
-////            }
-//            parsed_d=Date.parse(t[0]);
-//            score_arr.push( [parsed_d , t[1] ]);
-//        }
-
-            // Get options from data attribute
-    var userOptions = utils.getData($lineChartEl, 'options');
-    var chart = window.echarts.init($lineChartEl);
-
-    var months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-    var data = [1272, 1301, 1402, 1216, 1086, 1236, 1219, 1330, 1367, 1416, 1297, 1204];
-
-    var _tooltipFormatter2 = function _tooltipFormatter2(params) {
-      return "\n      <div>\n          <h6 class=\"fs--1 text-700 mb-0\">\n            <span class=\"fas fa-circle me-1\" style='color:".concat(params[0].borderColor, "'></span>\n            ").concat(params[0].name, " : ").concat(params[0].value, "\n          </h6>\n      </div>\n      ");
-    };
-
-    var getDefaultOptions = function getDefaultOptions() {
-      return {
-        tooltip: {
-          trigger: 'axis',
-          padding: [7, 10],
-          backgroundColor: utils.getGrays()['100'],
-          borderColor: utils.getGrays()['300'],
-          textStyle: {
-            color: utils.getColors().dark
-          },
-          borderWidth: 1,
-          formatter: _tooltipFormatter2,
-          transitionDuration: 0,
-          position: function position(pos, params, dom, rect, size) {
-            return getPosition(pos, params, dom, rect, size);
-          },
-          axisPointer: {
-            type: 'none'
-          }
-        },
-        xAxis: {
-          type: 'category',
-          data: dateList,
-          boundaryGap: false,
-          axisLine: {
-            lineStyle: {
-              color: utils.getGrays()['300']
+            if(jQuery.type(hist_data) === "string"){
+                 hist_data=jQuery.parseJSON(hist_data);
             }
-          },
-          axisTick: {
-            show: false
-          },
-          axisLabel: {
-            color: utils.getGrays()['400'],
-            formatter: function formatter(value) {
-              return value.substring(0, 3);
-            },
-            margin: 15
-          },
-          splitLine: {
-            show: false
-          }
-        },
-        yAxis: {
-          type: 'value',
-          splitLine: {
-            lineStyle: {
-              type: 'dashed',
-              color: utils.getGrays()['200']
-            }
-          },
-          boundaryGap: false,
-          axisLabel: {
-            show: true,
-            color: utils.getGrays()['400'],
-            margin: 15
-          },
-          axisTick: {
-            show: false
-          },
-          axisLine: {
-            show: false
-          },
-          min: 600
-        },
-        series: [{
-          type: 'line',
-          data: valueList,
-          itemStyle: {
-            color: utils.getGrays().white,
-            borderColor: utils.getColor('primary'),
-            borderWidth: 2
-          },
-          lineStyle: {
-            color: utils.getColor('primary')
-          },
-          showSymbol: false,
-          symbol: 'circle',
-          symbolSize: 10,
-          smooth: false,
-          hoverAnimation: true
-        }],
-        grid: {
-          right: '3%',
-          left: '10%',
-          bottom: '10%',
-          top: '5%'
-        }
-      };
-    };
 
-    echartSetOption(chart, userOptions, getDefaultOptions);
+            hist_data = get_data_by_period(hist_data, 3);
 
-    })
+            hist_dateList = hist_data.map(function (item) {
+                return item[0];
+            });
+            hist_valueList = hist_data.map(function (item) {
+                return item[1].toFixed(2);
+            });
 
+            var chart = window.echarts.init($stockChart);
+            var options = {
+                color:[utils.getColors().primary, utils.getColors().warning],
+                tooltip: {
+                    trigger: 'axis',
+                    position: function (pt) {
+                        return [pt[0], '10%'];
+                    },
+                },
+                toolbox: {
+                    feature: {
+                        dataZoom: {show: true},
+                        dataView: { show: true, readOnly: true },
+                        restore: { show: true },
+                        saveAsImage: { show: true }
+                    },
+                    orient: 'vertical',
+                    top: '20%',
+                    right: '3%',
+                },
+                xAxis: [
+                    {
+                        type: 'category',
+                        data: dateList,
+                        boundaryGap: false
+                    },
+                    {
+                        type: 'category',
+                        data: hist_dateList,
+                        boundaryGap: false,
+                        show: false
+                    }
+                ],
+                yAxis: [
+                    {
+                        type: 'value',
+                        name: 'Close Price',
+                        min: function (value) {
+                            return (value.min - 20).toFixed(0);
+                        },
+                        interval: 30,
+                        axisLabel: {
+                            formatter: '{value} $'
+                        },
+                        axisLine: {
+                            lineStyle: {
+                                color: utils.getColors().primary
+                            }
+                        }
+                    },
+                    {
+                        type: 'value',
+                        name: 'Stock Score',
+                        min: function (value) {
+                            return (value.min - 1).toFixed(0);
+                        },
+                        interval: 3,
+                        axisLabel: {
+                            formatter: '{value}'
+                        },
+                        axisLine: {
+                            lineStyle: {
+                                color: utils.getColors().warning
+                            }
+                        }
+                    }
+                ],
+                dataZoom: [
+                    {
+                        type: 'inside',
+                        start: 0,
+                        end: 100
+                    },
+                    {
+                        start: 0,
+                        end: 100
+                    }
+                ],
+                series: [
+                    {
+                        type: 'line',
+                        name: 'Close Price',
+                        data: valueList,
+                        symbol: 'none',
+                        smooth: true,
+                        hoverAnimation: true,
+                        areaStyle: {
+                            color: {
+                                type: 'linear',
+                                x: 0,
+                                y: 0,
+                                x2: 0,
+                                y2: 1,
+                                colorStops: [{
+                                        offset: 0,
+                                        color: utils.rgbaColor(utils.getColors().primary, 0.5)
+                                    }, {
+                                        offset: 1,
+                                        color: utils.rgbaColor(utils.getColors().primary, 0)
+                                }]
+                            }
+                        }
+                    },
+                    {
+                        type: 'line',
+                        name: 'Stock Score',
+                        yAxisIndex: 1,
+                        xAxisIndex: 1,
+                        data: hist_valueList,
+                        symbol: 'none',
+                        smooth: true,
+                        hoverAnimation: true,
+                        areaStyle: {
+                            color: {
+                                type: 'linear',
+                                x: 0,
+                                y: 0,
+                                x2: 0,
+                                y2: 1,
+                                colorStops: [{
+                                        offset: 0,
+                                        color: utils.rgbaColor(utils.getColors().warning, 0.5)
+                                    }, {
+                                        offset: 1,
+                                        color: utils.rgbaColor(utils.getColors().warning, 0)
+                                }]
+                            }
+                        }
+                    }
+                ]
+            };
 
-  }
+            chart.setOption(options);
+        })
+    }
 };
+

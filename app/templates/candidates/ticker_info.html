@@ -140,14 +140,44 @@ Stock Score | Stock Info
     </div>
 </div>
 
-<div class="row">
+<!--<div class="row">-->
+<!--    <div class="col">-->
+<!--        <div class="card mb-1">-->
+<!--            <div id="container" style="width:100%; height:380px;"></div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</div>-->
+
+<div class="row mb-2">
     <div class="col">
-        <div class="card mb-1">
-            <div id="container" style="width:100%; height:380px;"></div>
+        <div class="card mb-1 echart-area">
+            <div class="echart-header d-md-inline-flex m-3">
+                <div>
+                    Zoom
+                    <span class="ms-2">
+                        <input type="radio" class="btn-check" name="echart_options" id="echart_option_1" autocomplete="off">
+                        <label class="btn btn-primary btn-sm echart-btn" for="echart_option_1" data-function-name="ticker_info" data-period="1">1m</label>
+
+                        <input checked type="radio" class="btn-check" name="echart_options" id="echart_option_2" autocomplete="off">
+                        <label class="btn btn-primary btn-sm echart-btn" for="echart_option_2" data-function-name="ticker_info" data-period="3">3m</label>
+
+                        <input type="radio" class="btn-check" name="echart_options" id="echart_option_3" autocomplete="off">
+                        <label class="btn btn-primary btn-sm echart-btn" for="echart_option_3" data-function-name="ticker_info" data-period="6">6m</label>
+
+                        <input type="radio" class="btn-check" name="echart_options" id="echart_option_4" autocomplete="off">
+                        <label class="btn btn-primary btn-sm echart-btn" for="echart_option_4" data-function-name="ticker_info" data-period="12">1y</label>
+
+                        <input type="radio" class="btn-check" name="echart_options" id="echart_option_5" autocomplete="off">
+                        <label class="btn btn-primary btn-sm echart-btn" for="echart_option_5" data-function-name="ticker_info" data-period="-1">All</label>
+                    </span>
+                </div>
+                <div class="col text-center fw-bold">{{candidate.ticker}} Stock Price</div>
+            </div>
+            <div class="echart-test" style="min-height: 300px;" data-echart-responsive="true"></div>
         </div>
     </div>
 </div>
-<div class="echart-line-chart-example" style="min-height: 300px;" data-echart-responsive="true"></div>
+
 
 <div class="row ticket-info-tabs">
     <div class="col">
@@ -256,9 +286,6 @@ var hist_data = '{{ hist_data|tojson }}';
 <script type="text/javascript" src="{{ url_for('static', filename='scripts/pages/snp_graph.js') }}"></script>
 <script type="text/javascript" src="{{ url_for('static', filename='scripts/pages/spyder_project.js') }}"></script>
 <script type="text/javascript" src="{{ url_for('static', filename='scripts/pages/ticker_info_new.js') }}"></script>
-
-<script src="https://unpkg.com/dayjs@1.8.21/dayjs.min.js"></script>
-<script type="text/javascript" src="{{ url_for('static', filename='scripts/pages/echarts-example-cola.js') }}"></script>
 
 {% endblock %}
 echarts-example-tickerinfo.js
