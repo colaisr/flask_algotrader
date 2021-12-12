@@ -6,6 +6,8 @@ if(window.location.hostname == '127.0.0.1'){
 
 var TICKER_INFO_DATA = [];
 var TICKER_INFO_HIST_DATA = [];
+var TODAY_SNP = []
+var TODAY_EMOTION = []
 
 $(document).ready(function () {
     $('.echart-btn').on('click',function(){
@@ -45,7 +47,7 @@ function change_period(period, function_name){
             })
             hist_data = hist_data.reverse();
         }
-        var $stockChart = document.querySelector('.echart-test');
+        var $stockChart = document.querySelector('.echart-icker-info');
         draw_echart_ticker_info_base(base_arr, hist_data, $stockChart);
     }
 }
@@ -78,7 +80,7 @@ function echart_yAxis(name, diff, interval, label, color){
     };
 }
 
-function echart_series(name, axis_index, data, color){
+function echart_series(name, data, axis_index=0, color=utils.getColors().primary, lineWidth=2){
     return {
                 type: 'line',
                 name: name,
@@ -103,12 +105,32 @@ function echart_series(name, axis_index, data, color){
                                 color: utils.rgbaColor(color, 0)
                         }]
                     }
+                },
+                lineStyle:{
+                    width: lineWidth
                 }
             };
 }
 
+function echart_legend(selected){
+    return {
+        inactiveColor: '#777',
+        show: true,
+        type: "plain",
+        selected: selected,
+//        tooltip:
+    };
+}
+
 function echart_default_options(){
     return {
+                title: {
+                    show: false,
+                    text: '',
+                    textStyle: {
+                        fontWeight: 'bold'
+                    }
+                },
                 color:[],
                 tooltip: {
                     trigger: 'axis',
@@ -149,7 +171,7 @@ function echart_default_options(){
                                 return table;
                             }
                         },
-                        restore: { show: true },
+//                        restore: { show: true },
                         saveAsImage: { show: true }
                     },
                     orient: 'vertical',
@@ -171,8 +193,6 @@ function echart_default_options(){
                 ],
                 series: [],
                 legend: {
-                    data: [],
-                    inactiveColor: '#777',
                     show: false
                 }
             };
@@ -185,7 +205,7 @@ function echart_default_options(){
 
 //***** TICKER INFO *****//
 function echart_ticker_info_base() {
-    var $stockChart = document.querySelector('.echart-test');
+    var $stockChart = document.querySelector('.echart-icker-info');
     if($stockChart){
         url = domane + 'data_hub/historical_daily_price_full/'+ticker
         $.getJSON(url, function(data) {
@@ -213,10 +233,9 @@ function echart_ticker_info_base_options(dateList, hist_dateList, valueList, his
     options.xAxis.push(echart_xAxis(hist_dateList, false));
     options.yAxis.push(echart_yAxis('Close Price',20, 30, '{value} $', utils.getColors().primary));
     options.yAxis.push(echart_yAxis('Stock Score',1, 3, '{value}', utils.getColors().warning));
-    options.series.push(echart_series('Close Price', 0, valueList, utils.getColors().primary));
-    options.series.push(echart_series('Stock Score', 1, hist_valueList, utils.getColors().warning));
-    options.legend.data.push('Close Price');
-    options.legend.data.push('Stock Score');
+    options.series.push(echart_series('Close Price', valueList));
+    options.series.push(echart_series('Stock Score', hist_valueList, 1, utils.getColors().light, 0.7));
+    options.legend = echart_legend({'Stock Score': false});
 //    options.legend.show = true;
     return options;
 }
@@ -237,6 +256,184 @@ function draw_echart_ticker_info_base(base_arr, hist_data, $stockChart){
     var chart = window.echarts.init($stockChart);
     var options = echart_ticker_info_base_options(dateList, hist_dateList, valueList, hist_valueList);
     chart.setOption(options);
+}
+
+
+//***** TODAY *****//
+
+function echart_today_emotion() {
+    var $snpChart = document.querySelector('.echart-today-snp');
+    var $emotionChart = document.querySelector('.echart-today-emotion');
+    var emotion_settings = parseInt($('#user-emotion').val());
+    if($snpChart){
+        var url_emotion = '/algotradersettings/get_all_emotions'
+        var url_snp = '/algotradersettings/get_complete_graph_for_ticker/^GSPC';
+
+//        if(is_settings_modal){
+//            var loading = $(".emotion-loading")
+//            var spinner = $('<div class="spinner-border text-info" role="status"><span class="sr-only">Loading...</span></div>');
+//            loading.empty();
+//            $(".emotion-filter").empty();
+//            $(".emotion-fixed-filter-text").empty();
+//            loading.append(spinner);
+//        }
+
+        Promise.all([
+          $.ajax({ url: url_emotion }),
+          $.ajax({ url: url_snp })
+        ])
+        .then(([emotion, snp]) => {
+
+            //***** EMOTIONS DATA *****//
+            emotion = emotion.historical;
+            TODAY_EMOTION = emotion.historical;
+//            var pos_emotion_arr=[];
+//            var date_index = new Date();
+//            var index = 0;
+//            for (e of emotion)
+//            {
+//                var date_e = new Date(e.score_time);
+//                var parsed_e = Date.parse(date_e.toDateString());
+//                main_emotion.push( [parsed_e , e.fgi_value]);
+//                if(is_settings_modal){
+//                    main_reports_emotion.push( [parsed_e , e.fgi_value]);
+//                }
+//            }
+
+            var emotion_dic = get_days_for_snp_backtesting(emotion_settings, TODAY_EMOTION, true);
+
+            //***** DRAW EMOTION CHART *****//
+            if(!is_settings_modal){
+                var emotion_chart = draw_graph('container_emotion', 'Market Emotion', emotion_dic.series, 4, true, false);
+            }
+
+            //***** SNP DATA *****//
+            snp=snp.historical
+            for (d of snp)
+            {
+                var date_d = new Date(d.Date);
+                var parsed_d = Date.parse(date_d.toDateString());
+                main_snp.push([parsed_d , d.Close]);
+            }
+            if(is_settings_modal){
+                $.each(reports, function(k,d)
+                {
+                    var date_d = new Date(d.report_time);
+                    var parsed_d = Date.parse(date_d.toDateString());
+                    main_reports.push([parsed_d , d.net_liquidation]);
+                })
+            }
+
+
+            var snp_chart = draw_snp_chart(main_snp, emotion_dic.days_arr, [emotion_dic.series[0]], is_settings_modal,'container_sp500');
+            if(is_settings_modal){
+    //            var report_chart = draw_snp_chart(main_reports, emotion_dic.days_arr, [emotion_dic.series[0]], is_settings_modal,'reports_emotion');
+                var dic = get_snp_series_by_emotion(main_reports, emotion_dic.days_arr, [emotion_dic.series[0]]);
+                var series = []
+                var main = {
+                    name: "Reports",
+                    data: main_reports,
+                    id: 'dataseries_report',
+    //                enableMouseTracking: false
+                };
+                series.push(main);
+                series = $.merge(series, dic.series);
+                var new_arr = $.merge(series, [emotion_dic.series[0]]);
+                var snp_chart = draw_graph('reports_emotion', 'Reports', new_arr, 4, true, true);
+                var hidden_series = snp_chart.series[new_arr.length - 1];
+                hidden_series.hide();
+            }
+        });
+    }
+};
+
+function get_days_for_snp_backtesting(emotion_settings, main_emotion, is_with_emotion_series){
+    var days_arr=[];
+    var pos_emotion_arr=[];
+    var pos_emotion_arr_negative = []
+
+    var date_index = new Date();
+    var index = 0;
+
+    var date_index_negative = new Date();
+    var index_negative = 0;
+    for (e of main_emotion)
+    {
+        var date = new Date(e[0]);
+        if(e[1] >= emotion_settings){
+            days_arr.push(e[0]);
+
+            if(is_with_emotion_series){
+                date.setDate(date.getDate() - 1);
+                if(date.toDateString() == date_index.toDateString() && index > 0){
+                    var pos_emotion = $(pos_emotion_arr).get(-1);
+                    date.setDate(date.getDate() + 1);
+                    pos_emotion.push(e);
+                }
+                else
+                {
+                    date.setDate(date.getDate() + 1);
+                    var new_pos_emotion = [];
+                    new_pos_emotion.push(e);
+                    pos_emotion_arr.push(new_pos_emotion);
+                }
+                date_index = date;
+                index += 1;
+            }
+        }
+        else if(is_with_emotion_series){
+            date.setDate(date.getDate() - 1);
+            if(date.toDateString() == date_index_negative.toDateString() && index_negative > 0){
+                var pos_emotion = $(pos_emotion_arr_negative).get(-1);
+                date.setDate(date.getDate() + 1);
+                pos_emotion.push(e);
+            }
+            else
+            {
+                date.setDate(date.getDate() + 1);
+                var new_pos_emotion = [];
+                new_pos_emotion.push(e);
+                pos_emotion_arr_negative.push(new_pos_emotion);
+            }
+            date_index_negative = date;
+            index_negative += 1;
+        }
+    }
+
+    var series = []
+    var main = {
+        name: 'Emotion',
+        data: main_emotion,
+        id: 'dataseries',
+    };
+    series.push(main);
+    if(is_with_emotion_series)
+    {
+        var i =0;
+        for (arr of pos_emotion_arr_negative){
+            var range = {
+                name: 'EmotionColor',
+                data: arr,
+                color: '#FF0000',
+                id: 'dataseries_neg' + i,
+            };
+            series.push(range);
+            i += 1;
+        }
+        i =0;
+        for (arr of pos_emotion_arr){
+            var range = {
+                name: 'Emotion',
+                data: arr,
+                color: '#00c36f',
+                id: 'dataseries' + i,
+            };
+            series.push(range);
+            i += 1;
+        }
+    }
+
+    return {days_arr: days_arr, series: series};
 }
 
 
