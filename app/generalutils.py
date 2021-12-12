@@ -82,7 +82,8 @@ def api_request_get(url):
 def api_request_post(url, request_data):
     data = urllib.parse.urlencode(request_data)
     data = data.encode('ascii')
-    response = urllib.request.urlopen(url, data)
+    context = ssl.create_default_context(cafile=certifi.where())
+    response = urllib.request.urlopen(url, data, context=context)
     return response.read()
 
 
