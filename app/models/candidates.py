@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from .. import db
 
 
@@ -18,6 +20,7 @@ class Candidate(db.Model):
     logo = db.Column('logo', db.String)
     website = db.Column('website', db.String)
     isActivelyTrading_fmp = db.Column('isActivelyTrading_fmp', db.Boolean)
+    added_at = db.Column('added_at', db.DateTime)
 
     enabled = db.Column('enabled', db.Boolean)
 
@@ -25,6 +28,7 @@ class Candidate(db.Model):
         candidate = Candidate.query.filter((Candidate.email == self.email) & (Candidate.ticker == self.ticker)).first()
 
         if candidate is None:
+            self.added_at = datetime.utcnow()
             db.session.add(self)
         else:
             candidate.ticker = self.ticker
