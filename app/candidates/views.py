@@ -212,6 +212,9 @@ def info(ticker):
     tooltips = db_service.get_tooltips()
     for td in td_history:
         hist_data.append([td.updated_server_time.strftime("%Y-%m-%d"), td.algotrader_rank])
+
+    # from app.api_service.api_service import similar_api
+    # similar_stocks=similar_api(ticker)
     return render_template('candidates/ticker_info.html', user_settings=user_settings,
                            candidate=candidate,
                            market_data=m_data,

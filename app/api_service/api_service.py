@@ -82,3 +82,9 @@ def search_api(query):
             f"{spyder_url}/data_hub/search/{query}")
     data = general.api_request_get(url)
     return data
+
+def similar_api(ticker):
+    url = (
+            f"{spyder_url}/data_hub/similar/{ticker}")
+    data = general.api_request_get(url)
+    return data
