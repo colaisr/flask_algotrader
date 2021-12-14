@@ -255,10 +255,30 @@ Stock Score | Stock Info
                 </div>
                 <div class="tab-pane fade" id="tab-technicals" role="tabpanel" aria-labelledby="technicals-tab">
                     <div class="main-card mb-3 card">
-                        <div class="card-body tab-technicals-card" style="position: relative;">
-                            <div class="div-content" >
-                                coming soon
+                        <div class="card-body tab-technicals-card echart-area">
+                            <div class="echart-header d-md-inline-flex m-3">
+                                <div>
+                                    Zoom
+                                    <span class="ms-2">
+                                        <input type="radio" class="btn-check" name="echart_options" id="echart_technical_option_1" autocomplete="off">
+                                        <label class="btn btn-primary btn-sm echart-btn" for="echart_technical_option_1" data-function-name="ticker_info_technical" data-period="1">1m</label>
+
+                                        <input checked type="radio" class="btn-check" name="echart_options" id="echart_technical_option_2" autocomplete="off">
+                                        <label class="btn btn-primary btn-sm echart-btn" for="echart_technical_option_2" data-function-name="ticker_info_technical" data-period="3">3m</label>
+
+                                        <input type="radio" class="btn-check" name="echart_options" id="echart_technical_option_3" autocomplete="off">
+                                        <label class="btn btn-primary btn-sm echart-btn" for="echart_technical_option_3" data-function-name="ticker_info_technical" data-period="6">6m</label>
+
+                                        <input type="radio" class="btn-check" name="echart_options" id="echart_technical_option_4" autocomplete="off">
+                                        <label class="btn btn-primary btn-sm echart-btn" for="echart_technical_option_4" data-function-name="ticker_info_technical" data-period="12">1y</label>
+
+                                        <input type="radio" class="btn-check" name="echart_options" id="echart_technical_option_5" autocomplete="off">
+                                        <label class="btn btn-primary btn-sm echart-btn" for="echart_technical_option_5" data-function-name="ticker_info_technical" data-period="-1">All</label>
+                                    </span>
+                                </div>
+                                <div class="col text-center fw-bold">Technical indicators (period:10)</div>
                             </div>
+                            <div class="echart-icker-info-technical" style="min-height: 300px;" data-echart-responsive="true"></div>
                         </div>
                     </div>
                 </div>

@@ -6,8 +6,19 @@ if(window.location.hostname == '127.0.0.1'){
 
 var TICKER_INFO_DATA = [];
 var TICKER_INFO_HIST_DATA = [];
+var TICKER_INFO_TECHNICAL_SMA = []
+var TICKER_INFO_TECHNICAL_EMA = []
+var TICKER_INFO_TECHNICAL_WMA = []
+var TICKER_INFO_TECHNICAL_DEMA = []
+var TICKER_INFO_TECHNICAL_TEMA = []
+var TICKER_INFO_TECHNICAL_WILLIAMS = []
+var TICKER_INFO_TECHNICAL_RSI = []
+var TICKER_INFO_TECHNICAL_ADX = []
+var TICKER_INFO_TECHNICAL_STANDARD_DEVIATION = []
+//*********************************
 var TODAY_SNP = []
 var TODAY_EMOTION = []
+//*********************************
 
 $(document).ready(function () {
     $('.echart-btn').on('click',function(){
@@ -17,6 +28,7 @@ $(document).ready(function () {
     })
 
     echart_ticker_info_base();
+    echart_ticker_info_technical();
 
 });
 
@@ -182,13 +194,23 @@ function echart_default_options(){
                 yAxis: [],
                 dataZoom: [
                     {
-                        type: 'inside',
-                        start: 0,
-                        end: 100
+                        textStyle: {
+                            color: '#8392A5'
+                        },
+                        handleIcon: 'path://M10.7,11.9v-1.3H9.3v1.3c-4.9,0.3-8.8,4.4-8.8,9.4c0,5,3.9,9.1,8.8,9.4v1.3h1.3v-1.3c4.9-0.3,8.8-4.4,8.8-9.4C19.5,16.3,15.6,12.2,10.7,11.9z M13.3,24.4H6.7V23h6.6V24.4z M13.3,19.6H6.7v-1.4h6.6V19.6z',
+                        dataBackground: {
+                            areaStyle: {
+                                color: '#8392A5'
+                            },
+                            lineStyle: {
+                                opacity: 0.8,
+                                color: '#8392A5'
+                            }
+                        },
+                        brushSelect: true
                     },
                     {
-                        start: 0,
-                        end: 100
+                        type: 'inside'
                     }
                 ],
                 series: [],
@@ -257,6 +279,233 @@ function draw_echart_ticker_info_base(base_arr, hist_data, $stockChart){
     var options = echart_ticker_info_base_options(dateList, hist_dateList, valueList, hist_valueList);
     chart.setOption(options);
 }
+
+//***** TICKER INFO TECHNICAL ****//
+
+function echart_ticker_info_technical() {
+    var $stockChart = document.querySelector('.echart-icker-info-technical');
+    if($stockChart){
+        var url_sma = domane + 'data_hub/technical_indicators?ticker=' + ticker + '&type=sma';
+        var url_ema = domane + 'data_hub/technical_indicators?ticker=' + ticker + '&type=ema';
+        var url_wma = domane + 'data_hub/technical_indicators?ticker=' + ticker + '&type=wma';
+        var url_dema = domane + 'data_hub/technical_indicators?ticker=' + ticker + '&type=dema';
+        var url_tema = domane + 'data_hub/technical_indicators?ticker=' + ticker + '&type=tema';
+        var url_williams = domane + 'data_hub/technical_indicators?ticker=' + ticker + '&type=williams';
+        var url_rsi = domane + 'data_hub/technical_indicators?ticker=' + ticker + '&type=rsi';
+        var url_adx = domane + 'data_hub/technical_indicators?ticker=' + ticker + '&type=adx';
+        var url_standard_deviation = domane + 'data_hub/technical_indicators?ticker=' + ticker + '&type=standardDeviation';
+        Promise.all([
+            $.ajax({ url: url_sma }),
+            $.ajax({ url: url_ema }),
+            $.ajax({ url: url_wma }),
+            $.ajax({ url: url_dema }),
+            $.ajax({ url: url_tema }),
+            $.ajax({ url: url_williams }),
+            $.ajax({ url: url_rsi }),
+            $.ajax({ url: url_adx }),
+            $.ajax({ url: url_standard_deviation })
+        ])
+        .then(([sma, ema, wma, dema, tema, williams, rsi, adx, standard_deviation]) => {
+            TICKER_INFO_TECHNICAL_SMA = sma.reverse();
+            TICKER_INFO_TECHNICAL_EMA = ema.reverse();
+            TICKER_INFO_TECHNICAL_WMA = wma.reverse();
+            TICKER_INFO_TECHNICAL_DEMA = dema.reverse();
+            TICKER_INFO_TECHNICAL_TEMA = tema.reverse();
+            TICKER_INFO_TECHNICAL_WILLIAMS = williams.reverse();
+            TICKER_INFO_TECHNICAL_RSI = rsi.reverse();
+            TICKER_INFO_TECHNICAL_ADX = adx.reverse();
+            TICKER_INFO_TECHNICAL_STANDARD_DEVIATION = standard_deviation.reverse();
+
+            var arr_sma = get_data_by_period(TICKER_INFO_TECHNICAL_SMA, 3);
+            var arr_ema = get_data_by_period(TICKER_INFO_TECHNICAL_EMA, 3);
+            var arr_wma = get_data_by_period(TICKER_INFO_TECHNICAL_WMA, 3);
+            var arr_dema = get_data_by_period(TICKER_INFO_TECHNICAL_DEMA, 3);
+            var arr_tema = get_data_by_period(TICKER_INFO_TECHNICAL_TEMA, 3);
+            var arr_williams = get_data_by_period(TICKER_INFO_TECHNICAL_WILLIAMS, 3);
+            var arr_rsi = get_data_by_period(TICKER_INFO_TECHNICAL_RSI, 3);
+            var arr_adx = get_data_by_period(TICKER_INFO_TECHNICAL_ADX, 3);
+            var arr_standard_deviation = get_data_by_period(TICKER_INFO_TECHNICAL_STANDARD_DEVIATION, 3);
+
+            draw_echart_ticker_info_technical(arr_sma, arr_ema, arr_wma, arr_dema, arr_tema, arr_williams, arr_rsi, arr_adx, arr_standard_deviation, $stockChart);
+        });
+    }
+};
+
+function echart_ticker_info_technical_options(dateList, valueList, sma, ema, wma, dema, tema, williams, rsi, adx, standard_deviation){
+    var options = echart_default_options();
+    options.color.push(utils.getColors().primary);
+    options.color.push('#dd4b39');
+    options.color.push('#009688');
+    options.color.push('#ffeb3b');
+    options.color.push('#dd870a');
+    options.color.push('#726d6d');
+    options.color.push('#43d8eb');
+    options.color.push('#d258e7');
+    options.color.push('#879505');
+    options.xAxis.push(echart_xAxis(dateList, true));
+    options.yAxis.push(echart_yAxis('',20, 200, '{value} $', utils.getColors().primary));
+    var series = [
+    {
+      type: 'candlestick',
+      name: 'Day',
+      data: valueList,
+      itemStyle: {
+        color: '#FD1050',
+        color0: '#0CF49B',
+        borderColor: '#FD1050',
+        borderColor0: '#0CF49B'
+      }
+    },
+    {
+      name: 'SMA',
+      type: 'line',
+      data: sma,
+      smooth: true,
+      showSymbol: false,
+      lineStyle: {
+        width: 1
+      }
+    },
+    {
+      name: 'EMA',
+      type: 'line',
+      data: ema,
+      smooth: true,
+      showSymbol: false,
+      lineStyle: {
+        width: 1
+      }
+    },
+    {
+      name: 'WMA',
+      type: 'line',
+      data: wma,
+      smooth: true,
+      showSymbol: false,
+      lineStyle: {
+        width: 1
+      }
+    },
+    {
+      name: 'DEMA',
+      type: 'line',
+      data: dema,
+      smooth: true,
+      showSymbol: false,
+      lineStyle: {
+        width: 1
+      }
+    },
+    {
+      name: 'TEMA',
+      type: 'line',
+      data: tema,
+      smooth: true,
+      showSymbol: false,
+      lineStyle: {
+        width: 1
+      }
+    },
+    {
+      name: 'WILLIAMS',
+      type: 'line',
+      data: williams,
+      smooth: true,
+      showSymbol: false,
+      lineStyle: {
+        width: 1
+      }
+    },
+    {
+      name: 'RSI',
+      type: 'line',
+      data: rsi,
+      smooth: true,
+      showSymbol: false,
+      lineStyle: {
+        width: 1
+      }
+    },
+    {
+      name: 'ADX',
+      type: 'line',
+      data: adx,
+      smooth: true,
+      showSymbol: false,
+      lineStyle: {
+        width: 1
+      }
+    },
+    {
+      name: 'Standart Deviation',
+      type: 'line',
+      data: standard_deviation,
+      smooth: true,
+      showSymbol: false,
+      lineStyle: {
+        width: 1
+      }
+    }
+  ];
+    options.series = series;
+    options.legend = {
+        data: ['SMA', 'EMA','WMA','DEMA','TEMA','WILLIAMS','RSI','ADX','Standart Deviation'],
+        inactiveColor: '#777',
+        selected: {
+            'EMA': false,
+            'WMA': false,
+            'DEMA': false,
+            'TEMA': false,
+            'WILLIAMS': false,
+            'RSI': false,
+            'ADX': false,
+            'Standart Deviation': false
+        }
+  };
+    options.legend.show = true;
+    return options;
+}
+
+function draw_echart_ticker_info_technical(arr_sma, arr_ema, arr_wma, arr_dema, arr_tema, arr_williams, arr_rsi, arr_adx, arr_standard_deviation, $stockChart){
+    dateList = arr_sma.map(function (item) {
+        return item.date;
+    });
+    valueList = arr_sma.map(function (item) {
+        return [+item.open, +item.close, +item.low, +item.high];
+    });
+    sma = arr_sma.map(function (item) {
+        return item.sma;
+    });
+    ema = arr_ema.map(function (item) {
+        return item.ema;
+    });
+    wma = arr_wma.map(function (item) {
+        return item.wma;
+    });
+    dema = arr_dema.map(function (item) {
+        return item.dema;
+    });
+    tema = arr_tema.map(function (item) {
+        return item.tema;
+    });
+    williams = arr_williams.map(function (item) {
+        return item.williams;
+    });
+    rsi = arr_rsi.map(function (item) {
+        return item.rsi;
+    });
+    adx = arr_adx.map(function (item) {
+        return item.adx;
+    });
+    standard_deviation = arr_standard_deviation.map(function (item) {
+        return item.standardDeviation;
+    });
+    var chart = window.echarts.init($stockChart);
+    var options = echart_ticker_info_technical_options(dateList, valueList, sma, ema, wma, dema, tema, williams, rsi, adx, standard_deviation);
+    chart.setOption(options);
+}
+
+//*******************************************************************************
 
 
 //***** TODAY *****//
