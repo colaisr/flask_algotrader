@@ -1,0 +1,47 @@
+{% extends 'layouts/base.html' %}
+{% block page_title %}
+Stock Score | Trader Station
+{% endblock %}
+
+{% block styles %}
+{% endblock %}
+
+{% block content %}
+<!--title row-->
+<div class="row mb-3">
+    <div class="col">
+        <div class="card bg-100 shadow-none border">
+            <div class="row gx-0 p-2 flex-between-center">
+Trader Station
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="row">
+    <div class="col">
+        <div class="card mb-1">
+            Current positions
+        </div>
+    </div>
+</div>
+
+<div class="row mb-2">
+    <div class="col">
+        <div class="card mb-1">
+Candidates
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}
+{% block scripting %}
+
+<script type="text/javascript" src="{{ url_for('static', filename='scripts/pages/trader_station.js') }}"></script>
+
+{% endblock %}
+
+{% block modal %}
+{% endblock %}
