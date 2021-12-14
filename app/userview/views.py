@@ -28,6 +28,8 @@ userview = Blueprint('userview', __name__)
 def traderstationstate():
     if not current_user.admin_confirmed:
         return redirect(url_for('station.registration_steps', step=1))
+    if current_user.subscription_type_id==2:
+        return render_template('userview/trader_station.html')
     market_emotion = db.session.query(Fgi_score).order_by(Fgi_score.score_time.desc()).first()
     settings = UserSetting.query.filter_by(email=current_user.email).first()
     user_fgi = settings.algo_min_emotion
