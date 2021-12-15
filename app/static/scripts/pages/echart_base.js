@@ -62,6 +62,19 @@ function change_period(period, function_name){
         var $stockChart = document.querySelector('.echart-icker-info');
         draw_echart_ticker_info_base(base_arr, hist_data, $stockChart);
     }
+    else if(function_name == 'ticker_info_technical'){
+        var arr_sma = get_data_by_period(TICKER_INFO_TECHNICAL_SMA, period);
+            var arr_ema = get_data_by_period(TICKER_INFO_TECHNICAL_EMA, period);
+            var arr_wma = get_data_by_period(TICKER_INFO_TECHNICAL_WMA, period);
+            var arr_dema = get_data_by_period(TICKER_INFO_TECHNICAL_DEMA, period);
+            var arr_tema = get_data_by_period(TICKER_INFO_TECHNICAL_TEMA, period);
+            var arr_williams = get_data_by_period(TICKER_INFO_TECHNICAL_WILLIAMS, period);
+            var arr_rsi = get_data_by_period(TICKER_INFO_TECHNICAL_RSI, period);
+            var arr_adx = get_data_by_period(TICKER_INFO_TECHNICAL_ADX, period);
+            var arr_standard_deviation = get_data_by_period(TICKER_INFO_TECHNICAL_STANDARD_DEVIATION, period);
+            var $technicalChart = document.querySelector('.echart-icker-info-technical');
+            draw_echart_ticker_info_technical(arr_sma, arr_ema, arr_wma, arr_dema, arr_tema, arr_williams, arr_rsi, arr_adx, arr_standard_deviation, $technicalChart);
+    }
 }
 
 function echart_xAxis(data, is_show){
@@ -332,18 +345,6 @@ function echart_ticker_info_technical() {
 };
 
 function echart_ticker_info_technical_options(dateList, valueList, sma, ema, wma, dema, tema, williams, rsi, adx, standard_deviation){
-    var options = echart_default_options();
-    options.color.push(utils.getColors().primary);
-    options.color.push('#dd4b39');
-    options.color.push('#009688');
-    options.color.push('#ffeb3b');
-    options.color.push('#dd870a');
-    options.color.push('#726d6d');
-    options.color.push('#43d8eb');
-    options.color.push('#d258e7');
-    options.color.push('#879505');
-    options.xAxis.push(echart_xAxis(dateList, true));
-    options.yAxis.push(echart_yAxis('',20, 200, '{value} $', utils.getColors().primary));
     var series = [
     {
       type: 'candlestick',
@@ -409,6 +410,8 @@ function echart_ticker_info_technical_options(dateList, valueList, sma, ema, wma
     {
       name: 'WILLIAMS',
       type: 'line',
+      xAxisIndex: 1,
+      yAxisIndex: 1,
       data: williams,
       smooth: true,
       showSymbol: false,
@@ -419,6 +422,8 @@ function echart_ticker_info_technical_options(dateList, valueList, sma, ema, wma
     {
       name: 'RSI',
       type: 'line',
+      xAxisIndex: 1,
+      yAxisIndex: 1,
       data: rsi,
       smooth: true,
       showSymbol: false,
@@ -429,6 +434,8 @@ function echart_ticker_info_technical_options(dateList, valueList, sma, ema, wma
     {
       name: 'ADX',
       type: 'line',
+      xAxisIndex: 1,
+      yAxisIndex: 1,
       data: adx,
       smooth: true,
       showSymbol: false,
@@ -439,6 +446,8 @@ function echart_ticker_info_technical_options(dateList, valueList, sma, ema, wma
     {
       name: 'Standart Deviation',
       type: 'line',
+      xAxisIndex: 1,
+      yAxisIndex: 1,
       data: standard_deviation,
       smooth: true,
       showSymbol: false,
@@ -447,22 +456,148 @@ function echart_ticker_info_technical_options(dateList, valueList, sma, ema, wma
       }
     }
   ];
-    options.series = series;
-    options.legend = {
-        data: ['SMA', 'EMA','WMA','DEMA','TEMA','WILLIAMS','RSI','ADX','Standart Deviation'],
-        inactiveColor: '#777',
-        selected: {
-            'EMA': false,
-            'WMA': false,
-            'DEMA': false,
-            'TEMA': false,
-            'WILLIAMS': false,
-            'RSI': false,
-            'ADX': false,
-            'Standart Deviation': false
+
+    var options = {
+        tooltip: {
+            trigger: 'axis',
+            axisPointer: {
+                animation: false,
+                type: 'cross',
+                lineStyle: {
+                    color: '#376df4',
+                    width: 2,
+                    opacity: 1
+                }
+            }
+        },
+        toolbox: {
+            feature: {
+                dataZoom: {show: true},
+                dataView: {
+                    show: true,
+                    readOnly: true,
+                    optionToContent: function(opt) {
+                        var axisData = opt.xAxis[0].data;
+                        var series = opt.series;
+                        var table = '<table class="table table-striped overflow-hidden">'
+                                     +'<thead><tr class="btn-reveal-trigger">'
+                                     +'<th scope="col">Date</th>';
+                        for (var i = 0, l = series.length-1; i < l; i++) {
+                            table += '<th scope="col">' + series[i].name + '</th>';
+                        }
+                        table += '<th class="text-end" scope="col">' + series[series.length-1].name + '</th>'
+                                +'</tr></thead>'
+                                +'<tbody>';
+                        for (var i = 0, l = axisData.length; i < l; i++) {
+                            table += '<tr class="btn-reveal-trigger">'
+                                     + '<td>' + axisData[i] + '</td>';
+                            for (var k = 0, s = series.length-1; k < s; k++) {
+                                table += '<td>' + series[k].data[i] + '</td>';
+                            }
+                            table += '<td class="text-end">' + series[series.length-1].data[i] + '</td></tr>';
+                        }
+                        table += '</tbody></table>';
+                        return table;
+                    }
+                },
+                saveAsImage: { show: true }
+            }
+        },
+        grid: [
+            {
+                left: '5%',
+                right: '15%',
+                bottom: 200,
+                height: 200
+            },
+            {
+                left: '5%',
+                right: '15%',
+                height: 80,
+                bottom: 80
+            }
+        ],
+        xAxis: [
+            {
+                type: 'category',
+                scale: true,
+                data: dateList,
+                boundaryGap: false
+            },
+            {
+                type: 'category',
+                gridIndex: 1,
+                data: dateList,
+                axisLine: { onZero: false },
+                axisTick: { show: false },
+                splitLine: { show: false },
+                axisLabel: { show: false },
+                scale: true,
+                boundaryGap: false
+            }
+        ],
+        yAxis: [
+            {
+                type: 'value',
+                name: name,
+                min: function (value) {
+                    return (value.min - 20).toFixed(0);
+                },
+                interval: 20,
+                axisLabel: {
+                    formatter: '{value} $'
+                }
+            },
+            {
+                scale: true,
+                gridIndex: 1,
+                splitNumber: 2,
+                axisLabel: { show: false },
+                axisLine: { show: false },
+                axisTick: { show: false },
+                splitLine: { show: false }
+            }
+        ],
+        dataZoom: [
+            {
+                textStyle: {
+                    color: '#8392A5'
+                },
+                handleIcon: 'path://M10.7,11.9v-1.3H9.3v1.3c-4.9,0.3-8.8,4.4-8.8,9.4c0,5,3.9,9.1,8.8,9.4v1.3h1.3v-1.3c4.9-0.3,8.8-4.4,8.8-9.4C19.5,16.3,15.6,12.2,10.7,11.9z M13.3,24.4H6.7V23h6.6V24.4z M13.3,19.6H6.7v-1.4h6.6V19.6z',
+                dataBackground: {
+                    areaStyle: {
+                        color: '#8392A5'
+                    },
+                    lineStyle: {
+                        opacity: 0.8,
+                        color: '#8392A5'
+                    }
+                },
+                brushSelect: true
+            },
+            {
+                type: 'inside'
+            }
+        ],
+        series: series,
+        legend: {
+            data: ['SMA', 'EMA','WMA','DEMA','TEMA','WILLIAMS','RSI','ADX','Standart Deviation'],
+            inactiveColor: '#777',
+            selected: {
+                'EMA': false,
+                'WMA': false,
+                'DEMA': false,
+                'TEMA': false,
+                'WILLIAMS': false,
+                'RSI': false,
+                'ADX': false,
+                'Standart Deviation': false
+            },
+            orient: 'vertical',
+            right: 0,
+            top: 100
         }
-  };
-    options.legend.show = true;
+    };
     return options;
 }
 
@@ -471,34 +606,34 @@ function draw_echart_ticker_info_technical(arr_sma, arr_ema, arr_wma, arr_dema, 
         return item.date;
     });
     valueList = arr_sma.map(function (item) {
-        return [+item.open, +item.close, +item.low, +item.high];
+        return [+item.open.toFixed(2), +item.close.toFixed(2), +item.low.toFixed(2), +item.high.toFixed(2)];
     });
     sma = arr_sma.map(function (item) {
-        return item.sma;
+        return item.sma.toFixed(2);
     });
     ema = arr_ema.map(function (item) {
-        return item.ema;
+        return item.ema.toFixed(2);
     });
     wma = arr_wma.map(function (item) {
-        return item.wma;
+        return item.wma.toFixed(2);
     });
     dema = arr_dema.map(function (item) {
-        return item.dema;
+        return item.dema.toFixed(2);
     });
     tema = arr_tema.map(function (item) {
-        return item.tema;
+        return item.tema.toFixed(2);
     });
     williams = arr_williams.map(function (item) {
-        return item.williams;
+        return item.williams.toFixed(2);
     });
     rsi = arr_rsi.map(function (item) {
-        return item.rsi;
+        return item.rsi.toFixed(2);
     });
     adx = arr_adx.map(function (item) {
-        return item.adx;
+        return item.adx.toFixed(2);
     });
     standard_deviation = arr_standard_deviation.map(function (item) {
-        return item.standardDeviation;
+        return item.standardDeviation.toFixed(2);
     });
     var chart = window.echarts.init($stockChart);
     var options = echart_ticker_info_technical_options(dateList, valueList, sma, ema, wma, dema, tema, williams, rsi, adx, standard_deviation);
