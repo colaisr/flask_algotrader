@@ -8,7 +8,7 @@ from flask import (
     flash,
     redirect,
     request,
-    url_for
+    url_for, render_template
 )
 from flask_login import login_required, current_user
 from datetime import datetime
@@ -466,6 +466,13 @@ def get_command():
     else:
         return "The user configured for Get Command is not found on Server"
 
+@csrf.exempt
+@connections.route('/get_fitered_candidates_for_user', methods=['GET'])
+def get_fitered_candidates_for_user():
+    user = request.args.get('user')
+    candidates=retrieve_user_candidates(user)
+    # return jsonify({'data': render_template('partial/ticket_info_news.html', data=data)})
+    return render_template('partial/user_candidates.html',candidates=candidates)
 
 @csrf.exempt
 @connections.route('logrestartrequest/', methods=['POST'])
