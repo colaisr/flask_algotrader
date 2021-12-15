@@ -1,104 +1,42 @@
-<div id="tableExample" data-list='{"valueNames":["name","email","age"],"page":5,"pagination":true}'>
+                <div class="card-header">Tracked Candidates <span class="text-primary pr-2 pl-2"> {{ candidates|length }} </span>  Priority order : Algotrader Rank >
+                    Underprice > Momentum>Beta
+                </div>
+<div id="tableExample" data-list='{"valueNames":["ticker","price","age"],"page":5,"pagination":true}'>
   <div class="table-responsive scrollbar">
-    <table class="table table-bordered table-striped fs--1 mb-0">
+    <table id="filtered_candidates_table" class="table table-hover table-striped fs--1 mb-0">
       <thead class="bg-200 text-900">
         <tr>
-          <th class="sort" data-sort="name">Name</th>
-          <th class="sort" data-sort="email">Email</th>
-          <th class="sort" data-sort="age">Age</th>
+          <th class="sort" data-sort="ticker">Ticker</th>
+          <th class="sort" data-sort="price">Price</th>
+          <th class="sort text-center" data-sort="target">Buying Target</th>
+          <th class="sort text-center" data-sort="score">Score</th>
+          <th class="sort text-center" data-sort="underpriced">Underpriced %</th>
+          <th class="sort text-center" data-sort="momentum">Momentum</th>
+          <th class="sort text-center" data-sort="beta">Beta</th>
+
         </tr>
       </thead>
       <tbody class="list">
+      {% for value in candidates %}
+      {% if value['buying_target_price_fmp']>value['price'] %}
+        <tr style="background-color: chartreuse;">
+      {% else %}
         <tr>
-          <td class="name">Anna</td>
-          <td class="email">anna@example.com</td>
-          <td class="age">18</td>
+      {% endif %}
+          <td class="ticker">
+               <a href="/candidates/info/{{value['ticker']}}">
+                  {{value['ticker']}}
+              </a>
+          </td>
+          <td class="price">{{value['price']}}</td>
+          <td class="target text-center">{{value['buying_target_price_fmp']|round(2)}}</td>
+          <td class="score text-center">{{value['algotrader_rank']}}</td>
+          <td class="underpriced text-center">{{value['under_priced_pnt']}}</td>
+          <td class="momentum text-center">{{value['twelve_month_momentum']|round(1)}}</td>
+          <td class="beta text-center">{{value['beta']|round(2)}}</td>
         </tr>
-        <tr>
-          <td class="name">Homer</td>
-          <td class="email">homer@example.com</td>
-          <td class="age">35</td>
-        </tr>
-        <tr>
-          <td class="name">Oscar</td>
-          <td class="email">oscar@example.com</td>
-          <td class="age">52</td>
-        </tr>
-        <tr>
-          <td class="name">Emily</td>
-          <td class="email">emily@example.com</td>
-          <td class="age">30</td>
-        </tr>
-        <tr>
-          <td class="name">Jara</td>
-          <td class="email">jara@example.com</td>
-          <td class="age">25</td>
-        </tr>
-        <tr>
-          <td class="name">Clark</td>
-          <td class="email">clark@example.com</td>
-          <td class="age">39</td>
-        </tr>
-        <tr>
-          <td class="name">Jennifer</td>
-          <td class="email">jennifer@example.com</td>
-          <td class="age">52</td>
-        </tr>
-        <tr>
-          <td class="name">Tony</td>
-          <td class="email">tony@example.com</td>
-          <td class="age">30</td>
-        </tr>
-        <tr>
-          <td class="name">Tom</td>
-          <td class="email">tom@example.com</td>
-          <td class="age">25</td>
-        </tr>
-        <tr>
-          <td class="name">Michael</td>
-          <td class="email">michael@example.com</td>
-          <td class="age">39</td>
-        </tr>
-        <tr>
-          <td class="name">Antony</td>
-          <td class="email">antony@example.com</td>
-          <td class="age">39</td>
-        </tr>
-        <tr>
-          <td class="name">Raymond</td>
-          <td class="email">raymond@example.com</td>
-          <td class="age">52</td>
-        </tr>
-        <tr>
-          <td class="name">Marie</td>
-          <td class="email">marie@example.com</td>
-          <td class="age">30</td>
-        </tr>
-        <tr>
-          <td class="name">Cohen</td>
-          <td class="email">cohen@example.com</td>
-          <td class="age">25</td>
-        </tr>
-        <tr>
-          <td class="name">Rowen</td>
-          <td class="email">rowen@example.com</td>
-          <td class="age">39</td>
-        </tr>
+      {% endfor %}
       </tbody>
     </table>
-  </div>
-  <div class="row align-items-center mt-3">
-    <div class="pagination d-none"></div>
-    <div class="col">
-      <p class="mb-0 fs--1">
-        <span class="d-none d-sm-inline-block" data-list-info="data-list-info"></span>
-        <span class="d-none d-sm-inline-block"> &mdash; </span>
-        <a class="fw-semi-bold" href="#!" data-list-view="*">View all<span class="fas fa-angle-right ms-1" data-fa-transform="down-1"></span></a><a class="fw-semi-bold d-none" href="#!" data-list-view="less">View Less<span class="fas fa-angle-right ms-1" data-fa-transform="down-1"></span></a>
-      </p>
-    </div>
-    <div class="col-auto d-flex">
-      <button class="btn btn-sm btn-primary" type="button" data-list-pagination="prev"><span>Previous</span></button>
-      <button class="btn btn-sm btn-primary px-4 ms-2" type="button" data-list-pagination="next"><span>Next</span></button>
-    </div>
   </div>
 </div>

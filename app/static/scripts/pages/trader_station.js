@@ -19,6 +19,12 @@ function refresh_candidates_list(user_email){
         if(data.length >0){
         $('.candidates-table').empty();
         $('.candidates-table').append(data);
+
+        // Define value names
+        var table_filters = { valueNames: [ 'ticker', 'price', 'target','score','underpriced','momentum','beta' ] };
+
+        // Init list
+        var overviewList = new List('filtered_candidates_table', table_filters);
         }
         stop_loading('candidates-table');
     });

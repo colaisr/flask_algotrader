@@ -471,7 +471,19 @@ def get_command():
 def get_fitered_candidates_for_user():
     user = request.args.get('user')
     candidates=retrieve_user_candidates(user)
-    # return jsonify({'data': render_template('partial/ticket_info_news.html', data=data)})
+    tickers_string = ''
+    for t in candidates:
+        tickers_string += t['ticker']+','
+    # tickers_string = tickers_string[1:]
+    url = 'https://colak.eu.pythonanywhere.com/data_hub/current_stock_price_short/' + tickers_string
+    context = ssl.create_default_context(cafile=certifi.where())
+    response = urlopen(url, context=context)
+    data = response.read().decode("utf-8")
+    prices = json.loads(data)
+    for cand in candidates:
+        price=next(item for item in prices if item['symbol'] == cand['ticker'])
+        cand['price']=price['price']
+        f=3
     return render_template('partial/user_candidates.html',candidates=candidates)
 
 @csrf.exempt
