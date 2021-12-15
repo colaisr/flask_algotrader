@@ -90,6 +90,79 @@ Stock Score | Trader Station
 
 {% endblock %}
 {% block scripting %}
+<script>
+    var marketEmotionInit = function marketEmotionInit() {
+  var marketEmotionElement = document.getElementById('marketEmotion');
+
+  var getOptions = function getOptions() {
+    return {
+      type: 'doughnut',
+      data: {
+        labels: ['Emotion',''],
+        datasets: [{
+          data: [{{ market_emotion.fgi_value}}, 100 - {{ market_emotion.fgi_value}}],
+          backgroundColor: [utils.getColor('{{fgi_text_color}}'), utils.getColor('300')],
+          borderColor: [utils.getColor('{{fgi_text_color}}'), utils.getColor('300')]
+        }]
+      },
+      options: {
+        tooltips: {
+       enabled: false
+    },
+    responsive: true,
+    maintainAspectRatio: false,
+        rotation: -90,
+        circumference: '180',
+        cutout: '80%',
+        plugins: {
+          legend: {
+            display: false
+          }
+        }
+      }
+    };
+  };
+
+  chartJsInit(marketEmotionElement, getOptions);
+};
+
+    var marketEmotionMobileInit = function marketEmotionMobileInit() {
+  var marketEmotionMobileElement = document.getElementById('marketEmotion-mobile');
+
+  var getMobileOptions = function getOptions() {
+    return {
+      type: 'doughnut',
+      data: {
+        labels: ['Emotion',''],
+        datasets: [{
+          data: [{{ market_emotion.fgi_value}}, 100 - {{ market_emotion.fgi_value}}],
+          backgroundColor: [utils.getColor('{{fgi_text_color}}'), utils.getColor('300')],
+          borderColor: [utils.getColor('{{fgi_text_color}}'), utils.getColor('300')]
+        }]
+      },
+      options: {
+        tooltips: {
+       enabled: false
+    },
+    responsive: true,
+    maintainAspectRatio: false,
+        rotation: -90,
+        circumference: '180',
+        cutout: '80%',
+        plugins: {
+          legend: {
+            display: false
+          }
+        }
+      }
+    };
+  };
+
+  chartJsInit(marketEmotionMobileElement, getMobileOptions);
+};
+docReady(marketEmotionInit);
+docReady(marketEmotionMobileInit);
+</script>
 <script src="https://code.highcharts.com/stock/highstock.js"></script>
 <script src="https://code.highcharts.com/stock/modules/data.js"></script>
 <script src="https://code.highcharts.com/stock/modules/exporting.js"></script>
@@ -98,6 +171,7 @@ Stock Score | Trader Station
         integrity="sha512-VMsZqo0ar06BMtg0tPsdgRADvl0kDHpTbugCBBrL55KmucH6hP9zWdLIWY//OTfMnzz6xWQRxQqsUFefwHuHyg=="
         crossorigin="anonymous"></script>
 <script type="text/javascript" src="{{ url_for('static', filename='scripts/pages/snp_graph.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='scripts/pages/spyder_project.js') }}"></script>
 <script type="text/javascript" src="{{ url_for('static', filename='scripts/pages/trader_station.js') }}"></script>
 
 {% endblock %}
