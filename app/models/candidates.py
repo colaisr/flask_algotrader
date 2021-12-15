@@ -60,4 +60,7 @@ class Candidate(db.Model):
         d = {}
         d['ticker'] = self.ticker
         d['description'] = self.reason
+        d['company_name'] = self.company_name
+        d['logo'] = self.logo
+        d['added_at'] = self.added_at
         return d

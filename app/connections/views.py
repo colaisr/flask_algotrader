@@ -469,6 +469,7 @@ def get_command():
 @csrf.exempt
 @connections.route('/get_fitered_candidates_for_user', methods=['GET'])
 def get_fitered_candidates_for_user():
+    # for traderstation
     user = request.args.get('user')
     candidates=retrieve_user_candidates(user)
     tickers_string = ''
@@ -483,8 +484,31 @@ def get_fitered_candidates_for_user():
     for cand in candidates:
         price=next(item for item in prices if item['symbol'] == cand['ticker'])
         cand['price']=price['price']
-        f=3
     return render_template('partial/user_candidates.html',candidates=candidates)
+
+
+@csrf.exempt
+@connections.route('/get_favorites_for_user', methods=['GET'])
+def get_favorites_for_user():
+    # for traderstation
+    user = request.args.get('user')
+    candidates_o = Candidate.query.filter_by(email=user, enabled=True).all()
+    candidates=[]
+    for c in candidates_o:
+        candidates.append(c.to_dictionary())
+    tickers_string = ''
+    for t in candidates:
+        tickers_string += t['ticker']+','
+    # tickers_string = tickers_string[1:]
+    url = 'https://colak.eu.pythonanywhere.com/data_hub/current_stock_price_short/' + tickers_string
+    context = ssl.create_default_context(cafile=certifi.where())
+    response = urlopen(url, context=context)
+    data = response.read().decode("utf-8")
+    prices = json.loads(data)
+    for cand in candidates:
+        price=next(item for item in prices if item['symbol'] == cand['ticker'])
+        cand['price']=price['price']
+    return render_template('partial/user_favorites.html',candidates=candidates)
 
 @csrf.exempt
 @connections.route('logrestartrequest/', methods=['POST'])
