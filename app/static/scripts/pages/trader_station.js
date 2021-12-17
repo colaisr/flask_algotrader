@@ -1,9 +1,10 @@
 
-
+var user_email;
+var user_type;
 $(document).ready(function(){
     var emotion_settings = parseInt($('#user-emotion').val());
-    var user_email = $('#user-email').val();
-    var user_type = $('#user-type').val();
+    user_email = $('#user-email').val();
+    user_type = $('#user-type').val();
     var main_snp = [];
     var main_emotion = [];
     var count_days_emotion = 0;
@@ -15,10 +16,23 @@ $(document).ready(function(){
     else{
     refresh_positions_list(user_email)
     }
+    interval_start();
 
 
 
 })
+
+function interval_start(){
+    interval = setInterval(function(){
+    refresh_candidates_list(user_email);
+    if(user_type==2){
+    refresh_favorites_list(user_email);
+    }
+    else{
+    refresh_positions_list(user_email)
+    }
+    }, 15000);
+}
 
 function refresh_candidates_list(user_email){
     loading('candidates-table');
