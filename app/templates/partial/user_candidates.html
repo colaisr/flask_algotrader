@@ -1,5 +1,16 @@
-<div class="card-header">Tracked Stocks <span class="text-primary pr-2 pl-2"> {{ candidates|length }} </span>  Priority order : Score >
-    Underprice > Momentum > Beta
+
+<div class="card-header">
+    <div class="row flex-between-center">
+        <div class="col-auto">
+            Tracked Stocks <span class="text-primary pr-2 pl-2"> {{ candidates|length }} </span>  Priority order : Score >
+            Underprice > Momentum > Beta
+        </div>
+        <div class="col-auto">
+            <a href="/algotradersettings/usersettings">
+                  Preferences
+            </a>
+        </div>
+    </div>
 </div>
 <div id="tableExample" data-list='{"valueNames":["ticker","price","age"],"page":5,"pagination":true}'>
   <div class="table-responsive scrollbar">

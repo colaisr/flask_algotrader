@@ -23,9 +23,28 @@
               </a>
           </td>
           <td class="company_name">{{value['company_name']}}</td>
-          <td class="price text-center">{{value['price']}}</td>
-          <td class="today_pl text-center">{{value['change_today_percents']|round(2)}}</td>
-          <td class="general_pl text-center">{{value['change_complete_percents']|round(2)}}</td>
+          <td class="price text-center
+            {% if value['change_today_percents']>=0 %}
+            text-success
+            {% else %}
+            text-danger
+            {% endif %}
+            ">{{value['price']}}</td>
+          <td class="today_pl text-center
+
+            {% if value['change_today_percents']>=0 %}
+            text-success
+            {% else %}
+            text-danger
+            {% endif %}
+          ">{{value['change_today_percents']|round(2)}}</td>
+          <td class="general_pl text-center
+            {% if value['change_complete_percents']>=0 %}
+            text-success
+            {% else %}
+            text-danger
+            {% endif %}
+            ">{{value['change_complete_percents']|round(2)}}</td>
           <td class="added_at text-center">{{value['added_at']}}</td>
         </tr>
       {% endfor %}
@@ -36,10 +55,25 @@
 <div class="card-footer bg-light py-2">
                   <div class="row flex-between-center">
                     <div class="col-auto">
-                        Today P/L : {{ total_today_change|round(2) }} %
+                      <span>
+                        Today P/L : </span><span class="
+                                {% if total_today_change>=0 %}
+                                text-success
+                                {% else %}
+                                text-danger
+                                {% endif %}
+                    ">{{ total_today_change|round(2) }}</span> %
                     </div>
-                    <div class="col-auto">
-                        Total P/L : {{ total_complete_change|round(2) }} %
+                    <div class="col-auto"><span>
+                        Total P/L :</span><span class="
+
+                                {% if total_complete_change>=0 %}
+                                text-success
+                                {% else %}
+                                text-danger
+                                {% endif %}
+
+                           ">{{ total_complete_change|round(2) }}</span>  %
                     </div>
                   </div>
 </div>
