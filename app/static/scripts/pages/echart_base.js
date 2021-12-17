@@ -497,24 +497,24 @@ var _tooltipFormatter = function _tooltipFormatter(params) {
     var i = 0;
     if(params[0].axisIndex == 0){
         i = 1;
-        content += '<div class="fs--1 text-700 d-flex justify-content-between">'
+        content += '<div class="fs--1 text-700 d-flex">'
                 + '<span class="fas fa-circle fa-xs align-self-center" style="color:' + params[0].color + '"></span><span class="ps-1">'
-                + 'open</span><span class="ps-3 ws-bold">' + params[0].value[1] + '</span></div>'
-                + '<div class="fs--1 text-700 d-flex justify-content-between">'
+                + 'open</span><span class="ps-3 ws-bold ms-auto">' + params[0].value[1] + '</span></div>'
+                + '<div class="fs--1 text-700 d-flex">'
                 + '<span class="fas fa-circle fa-xs align-self-center" style="color:' + params[0].color + '"></span><span class="ps-1">'
-                + 'close</span><span class="ps-3 ws-bold">' + params[0].value[2] + '</span></div>'
-                + '<div class="fs--1 text-700 d-flex justify-content-between">'
+                + 'close</span><span class="ps-3 ws-bold ms-auto">' + params[0].value[2] + '</span></div>'
+                + '<div class="fs--1 text-700 d-flex">'
                 + '<span class="fas fa-circle fa-xs align-self-center" style="color:' + params[0].color + '"></span><span class="ps-1">'
-                + 'lowest</span><span class="ps-3 ws-bold">' + params[0].value[3] + '</span></div>'
-                + '<div class="fs--1 text-700 d-flex justify-content-between">'
+                + 'lowest</span><span class="ps-3 ws-bold ms-auto">' + params[0].value[3] + '</span></div>'
+                + '<div class="fs--1 text-700 d-flex">'
                 + '<span class="fas fa-circle fa-xs align-self-center" style="color:' + params[0].color + '"></span><span class="ps-1">'
-                + 'highest</span><span class="ps-3 ws-bold">' + params[0].value[4] + '</span></div>';
+                + 'highest</span><span class="ps-3 ws-bold ms-auto">' + params[0].value[4] + '</span></div>';
     }
 
     for (i, l = params.length; i < l; i++) {
-        content += '<div class="fs--1 text-700 d-flex justify-content-between">'
+        content += '<div class="fs--1 text-700 d-flex">'
                    + '<span class="fas fa-circle align-self-center" style="color: ' + get_color(params[i].seriesName) + '"></span><span class="ps-1">'
-                   + params[i].seriesName + '</span><span class="ps-3 ws-bold">' + params[i].value + '</span></div>';
+                   + params[i].seriesName + '</span><span class="ps-3 ws-bold ms-auto">' + params[i].value + '</span></div>';
     }
     content += '</div></div>';
     return content;

@@ -257,6 +257,20 @@ function fill_container_ticker_info(ticker){
     })
 }
 
+function similar_companies(ticker){
+    url = domane + 'data_hub/similar/' + ticker
+    $.getJSON(url, function(data) {
+        $.each(data[0].peersList, function(i, item)
+        {
+            var ticker_item = '<a href="/candidates/info/' + item + '"><div class="card overflow-hidden">'
+                +'<div class="bg-holder bg-card" style="background-image:url(/static/falcon/assets/img/icons/spot-illustrations/corner-5.png);"></div>'
+                +'<div class="card-body position-relative">'
+                +'<div class="display-4 fs-1 mb-2 fw-normal font-sans-serif text-primary" >' + item + '</div></div></div></a>';;
+
+            $('.similar-companies').append(ticker_item);
+        })
+    })
+}
 
 
 

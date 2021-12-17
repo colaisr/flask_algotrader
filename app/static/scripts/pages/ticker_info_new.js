@@ -10,6 +10,7 @@ $(document).ready(function () {
     get_fundamentals_summary();
     get_fundamentals_feed();
     get_company_info();
+    similar_companies(ticker);
 //    fill_container_ticker_info(ticker); //from spider_project.js
 
     setInterval(function(){
@@ -44,6 +45,7 @@ $(document).ready(function () {
 
 
 })
+
 
 function get_company_info(){
     $.getJSON("/api/company_info",{ticker: ticker}, function(data) {
