@@ -1,4 +1,5 @@
 import json
+import app.generalutils as general
 import ssl
 from urllib.request import urlopen
 
@@ -469,10 +470,145 @@ def get_command():
 @csrf.exempt
 @connections.route('/get_fitered_candidates_for_user', methods=['GET'])
 def get_fitered_candidates_for_user():
+    # for traderstation
     user = request.args.get('user')
     candidates=retrieve_user_candidates(user)
-    # return jsonify({'data': render_template('partial/ticket_info_news.html', data=data)})
+    tickers_string = ''
+    for t in candidates:
+        tickers_string += t['ticker']+','
+    # tickers_string = tickers_string[1:]
+    url = 'https://colak.eu.pythonanywhere.com/data_hub/current_stock_price_short/' + tickers_string
+    context = ssl.create_default_context(cafile=certifi.where())
+    response = urlopen(url, context=context)
+    data = response.read().decode("utf-8")
+    prices = json.loads(data)
+    for cand in candidates:
+        price=next(item for item in prices if item['symbol'] == cand['ticker'])
+        cand['price']=price['price']
     return render_template('partial/user_candidates.html',candidates=candidates)
+
+
+@csrf.exempt
+@connections.route('/get_favorites_for_user', methods=['GET'])
+def get_favorites_for_user():
+    # for traderstation
+    user = request.args.get('user')
+    candidates_o = Candidate.query.filter_by(email=user, enabled=True).all()
+    candidates=[]
+    for c in candidates_o:
+        candidates.append(c.to_dictionary())
+    tickers_string = ''
+    for t in candidates:
+        tickers_string += t['ticker']+','
+    # tickers_string = tickers_string[1:]
+    url = 'https://colak.eu.pythonanywhere.com/data_hub/current_stock_price_full/' + tickers_string
+    context = ssl.create_default_context(cafile=certifi.where())
+    response = urlopen(url, context=context)
+    data = response.read().decode("utf-8")
+    prices = json.loads(data)
+    total_today_change=0
+    total_complete_change=0
+    for cand in candidates:
+        price=next(item for item in prices if item['symbol'] == cand['ticker'])
+        cand['price']=price['price']
+        change=price['price']-cand['price_added']
+        change_percent=change/cand['price_added']*100
+        cand['change_complete_percents']=change_percent
+        total_complete_change+=change_percent
+        cand['change_today_percents'] = price['changesPercentage']
+        total_today_change+=price['changesPercentage']
+
+    return render_template('partial/user_favorites.html',candidates=candidates,total_complete_change=total_complete_change,total_today_change=total_today_change)
+
+@csrf.exempt
+@connections.route('/get_positions_for_user', methods=['GET'])
+def get_positions_for_user():
+    # for traderstation
+    user = request.args.get('user')
+    settings = UserSetting.query.filter_by(email=current_user.email).first()
+    report = Report.query.filter_by(email=current_user.email).first()
+    use_margin = settings.algo_allow_margin
+    report_interval = settings.server_report_interval_sec
+    if report is None:
+        open_positions = {}
+        open_orders = {}
+        candidates_live = {}
+    else:
+        report.reported_text = report.report_time.strftime("%d %b %H:%M:%S")
+        if report.started_time is not None:
+            report.started_time_text = report.started_time.strftime("%d %b %H:%M:%S")
+        else:
+            report.started_time_text = '---------------------'
+        report.last_worker_execution_text = report.last_worker_execution.strftime("%H:%M:%S")
+        report.market_time_text = report.market_time.strftime("%H:%M")
+        report.dailyPnl = round(report.dailyPnl, 2)
+        pnl_bg_box_color = 'bg-danger' if report.dailyPnl < 0 else 'bg-success'
+        report.remaining_sma_with_safety = round(report.remaining_sma_with_safety, 2)
+
+        open_positions = json.loads(report.open_positions_json)
+        open_orders = json.loads(report.open_orders_json)
+        report.all_positions_value = 0
+        sectors_dict = {}
+        for k, v in open_positions.items():
+            position = Position.query.filter_by(email=current_user.email, last_exec_side='BOT', ticker=k).first()
+            if position is not None:
+                delta = datetime.today() - position.opened
+                v['days_open'] = delta.days
+            else:
+                v['days_open'] = 0
+
+            profit = v['UnrealizedPnL'] / v['Value'] * 100 if v['Value'] != 0 else 0
+            v['profit_in_percents'] = profit
+            if v['stocks'] != 0:
+                report.all_positions_value += int(v['Value'])
+                v['last_bid'] = v['Value'] / v['stocks']
+            if profit > 0:
+                v['profit_class'] = 'text-success'
+                v['profit_progress_colour'] = 'bg-success'
+                v['profit_progress_percent'] = profit / 6 * 100
+            else:
+                v['profit_class'] = 'text-danger'
+                v['profit_progress_colour'] = 'bg-danger'
+                v['profit_progress_percent'] = abs(profit / 10 * 100)
+
+            candidate = Candidate.query.filter_by(ticker=k).first()
+            sectors_dict[candidate.sector] = sectors_dict[candidate.sector] + int(
+                v['Value']) if candidate.sector in sectors_dict.keys() else int(v['Value'])
+
+        graph_sectors = []
+        graph_sectors_values = []
+        for sec, val in sectors_dict.items():
+            graph_sectors.append(sec)
+            graph_sectors_values.append(val)
+
+        if not use_margin:
+            report.excess_liquidity = round(report.net_liquidation - report.all_positions_value, 1)
+
+        candidates_live = json.loads(report.candidates_live_json)
+        for k, v in candidates_live.items():
+            if 'target_price' not in v.keys():
+                v['target_price'] = 0
+
+        online = general.user_online_status(report.report_time, settings.station_interval_worker_sec)
+        api_error = False if report.api_connected else True
+    if report is not None:
+        if report.net_liquidation != 0:
+            report.pnl_percent = round(report.dailyPnl / report.net_liquidation * 100, 2)
+        else:
+            report.pnl_percent = 0
+    return render_template('partial/user_positions.html',
+                           graph_sectors=graph_sectors,
+                           graph_sectors_values=graph_sectors_values,
+                           online=online,
+                           api_error=api_error,
+                           report_interval=report_interval,
+                           report_time=report.report_time,
+                           open_positions=open_positions,
+                           open_orders=open_orders,
+                           report=report,
+                           margin_used=use_margin,
+                           pnl_bg_box_color=pnl_bg_box_color
+                           )
 
 @csrf.exempt
 @connections.route('logrestartrequest/', methods=['POST'])

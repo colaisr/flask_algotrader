@@ -154,7 +154,7 @@
                     </div>
                   </a>
                   {%endif%}
-                  {% if not current_user.is_admin() and current_user.subscription_type_id == 4 and current_user.admin_confirmed and current_user.signature%}
+                  {% if not current_user.is_admin()%}
                   <a class="nav-link" href="/userview/traderstationstate" role="button" aria-expanded="false">
                     <div class="d-flex align-items-center">
                       <span class="nav-link-icon">

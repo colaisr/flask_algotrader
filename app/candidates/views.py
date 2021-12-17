@@ -1,3 +1,8 @@
+import ssl
+from urllib.request import urlopen
+
+import certifi
+
 import app.generalutils as general
 import json
 from flask import (
@@ -155,6 +160,14 @@ def add_candidate_ajax():
     user_candidate.exchange_short = candidate.exchange_short
     user_candidate.website = candidate.website
     user_candidate.isActivelyTrading_fmp = candidate.isActivelyTrading_fmp
+
+    url = 'https://colak.eu.pythonanywhere.com/data_hub/current_stock_price_short/' + ticker
+    context = ssl.create_default_context(cafile=certifi.where())
+    response = urlopen(url, context=context)
+    data = response.read().decode("utf-8")
+    price = json.loads(data)[0]['price']
+    user_candidate.price_added=price
+
     user_candidate.update_candidate()
     candidates = get_user_candidates()
     return json.dumps(candidates, cls=general.JsonEncoder)

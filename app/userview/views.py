@@ -26,7 +26,7 @@ userview = Blueprint('userview', __name__)
 @userview.route('traderstationstate', methods=['GET', 'POST'])
 @login_required
 def traderstationstate():
-    if not current_user.admin_confirmed:
+    if not current_user.admin_confirmed and current_user.subscription_type_id == 4:
         return redirect(url_for('station.registration_steps', step=1))
     market_emotion = db.session.query(Fgi_score).order_by(Fgi_score.score_time.desc()).first()
     settings = UserSetting.query.filter_by(email=current_user.email).first()
@@ -114,42 +114,39 @@ def traderstationstate():
         else:
             report.pnl_percent = 0
 
-    if report is None:
-        return redirect(url_for('candidates.today'))
-    else:
-        if current_user.subscription_type_id == 2:
-            return render_template('userview/trader_station.html',
-                                   user=current_user,
-                                   market_emotion=market_emotion,
-                                   current_est_time=current_est_time,
-                                   trading_session_state=trading_session_state,
-                                   last_update_date=last_update.last_update_date.strftime("%d %b %H:%M"),
-                                   bg_upd_color=bg_upd_color,
-                                   fgi_text_color=fgi_text_color,
-                                   user_fgi=user_fgi)
-        else:
-            return render_template('userview/traderstationstate.html',
-                                   graph_sectors=graph_sectors,
-                                   graph_sectors_values=graph_sectors_values,
-                                   current_est_time=current_est_time,
-                                   online=online,
-                                   api_error=api_error,
-                                   trading_session_state=trading_session_state,
-                                   report_interval=report_interval,
-                                   report_time=report.report_time,
-                                   candidates_live=candidates_live,
-                                   open_positions=open_positions,
-                                   open_orders=open_orders,
-                                   user=current_user,
-                                   report=report,
-                                   margin_used=use_margin,
-                                   pnl_bg_box_color=pnl_bg_box_color,
-                                   last_update_date=last_update.last_update_date.strftime("%d %b %H:%M"),
-                                   bg_upd_color=bg_upd_color,
-                                   market_emotion=market_emotion,
-                                   fgi_text_color=fgi_text_color,
-                                   user_fgi=user_fgi,
-                                   form=None)
+    # if current_user.subscription_type_id == 2:
+    return render_template('userview/trader_station.html',
+                           user=current_user,
+                           market_emotion=market_emotion,
+                           current_est_time=current_est_time,
+                           trading_session_state=trading_session_state,
+                           last_update_date=last_update.last_update_date.strftime("%d %b %H:%M"),
+                           bg_upd_color=bg_upd_color,
+                           fgi_text_color=fgi_text_color,
+                           user_fgi=user_fgi)
+    # else:
+    #     return render_template('userview/traderstationstate.html',
+    #                            graph_sectors=graph_sectors,
+    #                            graph_sectors_values=graph_sectors_values,
+    #                            current_est_time=current_est_time,
+    #                            online=online,
+    #                            api_error=api_error,
+    #                            trading_session_state=trading_session_state,
+    #                            report_interval=report_interval,
+    #                            report_time=report.report_time,
+    #                            candidates_live=candidates_live,
+    #                            open_positions=open_positions,
+    #                            open_orders=open_orders,
+    #                            user=current_user,
+    #                            report=report,
+    #                            margin_used=use_margin,
+    #                            pnl_bg_box_color=pnl_bg_box_color,
+    #                            last_update_date=last_update.last_update_date.strftime("%d %b %H:%M"),
+    #                            bg_upd_color=bg_upd_color,
+    #                            market_emotion=market_emotion,
+    #                            fgi_text_color=fgi_text_color,
+    #                            user_fgi=user_fgi,
+    #                            form=None)
 
 
 def time_in_range(start, end, x):
