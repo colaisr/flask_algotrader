@@ -256,29 +256,58 @@ Stock Score | Stock Info
                 <div class="tab-pane fade" id="tab-technicals" role="tabpanel" aria-labelledby="technicals-tab">
                     <div class="main-card mb-3 card tab-technicals-card echart-area">
 <!--                        <div class="card-body tab-technicals-card echart-area">-->
-                            <div class="echart-header d-md-inline-flex m-3">
-                                <div>
-                                    Zoom
-                                    <span class="ms-2">
-                                        <input type="radio" class="btn-check" name="echart_options" id="echart_technical_option_1" autocomplete="off">
-                                        <label class="btn btn-primary btn-sm echart-btn" for="echart_technical_option_1" data-function-name="ticker_info_technical" data-period="1">1m</label>
+                        <div class="echart-header d-md-inline-flex m-3">
+                            <div>
+                                Zoom
+                                <span class="ms-2">
+                                    <input type="radio" class="btn-check echart-technical" name="echart_options" id="echart_technical_option_1" autocomplete="off" data-period="1">
+                                    <label class="btn btn-primary btn-sm echart-btn" for="echart_technical_option_1" data-function-name="ticker_info_technical" data-period="1">1m</label>
 
-                                        <input checked type="radio" class="btn-check" name="echart_options" id="echart_technical_option_2" autocomplete="off">
-                                        <label class="btn btn-primary btn-sm echart-btn" for="echart_technical_option_2" data-function-name="ticker_info_technical" data-period="3">3m</label>
+                                    <input checked type="radio" class="btn-check echart-technical" name="echart_options" id="echart_technical_option_2" autocomplete="off" data-period="3">
+                                    <label class="btn btn-primary btn-sm echart-btn" for="echart_technical_option_2" data-function-name="ticker_info_technical" data-period="3">3m</label>
 
-                                        <input type="radio" class="btn-check" name="echart_options" id="echart_technical_option_3" autocomplete="off">
-                                        <label class="btn btn-primary btn-sm echart-btn" for="echart_technical_option_3" data-function-name="ticker_info_technical" data-period="6">6m</label>
+                                    <input type="radio" class="btn-check echart-technical" name="echart_options" id="echart_technical_option_3" autocomplete="off" data-period="6">
+                                    <label class="btn btn-primary btn-sm echart-btn" for="echart_technical_option_3" data-function-name="ticker_info_technical" data-period="6">6m</label>
 
-                                        <input type="radio" class="btn-check" name="echart_options" id="echart_technical_option_4" autocomplete="off">
-                                        <label class="btn btn-primary btn-sm echart-btn" for="echart_technical_option_4" data-function-name="ticker_info_technical" data-period="12">1y</label>
+                                    <input type="radio" class="btn-check echart-technical" name="echart_options" id="echart_technical_option_4" autocomplete="off" data-period="12">
+                                    <label class="btn btn-primary btn-sm echart-btn" for="echart_technical_option_4" data-function-name="ticker_info_technical" data-period="12">1y</label>
 
-                                        <input type="radio" class="btn-check" name="echart_options" id="echart_technical_option_5" autocomplete="off">
-                                        <label class="btn btn-primary btn-sm echart-btn" for="echart_technical_option_5" data-function-name="ticker_info_technical" data-period="-1">All</label>
-                                    </span>
-                                </div>
-                                <div class="col text-center fw-bold">Technical indicators (period:10)</div>
+                                    <input type="radio" class="btn-check echart-technical" name="echart_options" id="echart_technical_option_5" autocomplete="off" data-period="-1">
+                                    <label class="btn btn-primary btn-sm echart-btn" for="echart_technical_option_5" data-function-name="ticker_info_technical" data-period="-1">All</label>
+                                </span>
                             </div>
-                            <div class="echart-icker-info-technical" style="min-height: 500px;" data-echart-responsive="true"></div>
+                            <div class="col text-center fw-bold">Technical indicators (period:10)</div>
+                        </div>
+                        <div class="echart-technical-legends ms-2">
+                            <input checked  type="checkbox" class="btn-check echart-legend" id="sma" autocomplete="off">
+                            <label class="btn btn-sm btn-outline-primary btn-check-technical jb-tooltip-info jb-info-45" data-tooltip-id="45" for="sma">SMA</label>
+
+                            <input type="checkbox" class="btn-check echart-legend" id="ema" autocomplete="off">
+                            <label class="btn btn-sm btn-outline-primary btn-check-technical jb-tooltip-info jb-info-46" data-tooltip-id="46" for="ema">EMA</label>
+
+                            <input type="checkbox" class="btn-check echart-legend" id="wma" autocomplete="off">
+                            <label class="btn btn-sm btn-outline-primary btn-check-technical jb-tooltip-info jb-info-47" data-tooltip-id="47" for="wma">WMA</label>
+
+                            <input type="checkbox" class="btn-check echart-legend" id="dema" autocomplete="off">
+                            <label class="btn btn-sm btn-outline-primary btn-check-technical jb-tooltip-info jb-info-48" data-tooltip-id="48" for="dema">DEMA</label>
+
+                            <input type="checkbox" class="btn-check echart-legend" id="tema" autocomplete="off">
+                            <label class="btn btn-sm btn-outline-primary btn-check-technical jb-tooltip-info jb-info-49" data-tooltip-id="49" for="tema">TEMA</label>
+
+                            <input type="checkbox" class="btn-check echart-legend" id="williams" autocomplete="off">
+                            <label class="btn btn-sm btn-outline-primary btn-check-technical jb-tooltip-info jb-info-50" data-tooltip-id="50" for="williams">WILLIAMS</label>
+
+                            <input type="checkbox" class="btn-check echart-legend" id="rsi" autocomplete="off">
+                            <label class="btn btn-sm btn-outline-primary btn-check-technical jb-tooltip-info jb-info-51" data-tooltip-id="51" for="rsi">RSI</label>
+
+                            <input type="checkbox" class="btn-check echart-legend" id="adx" autocomplete="off">
+                            <label class="btn btn-sm btn-outline-primary btn-check-technical jb-tooltip-info jb-info-44" data-tooltip-id="44" for="adx">ADX</label>
+
+                            <input type="checkbox" class="btn-check echart-legend" id="standardDeviation" autocomplete="off">
+                            <label class="btn btn-sm btn-outline-primary btn-check-technical jb-tooltip-info jb-info-52" data-tooltip-id="52" for="standardDeviation">Standart Deviation</label>
+                        </div>
+                        <div class="echart-ticker-info-technical" style="min-height: 500px;" data-echart-responsive="true"></div>
+
 <!--                        </div>-->
                     </div>
                 </div>
