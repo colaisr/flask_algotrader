@@ -97,7 +97,7 @@ Stock Score | Stock Info
                                 {% endif %}
                             </span>
                         </div>
-                        <div title="Todays good entry point. Based on 1 last year intraday volatility" class="justify-content-between align-items-center help-cursor ticker-data mr-2 badge btn-success">
+                        <div title="Todays good entry point. Based on 1 last year intraday volatility" class="buying_target_price_fmp justify-content-between align-items-center help-cursor ticker-data mr-2 badge btn-success">
                             <span class="float-start me-2">
                                 Buying trigger
                             </span>
@@ -332,6 +332,7 @@ var TOOLTIPS = {{ tooltips|tojson }};
 var company_name = '{{ candidate.company_name }}';
 var user_email = '{{ current_user.email }}';
 var hist_data = '{{ hist_data|tojson }}';
+var buying_target_price_fm = {{market_data.buying_target_price_fmp | round(1)}};
 </script>
 <script src="https://code.highcharts.com/stock/highstock.js"></script>
 <script src="https://code.highcharts.com/stock/modules/data.js"></script>

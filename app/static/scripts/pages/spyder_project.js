@@ -87,6 +87,16 @@ function get_fmp_ticker_data(ticker){
             $('.fmp-change').addClass('text-danger');
         }
         $('.fmp-last-close').html(data.previousClose.toFixed(2));
+        if(buying_target_price_fm >= data.price.toFixed(2)){
+            $('.buying_target_price_fmp').removeClass('btn-success');
+            $('.buying_target_price_fmp').removeClass('btn-warning');
+            $('.buying_target_price_fmp').addClass('btn-warning');
+        }
+        else{
+            $('.buying_target_price_fmp').removeClass('btn-success');
+            $('.buying_target_price_fmp').removeClass('btn-warning');
+            $('.buying_target_price_fmp').addClass('btn-success');
+        }
         if(data.pe != null){
             $('.fmp-pe').html(data.pe.toFixed(2));
             if(data.pe > avg_pe){
