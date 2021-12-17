@@ -9,6 +9,7 @@ Stock Score | Trader Station
 {% block content %}
 <input type="hidden" id="user-email" value="{{ user.email }}">
 <input type="hidden" id="user-emotion" value={{user_fgi}}>
+<input type="hidden" id="user-type" value={{user.subscription_type_id}}>
 
 <!--title row-->
 <div class="row mb-3">
@@ -17,7 +18,7 @@ Stock Score | Trader Station
             <div class="row gx-0 flex-between-center flex-fill">
                 <div class="col-sm-auto d-flex align-items-center justify-content-between">
                     <div class="d-flex align-items-center">
-                        <i class="far fa-newspaper fa-4x p-3"></i>
+                        <i class="far fa-window-restore fa-4x p-3"></i>
                         <div>
                             <h5 class="fw-bold mb-0">
                                 Trader Station
@@ -66,17 +67,27 @@ Stock Score | Trader Station
     </div>
 </div>
 
-
+{% if user.subscription_type_id == 2 %}
 <div class="row">
     <div class="col">
-        <div class="card mb-1">
+        <div class="card mb-4">
             <div class="favorites-table">
                 {% include 'layouts/loader.html' %}
             </div>
         </div>
     </div>
 </div>
-
+{% else %}
+<div class="row">
+    <div class="col">
+        <div class="card mb-1">
+            <div class="positions-table">
+                {% include 'layouts/loader.html' %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
 <div class="row mb-2">
     <div class="col">
         <div class="card mb-1">

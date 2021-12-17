@@ -1,1 +1,45 @@
-Favorites Performance
+<div class="card-header"><span class="text-primary pr-2 pl-2"> {{ candidates|length }} </span>  Favorites performance
+</div>
+<div data-list='{"valueNames":["ticker","price","age"],"page":5,"pagination":true}'>
+  <div class="table-responsive scrollbar">
+    <table id="filtered_favorites_table" class="table table-hover table-striped fs--1 mb-0">
+      <thead class="bg-200 text-900">
+        <tr>
+          <th class="sort" data-sort="ticker">Ticker</th>
+          <th class="sort" data-sort="company_name">Company</th>
+          <th class="sort text-center" data-sort="price">Price</th>
+          <th class="sort text-center" data-sort="today_pl">Today P/L %</th>
+          <th class="sort text-center" data-sort="general_pl">General P/L %</th>
+          <th class="sort text-center" data-sort="added_at">Added</th>
+
+        </tr>
+      </thead>
+      <tbody class="list">
+      {% for value in candidates %}
+        <tr>
+          <td class="ticker">
+               <a href="/candidates/info/{{value['ticker']}}">
+                  {{value['ticker']}}
+              </a>
+          </td>
+          <td class="company_name">{{value['company_name']}}</td>
+          <td class="price text-center">{{value['price']}}</td>
+          <td class="today_pl text-center">{{value['change_today_percents']|round(2)}}</td>
+          <td class="general_pl text-center">{{value['change_complete_percents']|round(2)}}</td>
+          <td class="added_at text-center">{{value['added_at']}}</td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+<div class="card-footer bg-light py-2">
+                  <div class="row flex-between-center">
+                    <div class="col-auto">
+                        Today P/L : {{ total_today_change|round(2) }} %
+                    </div>
+                    <div class="col-auto">
+                        Total P/L : {{ total_complete_change|round(2) }} %
+                    </div>
+                  </div>
+</div>

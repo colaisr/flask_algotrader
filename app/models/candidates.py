@@ -21,6 +21,7 @@ class Candidate(db.Model):
     website = db.Column('website', db.String)
     isActivelyTrading_fmp = db.Column('isActivelyTrading_fmp', db.Boolean)
     added_at = db.Column('added_at', db.DateTime)
+    price_added = db.Column('price_added', db.Float)
 
     enabled = db.Column('enabled', db.Boolean)
 
@@ -63,4 +64,5 @@ class Candidate(db.Model):
         d['company_name'] = self.company_name
         d['logo'] = self.logo
         d['added_at'] = self.added_at
+        d['price_added'] = self.price_added
         return d

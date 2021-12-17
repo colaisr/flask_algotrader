@@ -500,15 +500,32 @@ def get_favorites_for_user():
     for t in candidates:
         tickers_string += t['ticker']+','
     # tickers_string = tickers_string[1:]
-    url = 'https://colak.eu.pythonanywhere.com/data_hub/current_stock_price_short/' + tickers_string
+    url = 'https://colak.eu.pythonanywhere.com/data_hub/current_stock_price_full/' + tickers_string
     context = ssl.create_default_context(cafile=certifi.where())
     response = urlopen(url, context=context)
     data = response.read().decode("utf-8")
     prices = json.loads(data)
+    total_today_change=0
+    total_complete_change=0
     for cand in candidates:
         price=next(item for item in prices if item['symbol'] == cand['ticker'])
         cand['price']=price['price']
-    return render_template('partial/user_favorites.html',candidates=candidates)
+        change=price['price']-cand['price_added']
+        change_percent=change/cand['price_added']*100
+        cand['change_complete_percents']=change_percent
+        total_complete_change+=change_percent
+        cand['change_today_percents'] = price['changesPercentage']
+        total_today_change+=price['changesPercentage']
+
+    return render_template('partial/user_favorites.html',candidates=candidates,total_complete_change=total_complete_change,total_today_change=total_today_change)
+
+@csrf.exempt
+@connections.route('/get_positions_for_user', methods=['GET'])
+def get_positions_for_user():
+    # for traderstation
+    user = request.args.get('user')
+
+    return render_template('partial/user_positions.html')
 
 @csrf.exempt
 @connections.route('logrestartrequest/', methods=['POST'])
