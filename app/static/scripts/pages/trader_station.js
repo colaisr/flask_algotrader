@@ -59,11 +59,11 @@ function refresh_favorites_list(user_email){
         $('.favorites-table').empty();
         $('.favorites-table').append(data);
 
-//        // Define value names
-//        var table_filters = { valueNames: [ 'ticker', 'price', 'target','score','underpriced','momentum','beta' ] };
-//
-//        // Init list
-//        var overviewList = new List('filtered_candidates_table', table_filters);
+        // Define value names
+        var table_filters = { valueNames: [ 'ticker', 'company_name', 'price','today_pl','general_pl','added_at' ] };
+
+        // Init list
+        var overviewList = new List('filtered_favorites_table', table_filters);
         }
         stop_loading('favorites-table');
     });
