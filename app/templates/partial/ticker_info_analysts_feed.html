@@ -1,0 +1,43 @@
+<ul class="list-group list-group-flush">
+    {% for d in data %}
+        <li class="list-group-item">
+            <div class="row gx-0 flex-between-center flex-fill d-flex">
+                <div class="col-md-auto fs--1 align-self-start pt-sm-2 pt-md-0">
+                    {{d['date']}}
+                </div>
+                <div class="col flex-between-center flex-fill d-flex">
+                    <div class="border rounded-3 shadow-none p-2">
+                        <div class="border rounded-circle icon-item icon-item-md m-auto analysts-icon">
+                            {{d['analystRatingsStrongSell']}}
+                        </div>
+                        <div class="fs--1 text-center pt-1">Strong Sell</div>
+                    </div>
+                    <div class="border rounded-3 shadow-none p-2">
+                        <div class="border rounded-circle bg-info bg-gradient icon-item icon-item-md m-auto analysts-icon">
+                            {{d['analystRatingsSell']}}
+                        </div>
+                        <div class="fs--1 text-center pt-1">Sell</div>
+                    </div>
+                    <div class="border rounded-3 shadow-none p-2">
+                        <div class="border rounded-circle bg-info bg-gradient icon-item icon-item-md m-auto analysts-icon">
+                            {{d['analystRatingsHold']}}
+                        </div>
+                        <div class="fs--1 text-center pt-1">Hold</div>
+                    </div>
+                    <div class="border rounded-3 shadow-none p-2">
+                        <div class="border rounded-circle bg-info bg-gradient icon-item icon-item-md m-auto analysts-icon">
+                            {{d['analystRatingsbuy']}}
+                        </div>
+                        <div class="fs--1 text-center pt-1">Buy</div>
+                    </div>
+                    <div class="border rounded-3 shadow-none p-2">
+                        <div class="border rounded-circle bg-info bg-gradient icon-item icon-item-md m-auto analysts-icon">
+                            {{d['analystRatingsStrongBuy']}}
+                        </div>
+                        <div class="fs--1 text-center pt-1">Strong Buy</div>
+                    </div>
+                </div>
+            </div>
+        </li>
+    {% endfor %}
+</ul>

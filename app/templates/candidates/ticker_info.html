@@ -211,11 +211,11 @@ Stock Score | Stock Info
               <li class="nav-item"><a class="nav-link" id="insiders-tab" data-bs-toggle="tab" href="#tab-insiders" role="tab" aria-controls="tab-insiders" aria-selected="false">Insiders</a></li>
               <li class="nav-item"><a class="nav-link" id="press-relises-tab" data-bs-toggle="tab" href="#tab-press-relises" role="tab" aria-controls="tab-press-relises" aria-selected="false">Press Relises</a></li>
               <li class="nav-item"><a class="nav-link" id="technicals-tab" data-bs-toggle="tab" href="#tab-technicals" role="tab" aria-controls="tab-technicals" aria-selected="false">Technical</a></li>
-
+              <li class="nav-item"><a class="nav-link" id="analysts-tab" data-bs-toggle="tab" href="#tab-analysts" role="tab" aria-controls="tab-analysts" aria-selected="false">Analysts</a></li>
             </ul>
             <div class="tab-content border-x border-bottom p-3" id="ticker-info-tubs-content">
                 <div class="tab-pane fade show active" id="tab-fundamentals" role="tabpanel" aria-labelledby="fundamentals-tab">
-                  <div class="main-card mb-3 card">
+                    <div class="main-card mb-3 card">
                     <div class="card-body tab-fundamentals-summary-card" style="position: relative;">
                         <div class="card-header">
                             Fundamentals (12 Month)
@@ -224,9 +224,9 @@ Stock Score | Stock Info
                         {% include 'layouts/loader.html' %}
                     </div>
                 </div>
-                <div class="main-card mb-3 card">
-                    <div class="card-body tab-fundamentals-feed-card row" style="position: relative;"></div>
-                </div>
+                    <div class="main-card mb-3 card">
+                        <div class="card-body tab-fundamentals-feed-card row" style="position: relative;"></div>
+                    </div>
                 </div>
                 <div class="tab-pane fade" id="tab-news" role="tabpanel" aria-labelledby="news-tab">
                     <div class="main-card mb-3 card">
@@ -270,7 +270,6 @@ Stock Score | Stock Info
                 </div>
                 <div class="tab-pane fade" id="tab-technicals" role="tabpanel" aria-labelledby="technicals-tab">
                     <div class="main-card mb-3 card tab-technicals-card echart-area">
-<!--                        <div class="card-body tab-technicals-card echart-area">-->
                         <div class="echart-header d-md-inline-flex m-3">
                             <div>
                                 <span class="ms-2">
@@ -321,9 +320,19 @@ Stock Score | Stock Info
                             <label class="btn btn-sm btn-outline-primary btn-check-technical jb-tooltip-info jb-info-52" data-tooltip-id="52" for="standardDeviation">Standart Deviation</label>
                         </div>
                         <div class="echart-ticker-info-technical" style="min-height: 500px;" data-echart-responsive="true"></div>
-
-<!--                        </div>-->
                     </div>
+                </div>
+                <div class="tab-pane fade" id="tab-analysts" role="tabpanel" aria-labelledby="analysts-tab">
+                    <div class="main-card mb-3 card">
+                        <div class="card-body tab-news-card">
+                            This quoter estimation :
+                        </div>
+                    </div>`
+                    <div class="main-card mb-3 card">
+                        <div class="card-body tab-analysts-card">
+
+                        </div>
+                    </div>`
                 </div>
             </div>
         </div>

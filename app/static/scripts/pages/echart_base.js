@@ -281,7 +281,7 @@ function draw_echart_ticker_info_base(base_arr, hist_data, $stockChart){
         return item[0];
     });
     hist_valueList = hist_data.map(function (item) {
-        return item[1].toFixed(2);
+        return item[1] != null ? item[1].toFixed(2) : 0;
     });
     var chart = window.echarts.init($stockChart);
     var options = echart_ticker_info_base_options(dateList, hist_dateList, valueList, hist_valueList);

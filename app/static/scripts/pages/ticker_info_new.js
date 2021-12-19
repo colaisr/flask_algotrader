@@ -11,7 +11,7 @@ $(document).ready(function () {
     get_fundamentals_feed();
     get_company_info();
     similar_companies(ticker);
-//    fill_container_ticker_info(ticker); //from spider_project.js
+    get_analysts_recomendations(ticker);
 
     setInterval(function(){
        get_fmp_ticker_data(ticker);
@@ -150,5 +150,12 @@ function get_press_relises(){
     $.getJSON("/api/press_relises",{ticker: ticker}, function(data) {
         $('.tab-press-relises-card .div-content').empty();
         $('.tab-press-relises-card .div-content').append($(data.data));
+    })
+}
+
+function get_analysts_recomendations(){
+    $.getJSON("/api/analysts_recomendations",{ticker: ticker}, function(data) {
+        $('.tab-analysts-card').empty();
+        $('.tab-analysts-card').append($(data.data));
     })
 }

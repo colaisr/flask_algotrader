@@ -83,8 +83,16 @@ def search_api(query):
     data = general.api_request_get(url)
     return data
 
+
 def similar_api(ticker):
     url = (
             f"{spyder_url}/data_hub/similar/{ticker}")
     data = general.api_request_get(url)
     return data
+
+
+def analysts_recomendations_api(ticker):
+    url = (
+            f"{spyder_url}/data_hub/analysts_recomendations/{ticker}")
+    data = general.api_request_get(url)
+    return json.loads(data)
