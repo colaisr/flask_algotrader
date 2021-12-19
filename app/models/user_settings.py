@@ -86,6 +86,7 @@ class UserSetting(db.Model):
     notify_buy = db.Column('notify_buy', db.Boolean)
     notify_sell = db.Column('notify_sell', db.Boolean)
     notify_trail = db.Column('notify_trail', db.Boolean)
+    notify_candidate_signal = db.Column('notify_candidate_signal', db.Boolean)
     algo_min_beta = db.Column('algo_min_beta', db.Float)
     algo_apply_min_beta = db.Column('algo_apply_min_beta', db.Boolean)
     algo_min_emotion = db.Column('algo_min_emotion', db.Integer)
@@ -126,6 +127,7 @@ class UserSetting(db.Model):
         self.notify_buy = True
         self.notify_sell = True
         self.notify_trail = True
+        self.notify_candidate_signal = True
         self.strategy_id = 1
         self.get_strategy_default(self.strategy_id)
 

@@ -133,6 +133,11 @@ def savesettings():
     else:
         user_settings.notify_trail = False
 
+    if "notify_candidate_signal" in request.form.keys():
+        user_settings.notify_candidate_signal = True
+    else:
+        user_settings.notify_candidate_signal = False
+
     if "algo_apply_min_underprice" in request.form.keys():
         user_settings.algo_apply_min_underprice = True
     else:
@@ -239,6 +244,11 @@ def save_filters_settings():
     user_settings = UserSetting.query.filter_by(email=current_user.email).first()
 
     # user_settings.strategy_id = request.form['strategy_id']
+
+    if "notify_candidate_signal" in request.form.keys():
+        user_settings.notify_candidate_signal = True
+    else:
+        user_settings.notify_candidate_signal = False
 
     if "algo_apply_algotrader_rank" in request.form.keys():
         user_settings.algo_apply_algotrader_rank = True
