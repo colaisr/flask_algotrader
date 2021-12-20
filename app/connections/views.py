@@ -668,8 +668,9 @@ def check_if_market_fall():
                                template='account/email/black_swan')
             #enable after testing
                     client_command = ClientCommand.query.filter_by(email=us.email).first()
-                    client_command.set_close_all_positions()
-                    print("blackswon notification was issued for"+us.email)
+                    if client_command is not None:
+                        client_command.set_close_all_positions()
+                        print("blackswon notification was issued for"+us.email)
     print('The check is done.')
     return 'True'
 
