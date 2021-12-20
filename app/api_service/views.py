@@ -24,7 +24,7 @@ def stock_news():
     tickers = request.args.get('tickers')
     limit = request.args.get('limit')
     data = api_service.stock_news_api(tickers, limit)
-    return jsonify({'data': render_template('partial/ticket_info_news.html', data=data)})
+    return jsonify({'data': render_template('partial/ticker_info_news.html', data=data)})
 
 
 @api.route('/insider_actions', methods=['GET'])
@@ -32,7 +32,7 @@ def stock_news():
 def insider_actions():
     ticker = request.args.get('ticker')
     data = api_service.insider_actions_api(ticker)
-    return jsonify({'data': render_template('partial/ticket_info_insiders.html', data=data)})
+    return jsonify({'data': render_template('partial/ticker_info_insiders.html', data=data)})
 
 
 @api.route('/press_relises', methods=['GET'])
@@ -40,7 +40,7 @@ def insider_actions():
 def press_relises():
     ticker = request.args.get('ticker')
     data=api_service.press_relises_api(ticker)
-    return jsonify({'data': render_template('partial/ticket_info_press_relises.html', data=data)})
+    return jsonify({'data': render_template('partial/ticker_info_press_relises.html', data=data)})
 
 
 @api.route('/search', methods=['GET'])
@@ -108,6 +108,14 @@ def company_info():
 def ticker_info(ticker):
     data = api_service.company_info_api(ticker)
     return data
+
+
+@api.route('/analysts_recomendations', methods=['GET'])
+@csrf.exempt
+def analysts_recomendations():
+    ticker = request.args.get('ticker')
+    data = api_service.analysts_recomendations_api(ticker)
+    return jsonify({'data': render_template('partial/ticker_info_analysts_feed.html', data=data)})
 
 
 
