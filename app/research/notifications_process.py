@@ -78,10 +78,11 @@ def notifications_process():
                     update_process_status(percent, 1)
                     percent += min_step
             except Exception as e:
-                # print(f"Error in for cycle: {e}")
+                print(f"Error in for cycle: {e}")
                 error_status = 1
                 counter -= 1
             counter += 1
+
         update_process_status(percent, 2)
 
         avg = sum(update_times) / len(update_times) if len(update_times) != 0 else 0

@@ -5,7 +5,7 @@ from flask import (
 )
 
 from app import csrf
-from app.models import db_service, ReportStatistic, Report, ProcessStatus, UserSetting
+from app.models import db_service, ReportStatistic, Report, ProcessStatus, UserSetting, NotificationProcess
 from datetime import datetime
 import app.generalutils as general
 import app.enums as enum
@@ -88,6 +88,38 @@ def all_users_for_notifications():
     for u in users:
         resp.append(u.email)
     return json.dumps(resp)
+
+
+@csrf.exempt
+@research.route('/save_process_data', methods=['POST'])
+def save_process_data():
+    error_status = request.form['error_status']
+    start_time = request.form['start_time']
+    end_time = request.form['end_time']
+    num_of_users = request.form['num_of_users']
+    num_users_received = request.form['num_users_received']
+    avg_update_times = request.form['avg_update_times']
+
+    now = datetime.utcnow()
+    try:
+        last_update_data = NotificationProcess.query.order_by(NotificationProcess.start_process_time.desc()).first()
+        update_data = NotificationProcess()
+        if error_status == '1':
+            update_data.error_status = True
+            update_data.last_update_date = last_update_data.last_update_date if last_update_data is not None else now
+        else:
+            update_data.last_update_date = end_time
+            update_data.error_status = False
+        update_data.start_process_time = start_time
+        update_data.end_process_time = end_time
+        update_data.avg_time_by_position = avg_update_times
+        update_data.num_of_users = num_of_users
+        update_data.num_users_received = num_users_received
+        update_data.update_data()
+        return "successfully update date"
+    except Exception as e:
+        print('problem with update last date. ', e)
+        return "failed to update date"
 
 
 
