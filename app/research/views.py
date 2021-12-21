@@ -112,7 +112,7 @@ def save_process_data():
             update_data.error_status = False
         update_data.start_process_time = start_time
         update_data.end_process_time = end_time
-        update_data.avg_time_by_position = avg_update_times
+        update_data.avg_time_by_users = avg_update_times
         update_data.num_of_users = num_of_users
         update_data.num_users_received = num_users_received
         update_data.update_data()

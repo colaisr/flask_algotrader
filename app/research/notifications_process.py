@@ -12,8 +12,8 @@ from datetime import datetime
 #***************************************
 #***************************************
 
-# server_url = 'http://127.0.0.1:5000/'
-server_url = 'https://www.stockscore.company/'
+server_url = 'http://127.0.0.1:5000/'
+# server_url = 'https://www.stockscore.company/'
 
 
 def update_process_status(percent, status):
@@ -26,6 +26,7 @@ def update_process_status(percent, status):
     url = server_url + "research/update_process_status"
     try:
         response = urllib.request.urlopen(url, data)
+        a=0
     except Exception as e:
         print("update process status failed. ", e)
 

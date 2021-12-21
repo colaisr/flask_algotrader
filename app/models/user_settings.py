@@ -29,7 +29,7 @@ class NotificationProcess(db.Model):
     avg_time_by_user = db.Column('avg_time_by_user', db.Float)
     num_of_users = db.Column('num_of_users', db.BigInteger)
     error_status = db.Column('error_status', db.Boolean)
-    num_users_received = db.Column('error_status', db.BigInteger)
+    num_users_received = db.Column('num_users_received', db.BigInteger)
 
     def update_data(self):
         data = NotificationProcess.query.filter(NotificationProcess.start_process_time == self.start_process_time,

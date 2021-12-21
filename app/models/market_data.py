@@ -97,7 +97,7 @@ class ProcessStatus(db.Model):
     process_type = db.Column('process_type', db.Integer)
 
     def update_status(self):
-        data = ProcessStatus.query.first()
+        data = ProcessStatus.query.filter_by(process_type=self.process_type).first()
         if data is None:
             db.session.add(self)
         db.session.commit()
