@@ -12,8 +12,8 @@ from datetime import datetime
 #***************************************
 #***************************************
 
-server_url = 'http://127.0.0.1:5000/'
-# server_url = 'https://www.stockscore.company/'
+# server_url = 'http://127.0.0.1:5000/'
+server_url = 'https://www.stockscore.company/'
 
 
 def update_process_status(percent, status):
