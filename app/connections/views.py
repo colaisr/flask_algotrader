@@ -661,16 +661,17 @@ def check_if_market_fall():
                     us.algo_allow_buy = False
                     us.last_market_fall_notification = datetime.utcnow()
                     us.update_user_settings()
-                    print('blackswan for ' + us.email)
-                    send_email(recipient='cola.isr@gmail.com',
+                    print('blackswan for '+us.email)
+                    send_email(recipient=us.email,
                                user=us.email,
                                subject='StockScore: Market failed below ' + str(
                                    minimal_intraday_allowed) + '%  to ' + str(current_snp_change) + 'within a day',
                                template='account/email/black_swan')
-            # enable after testing
-            # client_command = ClientCommand.query.filter_by(email=us.email).first()
-            # client_command.set_close_all_positions()
-            # print("blackswon notification was issued for"+us.email)
+            #enable after testing
+                    client_command = ClientCommand.query.filter_by(email=us.email).first()
+                    if client_command is not None:
+                        client_command.set_close_all_positions()
+                        print("blackswon notification was issued for"+us.email)
     print('The check is done.')
     return 'True'
 
