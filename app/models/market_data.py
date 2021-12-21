@@ -96,3 +96,9 @@ class ProcessStatus(db.Model):
     percent = db.Column('percent', db.Float)
     process_type = db.Column('process_type', db.Integer)
 
+    def update_status(self):
+        data = ProcessStatus.query.first()
+        if data is None:
+            db.session.add(self)
+        db.session.commit()
+
