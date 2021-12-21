@@ -31,6 +31,13 @@ class NotificationProcess(db.Model):
     error_status = db.Column('error_status', db.Boolean)
     num_users_received = db.Column('error_status', db.BigInteger)
 
+    def update_data(self):
+        data = NotificationProcess.query.filter(NotificationProcess.start_process_time == self.start_process_time,
+                                                 NotificationProcess.end_process_time == self.end_process_time).first()
+        if data is None:
+            db.session.add(self)
+        db.session.commit()
+
 
 class Strategy(db.Model):
     __tablename__ = 'Strategies'
