@@ -11,3 +11,8 @@ class Subscriptions(Enum):
 class UserRole(Enum):
     USER = 1
     ADMINISTRATOR = 2
+
+
+class ProcessType(Enum):
+    SPYDER = 1,
+    NOTIFICATIONS = 2

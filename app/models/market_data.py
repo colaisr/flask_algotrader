@@ -88,10 +88,11 @@ class LastUpdateSpyderData(db.Model):
         db.session.commit()
 
 
-class SpiderStatus(db.Model):
-    __tablename__ = 'SpiderStatus'
+class ProcessStatus(db.Model):
+    __tablename__ = 'ProcessStatus'
     id = db.Column('id', db.Integer, primary_key=True)
     start_process_date = db.Column('start_process_date', db.DateTime)
     status = db.Column('status', db.String)
     percent = db.Column('percent', db.Float)
+    process_type = db.Column('process_type', db.Integer)
 

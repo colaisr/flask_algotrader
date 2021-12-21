@@ -33,8 +33,8 @@ from app.models import (
     ClientCommand,
     Report,
     LastUpdateSpyderData,
-    SpiderStatus, TelegramSignal,
-    db_service
+    ProcessStatus, TelegramSignal,
+    NotificationProcess
 )
 from app.models.fgi_score import Fgi_score
 import app.enums as enum
@@ -162,6 +162,38 @@ def users_monitor():
         'admin/users_monitor.html', users=users, market_emotion=market_emotion, fgi_text_color=fgi_text_color)
 
 
+@admin.route('/notification_statistic')
+@login_required
+@admin_required
+def notification_statistic():
+    notifications = NotificationProcess.query.order_by(NotificationProcess.start_process_time.desc()).limit(10).all()
+    data = []
+    for s in notifications:
+        delta = s.end_process_time-s.start_process_time
+        notification = {
+            "id": s.id,
+            "start_process_time": s.start_process_time.strftime("%d %b, %Y %H:%M:%S"),
+            "error_status": int(s.error_status == True),
+            "last_update_date": s.last_update_date.strftime("%d %b, %Y %H:%M:%S"),
+            "process_time": time.strftime("%H:%M:%S", time.gmtime(delta.total_seconds())),
+            "avg_time": s.avg_time_by_user,
+            "num_users": s.num_of_users,
+            "num_users_received": s.num_users_received
+        }
+        data.append(notification)
+
+    return render_template(
+        'admin/notification_statistic.html', notifications=data)
+
+
+@admin.route('/notification_status_ajax', methods=['GET'])
+@login_required
+@admin_required
+def notification_status_ajax():
+    notification_status = ProcessStatus.query.filter_by(process_type=enum.ProcessType.NOTIFICATIONS.value).first()
+    return json.dumps(notification_status, cls=general.JsonEncoder)
+
+
 @admin.route('/spider_statistic')
 @login_required
 @admin_required
@@ -194,7 +226,7 @@ def spider_statistic():
 @login_required
 @admin_required
 def spider_status_ajax():
-    spider_status = SpiderStatus.query.first()
+    spider_status = ProcessStatus.query.filter_by(process_type=enum.ProcessType.SPYDER.value).first()
     return json.dumps(spider_status, cls=general.JsonEncoder)
 
 

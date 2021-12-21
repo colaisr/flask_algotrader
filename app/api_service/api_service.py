@@ -96,3 +96,10 @@ def analysts_recomendations_api(ticker):
             f"{spyder_url}/data_hub/analysts_recomendations/{ticker}")
     data = general.api_request_get(url)
     return json.loads(data)
+
+
+def current_stock_price(tickers_str):
+    url = (
+            f"{spyder_url}/data_hub/current_stock_price_short/{tickers_str}")
+    data = general.api_request_get(url)
+    return data

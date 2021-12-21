@@ -1,0 +1,11 @@
+TEXT MESSAGES
+
+Ticker  |   Price   |   Buying trigger
+--------------------------------------
+{% for d in data %}
+
+    {{d['ticker']}}  |   {{d['price']|round(2)}}   |   {{d['buying_target_price_fmp']|round(2)}}
+
+    --------------------------------------
+
+{% endfor %}

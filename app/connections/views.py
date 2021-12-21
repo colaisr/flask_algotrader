@@ -18,11 +18,12 @@ from sqlalchemy import text, desc
 
 from app import db, csrf
 from app.email import send_email
+from app.api_service import api_service
 
 from app.models import (
     User, Connection, Report,
     Position, ClientCommand, UserSetting,
-    TickerData, Candidate, TelegramSignal
+    TickerData, Candidate, TelegramSignal, Notification
 )
 from app.models.fgi_score import Fgi_score
 from app.telegram.signal_notify import send_telegram_signal_message
@@ -153,26 +154,23 @@ def get_requested_candidates(user):
 
     if user_settings.server_use_system_candidates:
         admin_candidates = Candidate.query.filter_by(email='support@stockscore.company', enabled=True).all()
-        for uc in user_candidates:
-            for ac in admin_candidates:
-                if ac.ticker == uc.ticker:
-                    break
-            else:
-                admin_candidates.append(uc)
-        requested_candidates = admin_candidates
+        tickers_lst = [ac.ticker for ac in admin_candidates]
+        uc = [uc for uc in user_candidates if uc.ticker not in tickers_lst]
+        if len(uc) > 0:
+            tickers_lst.extend([t.ticker for t in uc])
+        requested_candidates = tickers_lst
     else:
-        requested_candidates = user_candidates
+        requested_candidates = [uc.ticker for uc in user_candidates]
 
-    query_text = "select a.* from Tickersdata a join (  select Tickersdata.`ticker`, max(Tickersdata.`updated_server_time`) as updated_server_time  from Tickersdata group by Tickersdata.`ticker`) b on b.`ticker`=a.`ticker` and b.`updated_server_time`=a.`updated_server_time`"
+    query_text = f"select a.* from Tickersdata a " \
+                 f"join (  select Tickersdata.`ticker`, " \
+                 f"max(Tickersdata.`updated_server_time`) as updated_server_time  " \
+                 f"from Tickersdata group by Tickersdata.`ticker`) b on b.`ticker`=a.`ticker` " \
+                 f"and b.`updated_server_time`=a.`updated_server_time`"
     uniq_tickers_data = db.session.query(TickerData).from_statement(text(query_text)).all()
 
-    related_tds = []
-    for c in requested_candidates:
-        adding = list(filter(lambda td: td.ticker == c.ticker, uniq_tickers_data))
-        if len(adding) == 0:
-            pass
-        else:
-            related_tds.append(adding[0])
+    related_tds = [x for x in uniq_tickers_data if x.ticker in requested_candidates]
+
     return related_tds
 
 
@@ -232,8 +230,9 @@ def check_signal_for_target_riched(s, bid_price):
         s.update_signal()
         send_telegram_signal_message("Confirmation for : " + str(s.id) + "\n" +
                                      s.ticker + " reached target of " + str(s.target_price) + "\n" +
-                                     "in " + str(s.days_to_get) + " days, with profit of " + str(round(s.profit_percent, 2)) + " %"+ "\n" +
-                                    "by https://www.stockscore.company"
+                                     "in " + str(s.days_to_get) + " days, with profit of " + str(
+            round(s.profit_percent, 2)) + " %" + "\n" +
+                                     "by https://www.stockscore.company"
                                      )
         # print("Confirmation for : " + str(s.id) + "\n" +
         #                              s.ticker + " reached target of " + str(s.target_price) + "\n" +
@@ -250,10 +249,10 @@ def signals_check():
     all_prices_reported = {}
 
     tickers_string = ''
-    tickers_list=[]
+    tickers_list = []
     for t in signals:
         tickers_list.append(t.ticker)
-    tickers_list=list(set(tickers_list))
+    tickers_list = list(set(tickers_list))
     for s in tickers_list:
         tickers_string += ',' + s
     tickers_string = tickers_string[1:]
@@ -262,9 +261,9 @@ def signals_check():
     response = urlopen(url, context=context)
     data = response.read().decode("utf-8")
     prices = json.loads(data)
-    prices_dict={}
+    prices_dict = {}
     for p in prices:
-        prices_dict[p['symbol']]=p['price']
+        prices_dict[p['symbol']] = p['price']
     for s in signals:
         if s.ticker in prices_dict:
             if s.target_price is not None:
@@ -274,8 +273,8 @@ def signals_check():
 
 
 def process_signals_candidates(ready_data):
-    for k,v in ready_data.items():
-        #testing
+    for k, v in ready_data.items():
+        # testing
         # ticker = k
         # target = str(v['target_mean_price'])
         # signal = TelegramSignal()
@@ -285,19 +284,19 @@ def process_signals_candidates(ready_data):
         # signal.signal_price = v['current_price']
         # signal.target_price = target
         # added = signal.add_signal()
-        #end of testing
+        # end of testing
 
-        if v['current_price']<=v['buying_target_price_fmp']:
-            rank=str(v['algotrader_rank'])
-            under_priced=str(v['under_priced_pnt'])
-            target=str(v['target_mean_price'])
+        if v['current_price'] <= v['buying_target_price_fmp']:
+            rank = str(v['algotrader_rank'])
+            under_priced = str(v['under_priced_pnt'])
+            target = str(v['target_mean_price'])
             ticker = k
             signal = TelegramSignal.query.filter_by(target_met=None, ticker=ticker).order_by(
                 TelegramSignal.id.desc()).first()
             if signal is not None:
                 signal_date = signal.received.date()
                 today = datetime.utcnow().date()
-                if signal_date != today:     #there was no same signal today
+                if signal_date != today:  # there was no same signal today
                     signal = TelegramSignal()
                     signal.ticker = ticker
                     signal.received = datetime.today().date()
@@ -312,46 +311,47 @@ def process_signals_candidates(ready_data):
                                                          "it crossed the trigger of " + str(
                                 round(v['buying_target_price_fmp'], 2)) + " USD \n" +
                                                          "Stock Score Rank: " + str(rank) + "\n" +
-                                                         "Expected to reach the target of: " + str(target) + " USD"+"\n" +
-                                                         "https://www.stockscore.company/candidates/info/"+signal.ticker
+                                                         "Expected to reach the target of: " + str(
+                                target) + " USD" + "\n" +
+                                                         "https://www.stockscore.company/candidates/info/" + signal.ticker
                                                          )
                     except:
                         print("Error in signal for : " + signal.ticker)
 
 
-
 @connections.route('signals_create', methods=['GET'])
 @csrf.exempt
 def signals_create():
-    minimal_rank=9.1
-    url='https://colak.eu.pythonanywhere.com/data_hub/current_market_operation/'   #checking market is open
+    minimal_rank = 9.1
+    url = 'https://colak.eu.pythonanywhere.com/data_hub/current_market_operation/'  # checking market is open
     context = ssl.create_default_context(cafile=certifi.where())
     response = urlopen(url, context=context)
     data = response.read().decode("utf-8")
     data = json.loads(data)
-    if data['isTheStockMarketOpen']==True:
-        query_text=f"SELECT a.* FROM Tickersdata a JOIN (SELECT ticker, MAX(updated_server_time) AS updated_server_time FROM Tickersdata GROUP BY ticker) b ON b.ticker=a.ticker AND b.updated_server_time=a.updated_server_time WHERE a.algotrader_rank >= "+str(minimal_rank)+" AND a.under_priced_pnt > 0"
+    if data['isTheStockMarketOpen'] == True:
+        query_text = f"SELECT a.* FROM Tickersdata a JOIN (SELECT ticker, MAX(updated_server_time) AS updated_server_time FROM Tickersdata GROUP BY ticker) b ON b.ticker=a.ticker AND b.updated_server_time=a.updated_server_time WHERE a.algotrader_rank >= " + str(
+            minimal_rank) + " AND a.under_priced_pnt > 0"
         relevant_tickers = db.session.query(TickerData).from_statement(text(query_text)).all()
-        tickers_string=''
+        tickers_string = ''
         for t in relevant_tickers:
-            tickers_string+=','+t.ticker
-        tickers_string=tickers_string[1:]
-        url='https://colak.eu.pythonanywhere.com/data_hub/current_stock_price_short/'+tickers_string
+            tickers_string += ',' + t.ticker
+        tickers_string = tickers_string[1:]
+        url = 'https://colak.eu.pythonanywhere.com/data_hub/current_stock_price_short/' + tickers_string
         context = ssl.create_default_context(cafile=certifi.where())
         response = urlopen(url, context=context)
         data = response.read().decode("utf-8")
-        prices=json.loads(data)
-        ready_data={}
+        prices = json.loads(data)
+        ready_data = {}
         for t in relevant_tickers:
             filtered = filter(lambda price: price["symbol"] == t.ticker, prices)
-            filtered_price=list(filtered)
-            if len(filtered_price)>0 and t.buying_target_price_fmp is not None:   #only those who have prices
-                price=filtered_price[0]
-                ready_data[t.ticker]={'algotrader_rank':t.algotrader_rank,
-                                      'buying_target_price_fmp':t.buying_target_price_fmp,
-                                      'under_priced_pnt':t.under_priced_pnt,
-                                      'target_mean_price':t.target_mean_price,
-                                      'current_price':price['price']}
+            filtered_price = list(filtered)
+            if len(filtered_price) > 0 and t.buying_target_price_fmp is not None:  # only those who have prices
+                price = filtered_price[0]
+                ready_data[t.ticker] = {'algotrader_rank': t.algotrader_rank,
+                                        'buying_target_price_fmp': t.buying_target_price_fmp,
+                                        'under_priced_pnt': t.under_priced_pnt,
+                                        'target_mean_price': t.target_mean_price,
+                                        'current_price': price['price']}
         process_signals_candidates(ready_data)
         return "Signals checked"
     else:
@@ -429,8 +429,8 @@ def logreport():
         if report.api_connected:
             if report.market_state == "Open":  # can be none .... in not taken from api...tws not yet connected on first run
                 check_stop_loss(logged_user, report.net_liquidation)
-                #check_if_market_fall(logged_user)
-                #check_for_signals(report.candidates_live_json)
+                # check_if_market_fall(logged_user)
+                # check_for_signals(report.candidates_live_json)
 
         return "Report snapshot stored at server"
     else:
@@ -467,25 +467,22 @@ def get_command():
     else:
         return "The user configured for Get Command is not found on Server"
 
+
 @csrf.exempt
 @connections.route('/get_fitered_candidates_for_user', methods=['GET'])
 def get_fitered_candidates_for_user():
     # for traderstation
     user = request.args.get('user')
-    candidates=retrieve_user_candidates(user)
+    candidates = retrieve_user_candidates(user)
     tickers_string = ''
     for t in candidates:
-        tickers_string += t['ticker']+','
-    # tickers_string = tickers_string[1:]
-    url = 'https://colak.eu.pythonanywhere.com/data_hub/current_stock_price_short/' + tickers_string
-    context = ssl.create_default_context(cafile=certifi.where())
-    response = urlopen(url, context=context)
-    data = response.read().decode("utf-8")
+        tickers_string += t['ticker'] + ','
+    data = api_service.current_stock_price(tickers_string)
     prices = json.loads(data)
     for cand in candidates:
-        price=next(item for item in prices if item['symbol'] == cand['ticker'])
-        cand['price']=price['price']
-    return render_template('partial/user_candidates.html',candidates=candidates)
+        price = next(item for item in prices if item['symbol'] == cand['ticker'])
+        cand['price'] = price['price']
+    return render_template('partial/user_candidates.html', candidates=candidates)
 
 
 @csrf.exempt
@@ -494,31 +491,33 @@ def get_favorites_for_user():
     # for traderstation
     user = request.args.get('user')
     candidates_o = Candidate.query.filter_by(email=user, enabled=True).all()
-    candidates=[]
+    candidates = []
     for c in candidates_o:
         candidates.append(c.to_dictionary())
     tickers_string = ''
     for t in candidates:
-        tickers_string += t['ticker']+','
+        tickers_string += t['ticker'] + ','
     # tickers_string = tickers_string[1:]
     url = 'https://colak.eu.pythonanywhere.com/data_hub/current_stock_price_full/' + tickers_string
     context = ssl.create_default_context(cafile=certifi.where())
     response = urlopen(url, context=context)
     data = response.read().decode("utf-8")
     prices = json.loads(data)
-    total_today_change=0
-    total_complete_change=0
+    total_today_change = 0
+    total_complete_change = 0
     for cand in candidates:
-        price=next(item for item in prices if item['symbol'] == cand['ticker'])
-        cand['price']=price['price']
-        change=price['price']-cand['price_added']
-        change_percent=change/cand['price_added']*100
-        cand['change_complete_percents']=change_percent
-        total_complete_change+=change_percent
+        price = next(item for item in prices if item['symbol'] == cand['ticker'])
+        cand['price'] = price['price']
+        change = price['price'] - cand['price_added']
+        change_percent = change / cand['price_added'] * 100
+        cand['change_complete_percents'] = change_percent
+        total_complete_change += change_percent
         cand['change_today_percents'] = price['changesPercentage']
-        total_today_change+=price['changesPercentage']
+        total_today_change += price['changesPercentage']
 
-    return render_template('partial/user_favorites.html',candidates=candidates,total_complete_change=total_complete_change,total_today_change=total_today_change)
+    return render_template('partial/user_favorites.html', candidates=candidates,
+                           total_complete_change=total_complete_change, total_today_change=total_today_change)
+
 
 @csrf.exempt
 @connections.route('/get_positions_for_user', methods=['GET'])
@@ -610,6 +609,7 @@ def get_positions_for_user():
                            pnl_bg_box_color=pnl_bg_box_color
                            )
 
+
 @csrf.exempt
 @connections.route('logrestartrequest/', methods=['POST'])
 def log_restart_request():
@@ -641,39 +641,38 @@ def check_stop_loss(logged_user, net_liquidation):
 @connections.route('market_fall_check', methods=['GET'])
 @csrf.exempt
 def check_if_market_fall():
-    url='https://colak.eu.pythonanywhere.com/data_hub/current_snp/'   #checking market is open
+    url = 'https://colak.eu.pythonanywhere.com/data_hub/current_snp/'  # checking market is open
     context = ssl.create_default_context(cafile=certifi.where())
     response = urlopen(url, context=context)
     data = response.read().decode("utf-8")
     data = json.loads(data)
-    current_snp_change=data[0]['changesPercentage']
-    print('snp fall checked current :'+str(current_snp_change))
-    all_users=UserSetting.query.all()
+    current_snp_change = data[0]['changesPercentage']
+    print('snp fall checked current :' + str(current_snp_change))
+    all_users = UserSetting.query.all()
     for us in all_users:
         if us.algo_sell_on_swan:
-            minimal_intraday_allowed=us.algo_positions_for_swan
+            minimal_intraday_allowed = us.algo_positions_for_swan
             if current_snp_change < minimal_intraday_allowed:
-                last_notification=us.last_market_fall_notification
+                last_notification = us.last_market_fall_notification
                 if last_notification is not None:
-                    last_notification=last_notification.date()
-                today=datetime.utcnow().date()
-                if last_notification!=today:     #check if notification allready issued
+                    last_notification = last_notification.date()
+                today = datetime.utcnow().date()
+                if last_notification != today:  # check if notification allready issued
                     us.algo_allow_buy = False
-                    us.last_market_fall_notification=datetime.utcnow()
+                    us.last_market_fall_notification = datetime.utcnow()
                     us.update_user_settings()
-                    print('blackswan for '+us.email)
+                    print('blackswan for ' + us.email)
                     send_email(recipient='cola.isr@gmail.com',
                                user=us.email,
-                               subject='Algotrader: Market failed below '+str(minimal_intraday_allowed)+'%  to '+str(current_snp_change)+'within a day',
+                               subject='StockScore: Market failed below ' + str(
+                                   minimal_intraday_allowed) + '%  to ' + str(current_snp_change) + 'within a day',
                                template='account/email/black_swan')
-            #enable after testing
-                    # client_command = ClientCommand.query.filter_by(email=us.email).first()
-                    # client_command.set_close_all_positions()
-                    # print("blackswon notification was issued for"+us.email)
+            # enable after testing
+            # client_command = ClientCommand.query.filter_by(email=us.email).first()
+            # client_command.set_close_all_positions()
+            # print("blackswon notification was issued for"+us.email)
     print('The check is done.')
     return 'True'
-
-
 
 
 def notify_open(position, logged_user):
@@ -690,9 +689,9 @@ def notify_closed(position, logged_user):
 
     if user_settings.notify_sell:
         if position.profit > 0:
-            text_for_message = 'Algotrader:Profit closed position for ' + position.ticker
+            text_for_message = 'StockScore:Profit closed position for ' + position.ticker
         else:
-            text_for_message = 'Algotrader:Loss closed position for ' + position.ticker
+            text_for_message = 'StockScore:Loss closed position for ' + position.ticker
         send_email(recipient=logged_user,
                    subject=text_for_message,
                    template='account/email/position_close',
@@ -708,7 +707,7 @@ def postexecution():
     shares = request_data["shares"]
     price = request_data["price"]
     side = request_data["side"]
-    exec_id=request_data["exec_id"]
+    exec_id = request_data["exec_id"]
     reported_time = json.loads(request_data['time'])
     time = datetime.fromisoformat(reported_time)
 
@@ -722,11 +721,11 @@ def postexecution():
         if side == 'BOT':
             position.open_price = price
             position.opened = time
-            position.exec_id_buy=str(exec_id)
+            position.exec_id_buy = str(exec_id)
         else:
             position.close_price = price
             position.closed = time
-            position.exec_id_sld=str(exec_id)
+            position.exec_id_sld = str(exec_id)
 
         result, np = position.update_position()
 
@@ -739,3 +738,43 @@ def postexecution():
         return "Execution for " + logged_user + " stored at server."
     else:
         return "The user configured is not found on Server the execution is not logged"
+
+
+@csrf.exempt
+@connections.route('/tickers_notifications', methods=['POST'])
+def tickers_notifications():
+    user = request.form['user']
+    try:
+        candidates = retrieve_user_candidates(user)
+        tickers_arr = [x['ticker'] for x in candidates]
+        delim = ","
+        data = api_service.current_stock_price(delim.join(tickers_arr))
+
+        prices = json.loads(data)
+        notifications_data = [
+            {'ticker': x['ticker'], 'buying_target_price_fmp': x['buying_target_price_fmp'], 'price': y['price']} for x in
+            candidates for y in prices if
+            x['ticker'] == y['symbol'] and x['buying_target_price_fmp'] >= y['price']]
+
+        notifications_today = Notification.query.filter(Notification.email == user,
+                                                        Notification.date >= datetime.utcnow().date()).all()
+        tickers_sends = [x.ticker for x in notifications_today]
+        notifications_data = [x for x in notifications_data if x['ticker'] not in tickers_sends]
+        if len(notifications_data) > 0:
+            send_email(recipient=user,
+                       subject='StockScore notifications TEST',
+                       template='account/email/tickers_notification',
+                       data=notifications_data)
+            for n in notifications_data:
+                notification = Notification(
+                    email=user,
+                    date=datetime.utcnow().date(),
+                    ticker=n['ticker']
+                )
+                db.session.add(notification)
+                db.session.commit()
+        return json.dumps({"status": 0, "error": ""})
+    except Exception as e:
+        print('problem with notifications', e)
+        return json.dumps({"status": 2, "error": e})
+    # return f"tickers count: {len(notifications_data)} \n {json.dumps(notifications_data)}"

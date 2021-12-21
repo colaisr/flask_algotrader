@@ -12,6 +12,26 @@ def json_serial(obj):
     raise TypeError("Type %s not serializable" % type(obj))
 
 
+class Notification(db.Model):
+    __tablename__ = 'Notifications'
+    id = db.Column('id', db.Integer, primary_key=True)
+    email = db.Column('email', db.String)
+    ticker = db.Column('ticker', db.String)
+    date = db.Column('date', db.DateTime)
+
+
+class NotificationProcess(db.Model):
+    __tablename__ = 'NotificationProcess'
+    id = db.Column('id', db.Integer, primary_key=True)
+    start_process_time = db.Column('start_process_time', db.DateTime)
+    end_process_time = db.Column('end_process_time', db.DateTime)
+    last_update_date = db.Column('last_update_date', db.DateTime)
+    avg_time_by_user = db.Column('avg_time_by_user', db.Float)
+    num_of_users = db.Column('num_of_users', db.BigInteger)
+    error_status = db.Column('error_status', db.Boolean)
+    num_users_received = db.Column('error_status', db.BigInteger)
+
+
 class Strategy(db.Model):
     __tablename__ = 'Strategies'
     id = db.Column('id', db.Integer, primary_key=True)
@@ -161,7 +181,6 @@ class UserSetting(db.Model):
             db.session.add(self)
 
         db.session.commit()
-
 
     def toJson(self):
         return json.dumps(self, default=lambda o: o.__dict__)

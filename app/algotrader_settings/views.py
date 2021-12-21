@@ -365,7 +365,7 @@ def saverequirementssettings():
             url = url_for('admin.pending_approval', _external=True)
 
             send_email(recipient='support@stockscore.company',
-                       subject='Algotrader Server: user provided all the details',
+                       subject='StockScore Server: user provided all the details',
                        template='account/email/user_data_provided',
                        user=current_user,
                        url=url)

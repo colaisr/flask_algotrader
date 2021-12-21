@@ -1,0 +1,23 @@
+<div>
+    <p>
+        TEXT MESSAGES
+    </p>
+    <table class="table table-hover">
+        <thead>
+            <tr>
+            <th scope="col">Ticker</th>
+            <th scope="col">Price</th>
+            <th scope="col">Buying trigger</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for d in data %}
+            <tr class="hover-actions-trigger">
+                <td class="align-middle text-nowrap">{{d['ticker']}}</td>
+                <td class="align-middle text-nowrap">{{d['price']|round(2)}}</td>
+                <td class="align-middle text-nowrap">{{d['buying_target_price_fmp']|round(2)}}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>

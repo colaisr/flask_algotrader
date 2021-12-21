@@ -11,10 +11,10 @@ $(document).ready(function(){
     fill_emotion_and_snp_graphs(emotion_settings, false, main_snp, main_emotion);
     refresh_candidates_list(user_email);
     if(user_type==2){
-    refresh_favorites_list(user_email);
+        refresh_favorites_list(user_email);
     }
     else{
-    refresh_positions_list(user_email)
+        refresh_positions_list(user_email)
     }
     interval_start();
 
@@ -24,13 +24,13 @@ $(document).ready(function(){
 
 function interval_start(){
     interval = setInterval(function(){
-    refresh_candidates_list(user_email);
-    if(user_type==2){
-    refresh_favorites_list(user_email);
-    }
-    else{
-    refresh_positions_list(user_email)
-    }
+        refresh_candidates_list(user_email);
+        if(user_type==2){
+            refresh_favorites_list(user_email);
+        }
+        else{
+            refresh_positions_list(user_email)
+        }
     }, 15000);
 }
 
@@ -51,6 +51,7 @@ function refresh_candidates_list(user_email){
         stop_loading('candidates-table');
     });
 }
+
 function refresh_favorites_list(user_email){
     loading('favorites-table');
     url = '/connections/get_favorites_for_user';
