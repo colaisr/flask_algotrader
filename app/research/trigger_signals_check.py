@@ -15,4 +15,9 @@ url = server_url + "connections/signals_create"
 context = ssl._create_unverified_context()
 response = urllib.request.urlopen(url,context=context)
 
+#notification process
+url = server_url + "connections/notifications_process"
+context = ssl._create_unverified_context()
+response = urllib.request.urlopen(url, context=context)
+
 

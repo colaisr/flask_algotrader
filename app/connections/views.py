@@ -1,6 +1,9 @@
 import json
 import app.generalutils as general
 import ssl
+import time
+import sys
+import app.enums as enum
 from urllib.request import urlopen
 
 import certifi
@@ -23,7 +26,7 @@ from app.api_service import api_service
 from app.models import (
     User, Connection, Report,
     Position, ClientCommand, UserSetting,
-    TickerData, Candidate, TelegramSignal, Notification
+    TickerData, Candidate, TelegramSignal, Notification, ProcessStatus, NotificationProcess
 )
 from app.models.fgi_score import Fgi_score
 from app.telegram.signal_notify import send_telegram_signal_message
@@ -742,9 +745,101 @@ def postexecution():
 
 
 @csrf.exempt
-@connections.route('/tickers_notifications', methods=['POST'])
-def tickers_notifications():
-    user = request.form['user']
+@connections.route('/notifications_process', methods=['GET'])
+def notifications_process():
+    start_time = datetime.now()
+    print("****Starting notifications process  " + start_time.strftime("%d/%m/%Y %H:%M:%S") + "****")
+
+    try:
+        users = UserSetting.query.filter_by(notify_candidate_signal=1).all()
+        update_process_status(0, len(users), 0, 0)
+
+        error_status = 0
+
+        p = 100 / len(users)
+        min_step = 2
+
+        update_times = []
+        counter = 1
+        percent = 2
+
+        for u in users:
+            try:
+                start_update_time = time.time()
+                print(f'Notifications for : {u} stamp: {datetime.now().strftime("%d/%m/%Y %H:%M:%S")}')
+                response = tickers_notifications(u.email)
+                end_update_time = time.time()
+                print(f"Updated stamp: {datetime.now().strftime('%d/%m/%Y %H:%M:%S')}")
+
+                if response["status"] == 0:
+                    delta = end_update_time - start_update_time
+                    update_times.append(delta)
+                else:
+                    counter -= 1
+
+                if counter * p >= percent:
+                    update_process_status(percent, len(users), counter - 1, 1)
+                    percent += min_step
+            except Exception as e:
+                print(f"Error in for cycle: {e}")
+                error_status = 1
+                counter -= 1
+            counter += 1
+
+        update_process_status(percent, len(users), counter - 1, 2)
+
+        avg = sum(update_times) / len(update_times) if len(update_times) != 0 else 0
+        end_time = datetime.now()
+        print(f"***All notifications sended {end_time.strftime('%d/%m/%Y %H:%M:%S')}")
+        print("***Save last time update***")
+
+        data = {
+            "error_status": error_status,
+            "start_time": start_time,
+            "end_time": end_time,
+            "num_of_users": len(users),
+            "num_users_received": len(update_times),
+            "avg_update_times": avg
+        }
+        try:
+            response = save_process_data(data)
+            print("***Date updated***")
+        except Exception as e:
+            print("Saving time update data failed. ", e)
+        print("*************************************************")
+    except:
+        print("Notifications process error. ", sys.exc_info()[0])
+
+    print("****Notifications process finished " + datetime.now().strftime("%d/%m/%Y %H:%M:%S") + "****")
+    return 'True'
+
+
+def update_process_status(percent, all_items, updated_items, status):
+    try:
+        process_status = ProcessStatus.query.filter_by(process_type=enum.ProcessType.NOTIFICATIONS.value).first()
+        if process_status is None:
+            process_status = ProcessStatus()
+            process_status.process_type = enum.ProcessType.NOTIFICATIONS.value
+        if status == 0:
+            process_status.start_process_date = datetime.utcnow()
+            process_status.status = "process started"
+            process_status.percent = 0
+        elif status == 1:
+            process_status.status = "process run"
+            process_status.percent = percent
+        else:
+            process_status.status = "process finished"
+            process_status.percent = 100
+        process_status.all_items = all_items
+        process_status.updated_items = updated_items
+        process_status.update_status()
+        return "successfully update process status"
+    except Exception as e:
+        print('problem with update process status. ', e)
+        return "failed to update process status"
+
+
+def tickers_notifications(user):
     try:
         candidates = retrieve_user_candidates(user)
         tickers_arr = [x['ticker'] for x in candidates]
@@ -753,7 +848,8 @@ def tickers_notifications():
 
         prices = json.loads(data)
         notifications_data = [
-            {'ticker': x['ticker'], 'buying_target_price_fmp': x['buying_target_price_fmp'], 'price': y['price']} for x in
+            {'ticker': x['ticker'], 'buying_target_price_fmp': x['buying_target_price_fmp'], 'price': y['price']}
+            for x in
             candidates for y in prices if
             x['ticker'] == y['symbol'] and x['buying_target_price_fmp'] >= y['price']]
 
@@ -774,8 +870,31 @@ def tickers_notifications():
                 )
                 db.session.add(notification)
                 db.session.commit()
-        return json.dumps({"status": 0, "error": ""})
+        return {"status": 0, "error": ""}
     except Exception as e:
         print('problem with notifications', e)
-        return json.dumps({"status": 2, "error": e})
+        return {"status": 2, "error": e}
     # return f"tickers count: {len(notifications_data)} \n {json.dumps(notifications_data)}"
+
+
+def save_process_data(data):
+    now = datetime.utcnow()
+    try:
+        last_update_data = NotificationProcess.query.order_by(NotificationProcess.start_process_time.desc()).first()
+        update_data = NotificationProcess()
+        if data['error_status'] == '1':
+            update_data.error_status = True
+            update_data.last_update_date = last_update_data.last_update_date if last_update_data is not None else now
+        else:
+            update_data.last_update_date = data['end_time']
+            update_data.error_status = False
+        update_data.start_process_time = data['start_time']
+        update_data.end_process_time = data['end_time']
+        update_data.avg_time_by_user = data['avg_update_times']
+        update_data.num_of_users = data['num_of_users']
+        update_data.num_users_received = data['num_users_received']
+        update_data.update_data()
+        return "successfully update date"
+    except Exception as e:
+        print('problem with update last date. ', e)
+        return "failed to update date"

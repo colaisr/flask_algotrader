@@ -24,6 +24,8 @@ function get_notification_status(){
                     var dateNow = (new Date()).toDateString();
                     $(".notification-date-status").text(dateNow);
                     var percent = data.percent;
+                    var all_items = data.all_items;
+                    var updated_items = data.updated_items;
                     var notification_status = data.status;
                     if(notification_status=="notifications finished")
                     {
@@ -36,6 +38,8 @@ function get_notification_status(){
                         }
                     }
                     $(".notification-percent").text(percent+"%");
+                    $(".notif-sended").text(all_items);
+                    $(".all-notif").text(updated_items);
                     $(".notification-progress-bar").attr("aria-valuenow", percent);
                     $(".notification-progress-bar").css( "width",percent+"%" )
                     $(".notification-status").text(notification_status);

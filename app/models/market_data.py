@@ -94,6 +94,8 @@ class ProcessStatus(db.Model):
     start_process_date = db.Column('start_process_date', db.DateTime)
     status = db.Column('status', db.String)
     percent = db.Column('percent', db.Float)
+    all_items = db.Column('all_items', db.Integer)
+    updated_items = db.Column('updated_items', db.Integer)
     process_type = db.Column('process_type', db.Integer)
 
     def update_status(self):
