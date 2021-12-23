@@ -1,16 +1,39 @@
 $(document).ready(function () {
+//    var status = get_notification_status();
+//    if(status == 1){
+//        var status_refresh = setInterval (function(){
+//            status = get_notification_status();
+//            if(status==0){
+////                clearInterval(status_refresh);
+//                window.location.reload(1);
+//            }
+//        }, 10000);
+//    }
     var status = get_notification_status();
-    if(status == 1){
-        var status_refresh = setInterval (function(){
-            status = get_notification_status();
-            if(status==0){
-//                clearInterval(status_refresh);
+    refresh_notification_bar(status);
+
+
+    $('.run-notificaions').on('click', function(){
+        setInterval (function(){
+            get_notification_status();
+        }, 5000);
+        $.getJSON("/connections/notifications_process", function(data) {
                 window.location.reload(1);
-            }
-        }, 40000);
-    }
+        })
+    })
 
 });
+
+function refresh_notification_bar(status){
+    var status_refresh = setInterval (function(){
+        if(status==0){
+            clearInterval(status_refresh);
+//                window.location.reload(1);
+        }
+        status = get_notification_status();
+    }, 5000);
+}
+
 
 function get_notification_status(){
     var status=1;
@@ -27,7 +50,7 @@ function get_notification_status(){
                     var all_items = data.all_items;
                     var updated_items = data.updated_items;
                     var notification_status = data.status;
-                    if(notification_status=="notifications finished")
+                    if(notification_status=="process finished")
                     {
                         status = 0;
                         var date = new Date(data.start_process_date);

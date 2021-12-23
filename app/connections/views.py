@@ -811,7 +811,7 @@ def notifications_process():
         print("Notifications process error. ", sys.exc_info()[0])
 
     print("****Notifications process finished " + datetime.now().strftime("%d/%m/%Y %H:%M:%S") + "****")
-    return 'True'
+    return json.dumps({"status":"success"})
 
 
 def update_process_status(percent, all_items, updated_items, status):
