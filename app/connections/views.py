@@ -165,7 +165,7 @@ def get_requested_candidates(user):
     else:
         requested_candidates = [uc.ticker for uc in user_candidates]
 
-    query_text = f"select a.* from Tickersdata a, c.`website`, c.`company_name` " \
+    query_text = f"select a.*, c.`website`, c.`company_name` from Tickersdata a " \
                  f"join (  select Tickersdata.`ticker`, " \
                  f"max(Tickersdata.`updated_server_time`) as updated_server_time  " \
                  f"from Tickersdata group by Tickersdata.`ticker`) b on b.`ticker`=a.`ticker` " \
