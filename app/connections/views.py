@@ -165,10 +165,11 @@ def get_requested_candidates(user):
     else:
         requested_candidates = [uc.ticker for uc in user_candidates]
 
-    query_text = f"select a.* from Tickersdata a " \
+    query_text = f"select a.* from Tickersdata a, c.`website`, c.`company_name` " \
                  f"join (  select Tickersdata.`ticker`, " \
                  f"max(Tickersdata.`updated_server_time`) as updated_server_time  " \
                  f"from Tickersdata group by Tickersdata.`ticker`) b on b.`ticker`=a.`ticker` " \
+                 f"JOIN Candidates c ON c.`ticker`=a.`ticker` " \
                  f"and b.`updated_server_time`=a.`updated_server_time`"
     uniq_tickers_data = db.session.query(TickerData).from_statement(text(query_text)).all()
 
@@ -848,7 +849,7 @@ def tickers_notifications(user):
 
         prices = json.loads(data)
         notifications_data = [
-            {'ticker': x['ticker'], 'buying_target_price_fmp': x['buying_target_price_fmp'], 'price': y['price']}
+            {'ticker': x['ticker'], 'buying_target_price_fmp': x['buying_target_price_fmp'], 'price': y['price'], 'stocke_score': x['algotrader_rank'], 'underpriced': x['under_priced_pnt'], 'beta': x['beta'], 'website': x['website'], 'company': x['company_name']}
             for x in
             candidates for y in prices if
             x['ticker'] == y['symbol'] and x['buying_target_price_fmp'] >= y['price']]
@@ -861,7 +862,8 @@ def tickers_notifications(user):
             send_email(recipient=user,
                        subject='StockScore notifications TEST',
                        template='account/email/tickers_notification',
-                       data=notifications_data)
+                       data=notifications_data,
+                       user=user)
             for n in notifications_data:
                 notification = Notification(
                     email=user,

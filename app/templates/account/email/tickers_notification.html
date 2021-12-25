@@ -1,23 +1,34 @@
 <div>
     <p>
-        TEXT MESSAGES
+        Hi {{user}}
     </p>
-    <table class="table table-hover">
-        <thead>
-            <tr>
-            <th scope="col">Ticker</th>
-            <th scope="col">Price</th>
-            <th scope="col">Buying trigger</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for d in data %}
-            <tr class="hover-actions-trigger">
-                <td class="align-middle text-nowrap">{{d['ticker']}}</td>
-                <td class="align-middle text-nowrap">{{d['price']|round(2)}}</td>
-                <td class="align-middle text-nowrap">{{d['buying_target_price_fmp']|round(2)}}</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+
+</div>
+{% for d in data %}
+<div>
+    <p>
+        <a href="{{d['website']}}">{{d['ticker']}}</a> ticker from Your Favourites crossed a buying alert trigger of {{d['buying_target_price_fmp']|round(2)}}$ (at alert {{d['price']|round(2)}}$ )
+    </p>
+</div>
+<div>
+    <h4>{{d['company'}}</h4>
+    <p>Stock Score Rank: {{d['stocke_score']}}</p>
+    <p>It is underpriced : {{d['underpriced']}}%</p>
+    <p>it's Beta is : {{d['beta']}}</p>
+</div>
+<div>
+    <p>
+        More about <a href="{{d['website']}}">{{d['ticker']}}</a>
+    </p>
+</div>
+{% endfor %}
+<div>
+    <p>
+        Stock Score team.
+    </p>
+</div>
+<div>
+    <p>
+        You have received this alert according to Your configuration at Stock Score. To change a configuration or to cancel the alerts please use <a href="https://www.stockscore.company/algotradersettings/usersettings">Settings</a> section.
+    </p>
 </div>
