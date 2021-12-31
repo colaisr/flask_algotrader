@@ -867,9 +867,10 @@ def tickers_notifications(user):
                                                         Notification.date >= datetime.utcnow().date()).all()
         tickers_sends = [x.ticker for x in notifications_today]
         notifications_data = [x for x in notifications_data if x['ticker'] not in tickers_sends]
+        tickers_names = [x['ticker'] for x in notifications_data]
         if len(notifications_data) > 0:
             send_email(recipient=user,
-                       subject='StockScore notifications TEST',
+                       subject=f'BUY signal from Stock Score: {delim.join(tickers_names)}',
                        template='account/email/tickers_notification',
                        data=notifications_data,
                        user=user)
