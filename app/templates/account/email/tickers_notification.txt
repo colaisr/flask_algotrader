@@ -3,7 +3,7 @@ Hi {{user}}
 {% for d in data %}
 {{d['ticker']}} ticker from Your Favourites crossed a buying alert trigger of {{d['buying_target_price_fmp']|round(2)}}$ (at alert {{d['price']|round(2)}}$ )
 
-{{d['company'}}
+{{d['company']}}
 Stock Score Rank: {{d['stocke_score']}}
 It is underpriced : {{d['underpriced']}}%
 it's Beta is : {{d['beta']}}

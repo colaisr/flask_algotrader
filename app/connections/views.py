@@ -144,9 +144,14 @@ def retrieve_user_candidates(user):
     requested_candidates = filter_add_data(requested_candidates, requested_for_user)
     # requested_candidates.sort(key=sort_by_tiprank)
     # requested_candidates=requested_candidates[:85]    #trader station allow to track only 100
+    candidates = Candidate.query.filter_by(enabled=True).all()
     cand_dictionaries = []
     for c in requested_candidates:
-        cand_dictionaries.append(c.toDictionary())
+        item = c.toDictionary()
+        cand = next(item for item in candidates if item.ticker == c.ticker)
+        item['website'] = cand.website
+        item['company_name'] = cand.company_name
+        cand_dictionaries.append(item)
     sorted_list = sort_candidates(cand_dictionaries)
     return sorted_list
 
@@ -165,12 +170,16 @@ def get_requested_candidates(user):
     else:
         requested_candidates = [uc.ticker for uc in user_candidates]
 
-    query_text = f"select a.*, c.`website`, c.`company_name` from Tickersdata a " \
+    query_text = f"select a.* from Tickersdata a " \
                  f"join (  select Tickersdata.`ticker`, " \
                  f"max(Tickersdata.`updated_server_time`) as updated_server_time  " \
                  f"from Tickersdata group by Tickersdata.`ticker`) b on b.`ticker`=a.`ticker` " \
                  f"JOIN Candidates c ON c.`ticker`=a.`ticker` " \
                  f"and b.`updated_server_time`=a.`updated_server_time`"
+
+    # uniq_tickers_data_res = db.engine.execute(text(query_text))
+    # uniq_tickers_data = [dict(r.items()) for r in uniq_tickers_data_res]
+
     uniq_tickers_data = db.session.query(TickerData).from_statement(text(query_text)).all()
 
     related_tds = [x for x in uniq_tickers_data if x.ticker in requested_candidates]
