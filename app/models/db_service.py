@@ -38,7 +38,7 @@ def register_new_user(first_name, last_name, email, password, terms_agree, subsc
 def register_new_google_user(first_name, last_name, email, google_id, google_img, terms_agree, subscription, role=1):
     user = User(
         role_id=role,
-        first_name=first_name,
+        first_name=first_name ,
         last_name=last_name,
         email=email,
         google_id=google_id,

@@ -123,11 +123,11 @@ def filter_add_data(related_tds, logged_user, filters=None):
 
 
 def sort_by_parameter_desc(obj, prop):
-    return sorted(obj, key=lambda x: x[prop], reverse=True)
+    return sorted(obj, key=lambda x: 0 if x[prop] is None else x[prop], reverse=True)
 
 
 def sort_by_parameter_asc(obj, prop):
-    return sorted(obj, key=lambda x: x[prop], reverse=False)
+    return sorted(obj, key=lambda x: 0 if x[prop] is None else x[prop], reverse=False)
 
 
 def sort_candidates(cand_dictionaries):
