@@ -90,12 +90,12 @@ function get_fmp_ticker_data(ticker){
         if(buying_target_price_fm >= data.price.toFixed(2)){
             $('.buying_target_price_fmp').removeClass('btn-success');
             $('.buying_target_price_fmp').removeClass('btn-warning');
-            $('.buying_target_price_fmp').addClass('btn-warning');
+            $('.buying_target_price_fmp').addClass('btn-success');
         }
         else{
             $('.buying_target_price_fmp').removeClass('btn-success');
             $('.buying_target_price_fmp').removeClass('btn-warning');
-            $('.buying_target_price_fmp').addClass('btn-success');
+            $('.buying_target_price_fmp').addClass('btn-warning');
         }
         if(data.pe != null){
             $('.fmp-pe').html(data.pe.toFixed(2));
