@@ -864,7 +864,7 @@ def tickers_notifications(user):
 
         prices = json.loads(data)
         notifications_data = [
-            {'ticker': x['ticker'], 'buying_target_price_fmp': x['buying_target_price_fmp'], 'price': y['price'], 'stocke_score': x['algotrader_rank'], 'underpriced': x['under_priced_pnt'], 'beta': x['beta'], 'website': x['website'], 'company': x['company_name'], 'taret': 0 if x['target_mean_price'] is None else x['target_mean_price'], 'taret_pt': 0 if x['target_mean_price'] is None else (x['target_mean_price'] - y['price'])/y['price']}
+            {'ticker': x['ticker'], 'buying_target_price_fmp': x['buying_target_price_fmp'], 'price': y['price'], 'stocke_score': x['algotrader_rank'], 'underpriced': x['under_priced_pnt'], 'beta': x['beta'], 'website': x['website'], 'company': x['company_name'], 'taret': 0 if x['target_mean_price'] is None else x['target_mean_price'], 'taret_pt': 0 if x['target_mean_price'] is None else ((x['target_mean_price'] - y['price']) * 100)/y['price']}
             for x in
             candidates for y in prices if
             x['ticker'] == y['symbol'] and x['buying_target_price_fmp'] >= y['price']]
