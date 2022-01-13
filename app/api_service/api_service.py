@@ -63,6 +63,13 @@ def fundamentals_feed_api(ticker):
     return json.loads(data)
 
 
+def is_market_open_api():
+    url = (
+        f"{spyder_url}/data_hub/current_market_operation/")
+    data = general.api_request_get(url)
+    return json.loads(data)
+
+
 def company_info_api(ticker):
     url = (
         f"{spyder_url}/research/get_info_ticker/{ticker}")

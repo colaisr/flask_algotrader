@@ -336,10 +336,12 @@ def process_signals_candidates(ready_data):
 @csrf.exempt
 def signals_create():
     minimal_rank = 9.1
-    url = 'https://colak.eu.pythonanywhere.com/data_hub/current_market_operation/'  # checking market is open
-    context = ssl.create_default_context(cafile=certifi.where())
-    response = urlopen(url, context=context)
-    data = response.read().decode("utf-8")
+    # url = 'https://colak.eu.pythonanywhere.com/data_hub/current_market_operation/'  # checking market is open
+    # context = ssl.create_default_context(cafile=certifi.where())
+    # response = urlopen(url, context=context)
+    # data = response.read().decode("utf-8")
+    # data = json.loads(data)
+    data = api_service.is_market_open_api()
     data = json.loads(data)
     if data['isTheStockMarketOpen'] == True:
         query_text = f"SELECT a.* FROM Tickersdata a JOIN (SELECT ticker, MAX(updated_server_time) AS updated_server_time FROM Tickersdata GROUP BY ticker) b ON b.ticker=a.ticker AND b.updated_server_time=a.updated_server_time WHERE a.algotrader_rank >= " + str(
@@ -761,64 +763,68 @@ def notifications_process():
     print("****Starting notifications process  " + start_time.strftime("%d/%m/%Y %H:%M:%S") + "****")
 
     try:
-        users = UserSetting.query.filter_by(notify_candidate_signal=1).all()
-        update_process_status(0, len(users), 0, 0)
+        data = api_service.is_market_open_api()
+        if data['isTheStockMarketOpen']:
+            users = UserSetting.query.filter_by(notify_candidate_signal=1).all()
+            update_process_status(0, len(users), 0, 0)
 
-        error_status = 0
+            error_status = 0
 
-        p = 100 / len(users)
-        min_step = 2
+            p = 100 / len(users)
+            min_step = 2
 
-        update_times = []
-        counter = 1
-        percent = 2
+            update_times = []
+            counter = 1
+            percent = 2
 
-        for u in users:
-            try:
-                start_update_time = time.time()
-                print(f'Notifications for : {u} stamp: {datetime.now().strftime("%d/%m/%Y %H:%M:%S")}')
-                response = tickers_notifications(u.email)
-                end_update_time = time.time()
-                print(f"Updated stamp: {datetime.now().strftime('%d/%m/%Y %H:%M:%S')}")
+            for u in users:
+                try:
+                    start_update_time = time.time()
+                    print(f'Notifications for : {u} stamp: {datetime.now().strftime("%d/%m/%Y %H:%M:%S")}')
+                    response = tickers_notifications(u.email)
+                    end_update_time = time.time()
+                    print(f"Updated stamp: {datetime.now().strftime('%d/%m/%Y %H:%M:%S')}")
 
-                if response["status"] == 0:
-                    delta = end_update_time - start_update_time
-                    update_times.append(delta)
-                else:
+                    if response["status"] == 0:
+                        delta = end_update_time - start_update_time
+                        update_times.append(delta)
+                    else:
+                        counter -= 1
+
+                    if counter * p >= percent:
+                        update_process_status(percent, len(users), counter - 1, 1)
+                        percent += min_step
+                except Exception as e:
+                    print(f"Error in for cycle: {e}")
+                    error_status = 1
                     counter -= 1
+                counter += 1
 
-                if counter * p >= percent:
-                    update_process_status(percent, len(users), counter - 1, 1)
-                    percent += min_step
+            update_process_status(percent, len(users), counter - 1, 2)
+
+            avg = sum(update_times) / len(update_times) if len(update_times) != 0 else 0
+            end_time = datetime.now()
+            print(f"***All notifications sended {end_time.strftime('%d/%m/%Y %H:%M:%S')}")
+            print("***Save last time update***")
+
+            data = {
+                "error_status": error_status,
+                "start_time": start_time,
+                "end_time": end_time,
+                "num_of_users": len(users),
+                "num_users_received": len(update_times),
+                "avg_update_times": avg
+            }
+            try:
+                response = save_process_data(data)
+                print("***Date updated***")
             except Exception as e:
-                print(f"Error in for cycle: {e}")
-                error_status = 1
-                counter -= 1
-            counter += 1
-
-        update_process_status(percent, len(users), counter - 1, 2)
-
-        avg = sum(update_times) / len(update_times) if len(update_times) != 0 else 0
-        end_time = datetime.now()
-        print(f"***All notifications sended {end_time.strftime('%d/%m/%Y %H:%M:%S')}")
-        print("***Save last time update***")
-
-        data = {
-            "error_status": error_status,
-            "start_time": start_time,
-            "end_time": end_time,
-            "num_of_users": len(users),
-            "num_users_received": len(update_times),
-            "avg_update_times": avg
-        }
-        try:
-            response = save_process_data(data)
-            print("***Date updated***")
-        except Exception as e:
-            print("Saving time update data failed. ", e)
-        print("*************************************************")
-    except:
-        print("Notifications process error. ", sys.exc_info()[0])
+                print("Saving time update data failed. ", e)
+            print("*************************************************")
+        else:
+            print("***** US market Closed *****")
+    except Exception as e:
+        print("Notifications process error. ", e)
 
     print("****Notifications process finished " + datetime.now().strftime("%d/%m/%Y %H:%M:%S") + "****")
     return json.dumps({"status":"success"})
@@ -858,7 +864,7 @@ def tickers_notifications(user):
 
         prices = json.loads(data)
         notifications_data = [
-            {'ticker': x['ticker'], 'buying_target_price_fmp': x['buying_target_price_fmp'], 'price': y['price'], 'stocke_score': x['algotrader_rank'], 'underpriced': x['under_priced_pnt'], 'beta': x['beta'], 'website': x['website'], 'company': x['company_name']}
+            {'ticker': x['ticker'], 'buying_target_price_fmp': x['buying_target_price_fmp'], 'price': y['price'], 'stocke_score': x['algotrader_rank'], 'underpriced': x['under_priced_pnt'], 'beta': x['beta'], 'website': x['website'], 'company': x['company_name'], 'taret': 0 if x['target_mean_price'] is None else x['target_mean_price'], 'taret_pt': 0 if x['target_mean_price'] is None else (x['target_mean_price'] - y['price'])/y['price']}
             for x in
             candidates for y in prices if
             x['ticker'] == y['symbol'] and x['buying_target_price_fmp'] >= y['price']]

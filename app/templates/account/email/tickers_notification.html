@@ -6,6 +6,7 @@
 </div>
 {% for d in data %}
 <div>
+    <h3>{{d['ticker']}}</h3>
     <p>
         <a href="{{d['website']}}">{{d['ticker']}}</a> ticker from Your Favourites crossed a buying alert trigger of {{d['buying_target_price_fmp']|round(2)}}$ (at alert {{d['price']|round(2)}}$ )
     </p>
@@ -15,6 +16,7 @@
     <p>Stock Score Rank: {{d['stocke_score']}}</p>
     <p>It is underpriced : {{d['underpriced']}}%</p>
     <p>it's Beta is : {{d['beta']}}</p>
+    <p>Analysts goal : {{d['taret']|round(2)}}$({{d['taret_pt']|round(2)}}%)</p>
 </div>
 <div>
     <p>

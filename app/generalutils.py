@@ -7,6 +7,7 @@ from pytz import timezone
 from sqlalchemy.ext.declarative import DeclarativeMeta
 from datetime import datetime, date
 from urllib.request import urlopen
+from app.api_service import api_service
 
 
 def utc_datetime_to_local(utc):
@@ -56,19 +57,15 @@ def check_for_blanks(str):
 
 
 def is_market_open():
-    url = ('https://financialmodelingprep.com/api/v3/is-the-market-open?apikey=f6003a61d13c32709e458a1e6c7df0b0')
     state = 'Error'
     try:
-        context = ssl._create_unverified_context()
-        response = urlopen(url, context=context)
-        data = response.read().decode("utf-8")
-        parsed = json.loads(data)
+        parsed = api_service.is_market_open_api()
         state = parsed['isTheStockMarketOpen']
         if state:
             state = "Open"
         else:
             state = "Closed"
-    except:
+    except Exception as e:
         pass
     return state
 
