@@ -3,7 +3,8 @@
 Stock Score | Stock Info
 {% endblock %}
 
-{% block styles %}
+{% block user_styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='styles/steps.css') }}">
 {% endblock %}
 
 {% block content %}
@@ -313,7 +314,197 @@ Stock Score | Stock Info
                 <div class="tab-pane fade" id="tab-analysts" role="tabpanel" aria-labelledby="analysts-tab">
                     <div class="main-card mb-3 card">
                         <div class="card-body tab-news-card">
-                            This quoter estimation :
+                            <h6>This quoter estimation :</h6>
+                            <div class="estimation-data d-none">
+                                <div>Period: <span class="estimation-period">2021-12-31</span></div>
+                                <div class="row gx-0 flex-between-center flex-fill d-flex">
+                                    <div class="col d-flex">
+                                        <div class="pt-2 col-4">
+                                            <span class="pl-1 pr-1 info-icon jb-tooltip-info jb-info-56 modal-cursor text-400" data-tooltip-id="56">
+                                                <i class="fas fa-info-circle info-icon"></i>
+                                            </span>
+                                            EBIT
+                                        </div>
+                                        <div class="column steps-header">
+                                            <ul class="steps">
+                                              <li class="step step-error">
+                                                <div class="step-content">
+                                                  <span class="step-circle fs--2">Low</span>
+                                                  <span class="step-text ebit-low fs--2"></span>
+                                                </div>
+                                              </li>
+                                              <li class="step step-active">
+                                                <div class="step-content">
+                                                  <span class="step-circle fs--2">Avg</span>
+                                                  <span class="step-text ebit-avg fs--2"></span>
+                                                </div>
+                                              </li>
+                                              <li class="step step-success">
+                                                <div class="step-content">
+                                                  <span class="step-circle fs--2">Hight</span>
+                                                  <span class="step-text ebit-hight fs--2"></span>
+                                                </div>
+                                              </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="col d-flex">
+                                        <div class="pt-2 ps-2 col-4">
+                                            <span class="pl-1 pr-1 info-icon jb-tooltip-info jb-info-2 modal-cursor text-400" data-tooltip-id="2">
+                                                <i class="fas fa-info-circle info-icon"></i>
+                                            </span>
+                                            EBITDA
+                                        </div>
+                                        <div class="column steps-header">
+                                            <ul class="steps">
+                                              <li class="step step-error">
+                                                <div class="step-content">
+                                                  <span class="step-circle fs--2">Low</span>
+                                                  <span class="step-text ebitda-low fs--2"></span>
+                                                </div>
+                                              </li>
+                                              <li class="step step-active">
+                                                <div class="step-content">
+                                                  <span class="step-circle fs--2">Avg</span>
+                                                  <span class="step-text ebitda-avg fs--2"></span>
+                                                </div>
+                                              </li>
+                                              <li class="step step-success">
+                                                <div class="step-content">
+                                                  <span class="step-circle fs--2">Hight</span>
+                                                  <span class="step-text ebitda-hight fs--2"></span>
+                                                </div>
+                                              </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="col d-flex">
+                                        <div class="pt-2 ps-2 col-4">
+                                            <span class="pl-1 pr-1 info-icon jb-tooltip-info jb-info-3 modal-cursor text-400" data-tooltip-id="3">
+                                                <i class="fas fa-info-circle info-icon"></i>
+                                            </span>
+                                            EPS
+                                        </div>
+                                        <div class="column steps-header">
+                                            <ul class="steps">
+                                              <li class="step step-error">
+                                                <div class="step-content">
+                                                  <span class="step-circle fs--2">Low</span>
+                                                  <span class="step-text eps-low fs--2"></span>
+                                                </div>
+                                              </li>
+                                              <li class="step step-active">
+                                                <div class="step-content">
+                                                  <span class="step-circle fs--2">Avg</span>
+                                                  <span class="step-text eps-avg fs--2"></span>
+                                                </div>
+                                              </li>
+                                              <li class="step step-success">
+                                                <div class="step-content">
+                                                  <span class="step-circle fs--2">Hight</span>
+                                                  <span class="step-text eps-hight fs--2"></span>
+                                                </div>
+                                              </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row gx-0 flex-between-center flex-fill d-flex">
+                                    <div class="col d-flex">
+                                        <div class="pt-2 col-4">
+                                            <span class="pl-1 pr-1 info-icon jb-tooltip-info jb-info-55 modal-cursor text-400" data-tooltip-id="55">
+                                                <i class="fas fa-info-circle info-icon"></i>
+                                            </span>
+                                            NET Income
+                                        </div>
+                                        <div class="column steps-header">
+                                            <ul class="steps">
+                                              <li class="step step-error">
+                                                <div class="step-content">
+                                                  <span class="step-circle fs--2">Low</span>
+                                                  <span class="step-text net-low fs--2"></span>
+                                                </div>
+                                              </li>
+                                              <li class="step step-active">
+                                                <div class="step-content">
+                                                  <span class="step-circle fs--2">Avg</span>
+                                                  <span class="step-text net-avg fs--2"></span>
+                                                </div>
+                                              </li>
+                                              <li class="step step-success">
+                                                <div class="step-content">
+                                                  <span class="step-circle fs--2">Hight</span>
+                                                  <span class="step-text net-hight fs--2"></span>
+                                                </div>
+                                              </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="col d-flex">
+                                        <div class="pt-2 ps-2 col-4">
+                                            <span class="pl-1 pr-1 info-icon jb-tooltip-info jb-info-57 modal-cursor text-400" data-tooltip-id="57">
+                                                <i class="fas fa-info-circle info-icon"></i>
+                                            </span>
+                                            Revenue
+                                        </div>
+                                        <div class="column steps-header">
+                                            <ul class="steps">
+                                              <li class="step step-error">
+                                                <div class="step-content">
+                                                  <span class="step-circle fs--2">Low</span>
+                                                  <span class="step-text rev-low fs--2"></span>
+                                                </div>
+                                              </li>
+                                              <li class="step step-active">
+                                                <div class="step-content">
+                                                  <span class="step-circle fs--2">Avg</span>
+                                                  <span class="step-text rev-avg fs--2"></span>
+                                                </div>
+                                              </li>
+                                              <li class="step step-success">
+                                                <div class="step-content">
+                                                  <span class="step-circle fs--2">Hight</span>
+                                                  <span class="step-text rev-hight fs--2"></span>
+                                                </div>
+                                              </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="col d-flex">
+                                        <div class="pt-2 ps-2 col-4">
+                                            <span class="pl-1 pr-1 info-icon jb-tooltip-info jb-info-58 modal-cursor text-400" data-tooltip-id="58">
+                                                <i class="fas fa-info-circle info-icon"></i>
+                                            </span>
+                                            SGA
+                                        </div>
+                                        <div class="column steps-header">
+                                            <ul class="steps">
+                                              <li class="step step-error">
+                                                <div class="step-content">
+                                                  <span class="step-circle fs--2">Low</span>
+                                                  <span class="step-text sga-low fs--2"></span>
+                                                </div>
+                                              </li>
+                                              <li class="step step-active">
+                                                <div class="step-content">
+                                                  <span class="step-circle fs--2">Avg</span>
+                                                  <span class="step-text sga-avg fs--2"></span>
+                                                </div>
+                                              </li>
+                                              <li class="step step-success">
+                                                <div class="step-content">
+                                                  <span class="step-circle fs--2">Hight</span>
+                                                  <span class="step-text sga-hight fs--2"></span>
+                                                </div>
+                                              </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="text-center mt-n3 d-none estimation-data-not-found">
+                                <p class="fallback fw-bold fs-1 text-400">Data Not Found.</p>
+                            </div>
                         </div>
                     </div>
                     <div class="main-card mb-3 card">

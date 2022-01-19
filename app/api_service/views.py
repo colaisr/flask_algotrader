@@ -118,6 +118,15 @@ def analysts_recomendations():
     return jsonify({'data': render_template('partial/ticker_info_analysts_feed.html', data=data)})
 
 
+@api.route('/analysts_estimations', methods=['GET'])
+@csrf.exempt
+def analysts_estimations():
+    ticker = request.args.get('ticker')
+    data = api_service.analysts_estimations_api(ticker)
+    last_data = data[-1]
+    return last_data
+
+
 
 
 

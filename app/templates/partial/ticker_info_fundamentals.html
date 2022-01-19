@@ -1,3 +1,4 @@
+{% if data|length > 0%}
 {% for d in data %}
 <div class="col-md-4" style="display: flex; justify-content: space-between; padding-top: 0.8%; border-bottom: 1px solid rgba(26,54,126,0.125);">
     <div class="col-md-9">
@@ -15,3 +16,8 @@
     </div>
 </div>
 {% endfor %}
+{% else %}
+<div class="text-center mt-n3">
+    <p class="fallback fw-bold fs-1 text-400">Data Not Found.</p>
+</div>
+{% endif%}

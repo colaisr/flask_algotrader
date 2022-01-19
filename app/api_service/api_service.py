@@ -105,6 +105,13 @@ def analysts_recomendations_api(ticker):
     return json.loads(data)
 
 
+def analysts_estimations_api(ticker):
+    url = (
+            f"{spyder_url}/data_hub/analysts_estimations/{ticker}")
+    data = general.api_request_get(url)
+    return json.loads(data)
+
+
 def current_stock_price(tickers_str):
     url = (
             f"{spyder_url}/data_hub/current_stock_price_short/{tickers_str}")

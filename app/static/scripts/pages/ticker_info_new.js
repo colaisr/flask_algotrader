@@ -12,6 +12,7 @@ $(document).ready(function () {
     get_company_info();
     similar_companies(ticker);
     get_analysts_recomendations(ticker);
+    get_analysts_estimations(ticker);
 
     setInterval(function(){
        get_fmp_ticker_data(ticker);
@@ -157,5 +158,42 @@ function get_analysts_recomendations(){
     $.getJSON("/api/analysts_recomendations",{ticker: ticker}, function(data) {
         $('.tab-analysts-card').empty();
         $('.tab-analysts-card').append($(data.data));
+    })
+}
+
+function get_analysts_estimations(){
+    $.getJSON("/api/analysts_estimations",{ticker: ticker}, function(data) {
+        var now = new Date();
+        var estimation_date = new Date(data.date);
+        if(estimation_date.getFullYear() < (now.getFullYear() - 1)){
+            $('.estimation-data-not-found').removeClass('d-none');
+        }
+        else{
+            $('.estimation-data').removeClass('d-none');
+
+            $('.ebit-low').html(data.estimatedEbitLow);
+            $('.ebit-avg').html(data.estimatedEbitAvg);
+            $('.ebit-hight').html(data.estimatedEbitHigh);
+
+            $('.ebitda-low').html(data.estimatedEbitdaLow);
+            $('.ebitda-avg').html(data.estimatedEbitdaAvg);
+            $('.ebitda-hight').html(data.estimatedEbitdaHigh);
+
+            $('.eps-low').html(data.estimatedEpsLow);
+            $('.eps-avg').html(data.estimatedEpsAvg);
+            $('.eps-hight').html(data.estimatedEpsHigh);
+
+            $('.net-low').html(data.estimatedNetIncomeLow);
+            $('.net-avg').html(data.estimatedNetIncomeAvg);
+            $('.net-hight').html(data.estimatedNetIncomeHigh);
+
+            $('.revenue-low').html(data.estimatedRevenueLow);
+            $('.revenue-avg').html(data.estimatedRevenueAvg);
+            $('.revenue-hight').html(data.estimatedRevenueHigh);
+
+            $('.sga-low').html(data.estimatedSgaExpenseLow);
+            $('.sga-avg').html(data.estimatedSgaExpenseAvg);
+            $('.sga-hight').html(data.estimatedSgaExpenseHigh);
+        }
     })
 }
