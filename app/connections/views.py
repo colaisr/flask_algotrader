@@ -342,7 +342,7 @@ def signals_create():
     # data = response.read().decode("utf-8")
     # data = json.loads(data)
     data = api_service.is_market_open_api()
-    data = json.loads(data)
+    # data = json.loads(data)
     if data['isTheStockMarketOpen'] == True:
         query_text = f"SELECT a.* FROM Tickersdata a JOIN (SELECT ticker, MAX(updated_server_time) AS updated_server_time FROM Tickersdata GROUP BY ticker) b ON b.ticker=a.ticker AND b.updated_server_time=a.updated_server_time WHERE a.algotrader_rank >= " + str(
             minimal_rank) + " AND a.under_priced_pnt > 0"
