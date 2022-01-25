@@ -324,3 +324,9 @@ def info_old(ticker):
                            in_list=in_list,
                            hist_data=hist_data,
                            tooltips=json.dumps(tooltips, cls=general.JsonEncoder))
+
+
+@candidates.route('/not_found', methods=['GET'])
+def ticker_not_found():
+    return render_template(
+        'errors/ticker_not_found.html', ticker="TEST_TICKER_NAME")
