@@ -16,3 +16,6 @@ class UserRole(Enum):
 class ProcessType(Enum):
     SPYDER = 1,
     NOTIFICATIONS = 2
+
+class Errors(Enum):
+    TICKER_NOT_FOUND = 1

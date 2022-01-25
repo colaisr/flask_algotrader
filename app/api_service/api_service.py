@@ -33,7 +33,7 @@ def add_candidate_api(ticker):
     result = general.api_request_post(url, {'ticker_to_add': ticker})
     # resultJSON = json.loads(result.decode("utf-8"))
     if b'success' not in result:
-        return f"We have no data for {ticker}. If you think it should be added please contact support@stockscore.company"
+        return "error"
     else:
         return "success"
 
@@ -44,7 +44,7 @@ def add_favorite_candidate_api(ticker, reason, email):
     result = general.api_request_post(url, {'ticker': ticker, 'reason': reason, 'email': email})
     resultJSON = json.loads(result.decode("utf-8"))
     if b'success' not in result:
-        return f"We have no data for {ticker}. If you think it should be added please contact support@stockscore.company"
+        return "error"
     else:
         return "success"
 

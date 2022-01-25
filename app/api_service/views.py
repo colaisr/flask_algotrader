@@ -1,4 +1,4 @@
-import app.generalutils as general
+import app.enums as enum
 from flask_login import current_user
 from app.api_service import api_service
 import app.api_service.api_mapping as map
@@ -8,7 +8,8 @@ from flask import (
     jsonify,
     request,
     redirect,
-    url_for
+    url_for,
+    abort
 )
 from app import csrf, env
 
@@ -67,7 +68,7 @@ def add_candidate():
     if result == 'success':
         return redirect(url_for('candidates.info', ticker=ticker))
     else:
-        return result
+        abort(404, enum.Errors.TICKER_NOT_FOUND.name, ticker)
 
 
 @api.route('/add_favorite_candidate')
@@ -75,7 +76,10 @@ def add_candidate():
 def add_favorite_candidate():
     ticker = request.args.get('ticker')
     result = api_service.add_favorite_candidate_api(ticker, current_user.email)
-    return result
+    if result == 'success':
+        return redirect(url_for('candidates.info', ticker=ticker))
+    else:
+        abort(404, enum.Errors.TICKER_NOT_FOUND.name, ticker)
 
 
 @api.route('/fundamentals_summary', methods=['GET'])
