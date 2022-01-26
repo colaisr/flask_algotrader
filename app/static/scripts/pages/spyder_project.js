@@ -99,11 +99,11 @@ function get_fmp_ticker_data(ticker){
         }
         if(data.pe != null){
             $('.fmp-pe').html(data.pe.toFixed(2));
-            if(data.pe > avg_pe){
+            if(data.pe >= avg_pe){
                 $('.fmp-pe').addClass('text-success');
             }
             else{
-                $('.fmp-pe').addClass('text-warning');
+                $('.fmp-pe').addClass('text-danger');
             }
         }
         else{
