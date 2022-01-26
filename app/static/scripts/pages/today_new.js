@@ -10,14 +10,48 @@ $(document).ready(function () {
     var main_emotion = [];
     var count_days_emotion = 0;
 
+    fill_sectors_dropdown_list();
     upload_personal_list();
     upload_today_improovers_data();
     upload_telegram_signals();
+    get_stock_news();
+    upload_top_candidates_data("all");
     fill_emotion_and_snp_graphs(emotion_settings, false, main_snp, main_emotion);
+
+    $('.sectors-dropdown').on('change',function(){
+        $('.sector-item').removeAttr('selected');
+        $('.sector-item[value="' + $(this).val() + '"]').attr('selected', true);
+        upload_top_candidates_data($(this).val());
+    })
 
 //    echartsLineAreaChartInit();
 
 })
+
+function fill_sectors_dropdown_list(){
+    url = '/candidates/candidates_sectors';
+    $.getJSON(url, function(data) {
+//        $('.improovers-tbl tbody').empty();
+//        $('.improovers-modal-tbl tbody').empty();
+        $.each(data, function( index, c ){
+            var option = $('<option  class="sector-item" value="' + c.sector + '">' + c.sector + '</option>');
+            $('.sectors-dropdown').append(option);
+        })
+    });
+}
+
+function get_stock_news(){
+    loading('news-card-body');
+    $.getJSON("/api/stock_all_news", function(data) {
+        $.each(data, function( index, c ){
+            if(parseInt(index) < 5){
+                add_row_to_today_news(c, 'news-top')       //from base.js
+            }
+            add_row_to_today_news(c, 'news-top-modal')       //from base.js
+        })
+        stop_loading('news-card-body'); //from base.js
+    })
+}
 
 function set_min_height_to_divs(){
     if(screen.width > 767){
@@ -34,6 +68,19 @@ function upload_today_improovers_data(){
     $.getJSON(url, function(data) {
         draw_today_improovers_tbl(data);
         stop_loading('improovers-card-body');
+    });
+}
+
+function upload_top_candidates_data(sector){
+    $('.top-candidates-tbl tbody').empty();
+    $('.top-candidates-modal-tbl tbody').empty();
+    loading('top-candidates-card-body');
+    loading('top-candidates-modal-body');
+    url = '/candidates/top_candidates';
+    $.getJSON(url,{sector: sector}, function(data) {
+        draw_top_candidates_tbl(data);
+        stop_loading('top-candidates-card-body');
+        stop_loading('top-candidates-modal-body');
     });
 }
 
@@ -123,6 +170,17 @@ function draw_today_improovers_tbl(data){
             add_row_to_today_improovers(c, 'improovers-tbl')       //from base.js
         }
         add_row_to_today_improovers(c, 'improovers-modal-tbl')       //from base.js
+    })
+}
+
+function draw_top_candidates_tbl(data){
+    $('.top-candidates-tbl tbody').empty();
+    $('.top-candidates-modal-tbl tbody').empty();
+    $.each(data, function( index, c ){
+        if(parseInt(index) < 5){
+            add_row_to_top_candidates(c, 'top-candidates-tbl')       //from base.js
+        }
+        add_row_to_top_candidates(c, 'top-candidates-modal-tbl')       //from base.js
     })
 }
 
@@ -251,6 +309,18 @@ function add_row_to_today_improovers(c, tbl_class){
     $('.' + tbl_class + ' tbody').append(tr);
 }
 
+function add_row_to_top_candidates(c, tbl_class){
+    var score = c.algotrader_rank || 0;
+    var tr = $('<tr></tr>');
+    var td_logo =$('<td class="text-center p-0 pt-2 pe-2"><img src="' + c.logo + '" onerror="this.src=\'/static/images/default_ticker.png\'" width="20" height="20"></td>');
+    tr.append(td_logo);
+    var td_company = $('<td class="p-0"><a class="fs--1" href="/candidates/info/' + c.ticker + '">' + c.ticker + '</a><div class="fs--2">' + c.company_name + '</div></td>');
+    tr.append(td_company);
+    var td_score = $('<td class="text-center p-0 pt-2">' + score + '</td>');
+    tr.append(td_score);
+    $('.' + tbl_class + ' tbody').append(tr);
+}
+
 function add_update_candidate(){
 //    loading('add-candidate-body'); //from base.js
     $('.candidate-bottom').prop('hidden', true);
@@ -268,6 +338,42 @@ function add_update_candidate(){
         create_toast(data_parsed["color_status"], 'Update result', data_parsed["message"]);
 //        stop_loading('add-candidate-body'); //from base.js
     })
+}
+
+function add_row_to_today_news(c, tbl_class){
+    var li =$('<li class="list-group-item"></li>');
+
+    var div = $('<div class="row gx-0 flex-between-center flex-fill d-flex"></div');
+
+    var div_first =$('<div class="col-auto align-self-start"></div');
+    var img = $('<img width="100" class="rounded img-fluid" src="' + c.image + '" alt="">');
+    var div_img_content = $('<div class="align-self-start d-lg-none"></div>');
+    var div_site = $('<div><a href="' + c.url + '" target="_blank" class="fs--1">' + c.site + '</a></div>');
+    var published_date = $('<div class="fs--2">' + c.publishedDate + '</div>');
+    var div_url = $('<div><a href="' + c.url + '" target="_blank" class="fs--1">Go to Article</a></div>');
+    div_img_content.append(div_site);
+    div_img_content.append(published_date);
+    div_img_content.append(div_url);
+    div_first.append(img);
+    div_first.append(div_img_content);
+
+    var div_second = $('<div class="col ps-3 pe-5 bd-highlight"></div>');
+    var title = $('<div class="card-title"><ins>[' + c.title + '</ins></div>');
+    var text = $('<div class="fs--1">' + c.text + '</div>');
+    div_second.append(title);
+    div_second.append(text);
+
+    var div_third = $('<div class="col-md-2 align-self-start d-none d-lg-inline"></div>');
+    div_third.append(div_site);
+    div_third.append(published_date);
+    div_third.append(div_url);
+
+    div.append(div_first);
+    div.append(div_second);
+    div.append(div_third);
+    li.append(div);
+
+    $('.' + tbl_class).append(li);
 }
 
 

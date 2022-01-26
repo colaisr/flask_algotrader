@@ -3,6 +3,9 @@
 Stock Score | Today
 {% endblock %}
 
+{% block user_styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='falcon/vendors/overlayscrollbars/OverlayScrollbars.min.css') }}">
+{% endblock %}
 
 {% block content %}
 <input type="hidden" id="user-email" value="{{ user.email }}">
@@ -66,28 +69,30 @@ Stock Score | Today
 <!--movements and updates-->
 <div class="row">
     <div class="mb-1 col-md-4">
-        <div class="card improovers" style="min-height: 320px;">
-            <div class="card-header border-bottom p-2">
-                Movers
+        <div class="card top-candidates" style="min-height: 320px;">
+            <div class="card-header border-bottom p-2 d-flex flex-between-center">
+                <span class="col-5">TOP candidates</span>
+                <select class="form-select form-select-sm sectors-dropdown" aria-label=".form-select-sm">
+                  <option class="sector-item" selected value="all">All Sectors</option>
+                </select>
             </div>
-            <div class="card-body improovers-card-body p-2 pt-3">
-                    <div class="div-content table-responsive mt-n3">
-                        <table class="mb-0 table improovers-tbl table-hover">
-                            <thead>
-                                <tr>
-                                    <th scope="col" class="p-0  pb-1 pt-1"></th>
-                                    <th scope="col" class="fs--2 p-0 pb-1 pt-1">Company</th>
-                                    <th scope="col" class="fs--2 text-center p-0 pb-1 pt-1">Score</th>
-                                    <th scope="col" class="fs--2 text-center p-0 pb-1 pt-1">Change</th>
-                                </tr>
-                            </thead>
-                            <tbody></tbody>
-                        </table>
-                    </div>
-                    {% include 'layouts/loader.html' %}
+            <div class="card-body top-candidates-card-body p-2 pt-3">
+                <div class="div-content table-responsive mt-n3">
+                    <table class="mb-0 table top-candidates-tbl table-hover">
+                        <thead>
+                            <tr>
+                                <th scope="col" class="p-0  pb-1 pt-1"></th>
+                                <th scope="col" class="fs--2 p-0 pb-1 pt-1">Company</th>
+                                <th scope="col" class="fs--2 text-center p-0 pb-1 pt-1">Score</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
                 </div>
+                {% include 'layouts/loader.html' %}
+            </div>
             <div class="card-footer p-2">
-                <button class="btn btn-falcon-primary btn-sm" data-bs-toggle="modal" data-bs-target="#improovers-modal"><i class="far fa-eye pe"></i><span class="ps-2">All</span></button>
+                <button class="btn btn-falcon-primary btn-sm" data-bs-toggle="modal" data-bs-target="#top-candidates-modal"><i class="far fa-eye pe"></i><span class="ps-2">All</span></button>
             </div>
         </div>
     </div>
@@ -163,39 +168,52 @@ Stock Score | Today
         {% endwith %}
     </div>
 </div>
+
 <!--news and tops-->
-<!--<div class="row mt-4">-->
-<!--    <div class="mb-1 col-md-3">-->
-<!--        <div class="card ">-->
-<!--            <div class="card-header border-bottom">-->
-<!--                Top 10 Scores-->
-<!--            </div>-->
-<!--            <div class="card-body pt-0">-->
-<!--                Table-->
-<!--            </div>-->
-<!--        </div>-->
-<!--    </div>-->
-<!--    <div class="mb-1 col-md-6">-->
-<!--        <div class="card">-->
-<!--            <div class="card-header border-bottom">-->
-<!--                Top by Sectors-->
-<!--            </div>-->
-<!--            <div class="card-body pt-0">-->
-<!--                Table-->
-<!--            </div>-->
-<!--        </div>-->
-<!--    </div>-->
-<!--    <div class="mb-1 col-md-3">-->
-<!--        <div class="card ">-->
-<!--            <div class="card-header border-bottom">-->
-<!--                News-->
-<!--            </div>-->
-<!--            <div class="card-body pt-0">-->
-<!--                Table-->
-<!--            </div>-->
-<!--        </div>-->
-<!--    </div>-->
-<!--</div>-->
+<div class="row mt-4">
+    <div class="mb-1 col-md-4">
+        <div class="card improovers" style="min-height: 320px;">
+            <div class="card-header border-bottom p-2">
+                Movers
+            </div>
+            <div class="card-body improovers-card-body p-2 pt-3">
+                    <div class="div-content table-responsive mt-n3">
+                        <table class="mb-0 table improovers-tbl table-hover">
+                            <thead>
+                                <tr>
+                                    <th scope="col" class="p-0  pb-1 pt-1"></th>
+                                    <th scope="col" class="fs--2 p-0 pb-1 pt-1">Company</th>
+                                    <th scope="col" class="fs--2 text-center p-0 pb-1 pt-1">Score</th>
+                                    <th scope="col" class="fs--2 text-center p-0 pb-1 pt-1">Change</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                    {% include 'layouts/loader.html' %}
+                </div>
+            <div class="card-footer p-2">
+                <button class="btn btn-falcon-primary btn-sm" data-bs-toggle="modal" data-bs-target="#improovers-modal"><i class="far fa-eye pe"></i><span class="ps-2">All</span></button>
+            </div>
+        </div>
+    </div>
+    <div class="mb-1 col-md-8">
+        <div class="card news" style="max-height: 325px;">
+            <div class="card-header border-bottom p-2">
+                News
+            </div>
+            <div class="card-body scrollbar-overlay p-2 pt-3 news-card-body">
+                <div class="div-content table-responsive mt-n3">
+                    <ul class="list-group news-top"></ul>
+                </div>
+                {% include 'layouts/loader.html' %}
+            </div>
+            <div class="card-footer p-2">
+                <button class="btn btn-falcon-primary btn-sm" data-bs-toggle="modal" data-bs-target="#news-modal"><i class="far fa-eye pe"></i><span class="ps-2">All</span></button>
+            </div>
+        </div>
+    </div>
+</div>
 
 {% endblock %}
 
@@ -361,6 +379,37 @@ docReady(marketEmotionMobileInit);
   </div>
 </div>
 
+<div class="modal fade top-candidates-modal" id="top-candidates-modal" tabindex="-1" aria-labelledby="top-candidates-modal-label" aria-hidden="true">
+  <div class="modal-dialog modal-lg mt-6 modal-dialog-scrollable" role="document">
+    <div class="modal-content border-0">
+        <div class="modal-header bg-light rounded-top-lg py-3 ps-4 pe-4">
+            <h4 class="mb-1 col-5" id="top-candidates-modal-label">TOP candidates</h4>
+            <select class="form-select form-select-sm sectors-dropdown me-2" aria-label=".form-select-sm">
+              <option class="sector-item" value="all">All Sectors</option>
+            </select>
+            <button type="button" class="col-1 btn-close btn btn-sm btn-circle d-flex flex-center transition-base" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+      <div class="modal-body top-candidates-modal-body p-0">
+        <div class="p-4">
+            <div class="div-content top-candidates-modal-tbl table-responsive mt-n3">
+                <table class="mb-0 table table-hover">
+                    <thead>
+                        <tr>
+                            <th scope="col" class="p-0 pb-1 pt-1"></th>
+                            <th scope="col" class="fs--2 p-0 pb-1 pt-1">Company</th>
+                            <th scope="col" class="fs--2 p-0 pb-1 pt-1 text-center">Score</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+            {% include 'layouts/loader.html' %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div class="modal fade personal-modal" id="personal-modal" tabindex="-1" aria-labelledby="personal-modal-label" aria-hidden="true">
   <div class="modal-dialog modal-lg mt-6 modal-dialog-scrollable" role="document">
     <div class="modal-content border-0">
@@ -477,6 +526,24 @@ docReady(marketEmotionMobileInit);
                     </thead>
                     <tbody></tbody>
                 </table>
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade news-modal" id="news-modal" tabindex="-1" aria-labelledby="news-modal-label" aria-hidden="true">
+  <div class="modal-dialog modal-lg mt-6 modal-dialog-scrollable" role="document">
+    <div class="modal-content border-0">
+        <div class="modal-header bg-light rounded-top-lg py-3 ps-4 pe-4">
+            <h4 class="mb-1" id="news-modal-label">News</h4>
+            <button type="button" class="btn-close btn btn-sm btn-circle d-flex flex-center transition-base" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+      <div class="modal-body p-0">
+        <div class="p-4">
+            <div class="news-modal-tbl table-responsive mt-n3">
+                <ul class="list-group news-top-modal"></ul>
             </div>
         </div>
       </div>

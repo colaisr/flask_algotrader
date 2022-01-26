@@ -28,6 +28,13 @@ def stock_news():
     return jsonify({'data': render_template('partial/ticker_info_news.html', data=data)})
 
 
+@api.route('/stock_all_news', methods=['GET'])
+@csrf.exempt
+def stock_all_news():
+    data = api_service.stock_all_news_api()
+    return data
+
+
 @api.route('/insider_actions', methods=['GET'])
 @csrf.exempt
 def insider_actions():

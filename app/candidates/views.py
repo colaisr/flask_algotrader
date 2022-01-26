@@ -99,6 +99,31 @@ def today_improovers():
     return json.dumps(today_improovers, cls=general.JsonEncoder)
 
 
+@candidates.route('/top_candidates', methods=['GET'])
+@csrf.exempt
+def top_candidates():
+    sector = request.args.get('sector')
+    query = f"SELECT c.ticker, c.company_name, c.logo, a.algotrader_rank " \
+            f"FROM Candidates c join Tickersdata a ON a.ticker=c.ticker " \
+            f"JOIN (SELECT Tickersdata.ticker, max(Tickersdata.updated_server_time) as last_updated_server_time " \
+            f"FROM Tickersdata group by Tickersdata.ticker) b ON b.last_updated_server_time=a.updated_server_time " \
+            f"AND b.ticker=a.ticker " \
+            f"WHERE '{sector}' = 'all' OR c.sector = '{sector}' " \
+            f"ORDER BY a.algotrader_rank desc"
+    top_candidates_res = db.engine.execute(text(query))
+    top_candidates = [dict(r.items()) for r in top_candidates_res]
+    return json.dumps(top_candidates, cls=general.JsonEncoder)
+
+
+@candidates.route('/candidates_sectors', methods=['GET'])
+@csrf.exempt
+def candidates_sectors():
+    query = f"SELECT distinct sector FROM Candidates WHERE sector <> '' ORDER BY sector"
+    sectors_res = db.engine.execute(text(query))
+    sectors = [dict(r.items()) for r in sectors_res]
+    return json.dumps(sectors, cls=general.JsonEncoder)
+
+
 @candidates.route('/user_candidates', methods=['GET'])
 @csrf.exempt
 def user_candidates():

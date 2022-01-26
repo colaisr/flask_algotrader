@@ -13,6 +13,13 @@ def stock_news_api(tickers, limit):
     return json.loads(data)
 
 
+def stock_all_news_api():
+    url = (
+            f"{spyder_url}/data_hub/stock_all_news")
+    data = general.api_request_get(url)
+    return data
+
+
 def insider_actions_api(ticker):
     url = (
             f"{spyder_url}/data_hub/insider_actions/{ticker}")
