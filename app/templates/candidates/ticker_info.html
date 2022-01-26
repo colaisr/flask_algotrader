@@ -107,6 +107,18 @@ Stock Score | Stock Info
                             </span>
                         </div>
                     </div>
+                    <div class="bage-score rounded-3 {% if market_data.under_priced_pnt is not none and user_settings.algo_min_underprice is not none and market_data.under_priced_pnt >= user_settings.algo_min_underprice %}
+                            bg-success
+                            {% else %}
+                            bg-warning
+                            {% endif %}">
+                        <div class="d-flex flex-column">
+                            <span class="badge rounded-pill bg-light text-dark fs--2 mt-1 me-2 ms-2 mb-0">Low: <span class="ps-1 text-danger">{{market_data.target_low_price_yahoo}}</span></span>
+                            <span class="badge rounded-pill bg-light text-dark fs--2 mt-1 me-2 ms-2 mb-0">Avg: <span class="ps-1 text-primary">{{market_data.target_mean_price}}</span></span>
+                            <span class="badge rounded-pill bg-light text-dark fs--2 mt-1 me-2 ms-2 mb-0">Hight: <span class="ps-1 text-success">{{market_data.target_high_price_yahoo}}</span></span>
+                        </div>
+                        <div class="score-title text-light text-center fs-1 fw-bold me-2 ms-2">Target</div>
+                    </div>
                 </div>
                 <div class="col-md-auto m-1 d-none d-md-inline">
                     <div class="fs--1">
