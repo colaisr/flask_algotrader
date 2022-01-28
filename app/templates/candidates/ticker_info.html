@@ -113,11 +113,32 @@ Stock Score | Stock Info
                             bg-warning
                             {% endif %}">
                         <div class="d-flex flex-column">
-                            <span class="badge rounded-pill bg-light text-dark fs--2 mt-1 me-2 ms-2 mb-0">Low: <span class="ps-1 text-danger">{{market_data.target_low_price_yahoo}}</span></span>
-                            <span class="badge rounded-pill bg-light text-dark fs--2 mt-1 me-2 ms-2 mb-0">Avg: <span class="ps-1 text-primary">{{market_data.target_mean_price}}</span></span>
-                            <span class="badge rounded-pill bg-light text-dark fs--2 mt-1 me-2 ms-2 mb-0">Hight: <span class="ps-1 text-success">{{market_data.target_high_price_yahoo}}</span></span>
+                            <div class="mt-1 me-2 ms-2 mb-0">
+                                <span class="float-start text-light fs--1 fw-bold">
+                                    Hight
+                                </span>
+                                <span class="badge rounded-pill bg-light text-danger px-3 float-end fs--2">
+                                    {{market_data.target_high_price_yahoo|int}}
+                                </span>
+                            </div>
+                            <div class="mt-1 me-2 ms-2 mb-0">
+                                <span class="float-start text-light fs--1 fw-bold">
+                                    Avg
+                                </span>
+                                <span class="badge rounded-pill bg-light text-primary px-3 float-end fs--2">
+                                    {{market_data.target_mean_price|int}}
+                                </span>
+                            </div>
+                            <div class="mt-1 me-2 ms-2 mb-0">
+                                <span class="float-start text-light fs--1 fw-bold">
+                                    Low
+                                </span>
+                                <span class="badge rounded-pill bg-light text-success px-3 float-end fs--2">
+                                    {{market_data.target_low_price_yahoo|int}}
+                                </span>
+                            </div>
                         </div>
-                        <div class="score-title text-light text-center fs-1 fw-bold me-2 ms-2">Target</div>
+                        <div class="score-title text-light text-center fs-1 fw-bold me-2 ms-2">Price Target</div>
                     </div>
                 </div>
                 <div class="col-md-auto m-1 d-none d-md-inline">
