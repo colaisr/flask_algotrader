@@ -347,6 +347,7 @@ function add_row_to_today_news(c, tbl_class){
 
     var div_first =$('<div class="col-auto align-self-start"></div');
     var img = $('<img width="100" class="rounded img-fluid" src="' + c.image + '" alt="">');
+    var ticker = $('<div><span class="fs--1">Ticker:</span><a href="/candidates/info/' + c.symbol + '" class="ps-2 fs--1">' + c.symbol + '</a></div>');
     var div_img_content = $('<div class="align-self-start d-lg-none"></div>');
     var div_site = $('<div><a href="' + c.url + '" target="_blank" class="fs--1">' + c.site + '</a></div>');
     var published_date = $('<div class="fs--2">' + c.publishedDate + '</div>');
@@ -355,6 +356,7 @@ function add_row_to_today_news(c, tbl_class){
     div_img_content.append(published_date);
     div_img_content.append(div_url);
     div_first.append(img);
+    div_first.append(ticker);
     div_first.append(div_img_content);
 
     var div_second = $('<div class="col ps-3 pe-5 bd-highlight"></div>');
