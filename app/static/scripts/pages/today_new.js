@@ -311,11 +311,15 @@ function add_row_to_today_improovers(c, tbl_class){
 
 function add_row_to_top_candidates(c, tbl_class){
     var score = c.algotrader_rank || 0;
+    var upside = c.under_priced_pnt || 0;
     var tr = $('<tr></tr>');
     var td_logo =$('<td class="text-center p-0 pt-2 pe-2"><img src="' + c.logo + '" onerror="this.src=\'/static/images/default_ticker.png\'" width="20" height="20"></td>');
     tr.append(td_logo);
     var td_company = $('<td class="p-0"><a class="fs--1" href="/candidates/info/' + c.ticker + '">' + c.ticker + '</a><div class="fs--2">' + c.company_name + '</div></td>');
     tr.append(td_company);
+    var color = upside > 0 ? "success" : "danger";
+    var td_upside = $('<td class="text-center text-' + color + ' p-0 pt-2">' + upside + '</td>');
+    tr.append(td_upside);
     var td_score = $('<td class="text-center p-0 pt-2">' + score + '</td>');
     tr.append(td_score);
     $('.' + tbl_class + ' tbody').append(tr);

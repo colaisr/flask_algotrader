@@ -1,4 +1,5 @@
 import ssl
+from app.api_service import api_service
 from urllib.request import urlopen
 
 import certifi
@@ -103,7 +104,7 @@ def today_improovers():
 @csrf.exempt
 def top_candidates():
     sector = request.args.get('sector')
-    query = f"SELECT c.ticker, c.company_name, c.logo, a.algotrader_rank " \
+    query = f"SELECT c.ticker, c.company_name, c.logo, a.algotrader_rank, a.under_priced_pnt " \
             f"FROM Candidates c join Tickersdata a ON a.ticker=c.ticker " \
             f"JOIN (SELECT Tickersdata.ticker, max(Tickersdata.updated_server_time) as last_updated_server_time " \
             f"FROM Tickersdata group by Tickersdata.ticker) b ON b.last_updated_server_time=a.updated_server_time " \
