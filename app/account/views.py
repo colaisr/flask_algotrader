@@ -476,3 +476,28 @@ def account_login(email, password, remember_me, request_data):
     else:
         flash('User is not exists.', 'error')
     return ''
+
+
+@account.route('/confirm_email', methods=['GET'])
+def confirm_email():
+    user = db_service.get_user_by_email('choroshin@gmail.com')
+    token = db_service.generate_confirmation_token(user)
+    confirm_link = url_for('account.confirm', token=token, _external=True)
+    send_email(recipient='choroshin@gmail.com',
+               subject='Confirm Your Account',
+               template='account/email/confirm',
+               user=user,
+               confirm_link=confirm_link)
+    return render_template(
+        'account/email/confirm.html', user=user, confirm_link=confirm_link)
+
+
+@account.route('/welcome', methods=['GET'])
+def welcome():
+    user = db_service.get_user_by_email('choroshin@gmail.com')
+    send_email(recipient='choroshin@gmail.com',
+               subject='Welcome to StocScore',
+               template='account/email/welcome',
+               user=user)
+    return render_template(
+        'account/email/welcome.html', user=user)

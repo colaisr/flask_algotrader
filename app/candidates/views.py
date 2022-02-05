@@ -356,3 +356,6 @@ def info_old(ticker):
 def ticker_not_found():
     return render_template(
         'errors/ticker_not_found.html', ticker="TEST_TICKER_NAME")
+
+
+

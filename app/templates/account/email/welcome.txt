@@ -1,0 +1,12 @@
+Stock Score
+
+Dear {{user.email}},
+Welcome to Stock Score platform, the place where You can find the most comprehencive stock and market data, updated daily !
+
+
+Stock score - based on fundamental financial analysis enriched by the most updated media sentiment
+Market sentiment - market breath aggregated from several independand sources, helping You to understand what other market players feel and more important – whtat they put they money on.
+Portfolio - track Your personal favourite stocks, and get the most up to date info about them – track their performance – same as You would, if they were really added to You portfolio.
+Signals and alerts - get general market alerts and good entry point signals for Your favorite stocks or genrally according to Your preferrences
+
+Stock Score is available in browser from any device – START creting your portfolio.
