@@ -419,7 +419,7 @@ def save_signature():
     if "signature" in request.form.keys():
         signature = True
 
-    if general.check_for_blanks(signature_full_name) or not signature:
+    if general.check_is_empty(signature_full_name) or not signature:
         flash('Need to agree to accept the terms', 'error')
     elif len(signature_full_name.strip().split()) <= 1:
         flash('Enter full name', 'error')

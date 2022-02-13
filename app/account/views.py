@@ -2,6 +2,7 @@ import json
 import os
 import base64
 import requests
+import app.generalutils as general
 from flask import (
     Blueprint,
     flash,
@@ -34,7 +35,6 @@ from app.account.forms import (
 from app.email import send_email
 from app.models import db_service
 import app.enums as enum
-from app.models.user_login import User_login
 from dateutil.relativedelta import relativedelta
 
 account = Blueprint('account', __name__)
@@ -50,6 +50,42 @@ GOOGLE_DISCOVERY_URL = "https://accounts.google.com/.well-known/openid-configura
 
 def get_google_provider_cfg():
     return requests.get(GOOGLE_DISCOVERY_URL).json()
+
+
+@account.route('/coupon_validation', methods=['POST'])
+@csrf.exempt
+def coupon_validation():
+    coupon = request.form['coupon']
+    result = {
+        "result":
+            {
+                "coupon": "COUP_xxxxxxxxxxxxx",
+                "is_active": True,
+                "price": 20.56,
+            },
+        "status": 0,
+        "error": ""
+    }
+    return json.dumps(result)
+
+
+@account.route('/confirm_subscription', methods=['POST'])
+@login_required
+@csrf.exempt
+def confirm_subscription():
+    coupon = request.form['coupon']
+    is_to_pay = general.check_is_empty(coupon)
+    price = 35 if is_to_pay else 0
+    result = {
+        "result":
+            {
+                "is_to_pay": is_to_pay,
+                "price": price
+            },
+        "status": 0,
+        "error": ""
+    }
+    return json.dumps(result)
 
 
 @account.route('/login', methods=['GET', 'POST'])

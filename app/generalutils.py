@@ -48,7 +48,7 @@ def user_online_status(report_time, station_interval_worker_sec):
     return online
 
 
-def check_for_blanks(str):
+def check_is_empty(str):
     # myString is not None AND myString is not empty or blank
     if str and str.strip():
         return False
