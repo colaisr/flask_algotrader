@@ -21,6 +21,7 @@ class Subscription(db.Model):
     subscription_name = db.Column(db.String(150), unique=True)
     description = db.Column(db.String(max))
     price = db.Column(db.String(50))
+    is_active = db.Column(db.Boolean)
     users = db.relationship('User', backref='subscription', lazy='dynamic')
 
 

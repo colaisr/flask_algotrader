@@ -117,7 +117,7 @@ def user_login_log(user, user_ip, request_data):
 
 #SUBSCRIPTIONS
 def get_all_subscriptions():
-    subscriptions = Subscription.query.filter(Subscription.id != 1).all()
+    subscriptions = Subscription.query.filter(Subscription.id != 1, Subscription.is_active == True).all()
     return subscriptions
 
 
